@@ -1,13 +1,13 @@
-import { defineStore  } from 'pinia'
+import { defineStore } from 'pinia';
 
-export default defineStore("main", {
+export default defineStore('main', {
   state: () => ({ count: 0, name: 'Eduardo' }),
   getters: {
     doubleCount: (state) => state.count * 2,
   },
   actions: {
     increment() {
-      this.count++
+      this.count++;
     },
   },
-})
+});
