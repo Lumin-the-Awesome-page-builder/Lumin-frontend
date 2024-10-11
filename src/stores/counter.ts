@@ -1,13 +1,15 @@
 import { defineStore } from 'pinia';
 
-export default defineStore('main', {
+const useCounterStore = defineStore('main', {
   state: () => ({ count: 0, name: 'Eduardo' }),
   getters: {
     doubleCount: (state) => state.count * 2,
   },
   actions: {
-    increment() {
-      this.count++;
+    increment(n: number = 1) {
+      this.count += n;
     },
   },
 });
+
+export default useCounterStore;
