@@ -47,6 +47,7 @@ jobs:
       - name: Set up Bash
         run: sudo apt-get install -y bc
 
+      # Запуск скрипта на проверку покрытия
       - name: Run coverage check
         run: |
           bash check-coverage.sh
