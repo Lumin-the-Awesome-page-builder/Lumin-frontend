@@ -23,6 +23,6 @@ describe('App.vue', async () => {
       },
     });
 
-    expect(wrapper.html()).toContain('Home');
+    expect(wrapper.html()).toContain('Lorem Ipsum');
   });
 });
