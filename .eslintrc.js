@@ -1,6 +1,7 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
+    allowDefaultProject: true,
     projectService: 'tsconfig.json',
     tsconfigRootDir: __dirname,
     sourceType: 'module',
@@ -8,6 +9,7 @@ module.exports = {
   plugins: ['@typescript-eslint/eslint-plugin'],
   extends: [
     'plugin:@typescript-eslint/recommended',
+    'plugin:vue/vue3-recommended',
     'plugin:prettier/recommended',
   ],
   root: true,
