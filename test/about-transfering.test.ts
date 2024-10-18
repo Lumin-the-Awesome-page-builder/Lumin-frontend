@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { test, vi, expect } from 'vitest';
 import HelloWorld from '@/components/HelloWorld.vue';
 
-test('Not process to about if count not even', async () => {
+test.only('Not process to about if count not even', async () => {
   const mockRoute = {};
 
   const mockRouter = {
