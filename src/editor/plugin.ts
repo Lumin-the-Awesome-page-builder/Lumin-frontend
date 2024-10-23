@@ -4,6 +4,7 @@ import FlexDirectionProp from '@/editor/properties/FlexDirectionProp.ts';
 import FlexProp from '@/editor/properties/FlexProp.ts';
 import FlexWrap from '@/editor/properties/FlexWrap.ts';
 import GutterProp from '@/editor/properties/GutterProp.ts';
+import { App as AppVue } from 'vue';
 
 const jsonData = JSON.stringify([
   {
@@ -42,23 +43,30 @@ const jsonData = JSON.stringify([
   },
 ]);
 
-const app = new App();
+const editor = new App();
 
-app.use('container', Container);
+editor.use('container', Container);
 
-app.useProp(FlexDirectionProp);
-app.useProp(FlexWrap);
-app.useProp(FlexProp);
-app.useProp(GutterProp);
+editor.useProp(FlexDirectionProp);
+editor.useProp(FlexWrap);
+editor.useProp(FlexProp);
+editor.useProp(GutterProp);
 
-export default function mount(
-  root: string,
-  identifiersSalt: string,
-  json: string = jsonData,
-): App {
-  app.init(root, identifiersSalt, JSON.parse(json));
 
-  app.run();
+const Editor = {
+  install(app: AppVue) {
+    app.config.globalProperties.$mount_editor = (
+      root: string,
+      identifiersSalt: string,
+      json: string = jsonData,
+    ): App => {
+      editor.init(root, identifiersSalt, JSON.parse(json));
 
-  return app;
+      editor.run();
+
+      return editor;
+    }
+  }
 }
+
+export default Editor
