@@ -1,5 +1,5 @@
-import Property from "@/editor/core/property/Property";
-import {Collection} from "@/editor/utils/Collection";
+import Property from '@/editor/core/property/Property';
+import { Collection } from '@/editor/utils/Collection';
 
 export default class PropertyCollection extends Collection<Property> {
   constructor(properties: Record<string, Property> = {}) {
@@ -7,6 +7,6 @@ export default class PropertyCollection extends Collection<Property> {
   }
 
   static empty() {
-    return new PropertyCollection()
+    return new PropertyCollection();
   }
 }

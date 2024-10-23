@@ -1,19 +1,8 @@
-import Component from "@/editor/core/component/Component";
-
+import Component from '@/editor/core/component/Component';
 
 export default class Container extends Component {
-  constructor(_:string) {
-    super("div");
+  constructor(_: string) {
+    console.log(`Construct ${_}`);
+    super('div');
   }
-
-  applyAttributes(): void {
-    this.attributes.getAll().forEach(attr => {
-      this.htmlElement.setAttribute(attr.htmlName, attr.value)
-    })
-  }
-
-  applyProperties(): void {
-    return
-  }
-
 }
