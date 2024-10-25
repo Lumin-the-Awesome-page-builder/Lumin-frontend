@@ -60,10 +60,11 @@ export class App {
           if (!constr) throw new DOMException(`Unknown component: ${el.name}`);
 
           const component: Component = new constr();
-          el.attrs.push({ name: this.scopeIdentifier, value: '' });
+          const attrs = [...el.attrs];
+          attrs.push({ name: this.scopeIdentifier, value: '' });
 
           component.scopeIdentifier = this.scopeIdentifier;
-          component.setAttrs(el.attrs);
+          component.setAttrs(attrs);
           component.setProps(this.buildProps(el.props));
           component.appendChildren(this.buildTree(el.children));
           component.setContent(el.content);
