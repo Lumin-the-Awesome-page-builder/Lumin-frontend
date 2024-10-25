@@ -24,7 +24,7 @@ const Editor = {
     ): App => {
       editor.init(root, identifiersSalt, JSON.parse(json));
 
-      editor.run();
+      editor.mount();
 
       return editor;
     };
