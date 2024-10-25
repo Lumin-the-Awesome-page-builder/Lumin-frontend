@@ -4,12 +4,13 @@
 </template>
 
 <script lang="ts">
-import Workspace from '@/components/Editor/Workspace.vue'
-import Controls from '@/components/Editor/Controls.vue'
+import Workspace from '@/components/editor/Workspace.vue'
+import Controls from '@/components/editor/Controls.vue'
 
 export default {
   props: {
-    count: Number
+    count: Number,
+    initialTree: String
   },
   components: {
     Controls, Workspace
@@ -19,15 +20,9 @@ export default {
     msg: "Hello!"
   }),
   mounted() {
-    this.$mount_editor('app-builder', String(123))
+    this.$mount_editor("app-builder", String(123), this.initialTree)
   },
   methods: {
-    tryThis() {
-      if (this.count % 2 == 0) {
-        this.$router.push("/about")
-      }
-      this.msg = "You are banned!"
-    }
   }
 }
 </script>

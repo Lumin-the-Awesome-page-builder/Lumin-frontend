@@ -47,8 +47,7 @@ export default abstract class Component {
   }
 
   generateKey() {
-    this.key = `data-${this.keySalt}-${this.elementName}-${Date.now()}`;
-    this.attributes.add(new Attribute(this.key));
+    this.setKey(`data-${this.keySalt}-${this.elementName}-${Date.now()}`);
   }
 
   setProps(props: Property[]) {
@@ -90,9 +89,10 @@ export default abstract class Component {
     this.applyProps();
     this.applyAttributes();
 
-    console.log(this.htmlElement, this.content);
-
     this.htmlElement.innerHTML = '';
+    this.htmlElement.innerText = '';
+
+    console.log(this.children)
 
     if (this.children && this.children.length)
       this.children.forEach((el) => this.htmlElement.appendChild(el.render()));
@@ -108,13 +108,5 @@ export default abstract class Component {
   update() {
     if (this.parent) this.parent.render();
     else this.render();
-  }
-
-  findChild(key: string): Component | undefined {
-    if (key == this.key) {
-      return this;
-    } else {
-      return this.children.find((el) => el.findChild(key));
-    }
   }
 }
