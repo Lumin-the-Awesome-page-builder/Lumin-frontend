@@ -6,7 +6,7 @@
     <div class="inputs_container">
       <h2 class="container_title title">Авторизация</h2>
       <div class="block">
-        <p class="block_title title">Адрес эл. почты</p>
+        <n-p class="block_title title">Адрес эл. почты</n-p>
         <n-input v-model="emailData" placeholder="mail@example.ru" type="text" class="input">
           <template #prefix>
             <img src="../assets/svg/email.svg" class="imgLogin"/>
@@ -14,7 +14,7 @@
         </n-input>
       </div>
       <div class="block">
-        <p class="block_title title">Пароль</p>
+        <n-p class="block_title title">Пароль</n-p>
         <n-input v-model="passwordData" placeholder="password" :type="typeInput" class="input" >
           <template #prefix>
             <n-icon :component="icon" color="#000000FF" @click="showPassword" class="passInp"/>
@@ -25,8 +25,8 @@
     </div>
   <div class="line"></div>
   <div class="socialsNetworkBlock">
-    <img src="../assets/svg/Vk.svg" class="socialsNetworkImg"></img>
-    <img src="../assets/svg/Yandex.svg" class="socialsNetworkImg" ></img>
+    <img src="../assets/svg/Vk.svg" class="socialsNetworkImg"/>
+    <img src="../assets/svg/Yandex.svg" class="socialsNetworkImg"/>
   </div>
   </div>
 </template>
@@ -46,8 +46,6 @@ export default {
     EyeSharp() {
       return EyeSharp
     },
-
-
   },
   data() {
     return {
@@ -88,7 +86,9 @@ export default {
   justify-content: center;
   align-items: center;
   width: 30vw;
-  height: 30vw;
+  height: 50vh;
+  min-width: 400px;
+  min-height: 400px;
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
 }
@@ -138,5 +138,18 @@ export default {
   display: flex;
   padding: 5%;
   justify-content: space-around;
+}
+
+.socialsNetworkImg {
+  cursor: pointer;
+}
+
+.container_title {
+  cursor: default;
+}
+
+.block_title {
+  margin-top: 1rem;
+  cursor: default;
 }
 </style>

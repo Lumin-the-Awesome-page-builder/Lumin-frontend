@@ -1,6 +1,8 @@
 <template>
-  <h1>{{ msg }}</h1>
-  <button @click="tryThis"></button>
+  <div class="test">
+    <h1>{{ msg }}</h1>
+    <button @click="tryThis"></button>
+  </div>
 </template>
 
 <script lang="ts">
@@ -27,4 +29,11 @@ export default {
 .read-the-docs {
   color: #888;
 }
+
+.test {
+  width: 100vw;
+  height: 100vh;
+  background-color: #c800ff;
+}
+
 </style>
