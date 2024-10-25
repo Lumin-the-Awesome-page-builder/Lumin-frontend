@@ -1,12 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
 import Editor from '@/components/editor/Editor.vue';
-import EditorPlugin from '@/editor/plugin.ts'
+import EditorPlugin from '@/editor/plugin.ts';
 import router from '@/router';
 
 describe('Editor component', async () => {
   it('Test mounting base tree', () => {
-
     const jsonData = JSON.stringify([
       {
         key: 'data-123-div-1729624518542',
@@ -48,16 +47,16 @@ describe('Editor component', async () => {
     const wrapper = mount(Editor, {
       attachTo: document.body,
       props: {
-        initialTree: jsonData
+        initialTree: jsonData,
       },
       global: {
         mocks: {
-          $route: { },
+          $route: {},
         },
         plugins: [router, EditorPlugin],
       },
     });
 
-    expect(wrapper.find("[data-123-div-1729624518123]").exists()).toBe(true)
+    expect(wrapper.find('[data-123-div-1729624518123]').exists()).toBe(true);
   });
 });

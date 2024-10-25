@@ -6,7 +6,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/',
     name: 'editor',
     component: Editor,
-  }
+  },
 ];
 
 const router = createRouter({

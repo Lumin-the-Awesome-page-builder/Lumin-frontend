@@ -8,11 +8,11 @@ describe('Control component', () => {
   });
 
   it('Control renders correctly', async () => {
-
     const wrapper = mount(Controls, {});
 
-
     expect(wrapper.findComponent(Controls).exists()).toBe(true);
-    expect(wrapper.find('[class]').attributes()["class"]).toBe('editor-controls');
+    expect(wrapper.find('[class]').attributes()['class']).toBe(
+      'editor-controls',
+    );
   });
 });

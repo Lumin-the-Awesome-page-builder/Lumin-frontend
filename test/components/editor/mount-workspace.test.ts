@@ -9,7 +9,6 @@ describe('Workflow component', () => {
   });
 
   it('Workflow renders correctly', async () => {
-
     const wrapper = mount(Workspace, {});
 
     expect(wrapper.findComponent(Workspace).exists()).toBe(true);

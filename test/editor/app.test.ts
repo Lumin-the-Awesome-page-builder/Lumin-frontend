@@ -1,9 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { App } from '@/editor/App.ts';
-import Component, { ComponentObject } from '@/editor/core/component/Component.ts';
+import Component, {
+  ComponentObject,
+} from '@/editor/core/component/Component.ts';
 import Property, { PropertyObject } from '@/editor/core/property/Property.ts';
-
 
 const spies = {
   setAttrs: vi.fn(),
@@ -12,30 +13,29 @@ const spies = {
   setKeySalt: vi.fn(),
   setKey: vi.fn(),
   setContent: vi.fn(),
-  update: vi.fn()
-}
+  update: vi.fn(),
+};
 
-function MockComponentClass (){
-  this.constructor = function() {
-    return this
-  }
-  Object.keys(spies).forEach(el => this[el] = spies[el]);
+function MockComponentClass() {
+  this.constructor = function () {
+    return this;
+  };
+  Object.keys(spies).forEach((el) => (this[el] = spies[el]));
 }
 
 class MockComponent extends Component {
-
   render = vi.fn(() => {
     const element = document.createElement('div');
     element.setAttribute('data-key', this.key);
     return element;
-  })
-  setAttrs = vi.fn()
-  setProps = vi.fn()
-  appendChildren = vi.fn()
-  setKeySalt = vi.fn()
-  setKey = vi.fn()
-  setContent = vi.fn()
-  update = vi.fn()
+  });
+  setAttrs = vi.fn();
+  setProps = vi.fn();
+  appendChildren = vi.fn();
+  setKeySalt = vi.fn();
+  setKey = vi.fn();
+  setContent = vi.fn();
+  update = vi.fn();
 }
 
 class MockProperty extends Property {
@@ -70,7 +70,7 @@ describe('App.ts unit tests', () => {
 
     it('wrong mountPoint provided', async () => {
       expect(() => app.init('missing-root', 'salt')).toThrow(
-        'Bad root element provided'
+        'Bad root element provided',
       );
     });
   });
@@ -90,12 +90,12 @@ describe('App.ts unit tests', () => {
       const propData: PropertyObject[] = [
         {
           name: 'MockProperty',
-          value: 'test-value-1'
+          value: 'test-value-1',
         },
         {
           name: 'MockProperty',
-          value: 'test-value-2'
-        }
+          value: 'test-value-2',
+        },
       ];
       app.useProp(MockProperty);
 
@@ -113,27 +113,25 @@ describe('App.ts unit tests', () => {
       const propData: PropertyObject[] = [
         {
           name: propName,
-          value: 'wrong-prop-value'
-        }
+          value: 'wrong-prop-value',
+        },
       ];
 
       app.useProp(MockProperty);
 
       expect(() => app.buildProps(propData)).toThrow(
-        `Unknown property: ${propName}`
+        `Unknown property: ${propName}`,
       );
-    })
-  })
-
-
+    });
+  });
 
   describe('buildTree', () => {
     it('success creation', () => {
-      const component = MockComponentClass
+      const component = MockComponentClass;
       const mountPoint = 'app-root';
       document.body.innerHTML = `<div id="${mountPoint}" data-scope></div>`;
       app.init(mountPoint, 'salt');
-      app.useProp(MockProperty)
+      app.useProp(MockProperty);
       const state: ComponentObject[] = [
         {
           key: 'data-123',
@@ -142,30 +140,29 @@ describe('App.ts unit tests', () => {
           props: [
             {
               name: 'MockProperty',
-              value: 'test-value-1'
-            }
+              value: 'test-value-1',
+            },
           ],
           content: 'test content',
-          children: []
-        }
+          children: [],
+        },
       ];
       app.use('mock', component);
 
       const tree = app.buildTree(state);
       expect(tree).toHaveLength(1);
       expect(tree[0]).toBeInstanceOf(MockComponentClass);
-      expect(spies.setAttrs).toHaveBeenCalledWith(
-        [
-          {
-          "name": "id",
-          "value": ""
-          }
-        ]);
+      expect(spies.setAttrs).toHaveBeenCalledWith([
+        {
+          name: 'id',
+          value: '',
+        },
+      ]);
 
       expect(spies.setProps).toHaveBeenCalledWith([
         {
-          value: 'test-value-1'
-        }
+          value: 'test-value-1',
+        },
       ]);
       expect(spies.appendChildren).toHaveBeenCalledWith([]);
       expect(spies.setContent).toHaveBeenCalledWith('test content');
@@ -175,8 +172,7 @@ describe('App.ts unit tests', () => {
     });
 
     it('Component does not exist', () => {
-
-      const componentName = 'unknown'
+      const componentName = 'unknown';
 
       const state: ComponentObject[] = [
         {
@@ -185,17 +181,19 @@ describe('App.ts unit tests', () => {
           attrs: [],
           props: [],
           content: 'test content',
-          children: []
-        }
+          children: [],
+        },
       ];
 
-      expect(() => app.buildTree(state)).toThrow(`Unknown component: ${componentName}`);
+      expect(() => app.buildTree(state)).toThrow(
+        `Unknown component: ${componentName}`,
+      );
     });
 
-    it('provided state as state', () =>{
-      expect(app.buildTree(null)).toStrictEqual([])
-    })
-  })
+    it('provided state as state', () => {
+      expect(app.buildTree(null)).toStrictEqual([]);
+    });
+  });
 
   it('run', () => {
     const mountPoint = 'app-root';
@@ -208,21 +206,21 @@ describe('App.ts unit tests', () => {
         props: [
           {
             name: 'MockProperty',
-            value: 'test-value-1'
-          }
+            value: 'test-value-1',
+          },
         ],
         content: 'test content',
-        children: []
-      }
-    ])
+        children: [],
+      },
+    ]);
     app.init(mountPoint, 'salt', JSON.parse(initState));
     app.useProp(MockProperty);
     app.use('mock', MockComponent);
 
     app.run();
     app.root.forEach((el: any) => {
-      expect(el.render).toHaveBeenCalledWith()
-      })
+      expect(el.render).toHaveBeenCalledWith();
+    });
   });
 
   it('find', () => {
@@ -234,7 +232,6 @@ describe('App.ts unit tests', () => {
     expect(result).toBe(component);
   });
 
-
   describe('update', () => {
     it('Component has been successfully updated ', () => {
       const component = new MockComponent();
@@ -245,12 +242,12 @@ describe('App.ts unit tests', () => {
 
       expect(component.setContent).toHaveBeenCalledWith('new content');
       expect(component.update).toHaveBeenCalled();
-    })
+    });
 
     it('Component was not found', () => {
-      expect(() => app.update('missing-key', 'content')).toThrow('Element not found');
+      expect(() => app.update('missing-key', 'content')).toThrow(
+        'Element not found',
+      );
     });
   });
 });
-
-

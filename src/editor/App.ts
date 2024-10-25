@@ -83,7 +83,6 @@ export class App {
     this.root.forEach((el) => {
       this.rootHTML.appendChild(el.render());
     });
-
   }
 
   public find(key: string): Component | undefined {
