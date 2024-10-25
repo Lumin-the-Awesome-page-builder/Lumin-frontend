@@ -1,6 +1,6 @@
 <template>
   <div class="editor-controls">
-    {{ app?.state }}
+    {{ app?.initState }}
   </div>
 </template>
 

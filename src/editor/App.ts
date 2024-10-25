@@ -6,22 +6,23 @@ import Property, { PropertyObject } from '@/editor/core/property/Property.ts';
 export class App {
   public rootHTML: HTMLElement = document.createElement('div');
   public root: Component[] = [];
-  public collection: Record<string, Component> = {};
+  public state: Record<string, Component> = {};
   public componentLibrary: Record<string, any> = {};
   public propLibrary: Record<string, any> = {};
   public mountPoint: string = '';
   public identifiersSalt: string = '';
   public scopeIdentifier: string = '';
-  public state: ComponentObject[] = [];
+  public initState: ComponentObject[] = [];
 
   init(
     mountPoint: string,
     identifierSalt: string,
-    state: ComponentObject[] = [],
+    initState: ComponentObject[] = [],
   ) {
     this.mountPoint = mountPoint;
     this.identifiersSalt = identifierSalt;
-    this.state = state;
+    this.initState = initState;
+
     const root = document.getElementById(this.mountPoint);
     if (!root) {
       throw new DOMException('Bad root element provided');
@@ -59,7 +60,6 @@ export class App {
           if (!constr) throw new DOMException(`Unknown component: ${el.name}`);
 
           const component: Component = new constr();
-
           el.attrs.push({ name: this.scopeIdentifier, value: '' });
 
           component.setAttrs(el.attrs);
@@ -69,7 +69,7 @@ export class App {
           component.setKeySalt(this.identifiersSalt);
           component.setKey(el.key);
 
-          this.collection[component.key] = component;
+          this.state[component.key] = component;
 
           return component;
         })
@@ -77,19 +77,17 @@ export class App {
   }
 
   public run() {
-    this.root = this.buildTree(this.state);
+    this.root = this.buildTree(this.initState);
 
     this.rootHTML.innerHTML = '';
     this.root.forEach((el) => {
       this.rootHTML.appendChild(el.render());
     });
 
-    // this.update('data-123-div-1729624518123', 'data-123-div-1729624518542');
   }
 
   public find(key: string): Component | undefined {
-    // return this.root.map(el => el.findChild(key)).filter(el => el)[0]
-    return this.collection[key];
+    return this.state[key];
   }
 
   public update(key: string, content: string) {

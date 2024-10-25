@@ -2,9 +2,9 @@ import { App } from '@/editor/App';
 import Container from '@/editor/components/Container';
 import FlexDirectionProp from '@/editor/properties/FlexDirectionProp.ts';
 import FlexProp from '@/editor/properties/FlexProp.ts';
-import FlexWrap from '@/editor/properties/FlexWrap.ts';
 import GutterProp from '@/editor/properties/GutterProp.ts';
 import { App as AppVue } from 'vue';
+import FlexWrapProp from '@/editor/properties/FlexWrapProp.ts';
 
 const jsonData = JSON.stringify([
   {
@@ -48,7 +48,7 @@ const editor = new App();
 editor.use('container', Container);
 
 editor.useProp(FlexDirectionProp);
-editor.useProp(FlexWrap);
+editor.useProp(FlexWrapProp);
 editor.useProp(FlexProp);
 editor.useProp(GutterProp);
 

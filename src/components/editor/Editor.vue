@@ -9,7 +9,8 @@ import Controls from '@/components/Editor/Controls.vue'
 
 export default {
   props: {
-    count: Number
+    count: Number,
+    initialTree: String,
   },
   components: {
     Controls, Workspace
