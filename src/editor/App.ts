@@ -62,6 +62,7 @@ export class App {
           const component: Component = new constr();
           el.attrs.push({ name: this.scopeIdentifier, value: '' });
 
+          component.scopeIdentifier = this.scopeIdentifier;
           component.setAttrs(el.attrs);
           component.setProps(this.buildProps(el.props));
           component.appendChildren(this.buildTree(el.children));
@@ -76,7 +77,7 @@ export class App {
       : [];
   }
 
-  public run() {
+  public mount() {
     this.root = this.buildTree(this.initState);
 
     this.rootHTML.innerHTML = '';

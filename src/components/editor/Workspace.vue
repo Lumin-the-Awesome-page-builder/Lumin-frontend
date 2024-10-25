@@ -17,6 +17,7 @@ export default defineComponent({
 </script>
 
 <style scoped src="@/assets/bootstrap.css" />
+<style scoped src="@/assets/editor.css" />
 <style scoped>
   #app-builder {
     zoom: 1.5
