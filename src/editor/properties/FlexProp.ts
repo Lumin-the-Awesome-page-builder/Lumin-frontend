@@ -5,7 +5,6 @@ export default class FlexProp extends Property {
 
   defaultValue: string = 'flex';
   description: string = '___';
-  name: string = 'd-flex';
   title: string = '___';
   values: Record<string, any> = { flex: 'd-flex' };
 

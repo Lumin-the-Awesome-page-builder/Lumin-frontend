@@ -5,7 +5,6 @@ export default class FlexWrapProp extends Property {
 
   defaultValue: string = 'flex-wrap';
   description: string = '___';
-  name: string = 'flex-wrap';
   title: string = '___';
   values: Record<string, any> = { 'flex-wrap': 'flex-wrap' };
 

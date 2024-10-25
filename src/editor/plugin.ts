@@ -1,7 +1,7 @@
 import { App } from '@/editor/App';
 import Container from '@/editor/components/Container';
 import FlexDirectionProp from '@/editor/properties/FlexDirectionProp.ts';
-import FlexProp from '@/editor/properties/FlexProp.ts';
+import FlexProp from '@/editor/properties/FlexProp.ts'
 import GutterProp from '@/editor/properties/GutterProp.ts';
 import { App as AppVue } from 'vue';
 import FlexWrapProp from '@/editor/properties/FlexWrapProp.ts';
@@ -58,7 +58,7 @@ const Editor = {
     app.config.globalProperties.$mount_editor = (
       root: string,
       identifiersSalt: string,
-      json: string = jsonData,
+      json: string = "[]",
     ): App => {
       editor.init(root, identifiersSalt, JSON.parse(json));
 
