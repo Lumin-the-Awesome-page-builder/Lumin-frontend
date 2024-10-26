@@ -1,11 +1,12 @@
 <template>
   <Workspace />
-  <Controls />
+  <Controls :app="app" />
 </template>
 
 <script lang="ts">
 import Workspace from '@/components/editor/Workspace.vue'
 import Controls from '@/components/editor/Controls.vue'
+import { App } from '@/editor/App.ts';
 
 export default {
   props: {
@@ -56,7 +57,6 @@ export default {
             { name: 'flex-wrap', value: 'flex-wrap' },
             { name: 'gap', value: 'g2' },
           ],
-
           content: null,
           children: [
             {
@@ -84,14 +84,14 @@ export default {
         },
       ])
     },
-
   },
   components: {
     Controls, Workspace
   },
   name: "HelloWorld",
   data: () => ({
-    msg: "Hello!"
+    msg: "Hello!",
+    app: App
   }),
   mounted() {
     const app: App = this.$mount_editor('app-builder', String(123), this.initialTree)

@@ -219,7 +219,7 @@ describe('App.ts unit tests', () => {
     app.useProp(MockProperty);
     app.use('mock', MockComponent);
 
-    app.run();
+    app.mount();
     app.root.forEach((el: any) => {
       expect(el.render).toHaveBeenCalledWith();
     });

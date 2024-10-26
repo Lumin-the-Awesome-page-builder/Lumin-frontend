@@ -67,9 +67,11 @@ export class App {
           if (!constr) throw new DOMException(`Unknown component: ${el.name}`);
 
           const component: Component = new constr();
-          el.attrs.push({ name: this.scopeIdentifier, value: '' });
+          const attrs = [...el.attrs];
+          attrs.push({ name: this.scopeIdentifier, value: '' });
 
-          component.setAttrs(el.attrs);
+          component.scopeIdentifier = this.scopeIdentifier;
+          component.setAttrs(attrs);
           component.setProps(this.buildProps(el.props));
           component.appendChildren(this.buildTree(el.children));
           component.setContent(el.content);
@@ -84,7 +86,7 @@ export class App {
       : [];
   }
 
-  public run() {
+  public mount() {
     this.root = this.buildTree(this.initState);
 
     this.rootHTML.innerHTML = '';
