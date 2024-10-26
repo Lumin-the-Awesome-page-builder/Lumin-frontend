@@ -14,6 +14,13 @@ export class App {
   public scopeIdentifier: string = '';
   public initState: ComponentObject[] = [];
 
+  // "event": [([parents] => {},)]
+  public subs = {
+    click: [],
+    dblclick: [],
+    contextmenu: [],
+  };
+
   init(
     mountPoint: string,
     identifierSalt: string,
@@ -70,6 +77,7 @@ export class App {
           component.setContent(el.content);
           component.setKeySalt(this.identifiersSalt);
           component.setKey(el.key);
+          component.setEventHandler((e, arr) => this.handler(e, arr));
 
           this.state[component.key] = component;
 
@@ -97,5 +105,20 @@ export class App {
       element.setContent(content);
       element.update();
     } else throw new DOMException('Element not found');
+  }
+
+  public subscribe(event, handler) {
+    this.subs[event].push(handler);
+  }
+
+  public handler(eventType, elements) {
+    if (Object.keys(this.subs).includes(eventType)) {
+      console.log(elements);
+      console.log(this.subs[eventType]);
+      this.subs[eventType].forEach((el) => {
+        console.log(el);
+        el(elements);
+      });
+    }
   }
 }

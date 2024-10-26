@@ -57,7 +57,6 @@ export default {
             { name: 'flex-wrap', value: 'flex-wrap' },
             { name: 'gap', value: 'g2' },
           ],
-          
           content: null,
           children: [
             {
@@ -95,8 +94,10 @@ export default {
     app: App
   }),
   mounted() {
-    this.app = this.$mount_editor('app-builder', String(123), this.initialTree)
-    console.log(typeof this.app)
+    const app: App = this.$mount_editor('app-builder', String(123), this.initialTree)
+    app.subscribe('click', () => {
+      console.log('event')
+    })
   },
   methods: {
   }

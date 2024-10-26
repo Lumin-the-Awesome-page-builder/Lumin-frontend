@@ -27,9 +27,31 @@ export default abstract class Component {
   public availableProps: string[];
 
   public parent: Component | null = null;
+  public handler = () => {};
+
+  public findTop(): Component[] {
+    const parents: Component[] = [];
+    let currentComponent = this;
+    while (currentComponent != null) {
+      parents.push(currentComponent);
+      currentComponent = currentComponent.parent;
+    }
+    return parents;
+  }
 
   constructor(public elementName: string) {
     this.htmlElement = document.createElement(this.elementName);
+  }
+
+  setEventHandler(func) {
+    this.handler = func;
+  }
+
+  setListener(eventName) {
+    this.htmlElement.addEventListener(eventName, (ev) => {
+      ev.stopPropagation();
+      this.handler(eventName, this.findTop());
+    });
   }
 
   setAttrs(attrs: AttributeObject[]) {
@@ -96,6 +118,7 @@ export default abstract class Component {
 
     this.applyProps();
     this.applyAttributes();
+    this.setListener('click');
 
     this.htmlElement.innerHTML = '';
     this.htmlElement.innerText = '';
