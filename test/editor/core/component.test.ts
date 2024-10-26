@@ -288,10 +288,38 @@ describe('Base component class tests', () => {
   });
 
   it('Test on find top on component', () => {
+    //@ts-ignore
     const child = new Component('h2');
-    component.appendChild(child);
+    component.children.push(child);
+    child.parent = component;
 
     expect(child.findTop().length).toBe(2);
     expect(child.findTop()).toStrictEqual([child, component]);
+  });
+
+  it('Test remove child', () => {
+    //@ts-ignore
+    const child = new Component();
+    component.children.push(child);
+    child.parent = component;
+
+    component.removeChild(child.key);
+
+    expect(component.children.length).toBe(0);
+  });
+
+  it('Test replace child', () => {
+    //@ts-ignore
+    const child = new Component('h1');
+    child.generateKey();
+    component.children.push(child);
+    //@ts-ignore
+    const newChild = new Component('h2');
+    newChild.key = child.key;
+    child.parent = component;
+
+    component.replaceChild(newChild);
+
+    expect(component.children[0]).toBe(newChild);
   });
 });

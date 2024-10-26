@@ -99,14 +99,6 @@ export class App {
     return this.state[key];
   }
 
-  public update(key: string, content: string) {
-    const element = this.find(key);
-    if (element) {
-      element.setContent(content);
-      element.update();
-    } else throw new DOMException('Element not found');
-  }
-
   public subscribe(event, handler) {
     this.subs[event].push(handler);
   }
@@ -119,6 +111,53 @@ export class App {
         console.log(el);
         el(elements);
       });
+    }
+  }
+
+  public add(name: string, parentKey: string) {
+    const constr = this.componentLibrary[name];
+    if (!constr) throw new DOMException(`Unknown component: ${name}`);
+    const component = new constr();
+    const attrs = [{ name: this.scopeIdentifier, value: '' }];
+    component.setAttrs(attrs);
+    component.setEventHandler((e, arr) => this.handler(e, arr));
+    component.setKeySalt(this.identifiersSalt);
+    component.generateKey();
+
+    const parent = this.state[parentKey];
+    if (!parent) {
+      throw new DOMException('Bad parent provided');
+    }
+    this.state[component.key] = component;
+    parent.appendChild(component);
+    parent.render();
+  }
+
+  public remove(key: string) {
+    const component = this.state[key];
+
+    if (!component) throw new DOMException(`Unknown component: ${key}`);
+
+    delete this.state[key];
+
+    if (component.parent) {
+      component.parent.removeChild(key);
+
+      component.parent.render();
+    } else {
+      document.querySelector(`[${component.key}]`).remove();
+    }
+  }
+
+  public update(component: Component) {
+    this.state[component.key] = component;
+    const parent = component.parent;
+
+    if (parent) {
+      parent.replaceChild(component);
+      parent.render();
+    } else {
+      component.render();
     }
   }
 }
