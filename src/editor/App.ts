@@ -16,10 +16,10 @@ export class App {
 
   // "event": [([parents] => {},)]
   public subs = {
-    "click": [],
-    "dblclick": [],
-    "contextmenu": [],
-  }
+    click: [],
+    dblclick: [],
+    contextmenu: [],
+  };
 
   init(
     mountPoint: string,
@@ -75,7 +75,7 @@ export class App {
           component.setContent(el.content);
           component.setKeySalt(this.identifiersSalt);
           component.setKey(el.key);
-          component.setEventHandler((e, arr) => this.handler(e, arr))
+          component.setEventHandler((e, arr) => this.handler(e, arr));
 
           this.state[component.key] = component;
 
@@ -111,13 +111,12 @@ export class App {
 
   public handler(eventType, elements) {
     if (Object.keys(this.subs).includes(eventType)) {
-      console.log(elements)
+      console.log(elements);
       console.log(this.subs[eventType]);
-      this.subs[eventType].forEach(el => {
-        console.log(el)
-        el(elements)
+      this.subs[eventType].forEach((el) => {
+        console.log(el);
+        el(elements);
       });
     }
   }
-
 }

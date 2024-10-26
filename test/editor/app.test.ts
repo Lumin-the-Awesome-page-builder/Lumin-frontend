@@ -253,10 +253,10 @@ describe('App.ts unit tests', () => {
     });
   });
   it('Test on set elements in handler', () => {
-    const component = new Component('div')
-    const expectSize = app.subs.click.length + 1
-    app.subs.click.push(() => {})
-    app.handler("click", [component]);
+    const component = new Component('div');
+    const expectSize = app.subs.click.length + 1;
+    app.subs.click.push(() => {});
+    app.handler('click', [component]);
     expect(app.subs.click.length).toBe(expectSize);
-  })
+  });
 });
