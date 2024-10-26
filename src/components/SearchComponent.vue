@@ -29,7 +29,7 @@ export default {
 <template>
   <div class="search-bar">
     <div class="input-container">
-      <img class="search-icon" src="../assets/imageCard/search.svg" alt="search"/>
+      <img class="search-icon" src="../assets/imageSearch/search.svg" alt="search"/>
       <input v-model="searchQuery" @input="onInput" type="text"
         placeholder="Введите фразу для поиска..." class="search-input"/>
     </div>
