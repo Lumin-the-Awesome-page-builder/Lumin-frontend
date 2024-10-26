@@ -13,6 +13,7 @@ export class App {
   public identifiersSalt: string = '';
   public scopeIdentifier: string = '';
   public initState: ComponentObject[] = [];
+  public pureStyles: Record<string, HTMLElement> = {};
 
   // "event": [([parents] => {},)]
   public subs = {
@@ -27,6 +28,7 @@ export class App {
     initState: ComponentObject[] = [],
   ) {
     this.mountPoint = mountPoint;
+    console.log(this.mountPoint);
     this.identifiersSalt = identifierSalt;
     this.initState = initState;
 
@@ -59,31 +61,65 @@ export class App {
     });
   }
 
+  public mountPureStyles() {
+    Object.values(this.pureStyles).forEach((el) => {
+      document.head.appendChild(el);
+    });
+  }
+
+  public parsePure(htmlStr: string): HTMLElement[] {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlStr, 'text/html');
+    const maybeStyle = doc.head.firstChild;
+    console.log(maybeStyle.nodeName);
+    if (maybeStyle.nodeName == 'STYLE') {
+      return [doc.body.firstChild as HTMLElement, maybeStyle as HTMLElement];
+    } else {
+      return [doc.body.firstChild as HTMLElement];
+    }
+  }
+
   public buildTree(state: ComponentObject[]): Component[] {
-    return state
-      ? state.map((el) => {
-          const constr = this.componentLibrary[el.name];
+    if (state) {
+      const tree = state.map((el) => {
+        const constr = this.componentLibrary[el.name];
 
-          if (!constr) throw new DOMException(`Unknown component: ${el.name}`);
+        if (!constr) throw new DOMException(`Unknown component: ${el.name}`);
 
-          const component: Component = new constr();
-          const attrs = [...el.attrs];
-          attrs.push({ name: this.scopeIdentifier, value: '' });
+        const component: Component = new constr();
+        const attrs = [...el.attrs];
+        attrs.push({ name: this.scopeIdentifier, value: '' });
 
-          component.scopeIdentifier = this.scopeIdentifier;
-          component.setAttrs(attrs);
-          component.setProps(this.buildProps(el.props));
-          component.appendChildren(this.buildTree(el.children));
-          component.setContent(el.content);
-          component.setKeySalt(this.identifiersSalt);
-          component.setKey(el.key);
-          component.setEventHandler((e, arr) => this.handler(e, arr));
+        component.scopeIdentifier = this.scopeIdentifier;
+        component.setAttrs(attrs);
+        component.setProps(this.buildProps(el.props));
+        component.appendChildren(this.buildTree(el.children));
+        component.setContent(el.content);
+        component.setKeySalt(this.identifiersSalt);
+        component.setKey(el.key);
+        component.setEventHandler((e, arr) => this.handler(e, arr));
+        component.pure = !!el.pure;
+        component.specific = { ...el.specific };
 
-          this.state[component.key] = component;
+        if (component.specific.html && component.pure) {
+          const parsed = this.parsePure(component.specific.html);
+          component.specific.htmlOnRender = parsed[0];
+          if (parsed.length > 1) {
+            this.pureStyles[component.key] = parsed[1];
+          }
+        }
 
-          return component;
-        })
-      : [];
+        this.state[component.key] = component;
+
+        return component;
+      });
+
+      this.mountPureStyles();
+
+      return tree;
+    } else {
+      return [];
+    }
   }
 
   public mount() {
@@ -114,7 +150,7 @@ export class App {
     }
   }
 
-  public add(name: string, parentKey: string) {
+  public add(name: string, pure: string, parentKey: string) {
     const constr = this.componentLibrary[name];
     if (!constr) throw new DOMException(`Unknown component: ${name}`);
     const component = new constr();
@@ -128,6 +164,15 @@ export class App {
     if (!parent) {
       throw new DOMException('Bad parent provided');
     }
+
+    if (name == 'pure') {
+      const parsed = this.parsePure(pure);
+      component.specific.html = parsed[0];
+      if (parsed.length > 1) {
+        this.pureStyles[component.key] = parsed[1];
+      }
+    }
+
     this.state[component.key] = component;
     parent.appendChild(component);
     parent.render();
@@ -137,6 +182,11 @@ export class App {
     const component = this.state[key];
 
     if (!component) throw new DOMException(`Unknown component: ${key}`);
+
+    if (this.pureStyles[key]) {
+      this.pureStyles[key].remove();
+      delete this.pureStyles[key];
+    }
 
     delete this.state[key];
 

@@ -11,6 +11,7 @@ export type ComponentObject = {
   content: string;
   children: ComponentObject[];
   specific: any;
+  pure: boolean;
 };
 
 export default abstract class Component {
@@ -27,6 +28,10 @@ export default abstract class Component {
   public availableProps: string[];
 
   public parent: Component | null = null;
+  //Pure means that component is pure html+css+js code wrote by user
+  public pure: boolean = false;
+  public specific: any = null;
+
   public handler = (ev, handler) => {
     console.log(ev, handler);
   };
@@ -175,7 +180,8 @@ export default abstract class Component {
       })),
       children: this.children.map((el) => el.toJson()),
       content: this.content,
-      specific: null,
+      specific: this.specific,
+      pure: this.pure,
     };
   }
 }
