@@ -72,6 +72,7 @@ describe('Package class tests', () => {
       appendChild: appendChildMock,
       getElementById: vi.fn(() => document.getElementById(mountPoint)),
       setAttribute: vi.fn(),
+      addEventListener: vi.fn(),
     }));
 
     beforeEach(() => {
