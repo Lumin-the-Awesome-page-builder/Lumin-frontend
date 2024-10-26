@@ -14,6 +14,7 @@ const spies = {
   setKey: vi.fn(),
   setContent: vi.fn(),
   update: vi.fn(),
+  setEventHandler: vi.fn(),
 };
 
 function MockComponentClass() {
@@ -36,6 +37,7 @@ class MockComponent extends Component {
   setKey = vi.fn();
   setContent = vi.fn();
   update = vi.fn();
+  setEventHandler = vi.fn();
 }
 
 class MockProperty extends Property {
@@ -250,4 +252,11 @@ describe('App.ts unit tests', () => {
       );
     });
   });
+  it('Test on set elements in handler', () => {
+    const component = new Component('div')
+    const expectSize = app.subs.click.length + 1
+    app.subs.click.push(() => {})
+    app.handler("click", [component]);
+    expect(app.subs.click.length).toBe(expectSize);
+  })
 });

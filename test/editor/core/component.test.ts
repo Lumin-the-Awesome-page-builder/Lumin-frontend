@@ -191,6 +191,7 @@ describe('Base component class tests', () => {
           add: vi.fn(),
         },
         appendChild: vi.fn(),
+        addEventListener: vi.fn()
       };
     });
 
@@ -268,4 +269,29 @@ describe('Base component class tests', () => {
       expect(component.render).toBeCalledTimes(1);
     });
   });
+
+  it('Test on setListener', () => {
+    component.htmlElement = {
+      innerHtml: 'test-value',
+      innerText: '',
+      //@ts-ignore
+      classList: {
+        add: vi.fn(),
+      },
+      appendChild: vi.fn(),
+      addEventListener: vi.fn(),
+    };
+
+    component.handler = vi.fn()
+    component.setListener("click")
+    expect(component.htmlElement.addEventListener).toBeCalledTimes(1);
+  })
+
+  it('Test on find top on component', () => {
+    const child = new Component('h2')
+    component.appendChild(child)
+
+    expect(child.findTop().length).toBe(2)
+    expect(child.findTop()).toStrictEqual([child, component])
+  })
 });
