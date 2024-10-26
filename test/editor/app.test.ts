@@ -139,6 +139,11 @@ describe('App.ts unit tests', () => {
       document.body.innerHTML = `<div id="${mountPoint}" data-scope></div>`;
       app.init(mountPoint, 'salt');
       app.useProp(MockProperty);
+      //@ts-ignore
+      app.parsePure = vi.fn(() => [
+        document.createElement('div'),
+        document.createElement('style'),
+      ]);
       const state: ComponentObject[] = [
         //@ts-ignore
         {
@@ -153,6 +158,8 @@ describe('App.ts unit tests', () => {
           ],
           content: 'test content',
           children: [],
+          pure: true,
+          specific: { html: '<style>#a{}</style><div></div>' },
         },
       ];
       //@ts-ignore
@@ -161,6 +168,8 @@ describe('App.ts unit tests', () => {
       const tree = app.buildTree(state);
       expect(tree).toHaveLength(1);
       expect(tree[0]).toBeInstanceOf(MockComponentClass);
+      expect(app.parsePure).toBeCalledTimes(1);
+      expect(app.parsePure).toBeCalledWith('<style>#a{}</style><div></div>');
       expect(spies.setAttrs).toHaveBeenCalledWith([
         {
           name: 'id',
@@ -277,7 +286,7 @@ describe('App.ts unit tests', () => {
     it('Test unknown component', () => {
       app.componentLibrary = {};
 
-      assert.throws(() => app.add('test', 'test'));
+      assert.throws(() => app.add('test', '', 'test'));
     });
     describe('', () => {
       let mock;
@@ -290,6 +299,9 @@ describe('App.ts unit tests', () => {
           generateKey: vi.fn(),
           appendChild: vi.fn(),
           render: vi.fn(),
+          specific: {
+            html: '',
+          },
         };
         Mock = function () {
           Object.keys(mock).forEach((el) => (this[el] = mock[el]));
@@ -303,7 +315,7 @@ describe('App.ts unit tests', () => {
         app.scopeIdentifier = scopeIdentifier;
         app.componentLibrary['test'] = Mock;
 
-        assert.throws(() => app.add('test', 'test'));
+        assert.throws(() => app.add('test', '', 'test'));
       });
 
       it('Test success addition', () => {
@@ -312,7 +324,7 @@ describe('App.ts unit tests', () => {
         app.componentLibrary['test'] = Mock;
         app.state['test'] = new Mock();
 
-        app.add('test', 'test');
+        app.add('test', '', 'test');
 
         expect(mock.setAttrs).toBeCalledTimes(1);
         expect(mock.setEventHandler).toBeCalledTimes(1);
@@ -320,6 +332,23 @@ describe('App.ts unit tests', () => {
         expect(mock.generateKey).toBeCalledTimes(1);
         expect(mock.appendChild).toBeCalledTimes(1);
         expect(mock.render).toBeCalledTimes(1);
+      });
+
+      it('Test pure component addition', () => {
+        const scopeIdentifier = 'test';
+        app.scopeIdentifier = scopeIdentifier;
+        app.componentLibrary['pure'] = Mock;
+        app.state['test'] = new Mock();
+        app.pureStyles = {};
+        //@ts-ignore
+        app.parsePure = vi.fn(() => ['1', '2']);
+        const pure = '<style>#a{}</style><div></div>';
+
+        app.add('pure', pure, 'test');
+
+        expect(app.parsePure).toBeCalledTimes(1);
+        expect(app.parsePure).toBeCalledWith(pure);
+        expect(Object.keys(app.pureStyles).length).toBe(1);
       });
     });
   });
@@ -363,14 +392,21 @@ describe('App.ts unit tests', () => {
         component.parent = new MockComponent();
         component.parent.render = vi.fn();
         component.key = 'key';
-        app.state['test'] = component;
+        app.state[component.key] = component;
+        const removeMock = {
+          remove: vi.fn(),
+        };
+        //@ts-ignore
+        app.pureStyles[component.key] = removeMock;
 
-        app.remove('test');
+        app.remove(component.key);
 
         expect(component.parent.removeChild).toBeCalledTimes(1);
-        expect(component.parent.removeChild).toBeCalledWith('test');
+        expect(component.parent.removeChild).toBeCalledWith(component.key);
         expect(component.parent.render).toBeCalledTimes(1);
         expect(Object.keys(app.state).length).toBe(0);
+        expect(Object.keys(app.pureStyles).length).toBe(0);
+        expect(removeMock.remove).toBeCalled();
       });
     });
   });
@@ -382,5 +418,14 @@ describe('App.ts unit tests', () => {
     app.subs.click.push(() => {});
     app.handler('click', [component]);
     expect(app.subs.click.length).toBe(expectSize);
+  });
+
+  it('Test parse pure', () => {
+    const pure = '<style></style><div></div>';
+    app.pureStyles = {};
+
+    const parsed = app.parsePure(pure);
+
+    expect(parsed.length).toBe(2);
   });
 });

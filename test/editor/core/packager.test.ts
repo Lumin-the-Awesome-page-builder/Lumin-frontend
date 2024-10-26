@@ -21,7 +21,8 @@ describe('Package class tests', () => {
           props: [{ name: 'flex', value: 'flex' }],
           children: [],
           content: 'Test content',
-          specific: null,
+          specific: {},
+          pure: false,
         },
         {
           name: 'container',
@@ -30,7 +31,8 @@ describe('Package class tests', () => {
           props: [{ name: 'flex', value: 'flex' }],
           children: [],
           content: 'Test content',
-          specific: null,
+          specific: {},
+          pure: false,
         },
         {
           name: 'container',
@@ -39,11 +41,13 @@ describe('Package class tests', () => {
           props: [{ name: 'flex', value: 'flex' }],
           children: [],
           content: '',
-          specific: null,
+          specific: {},
+          pure: false,
         },
       ],
       content: null,
-      specific: null,
+      specific: {},
+      pure: false,
     },
   ];
   const mountPoint = 'mountPoint';
