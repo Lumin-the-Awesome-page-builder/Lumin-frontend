@@ -1,30 +1,12 @@
-export const serverConf = {
+import { LogLevel } from '@/utils/logger/log-level.ts';
+
+const appConf = {
   proto: '',
   endpoint: '',
   refreshEndpoint: '',
-  transferInProgressStatus: 0,
-  wsEndpoint: '',
-  loggerMode: '',
+  loggerLevel: LogLevel.INFO,
   loggerExcludedPrefixes: [],
-  rules: {
-    //Key-Value
-  },
+  showStackTrace: true,
 };
 
-export enum TransactionType {
-  INCOME = 1,
-  OUTCOME,
-  TRANSFER,
-}
-export enum TransactionStatus {
-  CREATED = 1,
-  OPEN,
-  CREATION_CANCELLED,
-  IN_PROGRESS,
-  PROCESSING_CANCELLED,
-  DELIVERED,
-  NOT_DELIVERED,
-  DELIVERY_CANCELLED,
-  FAILED,
-  PROCESSED,
-}
+export default appConf;

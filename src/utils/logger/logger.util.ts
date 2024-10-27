@@ -1,7 +1,7 @@
 import appConf from '@/api/conf/app.conf';
 import { LogLevel } from '@/utils/logger/log-level';
 
-class LoggerUtil {
+export class LoggerUtil {
   private readonly level: LogLevel;
   private readonly excludedPrefixes: string[];
 

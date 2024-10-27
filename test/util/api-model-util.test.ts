@@ -3,7 +3,7 @@ import ApiModelUtil from '@/utils/api-model.util.ts';
 import ApiRequestDto from '@/api/dto/api-request.dto.ts';
 import LoggerUtil from '@/utils/logger/logger.util.ts';
 import axios from 'axios';
-import appConf from '@/api/conf/app.conf.ts';
+import appConf from '@/api/conf/app.conf.example.ts';
 import ApiResponseDto from '@/api/dto/api-response.dto.ts';
 import TokenUtil from '@/utils/token.util.ts';
 import router from '@/router';
@@ -284,6 +284,7 @@ describe('Base ApiModelUtil class tests', () => {
 
         //@ts-ignore
         const result = await apiModelUtil.processFailedResponse(request, true, {
+          //@ts-ignore
           response: { code: 401 },
         });
 

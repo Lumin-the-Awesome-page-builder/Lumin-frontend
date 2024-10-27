@@ -1,7 +1,7 @@
 import TokenPairDto from '@/api/modules/auth/dto/token-pair.dto';
 import AuthorizedUserDto from '@/api/modules/auth/dto/authorized-user.dto';
 
-class TokenUtil {
+export class TokenUtil {
   private accessToken: string | null = null;
   private refreshToken: string | null = null;
   private readonly accessTokenKey = 'access';
