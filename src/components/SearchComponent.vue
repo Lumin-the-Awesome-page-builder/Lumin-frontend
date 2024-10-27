@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: 'SearchBar',
+  name: 'SearchComponent',
   props: {
     searchValue: {
       type: String,

@@ -6,7 +6,7 @@ import marketplaceIcon from '@/assets/imageHead/marketplace.svg';
 import backendIcon from '@/assets/imageHead/backend.svg';
 
 export default {
-  name: 'Header',
+  name: 'HeaderComponent',
   props: {
     logoSrc: {
       type: String,
