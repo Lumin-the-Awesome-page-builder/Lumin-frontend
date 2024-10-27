@@ -6,7 +6,7 @@ export default class FlexDirectionProp extends Property {
   defaultValue: string = 'row';
   description: string = 'Description';
   title: string = '----';
-  values: Record<string, any> = {
+  availableValues: Record<string, any> = {
     row: 'flex-row',
     col: 'flex-column',
   };

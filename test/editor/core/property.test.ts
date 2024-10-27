@@ -21,7 +21,7 @@ describe('Base property class tests', () => {
     };
 
     const propertyClassValue = 'test-class';
-    property.values = {
+    property.availableValues = {
       [propertyValue]: propertyClassValue,
     };
     //@ts-ignore

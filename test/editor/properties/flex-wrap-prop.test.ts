@@ -9,7 +9,7 @@ describe('Flex wrap prop test', () => {
     expect(fdProp.defaultValue).toBe('flex-wrap');
     expect(fdProp.description).toBe('___');
     expect(fdProp.title).toBe('___');
-    expect(fdProp.values).toStrictEqual({ 'flex-wrap': 'flex-wrap' });
+    expect(fdProp.availableValues).toStrictEqual({ 'flex-wrap': 'flex-wrap' });
     expect(FlexWrapProp.name).toBe('flex-wrap');
   });
 

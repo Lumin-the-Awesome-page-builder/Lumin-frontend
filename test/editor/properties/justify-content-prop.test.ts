@@ -9,7 +9,7 @@ describe('Justify-content prop test', () => {
     expect(justifyContentProp.defaultValue).toBe('start');
     expect(justifyContentProp.description).toBe('___');
     expect(justifyContentProp.title).toBe('___');
-    expect(justifyContentProp.values).toStrictEqual({
+    expect(justifyContentProp.availableValues).toStrictEqual({
       start: 'justify-content-start',
       end: 'justify-content-end',
       center: 'justify-content-center',

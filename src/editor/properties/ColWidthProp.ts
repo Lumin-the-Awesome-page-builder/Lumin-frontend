@@ -6,7 +6,7 @@ export default class ColWidthProp extends Property {
   defaultValue: string = 'col';
   description: string = '___';
   title: string = '___';
-  values: Record<string, any> = {
+  availableValues: Record<string, any> = {
     c1: 'col-1',
     c2: 'col-2',
     c3: 'col-3',

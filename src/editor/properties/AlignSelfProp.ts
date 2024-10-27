@@ -6,7 +6,7 @@ export default class AlignSelfProp extends Property {
   defaultValue: string = 'start';
   description: string = '___';
   title: string = '___';
-  values: Record<string, any> = {
+  availableValues: Record<string, any> = {
     start: 'align-self-start',
     end: 'align-self-end',
     center: 'align-self-center',

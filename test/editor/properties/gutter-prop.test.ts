@@ -9,7 +9,7 @@ describe('Gutter prop test', () => {
     expect(fdProp.defaultValue).toBe('g0');
     expect(fdProp.description).toBe('___');
     expect(fdProp.title).toBe('___');
-    expect(fdProp.values).toStrictEqual({
+    expect(fdProp.availableValues).toStrictEqual({
       g0: 'gap-0',
       g1: 'gap-1',
       g2: 'gap-2',
