@@ -3,7 +3,7 @@ import ApiModelUtil from '@/utils/api-model.util.ts';
 import ApiRequestDto from '@/api/dto/api-request.dto.ts';
 import LoggerUtil from '@/utils/logger/logger.util.ts';
 import axios from 'axios';
-import appConf from '@/api/conf/app.conf.example.ts';
+import appConf from '@/api/conf/app.conf.ts';
 import ApiResponseDto from '@/api/dto/api-response.dto.ts';
 import TokenUtil from '@/utils/token.util.ts';
 import router from '@/router';
