@@ -8,14 +8,17 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     CardComponent: typeof import('./src/components/CardComponent.vue')['default']
+    CardGrid: typeof import('./src/components/CardGrid.vue')['default']
     ConfirmationFormComponent: typeof import('./src/components/ConfirmationFormComponent.vue')['default']
     DeleteFormComponent: typeof import('./src/components/DeleteFormComponent.vue')['default']
+    HeaderComponent: typeof import('./src/components/HeaderComponent.vue')['default']
     HelloFormComponent: typeof import('./src/components/HelloFormComponent.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     LoginComponent: typeof import('./src/components/LoginComponent.vue')['default']
     NButton: typeof import('naive-ui')['NButton']
     NCheckbox: typeof import('naive-ui')['NCheckbox']
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']
+    NDivider: typeof import('naive-ui')['NDivider']
     NH1: typeof import('naive-ui')['NH1']
     NH2: typeof import('naive-ui')['NH2']
     NIcon: typeof import('naive-ui')['NIcon']

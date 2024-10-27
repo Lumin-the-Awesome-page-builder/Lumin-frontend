@@ -1,9 +1,10 @@
 <template>
+    <HeaderComponent />
     <div class="dashboard">
         <div class="content-wrapper">
             <div class="page-header">
                 <h2 class="page-heading">Ваши проекты</h2>
-                <span class="prj-count">32 проекта</span>
+              <span class="prj-count">{{ projectCount }} {{ projectLabel }}</span>
             </div>
 
             <n-input class="search-input" placeholder="Введите фразу для поиска...">
@@ -11,19 +12,8 @@
                     <n-icon :component="Search" color="#6F6C99" />
                 </template>
             </n-input>
-            
-            <n-scrollbar style="height: 100%; max-height: 76vh; overflow-y: auto;" class="cards-scroll-area">
-                <div class="card-grid">
-                    <CardComponent 
-                        v-for="project in projects" 
-                        :key="project.id" 
-                        :title="project.name"
-                        :date="new Date(project.date)" 
-                        :stars="project.stars" 
-                        :imageSrc="project.imageSrc || ''" 
-                    />
-                </div>
-            </n-scrollbar>
+
+            <CardGrid :data="data" type="default" />
         </div>
         <div class="footer">
       <n-p class="footerText">LuminTech 2024</n-p>
@@ -34,6 +24,7 @@
 <script lang="ts">
 import CardComponent from '@/components/CardComponent.vue';
 import { Search } from '@vicons/ionicons5';
+import HeaderComponent from '@/components/HeaderComponent.vue';
 
 export default {
     name: 'DashboardView',
@@ -42,7 +33,7 @@ export default {
     data() {
         return {
             Search,
-            projects: [
+            data: [
                 { id: 1, name: "project 1", date: "01/01/2001", imageSrc: "../src/assets/imageCard/screenshot.png", stars: 1488, data: [] },
                 { id: 2, name: "project 2", date: "01/01/2001", imageSrc: "../src/assets/imageCard/screenshot.png", stars: 1488, data: [] },
                 { id: 3, name: "project 3", date: "01/01/2001", imageSrc: "../src/assets/imageCard/screenshot.png", stars: 1488, data: [] },
@@ -63,6 +54,21 @@ export default {
             ],
         };
     },
+    computed: {
+      projectCount() {
+        return this.data.length;
+      },
+      projectLabel() {
+        const count = this.projectCount;
+        if (count % 10 === 1 && count % 100 !== 11) {
+          return 'проект';
+        } else if ((count % 10 >= 2 && count % 10 <= 4) && (count % 100 < 10 || count % 100 >= 20)) {
+          return 'проекта';
+        } else {
+          return 'проектов';
+        }
+      }
+  }
 };
 </script>
 
@@ -82,24 +88,6 @@ body {
     max-width: 90vw;
     display: flex;
     flex-direction: column;
-}
-
-.cards-scroll-area {
-    height: 100%;
-    max-height: 60vh; 
-    overflow-y: auto; 
-}
-
-.card-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 3rem;
-    justify-content: flex-start;
-}
-
-.card-grid>* {
-    flex: 0 1 340px;
-    max-width: 340px;
 }
 
 .dashboard {

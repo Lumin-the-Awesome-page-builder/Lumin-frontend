@@ -22,7 +22,7 @@
         </n-input>
       </div>
       <n-button color="#3535FFA6" class="btn">Войти</n-button>
-<!--      <router-link to="/dashboard" class="btn">Dashboard</router-link>-->
+      <router-link to="/dashboard" class="btn">Dashboard</router-link>
     </div>
   <div class="line"></div>
   <div class="socialsNetworkBlock">
