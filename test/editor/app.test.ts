@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { assert, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { App } from '@/editor/App.ts';
 import Component, {
@@ -24,6 +24,7 @@ function MockComponentClass() {
   Object.keys(spies).forEach((el) => (this[el] = spies[el]));
 }
 
+//@ts-ignore
 class MockComponent extends Component {
   render = vi.fn(() => {
     const element = document.createElement('div');
@@ -38,8 +39,12 @@ class MockComponent extends Component {
   setContent = vi.fn();
   update = vi.fn();
   setEventHandler = vi.fn();
+  replaceChild = vi.fn();
+  removeChild = vi.fn();
+  updateChild = vi.fn();
 }
 
+//@ts-ignore
 class MockProperty extends Property {
   constructor(value: any) {
     super(value);
@@ -134,7 +139,13 @@ describe('App.ts unit tests', () => {
       document.body.innerHTML = `<div id="${mountPoint}" data-scope></div>`;
       app.init(mountPoint, 'salt');
       app.useProp(MockProperty);
+      //@ts-ignore
+      app.parsePure = vi.fn(() => [
+        document.createElement('div'),
+        document.createElement('style'),
+      ]);
       const state: ComponentObject[] = [
+        //@ts-ignore
         {
           key: 'data-123',
           name: 'mock',
@@ -147,13 +158,18 @@ describe('App.ts unit tests', () => {
           ],
           content: 'test content',
           children: [],
+          pure: true,
+          specific: { html: '<style>#a{}</style><div></div>' },
         },
       ];
+      //@ts-ignore
       app.use('mock', component);
 
       const tree = app.buildTree(state);
       expect(tree).toHaveLength(1);
       expect(tree[0]).toBeInstanceOf(MockComponentClass);
+      expect(app.parsePure).toBeCalledTimes(1);
+      expect(app.parsePure).toBeCalledWith('<style>#a{}</style><div></div>');
       expect(spies.setAttrs).toHaveBeenCalledWith([
         {
           name: 'id',
@@ -177,6 +193,7 @@ describe('App.ts unit tests', () => {
       const componentName = 'unknown';
 
       const state: ComponentObject[] = [
+        //@ts-ignore
         {
           key: 'data-123',
           name: componentName,
@@ -226,6 +243,7 @@ describe('App.ts unit tests', () => {
   });
 
   it('find', () => {
+    //@ts-ignore
     const component = new MockComponent();
     component.key = 'test-key';
     app.state['test-key'] = component;
@@ -234,29 +252,180 @@ describe('App.ts unit tests', () => {
     expect(result).toBe(component);
   });
 
-  describe('update', () => {
-    it('Component has been successfully updated ', () => {
-      const component = new MockComponent();
-      component.key = 'test-key';
-      app.state['test-key'] = component;
+  describe('Test update method', () => {
+    let component: MockComponent;
+    let parentComponent: MockComponent;
+    beforeEach(() => {
+      parentComponent = new MockComponent('div');
+      parentComponent.generateKey();
+      component = new MockComponent('h1');
+      component.generateKey();
 
-      app.update('test-key', 'new content');
+      app.state[parentComponent.key] = parentComponent;
+      app.state[component.key] = component;
+    });
+    it('Update parent exists', () => {
+      parentComponent.children.push(component);
+      component.parent = parentComponent;
 
-      expect(component.setContent).toHaveBeenCalledWith('new content');
-      expect(component.update).toHaveBeenCalled();
+      app.update(component);
+
+      expect(parentComponent.replaceChild).toBeCalledTimes(1);
+      expect(parentComponent.replaceChild).toBeCalledWith(component);
+      expect(parentComponent.render).toBeCalled();
     });
 
-    it('Component was not found', () => {
-      expect(() => app.update('missing-key', 'content')).toThrow(
-        'Element not found',
-      );
+    it('Update without parent', () => {
+      app.update(component);
+
+      expect(component.render).toBeCalled();
     });
   });
+
+  describe('Test add method', () => {
+    it('Test unknown component', () => {
+      app.componentLibrary = {};
+
+      assert.throws(() => app.add('test', '', 'test'));
+    });
+    describe('', () => {
+      let mock;
+      let Mock: any;
+      beforeEach(() => {
+        mock = {
+          setAttrs: vi.fn(),
+          setEventHandler: vi.fn(),
+          setKeySalt: vi.fn(),
+          generateKey: vi.fn(),
+          appendChild: vi.fn(),
+          render: vi.fn(),
+          specific: {
+            html: '',
+          },
+        };
+        Mock = function () {
+          Object.keys(mock).forEach((el) => (this[el] = mock[el]));
+          this.constructor = function () {
+            return this;
+          };
+        };
+      });
+      it('Test unknown parent', () => {
+        const scopeIdentifier = 'test';
+        app.scopeIdentifier = scopeIdentifier;
+        app.componentLibrary['test'] = Mock;
+
+        assert.throws(() => app.add('test', '', 'test'));
+      });
+
+      it('Test success addition', () => {
+        const scopeIdentifier = 'test';
+        app.scopeIdentifier = scopeIdentifier;
+        app.componentLibrary['test'] = Mock;
+        app.state['test'] = new Mock();
+
+        app.add('test', '', 'test');
+
+        expect(mock.setAttrs).toBeCalledTimes(1);
+        expect(mock.setEventHandler).toBeCalledTimes(1);
+        expect(mock.setKeySalt).toBeCalledTimes(1);
+        expect(mock.generateKey).toBeCalledTimes(1);
+        expect(mock.appendChild).toBeCalledTimes(1);
+        expect(mock.render).toBeCalledTimes(1);
+      });
+
+      it('Test pure component addition', () => {
+        const scopeIdentifier = 'test';
+        app.scopeIdentifier = scopeIdentifier;
+        app.componentLibrary['pure'] = Mock;
+        app.state['test'] = new Mock();
+        app.pureStyles = {};
+        //@ts-ignore
+        app.parsePure = vi.fn(() => ['1', '2']);
+        const pure = '<style>#a{}</style><div></div>';
+
+        app.add('pure', pure, 'test');
+
+        expect(app.parsePure).toBeCalledTimes(1);
+        expect(app.parsePure).toBeCalledWith(pure);
+        expect(Object.keys(app.pureStyles).length).toBe(1);
+      });
+    });
+  });
+
+  describe('Test remove method', () => {
+    it('Test unknown component', () => {
+      app.state = {};
+
+      assert.throws(() => app.remove('test'));
+    });
+    describe('', () => {
+      let querySelectorMock: any;
+      beforeEach(() => {
+        querySelectorMock = vi.fn(() => ({ remove: vi.fn() }));
+        vi.stubGlobal('document', {
+          querySelector: querySelectorMock,
+          createElement: vi.fn(),
+        });
+      });
+
+      it('Test remove without parent', () => {
+        //@ts-ignore
+        const component = new MockComponent();
+        component.parent = null;
+        component.key = 'key';
+        app.state['test'] = component;
+
+        console.log(app);
+
+        app.remove('test');
+
+        expect(Object.keys(app.state).length).toBe(0);
+        expect(querySelectorMock).toBeCalledTimes(1);
+        expect(querySelectorMock).toBeCalledWith(`[${component.key}]`);
+      });
+
+      it('Test remove with parent', () => {
+        //@ts-ignore
+        const component = new MockComponent();
+        //@ts-ignore
+        component.parent = new MockComponent();
+        component.parent.render = vi.fn();
+        component.key = 'key';
+        app.state[component.key] = component;
+        const removeMock = {
+          remove: vi.fn(),
+        };
+        //@ts-ignore
+        app.pureStyles[component.key] = removeMock;
+
+        app.remove(component.key);
+
+        expect(component.parent.removeChild).toBeCalledTimes(1);
+        expect(component.parent.removeChild).toBeCalledWith(component.key);
+        expect(component.parent.render).toBeCalledTimes(1);
+        expect(Object.keys(app.state).length).toBe(0);
+        expect(Object.keys(app.pureStyles).length).toBe(0);
+        expect(removeMock.remove).toBeCalled();
+      });
+    });
+  });
+
   it('Test on set elements in handler', () => {
+    //@ts-ignore
     const component = new Component('div');
     const expectSize = app.subs.click.length + 1;
     app.subs.click.push(() => {});
     app.handler('click', [component]);
     expect(app.subs.click.length).toBe(expectSize);
+  });
+
+  it('Test parse pure', () => {
+    const pure = '<style></style><div></div>';
+    app.pureStyles = {};
+
+    const parsed = app.parsePure(pure);
+
+    expect(parsed.length).toBe(2);
   });
 });

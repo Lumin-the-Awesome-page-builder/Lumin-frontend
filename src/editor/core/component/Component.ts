@@ -11,6 +11,7 @@ export type ComponentObject = {
   content: string;
   children: ComponentObject[];
   specific: any;
+  pure: boolean;
 };
 
 export default abstract class Component {
@@ -27,11 +28,17 @@ export default abstract class Component {
   public availableProps: string[];
 
   public parent: Component | null = null;
-  public handler = () => {};
+  //Pure means that component is pure html+css+js code wrote by user
+  public pure: boolean = false;
+  public specific: any = null;
+
+  public handler = (ev, handler) => {
+    console.log(ev, handler);
+  };
 
   public findTop(): Component[] {
     const parents: Component[] = [];
-    let currentComponent = this;
+    let currentComponent: Component = this;
     while (currentComponent != null) {
       parents.push(currentComponent);
       currentComponent = currentComponent.parent;
@@ -88,6 +95,16 @@ export default abstract class Component {
 
   appendChild(child: Component) {
     this.appendChildren([child.setParent(this)]);
+  }
+
+  removeChild(key: string) {
+    this.children = this.children.filter((el) => el.key != key);
+  }
+
+  replaceChild(onReplace: Component) {
+    this.children = this.children.map((el) =>
+      el.key == onReplace.key ? onReplace : el,
+    );
   }
 
   appendChildren(children: Component[]) {
@@ -163,7 +180,8 @@ export default abstract class Component {
       })),
       children: this.children.map((el) => el.toJson()),
       content: this.content,
-      specific: null,
+      specific: this.specific,
+      pure: this.pure,
     };
   }
 }
