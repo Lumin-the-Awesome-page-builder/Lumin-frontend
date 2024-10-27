@@ -9,7 +9,7 @@ describe('Flex prop test', () => {
     expect(fdProp.defaultValue).toBe('flex');
     expect(fdProp.description).toBe('___');
     expect(fdProp.title).toBe('___');
-    expect(fdProp.values).toStrictEqual({ flex: 'd-flex' });
+    expect(fdProp.availableValues).toStrictEqual({ flex: 'd-flex' });
     expect(FlexProp.name).toBe('flex');
   });
 

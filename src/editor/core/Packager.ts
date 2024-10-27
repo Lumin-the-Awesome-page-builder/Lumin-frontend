@@ -13,6 +13,10 @@ export default class Packager {
       'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css';
     head.appendChild(stylesLink);
 
+    Object.values(this.app.pureStyles).forEach(
+      (el) => (head.innerHTML += el.outerHTML),
+    );
+
     const body = document.createElement('body');
     if (state == null) {
       this.app

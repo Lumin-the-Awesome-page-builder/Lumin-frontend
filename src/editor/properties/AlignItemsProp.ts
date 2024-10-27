@@ -6,7 +6,7 @@ export default class AlignItemsProp extends Property {
   defaultValue: string = 'start';
   description: string = '___';
   title: string = '___';
-  values: Record<string, any> = {
+  availableValues: Record<string, any> = {
     start: 'align-items-start',
     end: 'align-items-end',
     center: 'align-items-center',

@@ -74,11 +74,15 @@ export default {
               content: 'Test content',
             },
             {
+              pure: true,
               key: 'data-123-div-1729624518547',
-              name: 'container',
+              name: 'pure',
               attrs: [],
               props: [{ name: 'flex', value: 'flex' }],
               content: '',
+              specific: {
+                html: "<style>.bordered-mine { border: 1px solid red }</style><div class='bordered-mine'>TEST</div>"
+              }
             },
           ],
         },
@@ -94,8 +98,8 @@ export default {
     app: App
   }),
   mounted() {
-    const app: App = this.$mount_editor('app-builder', String(123), this.initialTree)
-    app.subscribe('click', () => {
+    this.app = this.$mount_editor('app-builder', String(123), this.initialTree)
+    this.app.subscribe('click', () => {
       console.log('event')
     })
   },

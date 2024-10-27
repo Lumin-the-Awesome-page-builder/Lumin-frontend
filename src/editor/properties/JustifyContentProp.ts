@@ -6,7 +6,7 @@ export default class JustifyContentProp extends Property {
   defaultValue: string = 'start';
   description: string = '___';
   title: string = '___';
-  values: Record<string, any> = {
+  availableValues: Record<string, any> = {
     start: 'justify-content-start',
     end: 'justify-content-end',
     center: 'justify-content-center',

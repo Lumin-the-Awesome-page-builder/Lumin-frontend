@@ -9,7 +9,7 @@ describe('Flex direction prop test', () => {
     expect(fdProp.defaultValue).toBe('row');
     expect(fdProp.description).toBe('Description');
     expect(fdProp.title).toBe('----');
-    expect(fdProp.values).toStrictEqual({
+    expect(fdProp.availableValues).toStrictEqual({
       row: 'flex-row',
       col: 'flex-column',
     });

@@ -6,7 +6,7 @@ export default class GutterProp extends Property {
   defaultValue: string = 'g0';
   description: string = '___';
   title: string = '___';
-  values: Record<string, any> = {
+  availableValues: Record<string, any> = {
     g0: 'gap-0',
     g1: 'gap-1',
     g2: 'gap-2',

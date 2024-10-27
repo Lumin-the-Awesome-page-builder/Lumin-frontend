@@ -5,10 +5,12 @@ import FlexProp from '@/editor/properties/FlexProp.ts';
 import GutterProp from '@/editor/properties/GutterProp.ts';
 import { App as AppVue } from 'vue';
 import FlexWrapProp from '@/editor/properties/FlexWrapProp.ts';
+import Pure from '@/editor/components/Pure.ts';
 
 const editor = new App();
 
 editor.use('container', Container);
+editor.use('pure', Pure);
 
 editor.useProp(FlexDirectionProp);
 editor.useProp(FlexWrapProp);

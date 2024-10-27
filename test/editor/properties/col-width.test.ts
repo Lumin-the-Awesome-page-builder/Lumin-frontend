@@ -9,7 +9,7 @@ describe('Col width prop test', () => {
     expect(justifyContentProp.defaultValue).toBe('col');
     expect(justifyContentProp.description).toBe('___');
     expect(justifyContentProp.title).toBe('___');
-    expect(justifyContentProp.values).toStrictEqual({
+    expect(justifyContentProp.availableValues).toStrictEqual({
       c1: 'col-1',
       c2: 'col-2',
       c3: 'col-3',

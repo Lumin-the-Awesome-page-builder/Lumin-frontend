@@ -9,7 +9,7 @@ describe('Align Self prop test', () => {
     expect(alignSelfProp.defaultValue).toBe('start');
     expect(alignSelfProp.description).toBe('___');
     expect(alignSelfProp.title).toBe('___');
-    expect(alignSelfProp.values).toStrictEqual({
+    expect(alignSelfProp.availableValues).toStrictEqual({
       start: 'align-self-start',
       end: 'align-self-end',
       center: 'align-self-center',
