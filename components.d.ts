@@ -7,18 +7,22 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    CardComponent: typeof import('./src/components/CardComponent.vue')['default']
     ConfirmationFormComponent: typeof import('./src/components/ConfirmationFormComponent.vue')['default']
     DeleteFormComponent: typeof import('./src/components/DeleteFormComponent.vue')['default']
     HelloFormComponent: typeof import('./src/components/HelloFormComponent.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     LoginComponent: typeof import('./src/components/LoginComponent.vue')['default']
     NButton: typeof import('naive-ui')['NButton']
+    NCheckbox: typeof import('naive-ui')['NCheckbox']
+    NConfigProvider: typeof import('naive-ui')['NConfigProvider']
     NH1: typeof import('naive-ui')['NH1']
     NH2: typeof import('naive-ui')['NH2']
     NIcon: typeof import('naive-ui')['NIcon']
     NImage: typeof import('naive-ui')['NImage']
     NInput: typeof import('naive-ui')['NInput']
     NP: typeof import('naive-ui')['NP']
+    NScrollbar: typeof import('naive-ui')['NScrollbar']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

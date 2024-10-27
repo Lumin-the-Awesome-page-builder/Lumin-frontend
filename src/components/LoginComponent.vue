@@ -22,6 +22,7 @@
         </n-input>
       </div>
       <n-button color="#3535FFA6" class="btn">Войти</n-button>
+<!--      <router-link to="/dashboard" class="btn">Dashboard</router-link>-->
     </div>
   <div class="line"></div>
   <div class="socialsNetworkBlock">
@@ -86,7 +87,7 @@ export default {
   justify-content: center;
   align-items: center;
   width: 30vw;
-  height: 50vh;
+  height: max-content;
   min-width: 400px;
   min-height: 400px;
   padding-top: 1.5rem;
@@ -142,6 +143,12 @@ export default {
 
 .socialsNetworkImg {
   cursor: pointer;
+  opacity: 0.37;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.socialsNetworkImg:hover {
+  opacity: 1;
 }
 
 .container_title {

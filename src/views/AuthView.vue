@@ -44,8 +44,7 @@ export default {
   align-items: center;
   width: 100%;
   flex: 1;
-  background: linear-gradient(0deg, #F8F8F8, #F8F8F8),
-  linear-gradient(180deg, rgba(255, 246, 240, 0.38) 0%, rgba(251, 232, 233, 0.31) 57.44%, rgba(252, 252, 255, 0.57) 100%);
+  background-image: url(../assets/bg.jpg);
 }
 
 .footer {

@@ -17,6 +17,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'auth',
     component: () => import('../views/AuthView.vue'),
   },
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: () => import('../views/DashboardView.vue')
+  }
 ];
 
 const router = createRouter({
