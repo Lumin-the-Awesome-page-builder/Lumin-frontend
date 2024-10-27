@@ -7,7 +7,7 @@ import { App as AppVue } from 'vue';
 import FlexWrapProp from '@/editor/properties/FlexWrapProp.ts';
 import Pure from '@/editor/components/Pure.ts';
 import Text from '@/editor/components/Text.ts';
-import Header from '@/editor/components/header.ts';
+import Header from '@/editor/components/Header.ts';
 import Image from '@/editor/components/Image.ts';
 import Link from '@/editor/components/Link.ts';
 import AlignItemsProp from '@/editor/properties/AlignItemsProp.ts';

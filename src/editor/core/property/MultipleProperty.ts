@@ -8,7 +8,7 @@ export default abstract class MultipleProperty extends Property {
   public abstract availableValues: Record<string, any>;
   public abstract defaultValue: string;
 
-  protected constructor(public values: []) {
+  constructor(public values: []) {
     super();
   }
 
