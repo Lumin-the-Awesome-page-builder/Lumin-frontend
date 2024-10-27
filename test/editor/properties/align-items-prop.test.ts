@@ -9,7 +9,7 @@ describe('Align Items prop test', () => {
     expect(alignItemsProp.defaultValue).toBe('start');
     expect(alignItemsProp.description).toBe('___');
     expect(alignItemsProp.title).toBe('___');
-    expect(alignItemsProp.values).toStrictEqual({
+    expect(alignItemsProp.availableValues).toStrictEqual({
       start: 'align-items-start',
       end: 'align-items-end',
       center: 'align-items-center',

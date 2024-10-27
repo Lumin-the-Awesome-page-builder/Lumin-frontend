@@ -9,13 +9,15 @@ export type PropertyObject = {
 export default abstract class Property {
   public abstract title: string;
   public abstract description: string;
-  public abstract values: Record<string, any>;
+  public abstract availableValues: Record<string, any>;
   public abstract defaultValue: string;
 
   constructor(public value: string) {}
 
   public apply(target: Component): Component {
-    target.attributes.append(new Attribute('class', this.values[this.value]));
+    target.attributes.append(
+      new Attribute('class', this.availableValues[this.value]),
+    );
 
     return target;
   }
