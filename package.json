@@ -8,10 +8,10 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
     "preview": "vite preview",
-    "test": "vitest",
-    "lint": "eslint \"{src,apps,libs,test}//*.ts\" --fix",
-    "lint:check": "eslint \"{src,apps,libs,test}//*.ts\"",
-    "format": "prettier --write \"src//*.ts\" \"test//*.ts\"",
+    "test": "vitest run",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "lint:check": "eslint \"{src,apps,libs,test}/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "coverage": "vitest run --coverage > coverage-report.txt",
     "coverage:local": "vitest run --coverage",
     "e2e-test": "cypress run"
@@ -19,6 +19,7 @@
   "dependencies": {
     "@css-render/vue3-ssr": "^0.15.14",
     "@vicons/ionicons5": "^0.12.0",
+    "axios": "^1.7.7",
     "pinia": "^2.2.4",
     "unplugin-auto-import": "^0.18.3",
     "unplugin-vue-components": "^0.27.4",

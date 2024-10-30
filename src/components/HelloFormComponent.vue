@@ -2,7 +2,7 @@
   <div class="backgroundContainer">
     <div class="container">
       <div class="logo">
-        <img src="../assets/svg/Lumin_logo.svg" class="logo_svg">
+        <img src="@/assets/svg/Lumin_logo.svg" class="logo_svg">
       </div>
       <div class="inputs_container">
         <h2 class="container_title title">Добро пожаловать!</h2>

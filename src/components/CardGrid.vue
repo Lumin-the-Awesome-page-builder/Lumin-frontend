@@ -17,8 +17,8 @@
     </n-scrollbar>
   </template>
   
-  <script lang="ts" scoped>
-  import CardComponent from './CardComponent.vue';
+  <script lang="ts">
+  import CardComponent from '@/components/CardComponent.vue';
   
   export default {
     name: 'CardGrid',

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="logo">
-      <img src="../assets/svg/Lumin_logo.svg" class="logo_svg">
+      <img src="@/assets/svg/Lumin_logo.svg" class="logo_svg">
     </div>
     <div class="inputs_container">
       <h2 class="container_title title">Подтверждение</h2>
@@ -10,7 +10,7 @@
       <span class="block_title title">Введите его ниже:</span>
       <n-input  v-model="emailData" placeholder="123-456-789" type="text" class="input">
         <template #prefix>
-          <img src="../assets/svg/email.svg" class="imgLogin"/>
+          <img src="@/assets/svg/email.svg" class="imgLogin"/>
         </template>
       </n-input>
       <n-button color="#3535FFA6" class="btn">Войти</n-button>

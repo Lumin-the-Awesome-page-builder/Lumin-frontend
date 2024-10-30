@@ -27,4 +27,3 @@ test('toggles password visibility', () => {
   expect(wrapper.vm.typeInput).toBe('password');
   expect(wrapper.vm.icon).toStrictEqual(EyeSharp);
 });
-

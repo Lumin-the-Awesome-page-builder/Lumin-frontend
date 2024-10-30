@@ -22,8 +22,11 @@ test.each([
   [11, 'проектов'],
   [21, 'проект'],
   [22, 'проекта'],
-  [25, 'проектов']
-])('when projectCount is %i, projectLabel should be %s', (count, expectedLabel) => {
-  wrapper.setData({ data: Array(count).fill({}) });
-  expect(wrapper.vm.projectLabel).toBe(expectedLabel);
-});
+  [25, 'проектов'],
+])(
+  'when projectCount is %i, projectLabel should be %s',
+  (count, expectedLabel) => {
+    wrapper.setData({ data: Array(count).fill({}) });
+    expect(wrapper.vm.projectLabel).toBe(expectedLabel);
+  },
+);

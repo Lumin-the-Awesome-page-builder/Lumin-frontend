@@ -2,7 +2,7 @@
   <div class="backgroundContainer">
     <div class="container">
       <div class="closePart">
-        <img src="../assets/svg/close.svg" class="img"/>
+        <img src="@/assets/svg/close.svg" class="img"/>
       </div>
       <div class="inputs_container">
         <h2 class="container_title title">Подтвержение удаления</h2>

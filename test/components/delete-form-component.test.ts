@@ -12,5 +12,7 @@ test('accepts projectName prop', () => {
   const newProjectName = 'Тестовый проект';
   wrapper.setProps({ projectName: newProjectName });
 
-  expect(wrapper.find('.block_title').text()).toContain(`Вы уверены, что хотите удалить ${newProjectName}?`);
+  expect(wrapper.find('.block_title').text()).toContain(
+    `Вы уверены, что хотите удалить ${newProjectName}?`,
+  );
 });

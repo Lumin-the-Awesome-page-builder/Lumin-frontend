@@ -1,7 +1,7 @@
 <template>
   <div class="header-wrapper">
     <div class="logo-wrapper">
-      <img class="lumin-logo" src="../assets/lumin-logo-1-1.svg" />
+      <img class="lumin-logo" src="@/assets/lumin-logo-1-1.svg" />
     </div>
 
     <n-divider style="height: 100%;" vertical />

@@ -15,7 +15,13 @@ test('renders correctly with empty data', () => {
 
 test('renders correctly with data', () => {
   const mockData = [
-    { id: 1, name: 'Проект 1', date: '2023-10-29', stars: 5, imageSrc: 'path/to/image1.jpg' },
+    {
+      id: 1,
+      name: 'Проект 1',
+      date: '2023-10-29',
+      stars: 5,
+      imageSrc: 'path/to/image1.jpg',
+    },
   ];
 
   const wrapper = mount(CardGrid, {
@@ -24,7 +30,7 @@ test('renders correctly with data', () => {
     },
   });
 
-  expect(wrapper.findAllComponents(CardComponent)).toHaveLength(1); 
+  expect(wrapper.findAllComponents(CardComponent)).toHaveLength(1);
 
   const firstCard = wrapper.findComponent(CardComponent);
   expect(firstCard.props().title).toBe(mockData[0].name);

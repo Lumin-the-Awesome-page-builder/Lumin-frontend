@@ -45,7 +45,7 @@ export default {
       <div class="image-container">
         <img alt="project" class="image-card-project" :src="imageSrc" />
         <div class="overlay">
-          <img class="overlay-eye" src="../assets/imageCard/eye.svg" alt="Просмотреть">
+          <img class="overlay-eye" src="@/assets/imageCard/eye.svg" alt="Просмотреть">
         </div>
         <div class="checkbox-container">
           <n-checkbox />
@@ -54,7 +54,7 @@ export default {
       <div class="card-info">
         <h3 class="card-title">
           {{ title }}
-          <img class="edit-title" @click="editTitle" src="../assets/imageCard/pencil.svg" alt="edit" />
+          <img class="edit-title" @click="editTitle" src="@/assets/imageCard/pencil.svg" alt="edit" />
         </h3>
         <div class="card-stats">
           <div class="info">
@@ -66,8 +66,8 @@ export default {
             </span>
           </div>
           <div class="card-actions">
-            <img @click="shareProject" class="action-button" src="../assets/imageCard/share.svg" alt="share" />
-            <img @click="downloadProject" class="action-button" src="../assets/imageCard/download.svg" alt="download" />
+            <img @click="shareProject" class="action-button" src="@/assets/imageCard/share.svg" alt="share" />
+            <img @click="downloadProject" class="action-button" src="@/assets/imageCard/download.svg" alt="download" />
           </div>
         </div>
       </div>
@@ -148,7 +148,7 @@ export default {
 .checkbox-label {
   width: 0.8rem;
   height: 0.8rem;
-  background: url('../assets/imageCard/checkMark.svg') no-repeat center;
+  /*background: url('@/assets/imageCard/checkMark.svg') no-repeat center;*/
   background-size: contain;
   cursor: pointer;
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="logo">
-      <img src="../assets/svg/Lumin_logo.svg" class="logo_svg">
+      <img src="@/assets/svg/Lumin_logo.svg" class="logo_svg">
     </div>
     <div class="inputs_container">
       <h2 class="container_title title">Авторизация</h2>
@@ -9,7 +9,7 @@
         <n-p class="block_title title">Адрес эл. почты</n-p>
         <n-input v-model="emailData" placeholder="mail@example.ru" type="text" class="input">
           <template #prefix>
-            <img src="../assets/svg/email.svg" class="imgLogin"/>
+            <img src="@/assets/svg/email.svg" class="imgLogin"/>
           </template>
         </n-input>
       </div>
@@ -26,8 +26,8 @@
     </div>
   <div class="line"></div>
   <div class="socialsNetworkBlock">
-    <img src="../assets/svg/Vk.svg" class="socialsNetworkImg"/>
-    <img src="../assets/svg/Yandex.svg" class="socialsNetworkImg"/>
+    <img src="@/assets/svg/VK.svg" class="socialsNetworkImg"/>
+    <img src="@/assets/svg/Yandex.svg" class="socialsNetworkImg"/>
   </div>
   </div>
 </template>
