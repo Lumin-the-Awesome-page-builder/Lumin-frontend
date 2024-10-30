@@ -22,7 +22,6 @@ test('Not process to about if count not even', async () => {
   });
 
   await wrapper.find('button').trigger('click');
-
   expect(mockRouter.push).toHaveBeenCalledTimes(0);
 });
 

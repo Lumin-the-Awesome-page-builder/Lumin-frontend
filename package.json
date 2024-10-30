@@ -13,6 +13,7 @@
     "lint:check": "eslint \"{src,apps,libs,test}//*.ts\"",
     "format": "prettier --write \"src//*.ts\" \"test//*.ts\"",
     "coverage": "vitest run --coverage > coverage-report.txt",
+    "coverage:local": "vitest run --coverage",
     "e2e-test": "cypress run"
   },
   "dependencies": {

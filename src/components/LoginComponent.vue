@@ -41,12 +41,7 @@ import { EyeOff, EyeSharp } from '@vicons/ionicons5';
 export default {
   name: "LoginComponent",
   computed: {
-    EyeOff() {
-      return EyeOff
-    },
-    EyeSharp() {
-      return EyeSharp
-    },
+
   },
   data() {
     return {
