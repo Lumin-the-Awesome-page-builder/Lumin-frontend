@@ -10,7 +10,7 @@ import {App} from "@/editor/App.ts";
 import Packager from '@/editor/core/Packager.ts';
 
 export default defineComponent({
-  name: 'Controls',
+  name: 'HelloWorld',
   props: {
     app: App,
   },

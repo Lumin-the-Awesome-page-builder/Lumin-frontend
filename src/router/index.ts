@@ -7,16 +7,6 @@ const routes: Array<RouteRecordRaw> = [
     name: 'editor',
     component: Editor,
   },
-  {
-    path: '/auth',
-    name: 'auth',
-    component: () => import('@/views/AuthView.vue'),
-  },
-  {
-    path: '/dashboard',
-    name: 'dashboard',
-    component: () => import('@/views/DashboardView.vue'),
-  },
 ];
 
 const router = createRouter({
