@@ -12,7 +12,7 @@ describe('Control component', () => {
 
     expect(wrapper.findComponent(Controls).exists()).toBe(true);
     expect(wrapper.find('[class]').attributes()['class']).toBe(
-      'editor-controls',
+      'wrapperControls',
     );
   });
 });

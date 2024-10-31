@@ -1,7 +1,20 @@
 <template>
-  <div class="editor-controls">
-    <button @click="download">Download</button>
+  <div class="wrapperControls">
+    <n-collapse>
+      <n-collapse-item title="right" name="1">
+        <div>good</div>
+      </n-collapse-item>
+      <n-collapse-item title="right" name="2">
+        <div>nice</div>
+      </n-collapse-item>
+      <n-collapse-item title="right" name="3">
+        <div>very good</div>
+      </n-collapse-item>
+    </n-collapse>
   </div>
+<!--  <div class="editor-controls">-->
+<!--    <button @click="download">Download</button>-->
+<!--  </div>-->
 </template>
 
 <script lang="ts">
@@ -36,5 +49,12 @@ export default defineComponent({
 <style scoped>
   .editor-controls {
     width: 15%;
+  }
+
+  .wrapperControls {
+    width: 30vw;
+    height: 90vh;
+    background-color: #0a53be;
+
   }
 </style>
