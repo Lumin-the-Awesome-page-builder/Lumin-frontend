@@ -29,6 +29,9 @@ jobs:
       - name: Run Prettier
         run: npm run format
 
+      - name: Build project
+        run: npm run build-only
+
       - name: Run unit tests
         run: npm run test
 
