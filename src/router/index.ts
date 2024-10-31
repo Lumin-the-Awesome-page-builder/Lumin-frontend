@@ -17,7 +17,6 @@ const routes: Array<RouteRecordRaw> = [
     name: 'dashboard',
     component: () => import('@/views/DashboardView.vue'),
   },
-
 ];
 
 const router = createRouter({

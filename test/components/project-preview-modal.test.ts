@@ -2,8 +2,6 @@ import { mount } from '@vue/test-utils';
 import { test, vi, expect, describe } from 'vitest';
 import ProjectPreviewModal from '@/components/ProjectPreviewModal.vue';
 
-
-
 vi.mock('@/store/project-preview-modal.store.ts', () => {
   return {
     default: () => ({
@@ -23,7 +21,6 @@ describe('Test link component', () => {
     const wrapper = mount(ProjectPreviewModal);
     expect(wrapper.find('.backgroundContainer').exists()).toBe(false);
   });
-
 
   test('formats date correctly in prettierDate computed property', () => {
     const wrapper = mount(ProjectPreviewModal);
@@ -49,4 +46,4 @@ describe('Test link component', () => {
 
     expect(wrapper.find('.backgroundContainer').exists()).toBe(false);
   });
-})
+});
