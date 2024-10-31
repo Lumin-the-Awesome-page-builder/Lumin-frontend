@@ -11,6 +11,7 @@ declare module 'vue' {
     CardGrid: typeof import('./src/components/CardGrid.vue')['default']
     ConfirmationFormComponent: typeof import('./src/components/ConfirmationFormComponent.vue')['default']
     Controls: typeof import('./src/components/editor/Controls.vue')['default']
+    DashboardComponent: typeof import('./src/components/DashboardComponent.vue')['default']
     DeleteFormComponent: typeof import('./src/components/DeleteFormComponent.vue')['default']
     Editor: typeof import('./src/components/editor/Editor.vue')['default']
     HeaderComponent: typeof import('./src/components/HeaderComponent.vue')['default']

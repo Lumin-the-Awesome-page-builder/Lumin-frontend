@@ -8,6 +8,7 @@
           v-for="data in data"
           :is="cardComponents[type]" 
           :key="data.id"
+          :id="data.id"
           :title="data.name"
           :date="new Date(data.date)"
           :stars="data.stars"

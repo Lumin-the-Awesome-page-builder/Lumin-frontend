@@ -7,7 +7,7 @@
       <h2 class="container_title title">Авторизация</h2>
       <div class="block">
         <n-p class="block_title title">Адрес эл. почты</n-p>
-        <n-input v-model="emailData" placeholder="mail@example.ru" type="text" class="input">
+        <n-input v-model:value="emailData" placeholder="mail@example.ru" type="text" class="input">
           <template #prefix>
             <img src="@/assets/svg/email.svg" class="imgLogin"/>
           </template>
@@ -15,19 +15,18 @@
       </div>
       <div class="block">
         <n-p class="block_title title">Пароль</n-p>
-        <n-input v-model="passwordData" placeholder="password" :type="typeInput" class="input" >
+        <n-input v-model:value="passwordData" placeholder="password" :type="typeInput" class="input" >
           <template #prefix>
             <n-icon :component="icon" color="#000000FF" @click="showPassword" class="passInp"/>
           </template>
         </n-input>
       </div>
-      <n-button color="#3535FFA6" class="btn">Войти</n-button>
-      <router-link to="/dashboard" class="btn">Dashboard</router-link>
+      <n-button @click="login" color="#3535FFA6" class="btn">Войти</n-button>
     </div>
   <div class="line"></div>
   <div class="socialsNetworkBlock">
-    <img src="@/assets/svg/VK.svg" class="socialsNetworkImg"/>
-    <img src="@/assets/svg/Yandex.svg" class="socialsNetworkImg"/>
+    <img alt="VK auth" src="@/assets/svg/VK.svg" class="socialsNetworkImg"/>
+    <img alt="Yandex auth" src="@/assets/svg/Yandex.svg" class="socialsNetworkImg"/>
   </div>
   </div>
 </template>
@@ -36,7 +35,9 @@
 
 
 import { EyeOff, EyeSharp } from '@vicons/ionicons5';
-
+import useAuthStore from '@/store/auth.store.ts';
+import AuthInputDto from '@/api/modules/auth/dto/login/auth-input.dto.ts';
+import router from '@/router/index.ts'
 
 export default {
   name: "LoginComponent",
@@ -45,12 +46,8 @@ export default {
   },
   data() {
     return {
-      emailData: {
-        default: "",
-      },
-      passwordData:{
-        default: "",
-      },
+      emailData: "",
+      passwordData: "",
       showPass: false,
       typeInput: "password",
       icon: EyeSharp
@@ -66,6 +63,17 @@ export default {
         this.typeInput = "text"
         this.icon = EyeOff
         this.showPass = true
+      }
+    },
+    async login() {
+      const authStore = useAuthStore()
+      
+      const login = await authStore.login(new AuthInputDto(this.emailData, this.passwordData));
+      
+      if (login) {
+        await router.push({ path: "/dashboard" });
+      } else {
+        alert("Bad credentials")
       }
     }
   }

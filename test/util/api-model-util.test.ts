@@ -219,7 +219,7 @@ describe('Base ApiModelUtil class tests', () => {
       expect(TokenUtil.logout).toBeCalled();
       expect(getError).toBeCalled();
       expect(apiModelUtil.refresh).toBeCalled();
-      expect(router.push).toBeCalledWith({ name: 'login' });
+      expect(router.push).toBeCalledWith({ name: 'auth' });
     });
     it('Refresh success', async () => {
       //@ts-ignore
