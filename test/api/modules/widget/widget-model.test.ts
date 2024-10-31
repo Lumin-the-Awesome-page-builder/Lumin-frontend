@@ -3,6 +3,7 @@ import WidgetModel from '@/api/modules/widget/models/widget.model.ts';
 import CreateWidgetDto from '@/api/modules/widget/dto/create-widget.dto.ts';
 import ApiResponseDto from '@/api/dto/api-response.dto.ts';
 import UpdateWidgetDto from '@/api/modules/widget/dto/update-widget.dto.ts';
+import WidgetDto from '@/api/modules/widget/dto/widget.dto.ts';
 
 describe('Base WidgetModel class tests', () => {
   let apiResponseDto: ApiResponseDto<string>;
@@ -15,6 +16,65 @@ describe('Base WidgetModel class tests', () => {
           resolve(apiResponseDto);
         }),
     );
+  });
+
+  describe('Test related dto', () => {
+    it('Test createWidgetDto creation', () => {
+      const createWidgetDto: CreateWidgetDto = new CreateWidgetDto(
+        'name',
+        'data',
+        ['tag'],
+        1,
+      );
+
+      expect(createWidgetDto).toEqual({
+        name: 'name',
+        data: 'data',
+        tags: ['tag'],
+        category: 1,
+      });
+    });
+
+    it('Test UpdateWidgetDto creation', () => {
+      const updateWidgetDto: UpdateWidgetDto = new UpdateWidgetDto(
+        'name',
+        'data',
+        ['tag'],
+        1,
+      );
+
+      expect(updateWidgetDto).toEqual({
+        name: 'name',
+        data: 'data',
+        tags: ['tag'],
+        category: 1,
+      });
+    });
+
+    it('Test WidgetDto creation', () => {
+      const widgetDto: WidgetDto = new WidgetDto(
+        1,
+        'name',
+        true,
+        1,
+        1,
+        'data',
+        ['tag'],
+        1,
+      );
+
+      expect(widgetDto).toEqual({
+        id: 1,
+        name: 'name',
+        isPublic: true,
+        date: 1,
+        stars: 1,
+        data: 'data',
+        tags: ['tag'],
+        category_id: 1,
+        imageSrc: '../src/assets/imageCard/screenshot.png',
+      });
+    });
   });
 
   it('Test widgetModel creation', () => {

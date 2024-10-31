@@ -3,6 +3,7 @@ import ProjectModel from '@/api/modules/project/models/project.model.ts';
 import CreateProjectDto from '@/api/modules/project/dto/create-project.dto.ts';
 import ApiResponseDto from '@/api/dto/api-response.dto.ts';
 import UpdateProjectDto from '@/api/modules/project/dto/update-project.dto.ts';
+import ProjectDto from '@/api/modules/project/dto/project.dto.ts';
 
 describe('Base ProjectModel class tests', () => {
   let apiResponseDto: ApiResponseDto<string>;
@@ -15,6 +16,65 @@ describe('Base ProjectModel class tests', () => {
           resolve(apiResponseDto);
         }),
     );
+  });
+
+  describe('Test related dto', () => {
+    it('Test createProjectDto creation', () => {
+      const createProjectDto: CreateProjectDto = new CreateProjectDto(
+        'name',
+        'data',
+        ['tag'],
+        1,
+      );
+
+      expect(createProjectDto).toEqual({
+        name: 'name',
+        data: 'data',
+        tags: ['tag'],
+        category: 1,
+      });
+    });
+
+    it('Test UpdateProjectDto creation', () => {
+      const updateProjectDto: UpdateProjectDto = new UpdateProjectDto(
+        'name',
+        'data',
+        ['tag'],
+        1,
+      );
+
+      expect(updateProjectDto).toEqual({
+        name: 'name',
+        data: 'data',
+        tags: ['tag'],
+        category: 1,
+      });
+    });
+
+    it('Test ProjectDto creation', () => {
+      const projectDto: ProjectDto = new ProjectDto(
+        1,
+        'name',
+        true,
+        1,
+        1,
+        'data',
+        ['tag'],
+        1,
+      );
+
+      expect(projectDto).toEqual({
+        id: 1,
+        name: 'name',
+        isPublic: true,
+        date: 1,
+        stars: 1,
+        data: 'data',
+        tags: ['tag'],
+        category_id: 1,
+        imageSrc: '../src/assets/imageCard/screenshot.png',
+      });
+    });
   });
 
   it('Test projectModel creation', () => {
