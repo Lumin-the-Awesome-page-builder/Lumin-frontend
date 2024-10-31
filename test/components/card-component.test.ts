@@ -67,7 +67,9 @@ describe('CardComponent', () => {
     const wrapper = mount(CardComponent);
     const downloadProjectSpy = vi.spyOn(wrapper.vm, 'downloadProject');
 
-    const downloadIcon = wrapper.find('.card-actions .action-button[alt="download"]');
+    const downloadIcon = wrapper.find(
+      '.card-actions .action-button[alt="download"]',
+    );
     await downloadIcon.trigger('click');
 
     expect(downloadProjectSpy).toHaveBeenCalled();
