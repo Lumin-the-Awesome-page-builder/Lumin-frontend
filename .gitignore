@@ -3,5 +3,5 @@
 node_modules
 dist
 coverage-report.txt
-
+package-lock.json
 *.tsbuildinfo
