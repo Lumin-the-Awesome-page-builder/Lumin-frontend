@@ -1,44 +1,3 @@
-<script lang="ts">
-export default {
-  name: "CardComponent",
-  props: {
-    title: {
-      type: String,
-      default: 'название проекта',
-    },
-    date: {
-      type: Date,
-      default: () => new Date(),
-    },
-    stars: {
-      type: Number,
-      default: 0,
-    },
-    imageSrc: {
-      type: String,
-      default: '',
-    },
-  },
-  computed: {
-    formattedDate() {
-      const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-      return this.date.toLocaleDateString('ru-RU', options).replace(/\//g, '.');
-    },
-  },
-  methods: {
-    editTitle() {
-      console.log(this.title);
-    },
-    shareProject() {
-      console.log(this.title);
-    },
-    downloadProject() {
-      console.log(this.title);
-    },
-  },
-};
-</script>
-
 <template>
   <div class="card">
     <div class="card-content">
@@ -48,7 +7,7 @@ export default {
           <img class="overlay-eye" src="@/assets/imageCard/eye.svg" alt="Просмотреть">
         </div>
         <div class="checkbox-container">
-          <n-checkbox />
+          <n-checkbox @update:checked="() => {checked(id)}" />
         </div>
       </div>
       <div class="card-info">
@@ -74,6 +33,62 @@ export default {
     </div>
   </div>
 </template>
+
+<script lang="ts">
+
+import useDashboardStore from '@/store/dashboard.store.ts';
+
+export default {
+  name: "CardComponent",
+  props: {
+    id: {
+      type: Number,
+      default: 0,
+    },
+    title: {
+      type: String,
+      default: 'название проекта',
+    },
+    date: {
+      type: Date,
+      default: () => new Date(),
+    },
+    stars: {
+      type: Number,
+      default: 0,
+    },
+    imageSrc: {
+      type: String,
+      default: '',
+    },
+  },
+  setup() {
+    return {
+      dashboardStore: useDashboardStore()
+    }
+  },
+  computed: {
+    formattedDate() {
+      const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+      return this.date.toLocaleDateString('ru-RU', options).replace(/\//g, '.');
+    },
+  },
+  methods: {
+    editTitle() {
+      console.log(this.title);
+    },
+    shareProject() {
+      console.log(this.title);
+    },
+    downloadProject() {
+      console.log(this.title);
+    },
+    checked(id) {
+      this.dashboardStore.toggleSelected(id);
+    }
+  },
+};
+</script>
 
 <style scoped>
 .card {

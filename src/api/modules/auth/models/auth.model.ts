@@ -6,7 +6,7 @@ import AuthorizedUserDto from '@/api/modules/auth/dto/authorized-user.dto';
 import ApiModelUtil from '@/utils/api-model.util';
 import TokenUtil from '@/utils/token.util';
 
-export default class AuthModel extends ApiModelUtil {
+export class AuthModel extends ApiModelUtil {
   constructor() {
     super('/auth');
   }
@@ -25,9 +25,13 @@ export default class AuthModel extends ApiModelUtil {
     return tokenPair;
   }
 
-  private async requestAuthorizedData(): Promise<
+  public async requestAuthorizedData(): Promise<
     ApiResponseDto<AuthorizedUserDto>
   > {
-    return this.authorizedRequest(new ApiRequestDto('/authorized', 'GET'));
+    return await this.authorizedRequest(
+      new ApiRequestDto('/authorized', 'GET'),
+    );
   }
 }
+
+export default new AuthModel();

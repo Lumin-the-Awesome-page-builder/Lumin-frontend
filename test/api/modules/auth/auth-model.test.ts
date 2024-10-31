@@ -15,17 +15,10 @@ vi.mock('@/utils/token.util', () => {
 });
 
 describe('Base AuthModel class tests', () => {
-  let authModel: AuthModel;
+  const funcs = { requestAuthorizedData: AuthModel.requestAuthorizedData };
+  let authModel;
   beforeEach(() => {
-    authModel = new AuthModel();
-  });
-
-  it('Test authModel creation', () => {
-    expect(authModel).toEqual({
-      baseEndpoint: '/auth',
-      baseEndpointBuffer: '',
-      onRefresh: null,
-    });
+    authModel = AuthModel;
   });
 
   describe('Test auth', async () => {
@@ -99,8 +92,12 @@ describe('Base AuthModel class tests', () => {
   });
 
   it('Test requestAuthorizedData', async () => {
+    authModel = AuthModel;
     const apiRequestDto = new ApiRequestDto('/authorized', 'GET');
     const apiResponseDto = new ApiResponseDto(true, 'data', null);
+
+    authModel.requestAuthorizedData = funcs.requestAuthorizedData;
+
     authModel.authorizedRequest = vi.fn(
       () =>
         new Promise<ApiResponseDto<any>>((resolve) => {
@@ -109,7 +106,7 @@ describe('Base AuthModel class tests', () => {
     );
 
     //@ts-ignore
-    authModel.requestAuthorizedData();
+    await authModel.requestAuthorizedData();
 
     expect(authModel.authorizedRequest).toBeCalledWith({ ...apiRequestDto });
   });

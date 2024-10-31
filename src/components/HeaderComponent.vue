@@ -7,23 +7,32 @@
     <n-divider style="height: 100%;" vertical />
 
     <div class="nav-group left">
-      <div class="nav-element">
+      <div class="nav-element" @click="loadProjects">
         <n-icon>
-            <Projects />
-          </n-icon>
-          Библиотека проектов
-        </div>
-      <div class="nav-element">
+          <Projects />
+        </n-icon>
+        Библиотека проектов
+      </div>
+      <div class="nav-element" @click="loadWidgets">
         <n-icon>
-            <Widgets />
-          </n-icon>
-        Библиотека виджетов</div>
+          <Widgets />
+        </n-icon>
+        Библиотека виджетов
+      </div>
     </div>
 
     <n-divider style="height: 100%;" vertical />
-
+    
     <div class="buttons-group">
-      <n-button color="#fe7b9e">
+      <n-button @click="removeSelected" color="#7b7bfe" ghost>
+        <template #icon>
+          <n-icon>
+            <Create />
+          </n-icon>
+        </template>
+        Создать
+      </n-button>
+      <n-button :disabled="disabledControls" @click="removeSelected" color="#fe7b9e">
         <template #icon>
           <n-icon>
             <Delete />
@@ -31,7 +40,7 @@
         </template>
         Удалить
       </n-button>
-      <n-button color="#7b7bfe">
+      <n-button :disabled="disabledControls" @click="downloadSelected" color="#7b7bfe">
         <template #icon>
           <n-icon>
             <Download />
@@ -44,26 +53,28 @@
     <n-divider style="height: 100%;" vertical />
 
     <div class="nav-group right">
-      <div class="nav-element">
+      <div class="nav-element disabled">
         <n-icon>
-            <Store />
-          </n-icon>
+          <Store />
+        </n-icon>
         Маркетплейс</div>
-      <div class="nav-element">
+      <div class="nav-element disabled">
         <n-icon>
-            <Backend />
-          </n-icon>
+          <Backend />
+        </n-icon>
         Backend</div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { CodeDownload as Download, Trash as Delete, AlbumsSharp as Projects, AppsSharp as Widgets, Basket as Store, Terminal as Backend } from '@vicons/ionicons5';
+import { AddCircle as Create, CodeDownload as Download, Trash as Delete, AlbumsSharp as Projects, AppsSharp as Widgets, Basket as Store, Terminal as Backend } from '@vicons/ionicons5';
 import { defineComponent } from 'vue';
+import useDashboardStore from '@/store/dashboard.store.ts'
 
 export default defineComponent({
   components: {
+    Create,
     Download,
     Delete,
     Projects,
@@ -71,6 +82,34 @@ export default defineComponent({
     Store,
     Backend
   },
+  setup() {
+    return {
+      dashboardStore: useDashboardStore(),
+    }
+  },
+  mounted() {
+    console.log(1234)
+    this.dashboardStore.loadProjects()
+  },
+  methods: {
+    loadProjects() {
+      this.dashboardStore.loadProjects()
+    },
+    loadWidgets() {
+      this.dashboardStore.loadWidgets()
+    },
+    removeSelected() {
+      this.dashboardStore.removeSelected()
+    },
+    downloadSelected() {
+      this.dashboardStore.downloadSelected()
+    }
+  },
+  computed: {
+    disabledControls() {
+      return !Object.keys(this.dashboardStore.selected).length
+    }
+  }
 });
 </script>
 
@@ -82,6 +121,7 @@ export default defineComponent({
   background: white;
   height: 70px;
   border-bottom: 1px solid #e2e2e8;
+  color: #278158;
 }
 .logo-wrapper {
 }
@@ -97,10 +137,17 @@ export default defineComponent({
     width: 28vw;
 }
 .nav-element {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  cursor: pointer;
 }
+
+.nav-element.disabled {
+  color: #9d9cc5;
+  cursor: default;
+}
+
 .buttons-group {
   display: flex;
   align-items: center;

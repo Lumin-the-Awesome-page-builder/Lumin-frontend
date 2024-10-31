@@ -23,14 +23,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build project
-        run: npm run build-only
-
       - name: Run ESLint
         run: npm run lint:check
 
       - name: Run Prettier
         run: npm run format
+
+      - name: Build project
+        run: npm run build-only
 
       - name: Run unit tests
         run: npm run test
