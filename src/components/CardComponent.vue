@@ -86,7 +86,7 @@ export default {
       console.log(this.title);
     },
     downloadProject() {
-      console.log(this.title);
+      this.dashboardStore.downloadProject(this.id);
     },
     checked(id) {
       this.dashboardStore.toggleSelected(id);
