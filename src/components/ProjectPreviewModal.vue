@@ -12,7 +12,7 @@
           <div class="leftPart">
             <h2 class="titleProj">{{data.name}}</h2>
             <div class="info">
-              <p class="cardDate text">{{prettierDate}}</p>
+              <p class="cardDate text">{{formattedDate}}</p>
               <span class="separatorText">|</span>
               <span class="starsCount text">
                 <img src="../assets/imageCard/star.svg" alt="star" class="starImg"/>
@@ -79,14 +79,11 @@ export default {
     checkStatus(){
       return store.getStatus
     },
-    prettierDate(){
-      const date = new Date(this.data.date)
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      return `${day}/${month}/${year}`
-
-    }
+    formattedDate() {
+      const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+      console.log(this.data)
+      return (new Date(this.data.created_at)).toLocaleDateString('ru-RU', options).replace(/\//g, '.');
+    },
   },
   methods: {
     closeModal() {
@@ -182,7 +179,6 @@ export default {
 }
 
 .leftPart {
-
   width: 35%;
   min-width: 300px;
   display: flex;
@@ -197,7 +193,6 @@ export default {
   align-items: center;
   justify-content: center;
   width: 300px;
-
 }
 
 .text {

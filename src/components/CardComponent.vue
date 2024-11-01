@@ -3,7 +3,7 @@
     <div class="card-content">
       <div class="image-container">
         <img alt="project" class="image-card-project" :src="imageSrc" />
-        <div class="overlay">
+        <div @click="openModal" class="overlay">
           <img class="overlay-eye" src="@/assets/imageCard/eye.svg" alt="Просмотреть">
         </div>
         <div class="checkbox-container">
@@ -35,8 +35,8 @@
 </template>
 
 <script lang="ts">
-
 import useDashboardStore from '@/store/dashboard.store.ts';
+import usePreviewModalStore from '@/store/project-preview-modal.store.ts';
 
 export default {
   name: "CardComponent",
@@ -61,9 +61,14 @@ export default {
       type: String,
       default: '',
     },
+    itemType: {
+      type: String,
+      default: 'project'
+    }
   },
   setup() {
     return {
+      previewModalStore: usePreviewModalStore(),
       dashboardStore: useDashboardStore()
     }
   },
@@ -85,6 +90,9 @@ export default {
     },
     checked(id) {
       this.dashboardStore.toggleSelected(id);
+    },
+    openModal() {
+      this.previewModalStore.openModal(this.id, this.itemType)
     }
   },
 };
