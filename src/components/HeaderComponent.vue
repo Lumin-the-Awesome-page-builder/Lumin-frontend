@@ -24,7 +24,7 @@
     <n-divider style="height: 100%;" vertical />
     
     <div class="buttons-group">
-      <n-button @click="removeSelected" color="#7b7bfe" ghost>
+      <n-button @click="createProject" color="#7b7bfe" ghost>
         <template #icon>
           <n-icon>
             <Create />
@@ -69,10 +69,10 @@
 
 <script lang="ts">
 import { AddCircle as Create, CodeDownload as Download, Trash as Delete, AlbumsSharp as Projects, AppsSharp as Widgets, Basket as Store, Terminal as Backend } from '@vicons/ionicons5';
-import { defineComponent } from 'vue';
 import useDashboardStore from '@/store/dashboard.store.ts'
+import useEditorStore from '@/store/editor.store.ts'
 
-export default defineComponent({
+export default {
   components: {
     Create,
     Download,
@@ -85,6 +85,7 @@ export default defineComponent({
   setup() {
     return {
       dashboardStore: useDashboardStore(),
+      editorStore: useEditorStore(),
     }
   },
   mounted() {
@@ -98,6 +99,10 @@ export default defineComponent({
     loadWidgets() {
       this.dashboardStore.loadWidgets()
     },
+    async createProject() {
+      await this.editorStore.openNew()
+      this.$router.push({ path: '/editor' })
+    },
     removeSelected() {
       this.dashboardStore.removeSelected()
     },
@@ -110,7 +115,7 @@ export default defineComponent({
       return !Object.keys(this.dashboardStore.selected).length
     }
   }
-});
+};
 </script>
 
 <style>

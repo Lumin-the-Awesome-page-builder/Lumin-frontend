@@ -16,4 +16,23 @@ describe('RSidebarComponent test', () => {
 
     expect(wrapper.vm.editorStore.save).toBeCalled();
   });
+
+  it('Test exit method', async () => {
+    const routerMock = vi.fn();
+    const wrapper = mount(RSidebarComponent, {
+      global: {
+        mocks: {
+          $router: {
+            push: routerMock,
+          },
+        },
+      },
+    });
+    wrapper.vm.save = vi.fn();
+
+    await wrapper.vm.exit();
+
+    expect(wrapper.vm.save).toBeCalled();
+    expect(routerMock).toBeCalledWith({ path: '/dashboard' });
+  });
 });
