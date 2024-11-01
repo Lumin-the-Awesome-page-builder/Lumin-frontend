@@ -28,48 +28,52 @@ import LinkUnderlineOpacity from '@/editor/properties/link/LinkUnderlineOpacity.
 import ImgFluidProp from '@/editor/properties/ImgFluidProp.ts';
 import BorderRadiusProp from '@/editor/properties/BorderRadiusProp.ts';
 
-const editor = new App();
+export function getEditorInstance() {
+  const editor = new App();
 
-// Components registration
-editor.use('container', Container);
-editor.use('pure', Pure);
-editor.use('text', Text);
-editor.use('header', Header);
-editor.use('image', Image);
-editor.use('link', Link);
+  // Components registration
+  editor.use('container', Container);
+  editor.use('pure', Pure);
+  editor.use('text', Text);
+  editor.use('header', Header);
+  editor.use('image', Image);
+  editor.use('link', Link);
 
-// Props registration
+  // Props registration
 
-// Common
-editor.useProp(BorderRadiusProp);
+  // Common
+  editor.useProp(BorderRadiusProp);
 
-// Container
-editor.useProp(FlexDirectionProp);
-editor.useProp(FlexWrapProp);
-editor.useProp(FlexProp);
-editor.useProp(GutterProp);
-editor.useProp(AlignItemsProp);
-editor.useProp(AlignSelfProp);
-editor.useProp(ColWidthProp);
-editor.useProp(JustifyContentProp);
+  // Container
+  editor.useProp(FlexDirectionProp);
+  editor.useProp(FlexWrapProp);
+  editor.useProp(FlexProp);
+  editor.useProp(GutterProp);
+  editor.useProp(AlignItemsProp);
+  editor.useProp(AlignSelfProp);
+  editor.useProp(ColWidthProp);
+  editor.useProp(JustifyContentProp);
 
-// Text, Link, Header
-editor.useProp(FontWeightProp);
-editor.useProp(InlineTextProps);
-editor.useProp(LeadParagraphProp);
-editor.useProp(LineHeightProp);
-editor.useProp(MonoSpaceProp);
-editor.useProp(TextAlignProp);
-editor.useProp(TextTransformProp);
+  // Text, Link, Header
+  editor.useProp(FontWeightProp);
+  editor.useProp(InlineTextProps);
+  editor.useProp(LeadParagraphProp);
+  editor.useProp(LineHeightProp);
+  editor.useProp(MonoSpaceProp);
+  editor.useProp(TextAlignProp);
+  editor.useProp(TextTransformProp);
 
-// Link
-editor.useProp(LinkOpacityProp);
-editor.useProp(LinkUnderlineProp);
-editor.useProp(LinkUnderlineOffsetProp);
-editor.useProp(LinkUnderlineOpacity);
+  // Link
+  editor.useProp(LinkOpacityProp);
+  editor.useProp(LinkUnderlineProp);
+  editor.useProp(LinkUnderlineOffsetProp);
+  editor.useProp(LinkUnderlineOpacity);
 
-// Image
-editor.useProp(ImgFluidProp);
+  // Image
+  editor.useProp(ImgFluidProp);
+
+  return editor;
+}
 
 const Editor = {
   install(app: AppVue) {
@@ -78,6 +82,8 @@ const Editor = {
       identifiersSalt: string,
       json: string = '[]',
     ): App => {
+      const editor = getEditorInstance();
+
       editor.init(root, identifiersSalt, JSON.parse(json));
 
       editor.mount();
