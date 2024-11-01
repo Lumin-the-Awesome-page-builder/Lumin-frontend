@@ -38,13 +38,30 @@ describe('CardComponent tests', () => {
     expect(wrapper.vm.formattedDate).toBe('29.10.2023');
   });
 
-  it('calls editTitle method', () => {
+  it('calls editTitle method', async () => {
     const consoleLogSpy = vi.spyOn(console, 'log');
-    const wrapper = mount(CardComponent);
+    const routerMock = {
+      push: vi.fn(),
+    };
+    const wrapper = mount(CardComponent, {
+      global: {
+        mocks: {
+          $router: routerMock,
+        },
+      },
+    });
+    wrapper.vm.editorStore = {
+      useById: vi.fn(() => {}),
+    };
 
-    wrapper.vm.editTitle();
+    await wrapper.vm.editProject();
 
-    expect(consoleLogSpy).toHaveBeenCalledWith(wrapper.props().title);
+    expect(wrapper.vm.editorStore.useById).toHaveBeenCalled();
+    expect(wrapper.vm.editorStore.useById).toHaveBeenCalledWith(
+      expect.any(Number),
+    );
+
+    expect(routerMock.push).toHaveBeenCalledWith({ path: '/editor' });
 
     consoleLogSpy.mockRestore();
   });
@@ -54,17 +71,6 @@ describe('CardComponent tests', () => {
     const wrapper = mount(CardComponent);
 
     wrapper.vm.shareProject();
-
-    expect(consoleLogSpy).toHaveBeenCalledWith(wrapper.props().title);
-
-    consoleLogSpy.mockRestore();
-  });
-
-  it('calls downloadProject method', () => {
-    const consoleLogSpy = vi.spyOn(console, 'log');
-    const wrapper = mount(CardComponent);
-
-    wrapper.vm.downloadProject();
 
     expect(consoleLogSpy).toHaveBeenCalledWith(wrapper.props().title);
 

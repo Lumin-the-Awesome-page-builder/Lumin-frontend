@@ -30,6 +30,7 @@ declare module 'vue' {
     ProjectPreviewModal: typeof import('./src/components/ProjectPreviewModal.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    RSidebarComponent: typeof import('./src/components/editor/RSidebarComponent.vue')['default']
     Workspace: typeof import('./src/components/editor/Workspace.vue')['default']
   }
 }
