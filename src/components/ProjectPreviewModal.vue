@@ -29,7 +29,7 @@
           </n-button>
         </div>
         <div class="downPart">
-          <n-button color="#3535FFA6" class="btn">Редактировать
+          <n-button color="#3535FFA6" class="btn" @click="goToEditor">Редактировать
             <template #icon>
               <n-icon>
                 <Pencil/>
@@ -37,14 +37,14 @@
             </template>
           </n-button>
           <div class="btnGroup">
-            <n-button color="#3535FFA6" class="btn">Поделиться
+            <n-button color="#3535FFA6" class="btn" @click="share">Поделиться
               <template #icon>
                 <n-icon>
                   <Share />
                 </n-icon>
               </template>
             </n-button>
-            <n-button color="#3535FFA6" class="btn">Скачать
+            <n-button color="#3535FFA6" class="btn" @click="download">Скачать
               <template #icon>
                 <n-icon>
                   <Download />
@@ -61,8 +61,9 @@
 <script lang="ts">
 import { Download as Download, Pencil, Share, Trash as Delete } from '@vicons/ionicons5';
 import usePreviewModalStore from '@/store/project-preview-modal.store.ts';
-
-const store = usePreviewModalStore()
+import useEditorStore from '@/store/editor.store.ts';
+import Packager from '@/editor/core/Packager.ts';
+import { getEditorInstance } from '@/editor/plugin.ts'
 
 export default {
   name: "ProjectPreviewModal",
@@ -72,12 +73,18 @@ export default {
     Share,
     Pencil
   },
+  setup() {
+    return {
+      previewModalStore: usePreviewModalStore(),
+      editorStore: useEditorStore()
+    }
+  },
   computed: {
     data(){
-      return store.getData
+      return this.previewModalStore.getData
     },
     checkStatus(){
-      return store.getStatus
+      return this.previewModalStore.getStatus
     },
     formattedDate() {
       const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
@@ -87,7 +94,30 @@ export default {
   },
   methods: {
     closeModal() {
-      store.closeModal()
+      this.previewModalStore.closeModal()
+    },
+    download() {
+      const app = getEditorInstance()
+      app.initState = JSON.parse(this.data.data);
+      const packager = new Packager(app)
+
+      const blob = packager.blob()
+
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'index.html';
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
+    goToEditor() {
+      console.log(this.data)
+      this.editorStore.use(this.data)
+      this.$router.push({ path: '/editor' })
+    },
+    share() {
+    
     }
   }
 }

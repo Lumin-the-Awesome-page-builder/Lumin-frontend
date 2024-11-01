@@ -5,10 +5,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
 import { NConfigProvider, GlobalThemeOverrides } from 'naive-ui';
 
-export default defineComponent({
+export default {
   components: { NConfigProvider },
   data() {
     return {
@@ -29,7 +28,7 @@ export default defineComponent({
       } as GlobalThemeOverrides,
     };
   },
-});
+};
 </script>
 
 <style>

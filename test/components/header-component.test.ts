@@ -1,13 +1,32 @@
 import { mount } from '@vue/test-utils';
-import { it, expect, describe, beforeEach } from 'vitest';
+import { vi, it, expect, describe, beforeEach } from 'vitest';
 import HeaderComponent from '@/components/HeaderComponent.vue';
 import { createPinia, setActivePinia } from 'pinia';
 
 describe('Test header component', () => {
   let wrapper;
+  let routerMock;
+  let vm;
   beforeEach(() => {
     setActivePinia(createPinia());
-    wrapper = mount(HeaderComponent);
+    routerMock = { push: vi.fn() };
+    wrapper = mount(HeaderComponent, {
+      global: {
+        mocks: {
+          $router: routerMock,
+        },
+      },
+    });
+    wrapper.vm.dashboardStore = {
+      loadProjects: vi.fn(),
+      loadWidgets: vi.fn(),
+      removeSelected: vi.fn(),
+      downloadSelected: vi.fn(),
+    };
+    wrapper.vm.editorStore = {
+      openNew: vi.fn(),
+    };
+    vm = wrapper.vm;
   });
 
   it('contains correct navigation texts', async () => {
@@ -27,5 +46,36 @@ describe('Test header component', () => {
     expect(createButton.text()).toContain('Создать');
     expect(deleteButton.text()).toContain('Удалить');
     expect(downloadButton.text()).toContain('Скачать');
+  });
+
+  it('Test load projects', () => {
+    vm.loadProjects();
+
+    expect(vm.dashboardStore.loadProjects).toBeCalled();
+  });
+
+  it('Test load widgets', () => {
+    vm.loadWidgets();
+
+    expect(vm.dashboardStore.loadWidgets).toBeCalled();
+  });
+
+  it('Test create project', async () => {
+    await vm.createProject();
+
+    expect(vm.editorStore.openNew).toBeCalled();
+    expect(routerMock.push).toBeCalledWith({ path: '/editor' });
+  });
+
+  it('Test remove selected', () => {
+    vm.removeSelected();
+
+    expect(vm.dashboardStore.removeSelected).toBeCalled();
+  });
+
+  it('Test download selected', () => {
+    vm.downloadSelected();
+
+    expect(vm.dashboardStore.downloadSelected).toBeCalled();
   });
 });

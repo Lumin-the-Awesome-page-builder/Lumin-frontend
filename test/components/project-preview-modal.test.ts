@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
-import { test, vi, expect, describe } from 'vitest';
+import { test, vi, expect, describe, beforeEach } from 'vitest';
 import ProjectPreviewModal from '@/components/ProjectPreviewModal.vue';
+import { createPinia, setActivePinia } from 'pinia';
 
 vi.mock('@/store/project-preview-modal.store.ts', () => {
   return {
@@ -17,6 +18,9 @@ vi.mock('@/store/project-preview-modal.store.ts', () => {
 });
 
 describe('Test link component', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
+  });
   test('checks if modal is visible', () => {
     const wrapper = mount(ProjectPreviewModal);
     expect(wrapper.find('.backgroundContainer').exists()).toBe(true);

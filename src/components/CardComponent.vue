@@ -13,7 +13,7 @@
       <div class="card-info">
         <h3 class="card-title">
           {{ title }}
-          <img class="edit-title" @click="editTitle" src="@/assets/imageCard/pencil.svg" alt="edit" />
+          <img class="edit-title" @click="editProject" src="@/assets/imageCard/pencil.svg" alt="edit" />
         </h3>
         <div class="card-stats">
           <div class="info">
@@ -36,6 +36,7 @@
 
 <script lang="ts">
 import useDashboardStore from '@/store/dashboard.store.ts';
+import useEditorStore from '@/store/editor.store.ts';
 import usePreviewModalStore from '@/store/project-preview-modal.store.ts';
 
 export default {
@@ -69,7 +70,8 @@ export default {
   setup() {
     return {
       previewModalStore: usePreviewModalStore(),
-      dashboardStore: useDashboardStore()
+      dashboardStore: useDashboardStore(),
+      editorStore: useEditorStore(),
     }
   },
   computed: {
@@ -79,8 +81,9 @@ export default {
     },
   },
   methods: {
-    editTitle() {
-      console.log(this.title);
+    async editProject() {
+      await this.editorStore.useById(this.id)
+      this.$router.push({ path: '/editor' })
     },
     shareProject() {
       console.log(this.title);
