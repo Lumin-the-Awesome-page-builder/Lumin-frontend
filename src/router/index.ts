@@ -4,11 +4,6 @@ import TokenUtil from '@/utils/token.util.ts';
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',
-    name: 'editor',
-    component: Editor,
-  },
-  {
     path: '/auth',
     name: 'auth',
     component: () => import('@/views/AuthView.vue'),
@@ -17,6 +12,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/dashboard',
     name: 'dashboard',
     component: () => import('@/views/DashboardView.vue'),
+  },
+  {
+    path: '/editor',
+    name: 'editor',
+    component: Editor,
   },
 ];
 

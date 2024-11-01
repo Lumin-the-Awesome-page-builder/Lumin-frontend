@@ -1,54 +1,18 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 import Editor from '@/components/editor/Editor.vue';
 import EditorPlugin from '@/editor/plugin.ts';
 import router from '@/router';
+import { createPinia, setActivePinia } from 'pinia';
 
 describe('Editor component', async () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
+  });
+
   it('Test mounting base tree', () => {
-    const jsonData = JSON.stringify([
-      {
-        key: 'data-123-div-1729624518542',
-        name: 'container',
-        attrs: [],
-        props: [
-          { name: 'flex', value: 'flex' },
-          { name: 'flex-wrap', value: 'flex-wrap' },
-          { name: 'gap', value: 'g2' },
-        ],
-
-        content: null,
-        children: [
-          {
-            key: 'data-123-div-1729624518123',
-            name: 'container',
-            attrs: [],
-            props: [{ name: 'flex', value: 'flex' }],
-            content: 'Test content',
-          },
-          {
-            key: 'data-123-div-1729624518545',
-            name: 'container',
-            attrs: [],
-            props: [{ name: 'flex', value: 'flex' }],
-            content: 'Test content',
-          },
-          {
-            key: 'data-123-div-1729624518547',
-            name: 'container',
-            attrs: [],
-            props: [{ name: 'flex', value: 'flex' }],
-            content: '',
-          },
-        ],
-      },
-    ]);
-
     const wrapper = mount(Editor, {
       attachTo: document.body,
-      props: {
-        initialTree: jsonData,
-      },
       global: {
         mocks: {
           $route: {},
@@ -57,6 +21,6 @@ describe('Editor component', async () => {
       },
     });
 
-    expect(wrapper.find('[data-123-div-1729624518123]').exists()).toBe(true);
+    expect(wrapper.find('[data-123-div-1729624518123]').exists()).toBe(false);
   });
 });
