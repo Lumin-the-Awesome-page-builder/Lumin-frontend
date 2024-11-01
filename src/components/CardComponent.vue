@@ -88,7 +88,9 @@ export default {
     shareProject() {
       console.log(this.title);
     },
-    downloadProject() {},
+    downloadProject() {
+      this.dashboardStore.downloadProject(this.id);
+    },
     checked(id) {
       this.dashboardStore.toggleSelected(id);
     },
