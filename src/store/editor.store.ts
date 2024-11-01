@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia';
 import ProjectDto from '@/api/modules/project/dto/project.dto.ts';
 import { App } from '@/editor/App.ts';
+import CreateProjectDto from '@/api/modules/project/dto/create-project.dto.ts';
+import { generateSlug } from 'random-word-slugs';
 
 const useEditorStore = defineStore({
   id: 'editor-store',
@@ -32,6 +34,13 @@ const useEditorStore = defineStore({
         '@/api/modules/project/models/project.model.ts'
       );
       return await ProjectModel.default.update(this.selected.id, this.selected);
+    },
+    async openNew() {
+      const newProject = new CreateProjectDto(generateSlug(2), '[]', [], 1);
+      const ProjectModel = await import(
+        '@/api/modules/project/models/project.model.ts'
+      );
+      this.selected = (await ProjectModel.default.create(newProject)).getData();
     },
   },
 });

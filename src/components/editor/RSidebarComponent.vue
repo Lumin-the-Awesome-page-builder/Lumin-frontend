@@ -5,7 +5,10 @@
         <template #header>
           <span class="custom-header">Параметры проекта</span>
         </template>
-        <div><n-button color="#7b7bfe" @click="save"> Сохранить </n-button></div>
+        <div class="btn-row">
+          <n-button color="#7b7bfe" @click="save"> Сохранить </n-button>
+          <n-button color="#7b7bfe" @click="exit"> Выйти </n-button>
+        </div>
       </n-collapse-item>
       <n-collapse-item name="2">
         <template #header>
@@ -38,13 +41,12 @@ export default {
   },
   methods: {
     async save() {
-      const updated = await this.editorStore.save()
-      if (updated.success) {
-        this.projectPreviewModalStore.closeModal()
-        this.$router.push({ path: '/dashboard' })
-      } else {
-        alert("Failed to save!")
-      }
+      await this.editorStore.save()
+    },
+    async exit() {
+      await this.save()
+      this.projectPreviewModalStore.closeModal()
+      this.$router.push({ path: '/dashboard' })
     }
   }
 };
@@ -82,5 +84,11 @@ export default {
 .options-details {
   font-size: 18px;
   color: #6f6c99;
+}
+.btn-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
 }
 </style>
