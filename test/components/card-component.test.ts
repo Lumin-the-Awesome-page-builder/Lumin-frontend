@@ -7,6 +7,7 @@ describe('CardComponent tests', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
   });
+
   it('renders with custom props', () => {
     const customTitle = 'Мой проект';
     const customDate = new Date('2023-10-29');

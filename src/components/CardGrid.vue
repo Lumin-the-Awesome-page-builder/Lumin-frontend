@@ -20,6 +20,7 @@
   
   <script lang="ts">
   import CardComponent from '@/components/CardComponent.vue';
+  import usePreviewModalStore from '@/store/project-preview-modal.store.ts';
   
   export default {
     name: 'CardGrid',
@@ -31,6 +32,11 @@
       type: {
         type: String,
         default: 'default'
+      }
+    },
+    setup() {
+      return {
+        previewModalStore: usePreviewModalStore(),
       }
     },
     components: {

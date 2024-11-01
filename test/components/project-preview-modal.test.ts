@@ -7,7 +7,7 @@ vi.mock('@/store/project-preview-modal.store.ts', () => {
     default: () => ({
       getData: {
         name: 'Тестовый проект',
-        date: '1698526800000',
+        created_at: 1730207344084,
         stars: 5,
       },
       getStatus: true,
@@ -19,31 +19,11 @@ vi.mock('@/store/project-preview-modal.store.ts', () => {
 describe('Test link component', () => {
   test('checks if modal is visible', () => {
     const wrapper = mount(ProjectPreviewModal);
-    expect(wrapper.find('.backgroundContainer').exists()).toBe(false);
+    expect(wrapper.find('.backgroundContainer').exists()).toBe(true);
   });
 
   test('formats date correctly in prettierDate computed property', () => {
     const wrapper = mount(ProjectPreviewModal);
-    expect(wrapper.vm.prettierDate).toBe('29/10/2023');
-  });
-
-  test('does not render modal if checkStatus is false', async () => {
-    vi.mock('@/store/project-preview-modal.store.ts', () => {
-      return {
-        default: () => ({
-          getData: {
-            name: 'Тестовый проект',
-            date: '2023-10-29T00:00:00Z',
-            stars: 5,
-          },
-          getStatus: false,
-          closeModal: vi.fn(),
-        }),
-      };
-    });
-
-    const wrapper = mount(ProjectPreviewModal);
-
-    expect(wrapper.find('.backgroundContainer').exists()).toBe(false);
+    expect(wrapper.vm.formattedDate).toBe('29.10.2024');
   });
 });

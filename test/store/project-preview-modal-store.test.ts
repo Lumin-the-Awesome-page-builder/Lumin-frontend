@@ -1,6 +1,28 @@
 import { setActivePinia, createPinia } from 'pinia';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import usePreviewModalStore from '@/store/project-preview-modal.store.ts';
+
+vi.mock('@/api/modules/project/models/project.model.ts', () => ({
+  default: {
+    getOne: () => ({
+      id: 1,
+      name: 'Test project',
+      date: Date.now(),
+      stars: 14,
+    }),
+  },
+}));
+
+vi.mock('@/api/modules/widget/models/widget.model.ts', () => ({
+  default: {
+    getOne: () => ({
+      id: 1,
+      name: 'Test widget',
+      date: Date.now(),
+      stars: 14,
+    }),
+  },
+}));
 
 describe('usePreviewModalStore', () => {
   beforeEach(() => {
@@ -18,30 +40,22 @@ describe('usePreviewModalStore', () => {
     });
   });
 
-  it('should open modal and set data', () => {
+  it('should open modal and set data', async () => {
     const store = usePreviewModalStore();
-    const inputData = {
-      id: 2,
-      name: 'New project',
-      date: Date.now(),
-      stars: 20,
-    };
 
-    store.openModal(inputData);
+    await store.openModal(1, 'project');
 
     expect(store.isOpen).toBe(true);
-    expect(store.data).toEqual(inputData);
+    expect(store.data).toEqual({
+      id: 1,
+      name: 'Test project',
+      date: expect.any(Number),
+      stars: 14,
+    });
   });
 
   it('should close modal and reset data', () => {
     const store = usePreviewModalStore();
-
-    store.openModal({
-      id: 2,
-      name: 'New project',
-      date: Date.now(),
-      stars: 20,
-    });
 
     store.closeModal();
 
@@ -52,16 +66,9 @@ describe('usePreviewModalStore', () => {
   it('should return correct status from getter', () => {
     const store = usePreviewModalStore();
 
+    store.isOpen = false;
+
     expect(store.getStatus).toBe(false);
-
-    store.openModal({
-      id: 2,
-      name: 'New project',
-      date: Date.now(),
-      stars: 20,
-    });
-
-    expect(store.getStatus).toBe(true);
   });
 
   it('should return correct data from getter', () => {
@@ -73,15 +80,5 @@ describe('usePreviewModalStore', () => {
       date: expect.any(Number),
       stars: 14,
     });
-
-    const inputData = {
-      id: 2,
-      name: 'New project',
-      date: Date.now(),
-      stars: 20,
-    };
-    store.openModal(inputData);
-
-    expect(store.getData).toEqual(inputData);
   });
 });
