@@ -5,7 +5,7 @@ import ApiResponseDto from '@/api/dto/api-response.dto.ts';
 import UpdateWidgetDto from '@/api/modules/widget/dto/update-widget.dto.ts';
 import WidgetDto from '@/api/modules/widget/dto/widget.dto.ts';
 
-describe('Base WidgetModel class tests', () => {
+describe('WidgetModel class tests', () => {
   let apiResponseDto: ApiResponseDto<string>;
   const widgetModel = WidgetModel;
   beforeEach(() => {
@@ -81,7 +81,7 @@ describe('Base WidgetModel class tests', () => {
     delete widgetModel.authorizedRequest;
 
     expect(widgetModel).toEqual({
-      baseEndpoint: '/widget',
+      baseEndpoint: '/lumin/widget',
       baseEndpointBuffer: '',
       onRefresh: null,
     });

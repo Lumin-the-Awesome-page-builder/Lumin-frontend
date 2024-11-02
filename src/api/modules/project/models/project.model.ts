@@ -7,7 +7,7 @@ import ApiModelUtil from '@/utils/api-model.util.ts';
 
 export class ProjectModel extends ApiModelUtil {
   constructor() {
-    super('/project');
+    super('/lumin/project');
   }
 
   public async create(

@@ -6,7 +6,7 @@ import ApiRequestDto from '@/api/dto/api-request.dto.ts';
 
 export class LibraryModel extends ApiModelUtil {
   constructor() {
-    super('/user/library');
+    super('/lumin/user/library');
   }
 
   public async getProjects(): Promise<ApiResponseDto<LibraryProjectDto>> {
