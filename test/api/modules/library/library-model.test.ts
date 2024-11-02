@@ -49,7 +49,7 @@ describe('Base LibraryModel class tests', () => {
     delete libraryModel.authorizedRequest;
 
     expect(libraryModel).toEqual({
-      baseEndpoint: '/user/library',
+      baseEndpoint: '/lumin/user/library',
       baseEndpointBuffer: '',
       onRefresh: null,
     });

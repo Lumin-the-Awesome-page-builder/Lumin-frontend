@@ -5,7 +5,7 @@ import ApiResponseDto from '@/api/dto/api-response.dto.ts';
 import UpdateProjectDto from '@/api/modules/project/dto/update-project.dto.ts';
 import ProjectDto from '@/api/modules/project/dto/project.dto.ts';
 
-describe('Base ProjectModel class tests', () => {
+describe('ProjectModel class tests', () => {
   let apiResponseDto: ApiResponseDto<string>;
   const projectModel = ProjectModel;
   beforeEach(() => {
@@ -81,7 +81,7 @@ describe('Base ProjectModel class tests', () => {
     delete projectModel.authorizedRequest;
 
     expect(projectModel).toEqual({
-      baseEndpoint: '/project',
+      baseEndpoint: '/lumin/project',
       baseEndpointBuffer: '',
       onRefresh: null,
     });

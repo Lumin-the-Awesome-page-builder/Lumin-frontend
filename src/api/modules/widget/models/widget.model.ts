@@ -7,7 +7,7 @@ import ApiRequestDto from '@/api/dto/api-request.dto.ts';
 
 export class WidgetModel extends ApiModelUtil {
   constructor() {
-    super('/widget');
+    super('/lumin/widget');
   }
 
   public async create(
