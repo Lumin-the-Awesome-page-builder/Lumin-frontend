@@ -5,6 +5,7 @@ import ApiRequestDto from '@/api/dto/api-request.dto';
 import AuthorizedUserDto from '@/api/modules/auth/dto/authorized-user.dto';
 import ApiModelUtil from '@/utils/api-model.util';
 import TokenUtil from '@/utils/token.util';
+import RegistrationInputDto from '@/api/modules/auth/dto/registration-input.dto.ts';
 
 export class AuthModel extends ApiModelUtil {
   constructor() {
@@ -31,6 +32,19 @@ export class AuthModel extends ApiModelUtil {
     return await this.authorizedRequest(
       new ApiRequestDto('/authorized', 'GET'),
     );
+  }
+
+  public async registration(registrationInputDto: RegistrationInputDto) {
+    const tokenPair = await this.unauthorizedRequest<TokenPairDto>(
+      new ApiRequestDto('/signup', 'POST', registrationInputDto),
+    );
+
+    if (tokenPair.success) {
+      TokenUtil.login(tokenPair.getData());
+      const authorizedUserDto = await this.requestAuthorizedData();
+      TokenUtil.setAuthorized(authorizedUserDto.getData());
+    }
+    return tokenPair;
   }
 }
 

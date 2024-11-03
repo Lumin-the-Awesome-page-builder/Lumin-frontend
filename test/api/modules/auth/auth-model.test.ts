@@ -4,6 +4,7 @@ import AuthInputDto from '@/api/modules/auth/dto/login/auth-input.dto.ts';
 import ApiResponseDto from '@/api/dto/api-response.dto.ts';
 import ApiRequestDto from '@/api/dto/api-request.dto.ts';
 import TokenUtil from '@/utils/token.util.ts';
+import RegistrationInputDto from '@/api/modules/auth/dto/registration-input.dto.ts';
 
 vi.mock('@/utils/token.util', () => {
   return {
@@ -79,6 +80,80 @@ describe('Base AuthModel class tests', () => {
       );
 
       const result = await authModel.auth(authInputDto);
+
+      expect(result).toEqual({ ...apiResponseDto });
+      expect(authModel.unauthorizedRequest).toBeCalledWith(apiRequestDto);
+      //@ts-ignore
+      expect(TokenUtil.login).toBeCalledTimes(0);
+      //@ts-ignore
+      expect(authModel.requestAuthorizedData).toBeCalledTimes(0);
+      //@ts-ignore
+      expect(TokenUtil.setAuthorized).toBeCalledTimes(0);
+    });
+  });
+
+  describe('Test registration', async () => {
+    let registrationInputDto: RegistrationInputDto;
+    let apiRequestDto: ApiRequestDto;
+    beforeEach(() => {
+      registrationInputDto = new RegistrationInputDto('login', 'password');
+      apiRequestDto = new ApiRequestDto(
+        '/signup',
+        'POST',
+        registrationInputDto,
+      );
+    });
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    it('Token api response success', async () => {
+      const data = 'data';
+      const apiResponseDto = new ApiResponseDto(true, data, null);
+      authModel.unauthorizedRequest = vi.fn(
+        () =>
+          new Promise<ApiResponseDto<any>>((resolve) => {
+            resolve(apiResponseDto);
+          }),
+      );
+      //@ts-ignore
+      authModel.requestAuthorizedData = vi.fn(
+        () =>
+          new Promise<ApiResponseDto<any>>((resolve) => {
+            resolve(apiResponseDto);
+          }),
+      );
+
+      const result = await authModel.registration(registrationInputDto);
+
+      expect(result).toEqual({ ...apiResponseDto });
+      expect(authModel.unauthorizedRequest).toBeCalledWith(apiRequestDto);
+      //@ts-ignore
+      expect(TokenUtil.login).toBeCalledWith(data);
+      //@ts-ignore
+      expect(authModel.requestAuthorizedData).toBeCalledTimes(1);
+      //@ts-ignore
+      expect(TokenUtil.setAuthorized).toBeCalledWith(data);
+    });
+
+    it('Token api response failed', async () => {
+      const data = 'data';
+      const apiResponseDto = new ApiResponseDto(false, data, null);
+      authModel.unauthorizedRequest = vi.fn(
+        () =>
+          new Promise<ApiResponseDto<any>>((resolve) => {
+            resolve(apiResponseDto);
+          }),
+      );
+      //@ts-ignore
+      authModel.requestAuthorizedData = vi.fn(
+        () =>
+          new Promise<ApiResponseDto<any>>((resolve) => {
+            resolve(apiResponseDto);
+          }),
+      );
+
+      const result = await authModel.registration(registrationInputDto);
 
       expect(result).toEqual({ ...apiResponseDto });
       expect(authModel.unauthorizedRequest).toBeCalledWith(apiRequestDto);
