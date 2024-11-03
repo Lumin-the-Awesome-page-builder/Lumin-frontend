@@ -7,7 +7,7 @@
       <h2 class="container_title title">Регистрация</h2>
       <div class="block">
         <n-p class="block_title title">Адрес эл. почты</n-p>
-        <n-input v-model:value="emailData" placeholder="mail@example.ru" type="text" class="input">
+        <n-input v-model:value="emailData" placeholder="mail@example.ru" type="email" class="input">
           <template #prefix>
             <img src="@/assets/svg/email.svg" class="imgLogin"/>
           </template>
@@ -66,9 +66,9 @@ export default {
       const authStore = useAuthStore()
       
       const registration = await authStore.register(new RegistrationInputDto(this.emailData, this.passwordData));
-      
+
       if (registration) {
-        await router.push({ path: "/auth" });
+        await router.push({ path: "/dashboard" });
       } else {
         alert("Bad credentials")
       }

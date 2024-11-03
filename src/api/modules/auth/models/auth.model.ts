@@ -35,9 +35,16 @@ export class AuthModel extends ApiModelUtil {
   }
 
   public async registration(registrationInputDto: RegistrationInputDto) {
-    return await this.unauthorizedRequest<null>(
+    const tokenPair = await this.unauthorizedRequest<TokenPairDto>(
       new ApiRequestDto('/signup', 'POST', registrationInputDto),
     );
+
+    if (tokenPair.success) {
+      TokenUtil.login(tokenPair.getData());
+      const authorizedUserDto = await this.requestAuthorizedData();
+      TokenUtil.setAuthorized(authorizedUserDto.getData());
+    }
+    return tokenPair;
   }
 }
 

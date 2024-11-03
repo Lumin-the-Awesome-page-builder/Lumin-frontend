@@ -30,7 +30,15 @@ const useAuthStore = defineStore({
     async register(registrationInputDto: RegistrationInputDto) {
       const result = await AuthModel.registration(registrationInputDto);
 
-      return result.success;
+      const authorized = await AuthModel.requestAuthorizedData();
+
+      if (authorized.success) {
+        this.loggedInUser = authorized;
+      }
+
+      this.isLoggedIn = result.success && result.success;
+
+      return this.isLoggedIn;
     },
   },
 });

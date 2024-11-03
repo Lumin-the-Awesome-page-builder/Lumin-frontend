@@ -36,6 +36,7 @@ describe('Auth store tests', () => {
 
     expect(AuthModel.registration).toBeCalledTimes(1);
     expect(AuthModel.registration).toBeCalledWith('test');
+    expect(AuthModel.requestAuthorizedData).toBeCalled();
     expect(result).toBe(true);
   });
 
