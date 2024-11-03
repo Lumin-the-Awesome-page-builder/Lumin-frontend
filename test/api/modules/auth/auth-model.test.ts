@@ -4,6 +4,7 @@ import AuthInputDto from '@/api/modules/auth/dto/login/auth-input.dto.ts';
 import ApiResponseDto from '@/api/dto/api-response.dto.ts';
 import ApiRequestDto from '@/api/dto/api-request.dto.ts';
 import TokenUtil from '@/utils/token.util.ts';
+import RegistrationInputDto from '@/api/modules/auth/dto/registration-input.dto.ts';
 
 vi.mock('@/utils/token.util', () => {
   return {
@@ -89,6 +90,32 @@ describe('Base AuthModel class tests', () => {
       //@ts-ignore
       expect(TokenUtil.setAuthorized).toBeCalledTimes(0);
     });
+  });
+
+  it('Token registration', async () => {
+    const data = 'data';
+    const apiResponseDto = new ApiResponseDto(true, data, null);
+    authModel.unauthorizedRequest = vi.fn(
+      () =>
+        new Promise<ApiResponseDto<any>>((resolve) => {
+          resolve(apiResponseDto);
+        }),
+    );
+    const registrationInputDto = new RegistrationInputDto(
+      'login',
+      'first_pass',
+      'last_pass',
+    );
+
+    const result = await authModel.registration(registrationInputDto);
+
+    expect(authModel.unauthorizedRequest).toBeCalledTimes(1);
+    expect(authModel.unauthorizedRequest).toBeCalledWith({
+      url: '/signup',
+      method: 'POST',
+      data: registrationInputDto,
+    });
+    expect(result).toEqual({ ...apiResponseDto });
   });
 
   it('Test requestAuthorizedData', async () => {
