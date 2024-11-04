@@ -25,22 +25,24 @@
     </div>
   <div class="line"></div>
   <div class="socialsNetworkBlock">
-    <img alt="VK auth" src="@/assets/svg/VK.svg" class="socialsNetworkImg"/>
-    <img alt="Yandex auth" src="@/assets/svg/Yandex.svg" class="socialsNetworkImg"/>
+    <VkAuthComponent/>
+    <YandexAuthComponent/>
   </div>
   </div>
 </template>
 
 <script lang="ts">
 
-
 import { EyeOff, EyeSharp } from '@vicons/ionicons5';
 import useAuthStore from '@/store/auth.store.ts';
 import AuthInputDto from '@/api/modules/auth/dto/login/auth-input.dto.ts';
 import router from '@/router/index.ts'
+import VkAuthComponent from '@/components/auth/VkAuthComponent.vue';
+import YandexAuthComponent from '@/components/auth/YandexAuthComponent.vue';
 
 export default {
   name: "LoginComponent",
+  components: { YandexAuthComponent, VkAuthComponent },
   computed: {
 
   },
@@ -80,7 +82,6 @@ export default {
 
 }
 </script>
-
 <style scoped>
 .container {
   display: flex;
@@ -138,7 +139,7 @@ export default {
 }
 
 .socialsNetworkBlock {
-  width: 30%;
+  width: 25%;
   display: flex;
   padding: 5%;
   justify-content: space-around;

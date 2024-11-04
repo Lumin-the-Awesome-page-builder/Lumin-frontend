@@ -31,6 +31,8 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     RSidebarComponent: typeof import('./src/components/editor/RSidebarComponent.vue')['default']
+    VkAuthComponent: typeof import('./src/components/auth/VkAuthComponent.vue')['default']
     Workspace: typeof import('./src/components/editor/Workspace.vue')['default']
+    YandexAuthComponent: typeof import('./src/components/auth/YandexAuthComponent.vue')['default']
   }
 }
