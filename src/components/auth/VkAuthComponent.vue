@@ -28,9 +28,10 @@ export default {
           // Инициализация конфигурации
           VKID.Config.init({
             app: 52585823,
-            redirectUrl: 'https://lumin.dudosyka.ru/auth',
+            redirectUrl: 'https://beta.lumin.dudosyka.ru/auth',
             responseMode: VKID.ConfigResponseMode.Callback,
             source: VKID.ConfigSource.LOWCODE,
+            scope: "email"
           });
 
           const oneTap = new VKID.OneTap();
@@ -54,9 +55,10 @@ export default {
 
           // Обработчик успеха
           async function vkidOnSuccess(data) {
+              const userData = await VKID.Auth.userInfo(data.access_token);
               const authStore = useAuthStore()
 
-              const login = await authStore.loginViaVk(new AuthVkInputDto(data.id, data.login));
+              const login = await authStore.loginViaVk(new AuthVkInputDto(userData.user.user_id, userData.user.email));
 
               if (login) {
                 await router.push({ path: "/dashboard" });
@@ -67,7 +69,6 @@ export default {
 
           // Обработчик ошибки
           function vkidOnError(error) {
-            // Обработка ошибки
             console.error('Ошибка:', error);
           }
         } else {

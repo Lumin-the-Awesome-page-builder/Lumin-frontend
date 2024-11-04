@@ -44,7 +44,7 @@ const useAuthStore = defineStore({
     },
 
     async loginViaVk(authVkInputDto: AuthVkInputDto) {
-      const res = await AuthModel.authViaYandex(authVkInputDto);
+      const res = await AuthModel.authViaVk(authVkInputDto);
 
       const authorized = await AuthModel.requestAuthorizedData();
 

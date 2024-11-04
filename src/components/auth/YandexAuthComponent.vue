@@ -14,7 +14,7 @@ export default {
       return new Promise((resolve, reject) => {
         const script = document.createElement('script');
         script.src = url;
-        script.onload = () => resolve();
+        script.onload = resolve;
         script.onerror = () => reject(new Error(`Ошибка загрузки скрипта ${url}`));
         document.head.appendChild(script);
       });
@@ -22,42 +22,47 @@ export default {
 
     loadScript('https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js')
       .then(() => {
+        if (!window.YaAuthSuggest) {
+          console.error('YaAuthSuggest is not defined');
+          return;
+        }
         const oauthQueryParams = {
           client_id: 'd38c9e6db7d34ec4ae4b7067cb4c0ad7',
           response_type: 'token',
+          redirect_uri: 'https://beta.lumin.dudosyka.ru/auth'
         };
-        const tokenPageOrigin = "https://lumin.dudosyka.ru/auth"; // Заменить на сервак
+        const tokenPageOrigin = "https://beta.lumin.dudosyka.ru/auth";
 
-        if (window.YaAuthSuggest) {
-          window.YaAuthSuggest.init(
-            oauthQueryParams,
-            tokenPageOrigin,
-            {
-              view: "button",
-              parentId: "btn-container-id",
-              buttonSize: 'm',
-              buttonView: 'icon',
-              buttonTheme: 'light',
-              buttonBorderRadius: "18",
-              buttonIcon: 'ya',
+        window.YaAuthSuggest.init(
+          oauthQueryParams,
+          tokenPageOrigin,
+          {
+            view: "button",
+            parentId: "btn-container-id",
+            buttonSize: 'm',
+            buttonView: 'icon',
+            buttonTheme: 'light',
+            buttonBorderRadius: "18",
+            buttonIcon: 'ya',
+          }
+        )
+          .then(({handler}) => handler())
+          .then(async (response) => {
+            if (response && response.data && response.data.token) {
+              console.log(response);
+              const authStore = useAuthStore();
+              const login = await authStore.loginViaYandex(new AuthYandexInputDto(response.data.token));
+
+              if (login) {
+                await router.push({ path: "/dashboard" });
+              } else {
+                alert("Bad credentials");
+              }
+            } else {
+              console.error("Ошибка: Не удалось получить токен от Яндекс OAuth");
             }
-          )
-            .then(({ handler }) => handler())
-            .then(async (response) => {
-                const authStore = useAuthStore()
-
-                const login = await authStore.loginViaYandex(new AuthYandexInputDto(response.data.token));
-
-                if (login) {
-                  await router.push({ path: "/dashboard" });
-                } else {
-                  alert("Bad credentials")
-                }
-            })
-            .catch(error => console.log('Обработка ошибки', error));
-        } else {
-          console.error('YaAuthSuggest is not defined');
-        }
+          })
+          .catch(error => console.error('Обработка ошибки', error));
       })
       .catch((error) => {
         console.error('Не удалось загрузить скрипт', error);
