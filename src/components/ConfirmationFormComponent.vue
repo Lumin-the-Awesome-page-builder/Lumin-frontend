@@ -1,26 +1,44 @@
 <template>
-  <div class="container">
-    <div class="logo">
-      <img src="@/assets/svg/Lumin_logo.svg" class="logo_svg">
-    </div>
-    <div class="inputs_container">
-      <h2 class="container_title title">Подтверждение</h2>
-      <n-p class="user_title title">Только для нового пользователя</n-p>
-      <span class="block_title title">На вашу почту было отправлено письмо с кодом подтверждения.</span>
-      <span class="block_title title">Введите его ниже:</span>
-      <n-input  v-model="emailData" placeholder="123-456-789" type="text" class="input">
-        <template #prefix>
-          <img src="@/assets/svg/email.svg" class="imgLogin"/>
-        </template>
-      </n-input>
-      <n-button color="#3535FFA6" class="btn">Войти</n-button>
-    </div>
-  </div>
+  <n-message-provider>
+    <n-modal
+      v-model:show="confirmationStore.showModal"
+      transform-origin="center"
+      style="width: 600px"
+    >
+      <n-card
+        :bordered="false"
+        size="medium"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div class="container">
+          <div class="logo">
+            <img src="@/assets/svg/Lumin_logo.svg" class="logo_svg">
+          </div>
+          <div class="inputs_container">
+            <h2 class="container_title title">Подтверждение</h2>
+            <n-p class="user_title title">Только для нового пользователя</n-p>
+            <span class="block_title title">На вашу почту было отправлено письмо с кодом подтверждения.</span>
+            <span class="block_title title">Введите его ниже:</span>
+            <n-input  v-model="emailData" placeholder="123-456-789" type="text" class="input">
+              <template #prefix>
+                <img src="@/assets/svg/email.svg" class="imgLogin"/>
+              </template>
+            </n-input>
+            <n-button color="#3535FFA6" class="btn" @click="cancelForm">Войти</n-button>
+          </div>
+        </div>
+      </n-card>
+    </n-modal>
+  </n-message-provider>
 </template>
 
 <script lang="ts">
 
-export default {
+import { defineComponent } from 'vue';
+import { useConfirmationStore } from '@/store/confirmation-form-component.store.ts';
+
+export default defineComponent({
   name: "ConfirmationFormComponent",
   data() {
     return {
@@ -29,8 +47,19 @@ export default {
       }
     }
   },
+  setup() {
+    const confirmationStore = useConfirmationStore()
 
-}
+    const cancelForm = () => {
+      confirmationStore.closeModal();
+    };
+
+    return {
+      confirmationStore,
+      cancelForm
+    }
+  }
+})
 
 </script>
 
@@ -38,16 +67,8 @@ export default {
 .container {
   display: flex;
   flex-direction: column;
-  background-color: white;
-  border-radius: 1.5rem;
   justify-content: center;
   align-items: center;
-  width: 30vw;
-  min-width: 400px;
-  min-height: 350px;
-  height: 35vh;
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
 }
 
 .inputs_container {
