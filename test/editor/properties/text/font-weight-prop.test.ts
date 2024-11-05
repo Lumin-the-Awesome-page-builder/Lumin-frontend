@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import FontWeightProp from '@/editor/properties/text/FontWeightProp.ts';
+import FontProp from '@/editor/properties/text/FontProp.ts';
 
 describe('Font weight prop test', () => {
   it('Correct class creation', () => {
-    const fontWeightProp = new FontWeightProp('value');
+    const fontWeightProp = new FontProp('value');
 
     expect(fontWeightProp.value).toBe('value');
     expect(fontWeightProp.defaultValue).toBe('normal');
@@ -20,11 +20,11 @@ describe('Font weight prop test', () => {
       italic: 'fst-italic',
       normal: 'fst-normal',
     });
-    expect(FontWeightProp.name).toBe('fw');
+    expect(FontProp.name).toBe('fw');
   });
 
   it('Correct name getter', () => {
-    const fontWeightProp = new FontWeightProp('value');
+    const fontWeightProp = new FontProp('value');
 
     expect(fontWeightProp.getName()).toBe('fw');
   });

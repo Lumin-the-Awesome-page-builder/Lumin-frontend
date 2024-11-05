@@ -11,6 +11,7 @@
         :marks="slider.marks"
         :initialValue="slider.value"
         :subheading="slider.subheading"
+        @update="update(index, $event)"
       />
     </div>
   </template>
@@ -19,23 +20,38 @@
   import { ref } from 'vue';
   import OptionHeadingComponent from '../../OptionHeadingComponent.vue';
   import SliderComponent from '../../SliderComponent.vue';
+  import LinkOpacityProp from '@/editor/properties/link/LinkOpacityProp.ts';
+  import LinkUnderlineOffsetProp from '@/editor/properties/link/LinkUnderlineOffsetProp.ts';
   
   export default {
     name: 'LinkUnderlineOffsetComponent',
     components: { OptionHeadingComponent, SliderComponent },
-    data: () => ({
-      values: [
-        {
-          subheading: 'Расстояние до текста',
-          value: 1,
-          marks: {
-            0: '1',
-            50: '2',
-            100: '3',
+    props: {
+      prop: {
+        type: LinkUnderlineOffsetProp
+      }
+    },
+    methods: {
+      update(index, data) {
+        this.prop.setValue(data, index)
+      }
+    },
+    computed: {
+      values() {
+        return [
+          {
+            subheading: 'Расстояние до текста',
+            value: this.prop.value[0],
+            marks: {
+              ...Object.keys(this.prop.availableValues[0]).map(key => {
+                const numKey = Number(key);
+                return { [numKey]: `${numKey}%` };
+              }).reduce((acc, curr) => Object.assign(acc, curr), {})
+            },
           },
-        },
-      ]
-    })
+        ]
+      }
+    }
   };
   </script>
   

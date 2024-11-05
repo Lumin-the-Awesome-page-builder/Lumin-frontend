@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import LinkUnderlineProp from '@/editor/properties/link/LinkUnderlineProp.ts';
+import LinkColorProp from '@/editor/properties/link/LinkColorProp.ts';
 
 describe('Link Underline prop test', () => {
   it('Correct class creation', () => {
-    const linkUnderlineProp = new LinkUnderlineProp('value');
+    const linkUnderlineProp = new LinkColorProp('value');
 
     expect(linkUnderlineProp.value).toBe('value');
     expect(linkUnderlineProp.defaultValue).toBe('primary');
@@ -19,11 +19,11 @@ describe('Link Underline prop test', () => {
       light: 'link-underline-light',
       dark: 'link-underline-dark',
     });
-    expect(LinkUnderlineProp.name).toBe('link-underline');
+    expect(LinkColorProp.name).toBe('link-underline');
   });
 
   it('Correct name getter', () => {
-    const linkUnderlineProp = new LinkUnderlineProp('value');
+    const linkUnderlineProp = new LinkColorProp('value');
 
     expect(linkUnderlineProp.getName()).toBe('link-underline');
   });

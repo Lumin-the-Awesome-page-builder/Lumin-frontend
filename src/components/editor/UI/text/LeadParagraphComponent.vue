@@ -12,6 +12,7 @@
         :subheading="checkbox.subheading"
         :label="checkbox.label"
         :size="checkbox.size"
+        @update="checked(index, $event)"
       />
     </div>
   </div>
@@ -20,6 +21,7 @@
 <script lang="ts">
 import CheckboxComponent from '../../CheckboxComponent.vue';
 import OptionHeadingComponent from '../../OptionHeadingComponent.vue';
+import LeadParagraphProp from '@/editor/properties/text/LeadParagraphProp.ts';
 
 export default {
   name: 'LeadParagraphComponent',
@@ -27,17 +29,31 @@ export default {
     CheckboxComponent,
     OptionHeadingComponent,
   },
-  data() {
-    return {
-      checkboxes: [
+  props: {
+    prop: {
+      type: LeadParagraphProp
+    }
+  },
+  computed: {
+    checkboxes() {
+      return [
         {
           subheading: 'Выделить абзац',
           label: 'Выделить абзац',
           size: 'large',
-        },
-      ],
-    };
+          value: !!this.prop.value[0],
+        }
+      ]
+    }
   },
+  methods: {
+    checked(index, data) {
+      if (data)
+        this.prop.setValue('checked', index)
+      else
+        this.prop.setValue(null, index)
+    }
+  }
 };
 </script>
 

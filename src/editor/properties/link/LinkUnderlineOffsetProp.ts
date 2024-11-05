@@ -1,16 +1,17 @@
-import Property from '../../core/property/Property.ts';
+import Property from '@/editor/core/property/Property.ts';
 
 export default class LinkUnderlineOffsetProp extends Property {
   static name: string = 'link-offset';
 
-  defaultValue: string = 'link-offset-1';
-  description: string = '___';
-  title: string = '___';
-  availableValues: Record<string, any> = {
-    one: 'link-offset-1',
-    two: 'link-offset-2',
-    three: 'link-offset-3',
-  };
+  defaultValue: any[] = [null];
+  availableValues: Record<any, any>[] = [
+    {
+      0: 'link-offset-0',
+      33: 'link-offset-1',
+      66: 'link-offset-2',
+      100: 'link-offset-3',
+    }
+  ];
 
   getName(): string {
     return LinkUnderlineOffsetProp.name;

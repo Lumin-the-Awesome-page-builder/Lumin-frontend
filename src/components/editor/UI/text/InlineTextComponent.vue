@@ -12,6 +12,8 @@
           :subheading="checkbox.subheading"
           :label="checkbox.label"
           :size="checkbox.size"
+          :init-value="checkbox.value"
+          @update="checked(index, $event)"
         />
       </div>
     </div>
@@ -20,18 +22,34 @@
   <script lang="ts">
   import CheckboxComponent from '@/components/editor/CheckboxComponent.vue';
   import OptionHeadingComponent from '@/components/editor/OptionHeadingComponent.vue';
+  import InlineTextProp from '@/editor/properties/text/InlineTextProp.ts';
   
   export default {
     name: 'InlineTextComponent',
     components: {
       CheckboxComponent, OptionHeadingComponent
     },
-    data: () => ({
-      checkboxes: [
-        { subheading: 'Выделить текст', label: 'Выделить', size: 'large' },
-        { subheading: 'Уменьшить тест', label: 'Уменьшить', size: 'large' },
-      ],
-    }),
+    props: {
+      prop: {
+        type: InlineTextProp
+      }
+    },
+    computed: {
+      checkboxes() {
+        return [
+          { subheading: 'Выделить текст', label: 'Выделить', size: 'large', value: !!this.prop.value[0] },
+          { subheading: 'Уменьшить тест', label: 'Уменьшить', size: 'large', value: !!this.prop.value[1] },
+        ]
+      }
+    },
+    methods: {
+      checked(index, data) {
+        if (data)
+          this.prop.setValue('checked', index)
+        else
+          this.prop.setValue(null, index)
+      }
+    }
   }
   </script>
   

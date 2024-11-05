@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it } from 'vitest';
 import OptionHeadingComponent from '@/components/editor/OptionHeadingComponent.vue';
 import SliderComponent from '@/components/editor/SliderComponent.vue';
-import FontWeightComponent from '@/components/editor/UI/text/FontWeightComponent.vue';
+import FontWeightComponent from '@/components/editor/UI/text/FontComponent.vue';
 import sliderComponentPropsChecker from '../link/slider-component-props-checker.ts';
 
 describe('FontWeightComponent', () => {

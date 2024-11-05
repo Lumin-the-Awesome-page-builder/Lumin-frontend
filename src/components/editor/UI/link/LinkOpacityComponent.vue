@@ -11,6 +11,7 @@
         :marks="slider.marks"
         :initialValue="slider.value"
         :subheading="slider.subheading"
+        @update="update(index, $event)"
       />
     </div>
   </template>
@@ -18,36 +19,47 @@
   <script lang="ts">
   import OptionHeadingComponent from '@/components/editor/OptionHeadingComponent.vue';
   import SliderComponent from '@/components/editor/SliderComponent.vue';
+  import LinkOpacityProp from '@/editor/properties/link/LinkOpacityProp.ts';
   
   export default {
     name: 'LinkOpacityComponent',
     components: { OptionHeadingComponent, SliderComponent },
-    data: () => ({
-      values: [
-        {
-          subheading: 'Стандартная прозрачность',
-          value: 10,
-          marks: {
-            10: '10%',
-            25: '25%',
-            50: '50%',
-            75: '75%',
-            100: '100%',
+    props: {
+      prop: {
+        type: LinkOpacityProp
+      }
+    },
+    methods: {
+      update(index, data) {
+        this.prop.setValue(data, index)
+      }
+    },
+    computed: {
+      values() {
+        return [
+          {
+            subheading: 'Стандартная прозрачность',
+            value: this.prop.value[0] !== null ? this.prop.value[0] : 0,
+            marks: {
+              ...Object.keys(this.prop.availableValues[0]).map(key => {
+                const numKey = Number(key);
+                return { [numKey]: `${numKey}%` };
+              }).reduce((acc, curr) => Object.assign(acc, curr), {})
+            }
           },
-        },
-        {
-          subheading: 'Прозрачность при наведении',
-          value: 10,
-          marks: {
-            10: '10%',
-            25: '25%',
-            50: '50%',
-            75: '75%',
-            100: '100%',
-          },
-        },
-      ]
-    })
+          {
+            subheading: 'Прозрачность при наведении',
+            value: this.prop.value[1] !== null ? this.prop.value[1] : 0,
+            marks: {
+              ...Object.keys(this.prop.availableValues[1]).map(key => {
+                const numKey = Number(key);
+                return { [numKey]: `${numKey}%` };
+              }).reduce((acc, curr) => Object.assign(acc, curr), {})
+            }
+          }
+        ]
+      }
+    }
   };
   </script>
   

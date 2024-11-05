@@ -117,7 +117,7 @@ export default abstract class Component {
 
   applyProps(): void {
     this.props.getAll().forEach((prop) => {
-      prop.apply(this);
+      prop.apply();
     });
   }
 

@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import LinkUnderlineOpacity from '@/editor/properties/link/LinkUnderlineOpacity.ts';
+import LinkUnderlineOpacityProp from '@/editor/properties/link/LinkUnderlineOpacityProp.ts';
 
 describe('Link Underline Opacity prop test', () => {
   it('Correct class creation', () => {
-    const linkUnderlineOpacity = new LinkUnderlineOpacity('value');
+    const linkUnderlineOpacity = new LinkUnderlineOpacityProp('value');
 
     expect(linkUnderlineOpacity.value).toBe('value');
     expect(linkUnderlineOpacity.defaultValue).toBe('opacity100');
@@ -17,11 +17,11 @@ describe('Link Underline Opacity prop test', () => {
       opacity75: 'link-underline-opacity-75',
       opacity100: 'link-underline-opacity-100',
     });
-    expect(LinkUnderlineOpacity.name).toBe('link-underline-opacity');
+    expect(LinkUnderlineOpacityProp.name).toBe('link-underline-opacity');
   });
 
   it('Correct name getter', () => {
-    const linkUnderlineOpacity = new LinkUnderlineOpacity('value');
+    const linkUnderlineOpacity = new LinkUnderlineOpacityProp('value');
 
     expect(linkUnderlineOpacity.getName()).toBe('link-underline-opacity');
   });

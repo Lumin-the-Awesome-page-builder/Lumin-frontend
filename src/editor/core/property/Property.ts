@@ -7,19 +7,33 @@ export type PropertyObject = {
 };
 
 export default abstract class Property {
-  public abstract title: string;
-  public abstract description: string;
-  public abstract availableValues: Record<string, any>;
-  public abstract defaultValue: string;
+  public abstract availableValues: Record<any, any>[];
+  public abstract defaultValue: any[];
 
-  constructor(public value: string) {}
+  constructor(protected value: any[], public component: Component) {}
 
-  public apply(target: Component): Component {
-    target.attributes.append(
-      new Attribute('class', this.availableValues[this.value]),
-    );
+  public clear() {
+    this.value.forEach((el, index) => {
+      if (el != null) {
+        this.component.htmlElement.classList.remove(this.availableValues[index][el]);
+      }
+    })
+  }
 
-    return target;
+  public apply() {
+    this.value.forEach((el, index) => {
+      if (el != null) {
+        this.component.htmlElement.classList.add(this.availableValues[index][el]);
+      }
+    })
+  }
+
+  public setValue(value: any[], index = 0) {
+    this.clear()
+    this.value[index] = value
+    this.apply()
+
+    console.log(this.component.htmlElement)
   }
 
   public abstract getName(): string;

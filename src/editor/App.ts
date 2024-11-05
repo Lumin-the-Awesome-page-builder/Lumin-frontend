@@ -50,14 +50,14 @@ export class App {
     this.propLibrary[prop.name] = prop;
   }
 
-  public buildProps(props: PropertyObject[]): any[] {
+  public buildProps(component: Component, props: PropertyObject[]): any[] {
     return props.map((prop) => {
       const propConstructor = this.propLibrary[prop.name];
 
       if (!propConstructor)
         throw new DOMException(`Unknown property: ${prop.name}`);
 
-      return new propConstructor(prop.value);
+      return new propConstructor(prop.value, component);
     });
   }
 

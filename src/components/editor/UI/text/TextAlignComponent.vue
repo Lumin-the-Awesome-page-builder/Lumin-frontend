@@ -11,7 +11,7 @@
           :key="index"
           :ghost="activeButton !== index"
           color="#7b7bfe"
-          @click="setActiveButton(index)"
+          @click="setActiveButton(index, button)"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -30,32 +30,48 @@
   <script lang="ts">
   import OptionHeadingComponent from '@/components/editor/OptionHeadingComponent.vue';
   import { NButton } from 'naive-ui'
+  import TextAlignProp from '@/editor/properties/text/TextAlignProp.ts';
   
   export default {
     name: 'TextAlignComponent',
     components: { OptionHeadingComponent, "n-button": NButton },
+    props: {
+      prop: {
+        type: TextAlignProp
+      }
+    },
     data: () => ({
       activeButton: null as number | null,
-      buttons: [
-        {
+      buttonsConf: {
+        start: {
           path: 'M120-120v-80h720v80H120Zm0-160v-80h480v80H120Zm0-160v-80h720v80H120Zm0-160v-80h480v80H120Zm0-160v-80h720v80H120Z',
           viewBox: '0 -960 960 960',
         },
-        {
+        center: {
           path: 'M120-120v-80h720v80H120Zm160-160v-80h400v80H280ZM120-440v-80h720v80H120Zm160-160v-80h400v80H280ZM120-760v-80h720v80H120Z',
           viewBox: '0 -960 960 960',
         },
-        {
+        end: {
           path: 'M120-760v-80h720v80H120Zm240 160v-80h480v80H360ZM120-440v-80h720v80H120Zm240 160v-80h480v80H360ZM120-120v-80h720v80H120Z',
           viewBox: '0 -960 960 960',
-        }
-      ],
+        },
+      },
     }),
     methods: {
-      setActiveButton(index: number) {
-        this.activeButton = index;
+      setActiveButton(index: number, button) {
+        const onSet = (this.activeButton == index) ? null : button.value
+        this.activeButton = (this.activeButton == index) ? null : index
+        this.prop.setValue(onSet)
       },
     },
+    computed: {
+      buttons() {
+        return Object.keys(this.prop.availableValues[0]).map(key => ({
+          ...this.buttonsConf[key],
+          value: key
+        }))
+      },
+    }
   };
   </script>
   
