@@ -51,6 +51,26 @@ export class App {
   }
 
   public buildProps(component: Component, props: PropertyObject[]): any[] {
+    const names = props.map(el => el.name)
+
+    component.availableProps.forEach(el => {
+      if (!names.includes(el)) {
+        const propConstructor = this.propLibrary[el];
+
+        if (!propConstructor)
+          throw new DOMException(`Unknown property: ${el}`);
+
+        const value = (new propConstructor([], component)).defaultValue
+
+        props.push({
+          name: el,
+          value
+        })
+      }
+    })
+
+    console.log(props)
+
     return props.map((prop) => {
       const propConstructor = this.propLibrary[prop.name];
 

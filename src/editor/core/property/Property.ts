@@ -32,8 +32,6 @@ export default abstract class Property {
     this.clear()
     this.value[index] = value
     this.apply()
-
-    console.log(this.component.htmlElement)
   }
 
   public abstract getName(): string;
