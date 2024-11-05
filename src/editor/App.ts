@@ -92,7 +92,7 @@ export class App {
 
         component.scopeIdentifier = this.scopeIdentifier;
         component.setAttrs(attrs);
-        component.setProps(this.buildProps(el.props));
+        component.setProps(this.buildProps(component, el.props));
         component.appendChildren(this.buildTree(el.children));
         component.setContent(el.content);
         component.setKeySalt(this.identifiersSalt);

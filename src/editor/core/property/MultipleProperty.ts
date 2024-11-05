@@ -1,11 +1,12 @@
 import Property from '@/editor/core/property/Property.ts';
+import Component from '@/editor/core/component/Component.ts';
 
 export default abstract class MultipleProperty extends Property {
   public abstract availableValues: Record<number, any>[];
   public abstract defaultValue: number[];
 
-  constructor(public values: any[]) {
-    super();
+  constructor(public values: any[], public component: Component) {
+    super(values, component);
   }
 
   override clear() {
