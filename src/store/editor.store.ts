@@ -43,14 +43,16 @@ const useEditorStore = defineStore({
       );
       this.selected = (await ProjectModel.default.create(newProject)).getData();
 
-      const initComponent = new Container()
-      initComponent.setKeySalt(String(this.selected.id) + String(TokenUtil.getAuthorized().id))
-      initComponent.generateKey()
+      const initComponent = new Container();
+      initComponent.setKeySalt(
+        String(this.selected.id) + String(TokenUtil.getAuthorized().id),
+      );
+      initComponent.generateKey();
       this.selected.data = JSON.stringify([initComponent.toJson()]);
 
-      await this.save()
+      await this.save();
 
-      return this.selected
+      return this.selected;
     },
   },
 });

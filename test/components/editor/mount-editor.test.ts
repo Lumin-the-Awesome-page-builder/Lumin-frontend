@@ -17,8 +17,8 @@ describe('Editor component', async () => {
         mocks: {
           $route: {
             params: {
-              id: 123
-            }
+              id: 123,
+            },
           },
         },
         plugins: [router, EditorPlugin],

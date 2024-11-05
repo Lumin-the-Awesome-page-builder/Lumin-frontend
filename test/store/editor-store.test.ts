@@ -7,7 +7,7 @@ vi.mock('@/api/modules/project/models/project.model.ts', () => {
   return {
     default: {
       getOne: vi.fn(() => ({
-        getData: vi.fn(() => 'project')
+        getData: vi.fn(() => 'project'),
       })),
       update: vi.fn(() => 'updated'),
     },

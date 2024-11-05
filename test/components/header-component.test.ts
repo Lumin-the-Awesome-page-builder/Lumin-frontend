@@ -24,7 +24,7 @@ describe('Test header component', () => {
       downloadSelected: vi.fn(),
     };
     wrapper.vm.editorStore = {
-      openNew: vi.fn(() => ({id: 1})),
+      openNew: vi.fn(() => ({ id: 1 })),
     };
     vm = wrapper.vm;
   });

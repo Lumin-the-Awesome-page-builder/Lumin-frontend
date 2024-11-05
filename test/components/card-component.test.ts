@@ -13,7 +13,7 @@ describe('CardComponent tests', () => {
     const customDate = new Date('2023-10-29');
     const customStars = 5;
     const customImageSrc = 'path/to/image.jpg';
-    const customId = 1
+    const customId = 1;
 
     const wrapper = mount(CardComponent, {
       props: {
@@ -45,7 +45,7 @@ describe('CardComponent tests', () => {
     const routerMock = {
       push: vi.fn(),
     };
-    const customId = 1
+    const customId = 1;
     const wrapper = mount(CardComponent, {
       props: {
         id: customId,
@@ -62,7 +62,9 @@ describe('CardComponent tests', () => {
 
     await wrapper.vm.editProject();
 
-    expect(routerMock.push).toHaveBeenCalledWith({ path: `/project/${customId}/edit` });
+    expect(routerMock.push).toHaveBeenCalledWith({
+      path: `/project/${customId}/edit`,
+    });
 
     consoleLogSpy.mockRestore();
   });
