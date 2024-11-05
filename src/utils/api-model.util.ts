@@ -55,7 +55,7 @@ export default class ApiModelUtil {
     const res = await axios<TokenPairDto>({
       url: this.buildUrl(appConf.refreshEndpoint),
       method: 'POST',
-      data: "{}",
+      data: '{}',
       headers: {
         ...this.buildHeaders(refreshToken),
       },
