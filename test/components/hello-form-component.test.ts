@@ -1,10 +1,22 @@
 import { mount } from '@vue/test-utils';
-import { test, expect } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import HelloFormComponent from '@/components/HelloFormComponent.vue';
+import { createPinia, setActivePinia } from 'pinia';
 
-const wrapper = mount(HelloFormComponent);
+vi.mock('@/store/hello-form-component.store.ts', () => ({
+  useHelloFormStore: () => ({
+    showModal: true,
+    closeModal: vi.fn(),
+  }),
+}));
 
-test('renders button with correct label', () => {
-  const button = wrapper.find('n-button');
-  expect(button.text()).toBe('Продолжить');
+describe('HelloFormComponent tests', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
+  });
+
+  it('renders correctly with welcome message', () => {
+    const wrapper = mount(HelloFormComponent);
+    expect(wrapper.text()).toContain('Добро пожаловать!');
+  });
 });

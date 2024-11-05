@@ -1,18 +1,25 @@
 import { mount } from '@vue/test-utils';
-import { test, expect } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import DeleteFormComponent from '@/components/DeleteFormComponent.vue';
+import { createPinia, setActivePinia } from 'pinia';
 
-const wrapper = mount(DeleteFormComponent, {
-  props: {
-    projectName: 'Тестовый проект',
-  },
-});
+vi.mock('@/store/delete-form-component.store.ts', () => ({
+  useProjectStore: () => ({
+    projectName: 'Мой проект',
+    showModal: true,
+    closeModal: vi.fn(),
+  }),
+}));
 
-test('accepts projectName prop', () => {
-  const newProjectName = 'Тестовый проект';
-  wrapper.setProps({ projectName: newProjectName });
+describe('DeleteFormComponent tests', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
+  });
 
-  expect(wrapper.find('.block_title').text()).toContain(
-    `Вы уверены, что хотите удалить ${newProjectName}?`,
-  );
+  it('renders correctly with project name', () => {
+    const wrapper = mount(DeleteFormComponent);
+    expect(wrapper.text()).toContain(
+      'Вы уверены, что хотите удалить Мой проект?',
+    );
+  });
 });
