@@ -31,7 +31,7 @@ export default {
             redirectUrl: 'https://beta.lumin.dudosyka.ru/auth',
             responseMode: VKID.ConfigResponseMode.Callback,
             source: VKID.ConfigSource.LOWCODE,
-            scope: "email"
+            scope: "email",
           });
 
           const oneTap = new VKID.OneTap();
@@ -40,8 +40,9 @@ export default {
             container: document.getElementById('vkid-container'),
             showAlternativeLogin: true,
             styles: {
-              width: 55,
-            },
+              width: 40,
+              height: 37,
+            }
           })
             .on(VKID.WidgetEvents.ERROR, vkidOnError)
             .on(VKID.OneTapInternalEvents.LOGIN_SUCCESS, function (payload) {
