@@ -7,7 +7,7 @@ vi.mock('@/api/modules/auth/models/auth.model.ts', () => {
   return {
     default: {
       auth: vi.fn(() => ({ success: true })),
-      requestAuthorizedData: vi.fn(() => ({ success: true })),
+      requestAuthorizedData: vi.fn(() => ({ success: true, getData: () => "authorized" })),
       registration: vi.fn(() => ({ success: true })),
     },
   };

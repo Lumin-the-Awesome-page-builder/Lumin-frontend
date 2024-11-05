@@ -114,7 +114,7 @@ export default {
     goToEditor() {
       console.log(this.data)
       this.editorStore.use(this.data)
-      this.$router.push({ path: '/editor' })
+      this.$router.push({ path: `/project/${this.data.id}/edit` })
     },
     share() {
     

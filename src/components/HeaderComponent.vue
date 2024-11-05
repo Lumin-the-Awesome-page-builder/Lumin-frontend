@@ -100,8 +100,9 @@ export default {
       this.dashboardStore.loadWidgets()
     },
     async createProject() {
-      await this.editorStore.openNew()
-      this.$router.push({ path: '/editor' })
+      const project = await this.editorStore.openNew()
+      
+      this.$router.push({ path: `/project/${project.id}/edit` })
     },
     removeSelected() {
       this.dashboardStore.removeSelected()

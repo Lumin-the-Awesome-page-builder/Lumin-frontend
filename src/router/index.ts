@@ -19,7 +19,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/DashboardView.vue'),
   },
   {
-    path: '/editor',
+    path: '/project/:id/edit',
     name: 'editor',
     component: Editor,
   },

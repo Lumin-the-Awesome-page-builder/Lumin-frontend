@@ -24,7 +24,7 @@ describe('Test header component', () => {
       downloadSelected: vi.fn(),
     };
     wrapper.vm.editorStore = {
-      openNew: vi.fn(),
+      openNew: vi.fn(() => ({id: 1})),
     };
     vm = wrapper.vm;
   });
@@ -64,7 +64,7 @@ describe('Test header component', () => {
     await vm.createProject();
 
     expect(vm.editorStore.openNew).toBeCalled();
-    expect(routerMock.push).toBeCalledWith({ path: '/editor' });
+    expect(routerMock.push).toBeCalledWith({ path: `/project/${1}/edit` });
   });
 
   it('Test remove selected', () => {
