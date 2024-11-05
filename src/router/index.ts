@@ -9,6 +9,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/AuthView.vue'),
   },
   {
+    path: '/signup',
+    name: 'signup',
+    component: () => import('@/views/SignupView.vue'),
+  },
+  {
     path: '/dashboard',
     name: 'dashboard',
     component: () => import('@/views/DashboardView.vue'),
@@ -26,15 +31,16 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.path === '/' && TokenUtil.isAuthorized()) {
-    next({ path: '/dashboard' });
-    return;
-  } else if (to.path === '/auth' && TokenUtil.isAuthorized()) {
-    next({ path: '/dashboard' });
-    return;
-  } else if (to.path !== '/auth' && !TokenUtil.isAuthorized()) {
-    next({ path: '/auth' });
-    return;
+  if (TokenUtil.isAuthorized()) {
+    if (to.path === '/auth' || to.path === '/signup') {
+      next({ path: '/dashboard' });
+      return;
+    }
+  } else if (!TokenUtil.isAuthorized()) {
+    if (to.path !== '/auth' && to.path !== '/signup') {
+      next({ path: '/auth' });
+      return;
+    }
   }
   next();
 });

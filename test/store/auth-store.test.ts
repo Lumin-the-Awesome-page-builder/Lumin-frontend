@@ -8,6 +8,7 @@ vi.mock('@/api/modules/auth/models/auth.model.ts', () => {
     default: {
       auth: vi.fn(() => ({ success: true })),
       requestAuthorizedData: vi.fn(() => ({ success: true })),
+      registration: vi.fn(() => ({ success: true })),
     },
   };
 });
@@ -26,6 +27,17 @@ describe('Auth store tests', () => {
     expect(AuthModel.auth).toBeCalledWith('test');
     expect(AuthModel.requestAuthorizedData).toBeCalled();
     expect(res).toBe(true);
+  });
+
+  it('Test register', async () => {
+    const authStore = useAuthStore();
+
+    const result = await authStore.register('test');
+
+    expect(AuthModel.registration).toBeCalledTimes(1);
+    expect(AuthModel.registration).toBeCalledWith('test');
+    expect(AuthModel.requestAuthorizedData).toBeCalled();
+    expect(result).toBe(true);
   });
 
   describe('Test getters', () => {
