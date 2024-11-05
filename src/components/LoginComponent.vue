@@ -25,22 +25,26 @@
     </div>
   <div class="line"></div>
   <div class="socialsNetworkBlock">
-    <img alt="VK auth" src="@/assets/svg/VK.svg" class="socialsNetworkImg"/>
-    <img alt="Yandex auth" src="@/assets/svg/Yandex.svg" class="socialsNetworkImg"/>
+    <VkAuthComponent/>
+    <YandexAuthComponent @click="loginWithYandex"/>
   </div>
   </div>
 </template>
 
 <script lang="ts">
 
-
 import { EyeOff, EyeSharp } from '@vicons/ionicons5';
 import useAuthStore from '@/store/auth.store.ts';
 import AuthInputDto from '@/api/modules/auth/dto/login/auth-input.dto.ts';
 import router from '@/router/index.ts'
+import VkAuthComponent from '@/components/auth/VkAuthComponent.vue';
+import AuthYandexInputDto from '@/api/modules/auth/dto/login/auth-yandex-input.dto.ts';
+import YandexAuthComponent from '@/components/auth/YandexAuthComponent.vue';
+import yandexConf from '@/api/conf/yandex.conf.ts';
 
 export default {
   name: "LoginComponent",
+  components: { YandexAuthComponent, VkAuthComponent },
   computed: {
 
   },
@@ -52,6 +56,9 @@ export default {
       typeInput: "password",
       icon: EyeSharp
     }
+  },
+  created() {
+    this.checkLoginStatus();
   },
   methods: {
     showPassword(){
@@ -75,12 +82,46 @@ export default {
       } else {
         alert("Bad credentials")
       }
+    },
+    loginWithYandex() {
+      window.location.href = `https://oauth.yandex.ru/authorize?client_id=${yandexConf.clientId}&response_type=token&redirect_uri=https%3A%2F%2F${yandexConf.host}%2Fauth&widget_kind=button-stub&suggest_hostname=https%3A%2F%2F${yandexConf.host}&et=${Date.now()}`
+      localStorage.setItem('authByYandex', true);
+    },
+    async checkLoginStatus() {
+      const token = localStorage.getItem('authByYandex');
+      if (token) {
+        console.log('Токен пришёл')
+        const authStore = useAuthStore()
+
+        const urlParams = window.location.href;
+        const accessCode = this.findToken(urlParams);
+        const login = await authStore.loginViaYandex(new AuthYandexInputDto(accessCode));
+
+        if (login) {
+          await router.push({ path: "/dashboard" });
+        } else {
+          alert("Bad credentials")
+          localStorage.removeItem('authByYandex');
+        }
+      }
+    },
+    findToken(href: string): string {
+      let slice = href.split('#')[1]
+      slice = slice.slice(13)
+      let token = "";
+      for (let i = 0; i < slice.length; i++) {
+        if (slice[i] == "&") {
+          break
+        }else {
+          token += slice[i]
+        }
+      }
+      return token
     }
   }
 
 }
 </script>
-
 <style scoped>
 .container {
   display: flex;
@@ -138,20 +179,11 @@ export default {
 }
 
 .socialsNetworkBlock {
-  width: 30%;
   display: flex;
   padding: 5%;
-  justify-content: space-around;
-}
-
-.socialsNetworkImg {
-  cursor: pointer;
-  opacity: 0.37;
-  transition: opacity 0.3s ease-in-out;
-}
-
-.socialsNetworkImg:hover {
-  opacity: 1;
+  justify-content: space-evenly;
+  width: 45%;
+  align-self: center;
 }
 
 .container_title {
