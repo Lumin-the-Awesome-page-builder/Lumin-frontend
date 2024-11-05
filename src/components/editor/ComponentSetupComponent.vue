@@ -1,21 +1,22 @@
 <template>
-  <!--        <LinkColorComponent :prop="component.props.get('link-color')" />-->
-  <!--        <LinkOpacityComponent :prop="component.props.get('link-opacity')" />-->
-  <!--        <LinkUnderlineOffsetComponent :prop="component.props.get('link-offset')" />-->
-  <!--        <LinkUnderlineOpacityComponent :prop="component.props.get('link-underline-opacity')" />-->
-  <!--        -->
-  <!--        <FontComponent :prop="component.props.get('font')" />-->
-<!--  <InlineTextComponent :prop="component.props.get('inline-text')" />-->
-<!--  <LeadParagraphComponent :prop="component.props.get('lead-paragraph')" />-->
-<!--  <LineHeightComponent :prop="component.props.get('line-height')" />-->
-<!--  <ListInlineComponent :prop="component.props.get('list-inline')" />-->
-<!--  <ListUnstyledComponent :prop="component.props.get('list-unstyled')" />-->
-<!--  <MonospaceComponent :prop="component.props.get('font-monospace')" />-->
-<!--  <TextAlignComponent :prop="component.props.get('text-align')" />-->
-<!--  <TextTransformComponent :prop="component.props.get('text-transform')" />-->
-  <!--        -->
-<!--  <AlignContentComponent :prop="component.props.get('align-content')" />-->
-<!--  <AlignItemsComponent :prop="component.props.get('align-items')" />-->
+  <LinkColorComponent :prop="component.props.get('link-color')" />
+  <LinkOpacityComponent :prop="component.props.get('link-opacity')" />
+  <LinkUnderlineOffsetComponent :prop="component.props.get('link-offset')" />
+  <LinkUnderlineOpacityComponent :prop="component.props.get('link-underline-opacity')" />
+  
+  <FontComponent :prop="component.props.get('font')" />
+  <InlineTextComponent :prop="component.props.get('inline-text')" />
+  <LeadParagraphComponent :prop="component.props.get('lead-paragraph')" />
+  <LineHeightComponent :prop="component.props.get('line-height')" />
+  <ListInlineComponent :prop="component.props.get('list-inline')" />
+  <ListUnstyledComponent :prop="component.props.get('list-unstyled')" />
+  <MonospaceComponent :prop="component.props.get('font-monospace')" />
+  <TextAlignComponent :prop="component.props.get('text-align')" />
+  <TextTransformComponent :prop="component.props.get('text-transform')" />
+  <TextDecorationComponent :prop="component.props.get('text-decoration')" />
+  
+  <AlignContentComponent :prop="component.props.get('align-content')" />
+  <AlignItemsComponent :prop="component.props.get('align-items')" />
   <BorderRadiusComponent :prop="component.props.get('border-radius')" />
   <ColWidthComponent :prop="component.props.get('col')" />
   <FlexDirectionComponent :prop="component.props.get('flex-direction')" />
@@ -63,10 +64,18 @@ import ImgFluidComponent from '@/components/editor/UI/ImgFluidComponent.vue';
 import JustifyContentComponent from '@/components/editor/UI/JustifyContentComponent.vue';
 import ImgFluidProp from '@/editor/properties/ImgFluidProp.ts';
 import JustifyContentProp from '@/editor/properties/JustifyContentProp.ts';
+import LinkColorComponent from '@/components/editor/UI/link/LinkColorComponent.vue';
+import LinkOpacityComponent from '@/components/editor/UI/link/LinkOpacityComponent.vue';
+import LinkUnderlineOffsetComponent from '@/components/editor/UI/link/LinkUnderlineOffsetComponent.vue';
+import LinkUnderlineOpacityComponent from '@/components/editor/UI/link/LinkUnderlineOpacityComponent.vue';
+import FontComponent from '@/components/editor/UI/text/FontComponent.vue';
+import TextDecorationComponent from '@/components/editor/UI/text/TextDecorationComponent.vue';
+import TextDecorationProp from '@/editor/properties/text/TextDecorationProp.ts';
 
 export default {
   name: 'ComponentSetupComponent',
   components: {
+    TextDecorationComponent,
     JustifyContentComponent,
     ImgFluidComponent,
     GutterComponent,
@@ -80,7 +89,14 @@ export default {
     MonospaceComponent,
     ListUnstyledComponent,
     ListInlineComponent,
-    InlineTextComponent, LeadParagraphComponent, LineHeightComponent
+    InlineTextComponent,
+    LeadParagraphComponent,
+    LineHeightComponent,
+    LinkColorComponent,
+    LinkOpacityComponent,
+    LinkUnderlineOffsetComponent,
+    LinkUnderlineOpacityComponent,
+    FontComponent
   },
   setup() {
     const component = new Container()
@@ -99,6 +115,7 @@ export default {
       new MonoSpaceProp([null], component),
       new TextAlignProp([null], component),
       new TextTransformProp([null], component),
+      new TextDecorationProp([null], component),
       
       new AlignItemsProp([null], component),
       new AlignContentProp([null], component),
