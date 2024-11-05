@@ -1,6 +1,6 @@
 import { setActivePinia, createPinia } from 'pinia';
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useChooseDomenStore } from '@/store/choose-domen-component.store.ts';
+import { useChooseDomenStore } from '@/store/modals/choose-domen-component.store.ts';
 
 describe('useChooseDomenStore', () => {
   let chooseDomenStore;

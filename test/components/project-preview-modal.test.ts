@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { test, vi, expect, describe, beforeEach } from 'vitest';
-import ProjectPreviewModal from '@/components/ProjectPreviewModal.vue';
+import ProjectPreviewModal from '@/components/modals/ProjectPreviewModal.vue';
 import { createPinia, setActivePinia } from 'pinia';
 
 vi.mock('@/store/project-preview-modal.store.ts', () => {

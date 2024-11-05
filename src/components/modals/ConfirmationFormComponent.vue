@@ -13,7 +13,7 @@
       >
         <div class="container">
           <div class="logo">
-            <img src="@/assets/svg/Lumin_logo.svg" class="logo_svg">
+            <img src="../../assets/svg/Lumin_logo.svg" class="logo_svg">
           </div>
           <div class="inputs_container">
             <h2 class="container_title title">Подтверждение</h2>
@@ -22,10 +22,10 @@
             <span class="block_title title">Введите его ниже:</span>
             <n-input  v-model="emailData" placeholder="123-456-789" type="text" class="input">
               <template #prefix>
-                <img src="@/assets/svg/email.svg" class="imgLogin"/>
+                <img src="../../assets/svg/email.svg" class="imgLogin"/>
               </template>
             </n-input>
-            <n-button color="#3535FFA6" class="btn" @click="cancelForm">Войти</n-button>
+            <n-button color="#3535FFA6" class="btn" @click="cancel">Войти</n-button>
           </div>
         </div>
       </n-card>
@@ -36,7 +36,7 @@
 <script lang="ts">
 
 import { defineComponent } from 'vue';
-import { useConfirmationStore } from '@/store/confirmation-form-component.store.ts';
+import { useConfirmationStore } from '@/store/modals/confirmation-form-component.store.ts';
 
 export default defineComponent({
   name: "ConfirmationFormComponent",
@@ -48,15 +48,13 @@ export default defineComponent({
     }
   },
   setup() {
-    const confirmationStore = useConfirmationStore()
-
-    const cancelForm = () => {
-      confirmationStore.closeModal();
-    };
-
     return {
-      confirmationStore,
-      cancelForm
+      confirmationStore: useConfirmationStore()
+    }
+  },
+  methods: {
+    cancel() {
+      this.confirmationStore.closeModal();
     }
   }
 })

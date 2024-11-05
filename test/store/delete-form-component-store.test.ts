@@ -1,6 +1,6 @@
 import { setActivePinia, createPinia } from 'pinia';
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useProjectStore } from '@/store/delete-form-component.store.ts';
+import { useProjectStore } from '@/store/modals/delete-form-component.store.ts';
 
 describe('useProjectStore', () => {
   let projectStore;

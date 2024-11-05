@@ -1,11 +1,12 @@
 <template>
   <div v-if="checkStatus" class="backgroundContainer">
+    <DeleteFormComponent />
     <div class="container">
       <div class="closePart" @click="closeModal">
-        <img src="@/assets/svg/close.svg" class="img"/>
+        <img src="../../assets/svg/close.svg" class="img"/>
       </div>
       <div class="inputsContainer">
-        <img src="@/assets/svg/dami.svg" class="preview">
+        <img src="../../assets/svg/dami.svg" class="preview">
       </div>
       <div class="controlGroup">
         <div class="upPart">
@@ -15,12 +16,12 @@
               <p class="cardDate text">{{formattedDate}}</p>
               <span class="separatorText">|</span>
               <span class="starsCount text">
-                <img src="../assets/imageCard/star.svg" alt="star" class="starImg"/>
+                <img src="../../assets/imageCard/star.svg" alt="star" class="starImg"/>
                 {{data.stars}}
             </span>
             </div>
           </div>
-          <n-button quaternary color="#FF356BA6" class="btnText"> Удалить
+          <n-button quaternary color="#FF356BA6" class="btnText" @click="remove"> Удалить
             <template #icon>
               <n-icon>
                 <Delete/>
@@ -64,10 +65,13 @@ import usePreviewModalStore from '@/store/project-preview-modal.store.ts';
 import useEditorStore from '@/store/editor.store.ts';
 import Packager from '@/editor/core/Packager.ts';
 import { getEditorInstance } from '@/editor/plugin.ts'
+import { useDeleteProjectModalStore } from '@/store/modals/delete-form-component.store.ts';
+import DeleteFormComponent from '@/components/modals/DeleteFormComponent.vue';
 
 export default {
   name: "ProjectPreviewModal",
   components: {
+    DeleteFormComponent,
     Download,
     Delete,
     Share,
@@ -76,7 +80,8 @@ export default {
   setup() {
     return {
       previewModalStore: usePreviewModalStore(),
-      editorStore: useEditorStore()
+      editorStore: useEditorStore(),
+      deleteProjectStore: useDeleteProjectModalStore()
     }
   },
   computed: {
@@ -95,6 +100,9 @@ export default {
   methods: {
     closeModal() {
       this.previewModalStore.closeModal()
+    },
+    remove() {
+      this.deleteProjectStore.openModal({ ...this.data })
     },
     download() {
       const app = getEditorInstance()

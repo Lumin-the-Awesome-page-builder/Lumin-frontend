@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import ChangeDataComponent from '@/components/ChangeDataProjectComponent.vue';
+import ChangeDataComponent from '@/components/modals/ChangeProjectDataComponent.vue';
 import { createPinia, setActivePinia } from 'pinia';
 
 vi.mock('@/store/change-data-project-component.store.ts', () => ({

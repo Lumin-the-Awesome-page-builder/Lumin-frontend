@@ -16,7 +16,7 @@
         <div class="container">
           <div class="inputs_container">
             <h2 class="container_title title">Подтвержение удаления</h2>
-            <span class="block_title title">Вы уверены, что хотите удалить {{ projectStore.projectName }}?</span>
+            <span class="block_title title">Вы уверены, что хотите удалить {{ projectName }}?</span>
             <span class="block_title_bold title">Отменить это действие будет невозможно.</span>
             <n-button color="#FF356BA6" class="btn" @click="deleteProject">Удалить</n-button>
           </div>
@@ -29,27 +29,27 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import { useProjectStore } from '@/store/delete-form-component.store.ts';
+import { useDeleteProjectModalStore } from '@/store/modals/delete-form-component.store.ts';
 
 export default defineComponent({
   name: "DeleteFormComponent",
   setup() {
-    const projectStore = useProjectStore();
-
-    const cancelCallback = () => {
-      projectStore.closeModal();
-    };
-
-    const deleteProject = () => {
-      console.log(`Проект ${projectStore.projectName} удален.`);
-      projectStore.closeModal();
-    };
-
     return {
-      projectStore,
-      cancelCallback,
-      deleteProject,
+      projectStore: useDeleteProjectModalStore(),
     };
+  },
+  methods: {
+    deleteProject() {
+      this.projectStore.closeModal();
+    },
+    cancelCallback() {
+      this.projectStore.closeModal();
+    }
+  },
+  computed: {
+    projectName() {
+      return this.projectStore.project.name
+    }
   }
 });
 </script>

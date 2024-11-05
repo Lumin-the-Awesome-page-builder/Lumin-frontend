@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
 
-export const useChooseDomenStore = defineStore('chooseDomenComponent', {
+export const useChooseDomainStore = defineStore('chooseDomainComponent', {
   state: () => ({
     showModal: false,
-    domen: '',
+    domain: '',
   }),
   actions: {
     openModal() {
@@ -12,8 +12,8 @@ export const useChooseDomenStore = defineStore('chooseDomenComponent', {
     closeModal() {
       this.showModal = false;
     },
-    setDomen(domen) {
-      this.domen = domen;
+    setDomain(domain: string) {
+      this.domain = domain;
     },
   },
 });

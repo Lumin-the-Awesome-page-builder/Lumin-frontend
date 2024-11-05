@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import DeleteFormComponent from '@/components/DeleteFormComponent.vue';
+import DeleteFormComponent from '@/components/modals/DeleteFormComponent.vue';
 import { createPinia, setActivePinia } from 'pinia';
 
 vi.mock('@/store/delete-form-component.store.ts', () => ({

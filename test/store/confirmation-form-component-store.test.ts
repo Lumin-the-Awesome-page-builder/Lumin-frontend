@@ -1,6 +1,6 @@
 import { setActivePinia, createPinia } from 'pinia';
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useConfirmationStore } from '@/store/confirmation-form-component.store.ts';
+import { useConfirmationStore } from '@/store/modals/confirmation-form-component.store.ts';
 
 describe('useConfirmationStore', () => {
   let confirmationStore;

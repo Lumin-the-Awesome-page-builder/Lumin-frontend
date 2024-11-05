@@ -1,7 +1,7 @@
 <template>
   <n-message-provider>
     <n-modal
-      v-model:show="ChooseDomenStore.showModal"
+      v-model:show="visible"
       transform-origin="center"
       style="width: 600px"
       preset="card"
@@ -14,14 +14,14 @@
       >
         <div class="container">
           <div class="logo">
-            <img src="@/assets/svg/Lumin_logo.svg" class="logo_svg">
+            <img src="../../assets/svg/Lumin_logo.svg" class="logo_svg">
           </div>
           <div class="inputs_container">
             <h2 class="container_title title">Добро пожаловать</h2>
             <span class="block_title title">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce placerat, magna vel gravida pulvinar, purus nisl tempus mi, sed scelerisque lorem urna et lectus. Donec ac hendrerit odio, sed ullamcorper dui. In eget risus ligula. Morbi nec lacus varius, cursus ipsum ac, vestibulum nunc. Nulla bibendum semper diam, vel fringilla risus faucibus a. Vestibulum rhoncus nisl ac consequat bibendum. Suspendisse et convallis tellus. Etiam sit amet dictum neque.</span>
             <div class="partInput">
               <n-input  v-model:value="domain" placeholder="subdomain" type="text" class="input"></n-input>
-              <n-p class="postfixText">.domain.ru</n-p>
+              <n-p class="postfixText">.dudosyka.ru</n-p>
             </div>
             <n-button color="#3535FFA6" class="btn" @click="save">Сохранить</n-button>
           </div>
@@ -33,10 +33,10 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useChooseDomenStore } from '@/store/choose-domen-component.store.ts';
+import { useChooseDomainStore } from '@/store/modals/choose-domen-component.store.ts';
 
 export default defineComponent({
-  name: "СhooseDomenComponent",
+  name: "ChooseDomainComponent",
   data() {
     return {
       domain: "",
@@ -44,15 +44,20 @@ export default defineComponent({
   },
   methods:{
     save(){
-      this.ChooseDomenStore.setDomen(this.domain)
-      this.ChooseDomenStore.closeModal()
+      this.chooseDomainStore.setDomain(this.domain)
+      this.chooseDomainStore.closeModal()
     }
   },
   setup() {
-    const ChooseDomenStore = useChooseDomenStore()
+    const chooseDomainStore = useChooseDomainStore()
 
     return {
-      ChooseDomenStore
+      chooseDomainStore
+    }
+  },
+  computed: {
+    visible() {
+      return this.chooseDomainStore.showModal
     }
   }
 })

@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
-import ChooseDomenComponent from '@/components/ChooseDomenComponent.vue';
+import ChooseDomenComponent from '@/components/modals/ChooseDomainComponent.vue';
 
 vi.mock('@/store/choose-domen-component.store.ts', () => ({
   useChooseDomenStore: () => ({

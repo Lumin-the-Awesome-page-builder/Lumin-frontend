@@ -12,7 +12,7 @@
 <script lang="ts">
 import HeaderComponent from '@/components/HeaderComponent.vue';
 import DashboardComponent from '@/components/DashboardComponent.vue'
-import ProjectPreviewModal from '@/components/ProjectPreviewModal.vue'
+import ProjectPreviewModal from '@/components/modals/ProjectPreviewModal.vue'
 import { NConfigProvider } from 'naive-ui';
 
 export default {

@@ -1,7 +1,7 @@
 <template>
   <n-message-provider>
     <n-modal
-      v-model:show="HelloFormStore.showModal"
+      v-model:show="visible"
       transform-origin="center"
       preset="card"
       style="width: 600px"
@@ -14,12 +14,12 @@
       >
           <div class="container">
             <div class="logo">
-              <img src="@/assets/svg/Lumin_logo.svg" class="logo_svg">
+              <img src="../../assets/svg/Lumin_logo.svg" class="logo_svg">
             </div>
             <div class="inputs_container">
               <h2 class="container_title title">Добро пожаловать!</h2>
               <span class="block_title title">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce placerat, magna vel gravida pulvinar, purus nisl tempus mi, sed scelerisque lorem urna et lectus. Donec ac hendrerit odio, sed ullamcorper dui. In eget risus ligula. Morbi nec lacus varius, cursus ipsum ac, vestibulum nunc. Nulla bibendum semper diam, vel fringilla risus faucibus a. Vestibulum rhoncus nisl ac consequat bibendum. Suspendisse et convallis tellus. Etiam sit amet dictum neque.</span>
-              <n-button color="#3535FFA6" class="btn" @click="cancelForm">Продолжить</n-button>
+              <n-button color="#3535FFA6" class="btn" @click="cancel">Продолжить</n-button>
             </div>
           </div>
       </n-card>
@@ -29,20 +29,23 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useHelloFormStore } from '@/store/hello-form-component.store.ts';
+import { useHelloFormStore } from '@/store/modals/hello-form-component.store.ts';
 
 export default defineComponent({
   name: "HelloFormComponent",
   setup() {
-    const HelloFormStore = useHelloFormStore()
-
-    const cancelForm = () => {
-      HelloFormStore.closeModal();
-    };
-
     return {
-      HelloFormStore,
-      cancelForm
+      helloFormStore: useHelloFormStore(),
+    }
+  },
+  methods: {
+    cancel() {
+      this.helloFormStore.closeModal()
+    }
+  },
+  computed: {
+    visible() {
+      return this.helloFormStore.showModal
     }
   }
 })

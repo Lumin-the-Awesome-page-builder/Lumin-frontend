@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import ConfirmationFormComponent from '@/components/ConfirmationFormComponent.vue';
+import ConfirmationFormComponent from '@/components/modals/ConfirmationFormComponent.vue';
 import { createPinia, setActivePinia } from 'pinia';
 
 vi.mock('@/store/confirmation-form-component.store.ts', () => ({
