@@ -187,7 +187,7 @@ describe('Base ApiModelUtil class tests', () => {
     expect(axios).toBeCalledWith({
       url: refreshUrl,
       method: 'POST',
-      data: null,
+      data: '{}',
       headers: {
         ...headers,
       },
