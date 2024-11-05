@@ -1,5 +1,3 @@
-import Component from '@/editor/core/component/Component.ts';
-import Attribute from '@/editor/core/attribute/Attribute.ts';
 import Property from '@/editor/core/property/Property.ts';
 
 export default abstract class MultipleProperty extends Property {

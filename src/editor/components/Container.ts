@@ -1,6 +1,6 @@
 import Component from '@/editor/core/component/Component';
 import AlignItemsProp from '@/editor/properties/AlignItemsProp.ts';
-import AlignSelfProp from '@/editor/properties/AlignSelfProp.ts';
+import AlignContentProp from '@/editor/properties/AlignContentProp.ts';
 import ColWidthProp from '@/editor/properties/ColWidthProp.ts';
 import FlexDirectionProp from '@/editor/properties/FlexDirectionProp.ts';
 import FlexProp from '@/editor/properties/FlexProp.ts';
@@ -16,7 +16,7 @@ export default class Container extends Component {
 
   availableProps: string[] = [
     AlignItemsProp.name,
-    AlignSelfProp.name,
+    AlignContentProp.name,
     ColWidthProp.name,
     FlexDirectionProp.name,
     FlexProp.name,

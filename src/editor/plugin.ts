@@ -11,7 +11,7 @@ import Header from '@/editor/components/Header.ts';
 import Image from '@/editor/components/Image.ts';
 import Link from '@/editor/components/Link.ts';
 import AlignItemsProp from '@/editor/properties/AlignItemsProp.ts';
-import AlignSelfProp from '@/editor/properties/AlignSelfProp.ts';
+import AlignContentProp from '@/editor/properties/AlignContentProp.ts';
 import ColWidthProp from '@/editor/properties/ColWidthProp.ts';
 import JustifyContentProp from '@/editor/properties/JustifyContentProp.ts';
 import FontProp from '@/editor/properties/text/FontProp.ts';
@@ -50,7 +50,7 @@ export function getEditorInstance() {
   editor.useProp(FlexProp);
   editor.useProp(GutterProp);
   editor.useProp(AlignItemsProp);
-  editor.useProp(AlignSelfProp);
+  editor.useProp(AlignContentProp);
   editor.useProp(ColWidthProp);
   editor.useProp(JustifyContentProp);
 

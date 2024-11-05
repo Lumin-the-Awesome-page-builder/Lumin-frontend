@@ -39,7 +39,7 @@
         return [
           {
             subheading: 'Стандартная прозрачность',
-            value: this.prop.value[0] !== null ? this.prop.value[0] : 0,
+            value: this.prop.value[0] !== null ? this.prop.value[0] : this.prop.defaultValue[0],
             marks: {
               ...Object.keys(this.prop.availableValues[0]).map(key => {
                 const numKey = Number(key);

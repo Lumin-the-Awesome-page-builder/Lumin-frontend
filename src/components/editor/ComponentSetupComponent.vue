@@ -5,26 +5,23 @@
   <!--        <LinkUnderlineOpacityComponent :prop="component.props.get('link-underline-opacity')" />-->
   <!--        -->
   <!--        <FontComponent :prop="component.props.get('font')" />-->
-  <InlineTextComponent :prop="component.props.get('inline-text')" />
-  <LeadParagraphComponent :prop="component.props.get('lead-paragraph')" />
-  <LineHeightComponent :prop="component.props.get('line-height')" />
-  <ListInlineComponent :prop="component.props.get('list-inline')" />
-  <ListUnstyledComponent :prop="component.props.get('list-unstyled')" />
-  <MonospaceComponent :prop="component.props.get('font-monospace')" />
-  <TextAlignComponent :prop="component.props.get('text-align')" />
-  <TextTransformComponent :prop="component.props.get('text-transform')" />
-  <!--        <TextAlignComponent :prop="component.props.get('font')" />-->
-  <!--        <TextDecorationComponent :prop="component.props.get('font')" />-->
-  <!--        <TextTransformComponent :prop="component.props.get('font')" />-->
+<!--  <InlineTextComponent :prop="component.props.get('inline-text')" />-->
+<!--  <LeadParagraphComponent :prop="component.props.get('lead-paragraph')" />-->
+<!--  <LineHeightComponent :prop="component.props.get('line-height')" />-->
+<!--  <ListInlineComponent :prop="component.props.get('list-inline')" />-->
+<!--  <ListUnstyledComponent :prop="component.props.get('list-unstyled')" />-->
+<!--  <MonospaceComponent :prop="component.props.get('font-monospace')" />-->
+<!--  <TextAlignComponent :prop="component.props.get('text-align')" />-->
+<!--  <TextTransformComponent :prop="component.props.get('text-transform')" />-->
   <!--        -->
-  <!--        <AlignContentComponent :prop="component.props.get('font')" />-->
-  <!--        <AlignItemsComponent :prop="component.props.get('font')" />-->
-  <!--        <BorderRadiusComponent :prop="component.props.get('font')" />-->
-  <!--        <ColWidthComponent :prop="component.props.get('font')" />-->
-  <!--        <DisplayFlexComponent :prop="component.props.get('font')" />-->
-  <!--        <FlexDirectionComponent :prop="component.props.get('font')" />-->
-  <!--        <GutterComponent :prop="component.props.get('font')" />-->
-  <!--        <ImgFluidComponent :prop="component.props.get('font')" />-->
+<!--  <AlignContentComponent :prop="component.props.get('align-content')" />-->
+<!--  <AlignItemsComponent :prop="component.props.get('align-items')" />-->
+  <BorderRadiusComponent :prop="component.props.get('border-radius')" />
+  <ColWidthComponent :prop="component.props.get('col')" />
+  <FlexDirectionComponent :prop="component.props.get('flex-direction')" />
+  <GutterComponent :prop="component.props.get('gap')" />
+  <ImgFluidComponent :prop="component.props.get('img-fluid')" />
+  <JustifyContentComponent :prop="component.props.get('justify-content')" />
 </template>
 
 <script lang="ts">
@@ -50,10 +47,34 @@ import TextAlignComponent from '@/components/editor/UI/text/TextAlignComponent.v
 import TextAlignProp from '@/editor/properties/text/TextAlignProp.ts';
 import TextTransformComponent from '@/components/editor/UI/text/TextTransformComponent.vue';
 import TextTransformProp from '@/editor/properties/text/TextTransformProp.ts';
+import AlignItemsComponent from '@/components/editor/UI/AlignItemsComponent.vue';
+import AlignItemsProp from '@/editor/properties/AlignItemsProp.ts';
+import AlignContentProp from '@/editor/properties/AlignContentProp.ts';
+import AlignContentComponent from '@/components/editor/UI/AlignContentComponent.vue'
+import BorderRadiusComponent from '@/components/editor/UI/BorderRadiusComponent.vue';
+import BorderRadiusProp from '@/editor/properties/BorderRadiusProp.ts';
+import ColWidthComponent from '@/components/editor/UI/ColWidthComponent.vue';
+import ColWidthProp from '@/editor/properties/ColWidthProp.ts';
+import FlexDirectionComponent from '@/components/editor/UI/FlexDirectionComponent.vue';
+import FlexDirectionProp from '@/editor/properties/FlexDirectionProp.ts';
+import GutterComponent from '@/components/editor/UI/GutterComponent.vue';
+import GutterProp from '@/editor/properties/GutterProp.ts';
+import ImgFluidComponent from '@/components/editor/UI/ImgFluidComponent.vue';
+import JustifyContentComponent from '@/components/editor/UI/JustifyContentComponent.vue';
+import ImgFluidProp from '@/editor/properties/ImgFluidProp.ts';
+import JustifyContentProp from '@/editor/properties/JustifyContentProp.ts';
 
 export default {
   name: 'ComponentSetupComponent',
   components: {
+    JustifyContentComponent,
+    ImgFluidComponent,
+    GutterComponent,
+    FlexDirectionComponent,
+    ColWidthComponent,
+    BorderRadiusComponent,
+    AlignItemsComponent,
+    AlignContentComponent,
     TextTransformComponent,
     TextAlignComponent,
     MonospaceComponent,
@@ -77,7 +98,16 @@ export default {
       new ListUnstyledProp([null], component),
       new MonoSpaceProp([null], component),
       new TextAlignProp([null], component),
-      new TextTransformProp([null], component)
+      new TextTransformProp([null], component),
+      
+      new AlignItemsProp([null], component),
+      new AlignContentProp([null], component),
+      new BorderRadiusProp([null], component),
+      new ColWidthProp([null], component),
+      new FlexDirectionProp([null], component),
+      new GutterProp([null], component),
+      new ImgFluidProp([null], component),
+      new JustifyContentProp([null], component)
     ])
     
     return {

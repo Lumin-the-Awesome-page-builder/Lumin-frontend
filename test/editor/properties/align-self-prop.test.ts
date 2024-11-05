@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import AlignSelfProp from '@/editor/properties/AlignSelfProp.ts';
+import AlignContentProp from '@/editor/properties/AlignContentProp.ts';
 
 describe('Align Self prop test', () => {
   it('Correct class creation', () => {
-    const alignSelfProp = new AlignSelfProp('value');
+    const alignSelfProp = new AlignContentProp('value');
 
     expect(alignSelfProp.value).toBe('value');
     expect(alignSelfProp.defaultValue).toBe('start');
@@ -16,11 +16,11 @@ describe('Align Self prop test', () => {
       between: 'align-self-baseline',
       around: 'align-self-stretch',
     });
-    expect(AlignSelfProp.name).toBe('align-self');
+    expect(AlignContentProp.name).toBe('align-self');
   });
 
   it('Correct name getter', () => {
-    const alignSelfProp = new AlignSelfProp('value');
+    const alignSelfProp = new AlignContentProp('value');
 
     expect(alignSelfProp.getName()).toBe('align-self');
   });

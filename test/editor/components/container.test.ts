@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import Container from '@/editor/components/Container.ts';
 import AlignItemsProp from '@/editor/properties/AlignItemsProp.ts';
-import AlignSelfProp from '@/editor/properties/AlignSelfProp.ts';
+import AlignContentProp from '@/editor/properties/AlignContentProp.ts';
 import ColWidthProp from '@/editor/properties/ColWidthProp.ts';
 import FlexDirectionProp from '@/editor/properties/FlexDirectionProp.ts';
 import FlexProp from '@/editor/properties/FlexProp.ts';
@@ -20,7 +20,7 @@ describe('Test container component', () => {
     const container = new Container('div');
     expect(container.availableProps).toStrictEqual([
       AlignItemsProp.name,
-      AlignSelfProp.name,
+      AlignContentProp.name,
       ColWidthProp.name,
       FlexDirectionProp.name,
       FlexProp.name,
