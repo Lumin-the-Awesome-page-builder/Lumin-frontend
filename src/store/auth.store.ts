@@ -22,7 +22,7 @@ const useAuthStore = defineStore({
       const authorized = await AuthModel.requestAuthorizedData();
 
       if (authorized.success) {
-        this.loggedInUser = authorized;
+        this.loggedInUser = authorized.getData();
       }
 
       this.isLoggedIn = res.success && authorized.success;

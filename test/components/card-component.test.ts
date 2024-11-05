@@ -13,9 +13,11 @@ describe('CardComponent tests', () => {
     const customDate = new Date('2023-10-29');
     const customStars = 5;
     const customImageSrc = 'path/to/image.jpg';
+    const customId = 1;
 
     const wrapper = mount(CardComponent, {
       props: {
+        id: customId,
         title: customTitle,
         date: customDate,
         stars: customStars,
@@ -43,7 +45,11 @@ describe('CardComponent tests', () => {
     const routerMock = {
       push: vi.fn(),
     };
+    const customId = 1;
     const wrapper = mount(CardComponent, {
+      props: {
+        id: customId,
+      },
       global: {
         mocks: {
           $router: routerMock,
@@ -56,12 +62,9 @@ describe('CardComponent tests', () => {
 
     await wrapper.vm.editProject();
 
-    expect(wrapper.vm.editorStore.useById).toHaveBeenCalled();
-    expect(wrapper.vm.editorStore.useById).toHaveBeenCalledWith(
-      expect.any(Number),
-    );
-
-    expect(routerMock.push).toHaveBeenCalledWith({ path: '/editor' });
+    expect(routerMock.push).toHaveBeenCalledWith({
+      path: `/project/${customId}/edit`,
+    });
 
     consoleLogSpy.mockRestore();
   });

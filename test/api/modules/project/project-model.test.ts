@@ -31,7 +31,7 @@ describe('ProjectModel class tests', () => {
         name: 'name',
         data: 'data',
         tags: ['tag'],
-        category: 1,
+        category_id: 1,
       });
     });
 
