@@ -28,7 +28,7 @@ export default {
           // Инициализация конфигурации
           VKID.Config.init({
             app: 52585823,
-            redirectUrl: 'https://beta.lumin.dudosyka.ru/auth',
+            redirectUrl: 'https://lumin.dudosyka.ru/auth',
             responseMode: VKID.ConfigResponseMode.Callback,
             source: VKID.ConfigSource.LOWCODE,
             scope: "email",
