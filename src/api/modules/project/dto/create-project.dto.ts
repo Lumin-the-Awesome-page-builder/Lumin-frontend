@@ -3,6 +3,6 @@ export default class CreateProjectDto {
     public name: string,
     public data: string,
     public tags: string[],
-    public category: number,
+    public category_id: number,
   ) {}
 }

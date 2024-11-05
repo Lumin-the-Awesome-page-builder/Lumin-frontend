@@ -15,7 +15,11 @@ describe('Editor component', async () => {
       attachTo: document.body,
       global: {
         mocks: {
-          $route: {},
+          $route: {
+            params: {
+              id: 123,
+            },
+          },
         },
         plugins: [router, EditorPlugin],
       },

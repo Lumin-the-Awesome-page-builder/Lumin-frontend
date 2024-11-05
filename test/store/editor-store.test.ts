@@ -6,7 +6,9 @@ import useEditorStore from '@/store/editor.store.ts';
 vi.mock('@/api/modules/project/models/project.model.ts', () => {
   return {
     default: {
-      getOne: vi.fn(() => 'project'),
+      getOne: vi.fn(() => ({
+        getData: vi.fn(() => 'project'),
+      })),
       update: vi.fn(() => 'updated'),
     },
   };
