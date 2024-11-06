@@ -106,6 +106,9 @@ export default abstract class Component {
   }
 
   appendChildren(children: Record<string, Component>) {
+    Object.keys(children).forEach((key) => {
+      children[key].setParent(this)
+    })
     Object.assign(this.children, children);
   }
 

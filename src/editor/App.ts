@@ -25,10 +25,9 @@ export class App {
   init(
     mountPoint: string,
     identifierSalt: string,
-    initState: ComponentObject[] = [],
+    initState: Record<string, ComponentObject> = {},
   ) {
     this.mountPoint = mountPoint;
-    console.log(this.mountPoint);
     this.identifiersSalt = identifierSalt;
     this.initState = initState;
 

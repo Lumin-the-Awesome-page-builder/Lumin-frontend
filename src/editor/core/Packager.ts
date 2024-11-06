@@ -9,13 +9,11 @@ export default class Packager {
 
     const body = document.createElement('body');
     if (state == null) {
-      this.app
-        .buildTree(this.app.initState)
-        .forEach((el) => body.appendChild(el.render(true)));
+      const tree = this.app.buildTree(this.app.initState)
+      Object.keys(tree).forEach((key) => body.appendChild(tree[key].render(true)));
     } else {
-      this.app
-        .buildTree(state)
-        .forEach((el) => body.appendChild(el.render(true)));
+      const tree = this.app.buildTree(state)
+      Object.keys(tree).forEach((key) => body.appendChild(tree[key].render(true)));
     }
 
     const head = document.createElement('head');
@@ -54,7 +52,8 @@ export default class Packager {
           else return null;
         })
         .filter((el) => el)
-        .map((el) => el.toJson()),
+        .map((el) => ({ [el.key]: el.toJson() }))
+        .reduce((prev, current) => Object.assign(prev, current)),
     );
   }
 }

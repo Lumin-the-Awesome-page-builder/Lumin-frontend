@@ -15,6 +15,8 @@ const spies = {
   setContent: vi.fn(),
   update: vi.fn(),
   setEventHandler: vi.fn(),
+  availableProps: [],
+  key: "123"
 };
 
 function MockComponentClass() {
@@ -42,6 +44,7 @@ class MockComponent extends Component {
   replaceChild = vi.fn();
   removeChild = vi.fn();
   updateChild = vi.fn();
+  availableProps = []
 }
 
 //@ts-ignore
@@ -94,6 +97,14 @@ describe('App.ts unit tests', () => {
 
   describe('buildProps', () => {
     it('Success build props', () => {
+      const component = {
+        availableProps: [],
+        htmlElement: {
+          classList: {
+            add: vi.fn()
+          }
+        }
+      }
       const propData: PropertyObject[] = [
         {
           name: 'MockProperty',
@@ -106,7 +117,7 @@ describe('App.ts unit tests', () => {
       ];
       app.useProp(MockProperty);
 
-      const props = app.buildProps(propData);
+      const props = app.buildProps(component, propData);
 
       expect(props).toHaveLength(2);
       expect(props[0]).toBeInstanceOf(MockProperty);
@@ -116,6 +127,14 @@ describe('App.ts unit tests', () => {
       expect(props[1].value).toBe('test-value-2');
     });
     it('Wrong property name provided', () => {
+      const component = {
+        availableProps: [],
+        htmlElement: {
+          classList: {
+            add: vi.fn()
+          }
+        }
+      }
       const propName = 'WrongPropertyName';
       const propData: PropertyObject[] = [
         {
@@ -126,7 +145,8 @@ describe('App.ts unit tests', () => {
 
       app.useProp(MockProperty);
 
-      expect(() => app.buildProps(propData)).toThrow(
+      //@ts-ignore
+      expect(() => app.buildProps(component, propData)).toThrow(
         `Unknown property: ${propName}`,
       );
     });
@@ -166,8 +186,7 @@ describe('App.ts unit tests', () => {
       app.use('mock', component);
 
       const tree = app.buildTree(state);
-      expect(tree).toHaveLength(1);
-      expect(tree[0]).toBeInstanceOf(MockComponentClass);
+      expect(tree['123']).toBeInstanceOf(MockComponentClass);
       expect(app.parsePure).toBeCalledTimes(1);
       expect(app.parsePure).toBeCalledWith('<style>#a{}</style><div></div>');
       expect(spies.setAttrs).toHaveBeenCalledWith([
@@ -182,7 +201,7 @@ describe('App.ts unit tests', () => {
           value: 'test-value-1',
         },
       ]);
-      expect(spies.appendChildren).toHaveBeenCalledWith([]);
+      expect(spies.appendChildren).toHaveBeenCalledWith({});
       expect(spies.setContent).toHaveBeenCalledWith('test content');
 
       expect(spies.setKeySalt).toHaveBeenCalledWith('salt');
@@ -210,7 +229,7 @@ describe('App.ts unit tests', () => {
     });
 
     it('provided state as state', () => {
-      expect(app.buildTree(null)).toStrictEqual([]);
+      expect(app.buildTree(null)).toStrictEqual({});
     });
   });
 
@@ -237,7 +256,8 @@ describe('App.ts unit tests', () => {
     app.use('mock', MockComponent);
 
     app.mount();
-    app.root.forEach((el: any) => {
+    Object.keys(app.root).forEach((key: any) => {
+      const el = app.root[key]
       expect(el.render).toHaveBeenCalledWith();
     });
   });
