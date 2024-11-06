@@ -4,3 +4,5 @@ node_modules
 dist
 coverage-report.txt
 *.tsbuildinfo
+components.d.ts
+auto-imports.d.ts

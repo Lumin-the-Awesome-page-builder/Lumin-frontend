@@ -14,6 +14,9 @@
         <template #header>
           <span class="custom-header">Параметры блока</span>
         </template>
+        
+        <ComponentSetupComponent />
+        
         <div><n-button color="#7b7bfe"> Сохранить </n-button></div>
       </n-collapse-item>
     </n-collapse>
@@ -30,13 +33,16 @@
 <script lang="ts">
 import useEditorStore from '@/store/editor.store.ts';
 import useProjectPreviewModalStore from '@/store/project-preview-modal.store.ts'
+import ComponentSetupComponent from '@/components/editor/ComponentSetupComponent.vue';
 
 export default {
-  components: {},
+  components: {
+    ComponentSetupComponent,
+  },
   setup() {
     return {
       editorStore: useEditorStore(),
-      projectPreviewModalStore: useProjectPreviewModalStore()
+      projectPreviewModalStore: useProjectPreviewModalStore(),
     }
   },
   methods: {

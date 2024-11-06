@@ -6,21 +6,25 @@ describe('Link opacity prop test', () => {
     const linkOpacityProp = new LinkOpacityProp('value');
 
     expect(linkOpacityProp.value).toBe('value');
-    expect(linkOpacityProp.defaultValue).toBe('opacity100');
-    expect(linkOpacityProp.description).toBe('___');
-    expect(linkOpacityProp.title).toBe('___');
-    expect(linkOpacityProp.availableValues).toStrictEqual({
-      opacity10: 'link-opacity-10',
-      opacity25: 'link-opacity-25',
-      opacity50: 'link-opacity-50',
-      opacity75: 'link-opacity-75',
-      opacity100: 'link-opacity-100',
-      opacityHover10: 'link-opacity-10-hover',
-      opacityHover25: 'link-opacity-25-hover',
-      opacityHover50: 'link-opacity-50-hover',
-      opacityHover75: 'link-opacity-75-hover',
-      opacityHover100: 'link-opacity-100-hover',
-    });
+    expect(linkOpacityProp.defaultValue).toStrictEqual([null, null]);
+    expect(linkOpacityProp.availableValues).toStrictEqual([
+      {
+        0: 'link-opacity-0',
+        10: 'link-opacity-10',
+        25: 'link-opacity-25',
+        50: 'link-opacity-50',
+        75: 'link-opacity-75',
+        100: 'link-opacity-100',
+      },
+      {
+        0: 'link-opacity-0-hover',
+        10: 'link-opacity-10-hover',
+        25: 'link-opacity-25-hover',
+        50: 'link-opacity-50-hover',
+        75: 'link-opacity-75-hover',
+        100: 'link-opacity-100-hover',
+      },
+    ]);
     expect(LinkOpacityProp.name).toBe('link-opacity');
   });
 

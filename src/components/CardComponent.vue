@@ -82,8 +82,7 @@ export default {
   },
   methods: {
     async editProject() {
-      await this.editorStore.useById(this.id)
-      this.$router.push({ path: '/editor' })
+      this.$router.push({ path: `/project/${this.id}/edit` })
     },
     shareProject() {
       console.log(this.title);

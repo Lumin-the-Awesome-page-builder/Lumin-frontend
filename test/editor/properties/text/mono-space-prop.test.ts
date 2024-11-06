@@ -6,12 +6,12 @@ describe('Monospace prop test', () => {
     const monoSpaceProp = new MonoSpaceProp('value');
 
     expect(monoSpaceProp.value).toBe('value');
-    expect(monoSpaceProp.defaultValue).toBe('monospace');
-    expect(monoSpaceProp.description).toBe('___');
-    expect(monoSpaceProp.title).toBe('___');
-    expect(monoSpaceProp.availableValues).toStrictEqual({
-      monospace: 'font-monospace',
-    });
+    expect(monoSpaceProp.defaultValue).toStrictEqual([null]);
+    expect(monoSpaceProp.availableValues).toStrictEqual([
+      {
+        checked: 'font-monospace',
+      },
+    ]);
     expect(MonoSpaceProp.name).toBe('font-monospace');
   });
 

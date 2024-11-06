@@ -11,20 +11,20 @@ import Header from '@/editor/components/Header.ts';
 import Image from '@/editor/components/Image.ts';
 import Link from '@/editor/components/Link.ts';
 import AlignItemsProp from '@/editor/properties/AlignItemsProp.ts';
-import AlignSelfProp from '@/editor/properties/AlignSelfProp.ts';
+import AlignContentProp from '@/editor/properties/AlignContentProp.ts';
 import ColWidthProp from '@/editor/properties/ColWidthProp.ts';
 import JustifyContentProp from '@/editor/properties/JustifyContentProp.ts';
-import FontWeightProp from '@/editor/properties/text/FontWeightProp.ts';
-import InlineTextProps from '@/editor/properties/text/InlineTextProps.ts';
+import FontProp from '@/editor/properties/text/FontProp.ts';
+import InlineTextProp from '@/editor/properties/text/InlineTextProp.ts';
 import LeadParagraphProp from '@/editor/properties/text/LeadParagraphProp.ts';
 import LineHeightProp from '@/editor/properties/text/LineHeightProp.ts';
 import MonoSpaceProp from '@/editor/properties/text/MonoSpaceProp.ts';
 import TextAlignProp from '@/editor/properties/text/TextAlignProp.ts';
 import TextTransformProp from '@/editor/properties/text/TextTransformProp.ts';
 import LinkOpacityProp from '@/editor/properties/link/LinkOpacityProp.ts';
-import LinkUnderlineProp from '@/editor/properties/link/LinkUnderlineProp.ts';
+import LinkColorProp from '@/editor/properties/link/LinkColorProp.ts';
 import LinkUnderlineOffsetProp from '@/editor/properties/link/LinkUnderlineOffsetProp.ts';
-import LinkUnderlineOpacity from '@/editor/properties/link/LinkUnderlineOpacity.ts';
+import LinkUnderlineOpacityProp from '@/editor/properties/link/LinkUnderlineOpacityProp.ts';
 import ImgFluidProp from '@/editor/properties/ImgFluidProp.ts';
 import BorderRadiusProp from '@/editor/properties/BorderRadiusProp.ts';
 
@@ -50,13 +50,13 @@ export function getEditorInstance() {
   editor.useProp(FlexProp);
   editor.useProp(GutterProp);
   editor.useProp(AlignItemsProp);
-  editor.useProp(AlignSelfProp);
+  editor.useProp(AlignContentProp);
   editor.useProp(ColWidthProp);
   editor.useProp(JustifyContentProp);
 
   // Text, Link, Header
-  editor.useProp(FontWeightProp);
-  editor.useProp(InlineTextProps);
+  editor.useProp(FontProp);
+  editor.useProp(InlineTextProp);
   editor.useProp(LeadParagraphProp);
   editor.useProp(LineHeightProp);
   editor.useProp(MonoSpaceProp);
@@ -65,9 +65,9 @@ export function getEditorInstance() {
 
   // Link
   editor.useProp(LinkOpacityProp);
-  editor.useProp(LinkUnderlineProp);
+  editor.useProp(LinkColorProp);
   editor.useProp(LinkUnderlineOffsetProp);
-  editor.useProp(LinkUnderlineOpacity);
+  editor.useProp(LinkUnderlineOpacityProp);
 
   // Image
   editor.useProp(ImgFluidProp);

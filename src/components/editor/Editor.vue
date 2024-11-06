@@ -12,6 +12,9 @@
 <script lang="ts">
 import Workspace from '@/components/editor/Workspace.vue'
 import useEditorStore from '@/store/editor.store.ts'
+import TokenUtil from '@/utils/token.util.ts';
+import useComponentSetupStore from '@/store/component-setup.store.ts';
+import Component from '@/editor/core/component/Component.ts';
 
 export default {
   components: {
@@ -20,16 +23,19 @@ export default {
   name: "Editor",
   setup() {
     return {
-      editorStore: useEditorStore()
+      editorStore: useEditorStore(),
+      componentSetupStore: useComponentSetupStore()
     }
   },
-  mounted() {
-    console.log(this.editorStore.selected)
-    const app = this.$mount_editor('app-builder', String(123), this.editorStore.getTree)
-    app.subscribe('click', () => {
-      console.log('event')
+  async mounted() {
+    await this.editorStore.useById(Number(this.$route.params.id))
+    const app = this.$mount_editor('app-builder', `${this.$route.params.id}${TokenUtil.getAuthorized().id}`, this.editorStore.getTree)
+    await this.componentSetupStore.selectComponent(app.root, Object.keys(app.root)[0])
+    app.subscribe('click', async (topPath: Component[]) => {
+      console.log(topPath)
+      await this.componentSetupStore.selectComponent(topPath, topPath.length - 1)
     })
-    
+
     this.editorStore.setApp(app)
   },
   methods: {

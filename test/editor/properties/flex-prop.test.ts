@@ -6,10 +6,8 @@ describe('Flex prop test', () => {
     const fdProp = new FlexProp('value');
 
     expect(fdProp.value).toBe('value');
-    expect(fdProp.defaultValue).toBe('flex');
-    expect(fdProp.description).toBe('___');
-    expect(fdProp.title).toBe('___');
-    expect(fdProp.availableValues).toStrictEqual({ flex: 'd-flex' });
+    expect(fdProp.defaultValue).toStrictEqual(['flex']);
+    expect(fdProp.availableValues).toStrictEqual([{ flex: 'd-flex' }]);
     expect(FlexProp.name).toBe('flex');
   });
 

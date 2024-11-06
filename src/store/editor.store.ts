@@ -1,14 +1,15 @@
 import { defineStore } from 'pinia';
-import ProjectDto from '@/api/modules/project/dto/project.dto.ts';
 import { App } from '@/editor/App.ts';
 import CreateProjectDto from '@/api/modules/project/dto/create-project.dto.ts';
 import { generateSlug } from 'random-word-slugs';
+import Container from '@/editor/components/Container.ts';
+import TokenUtil from '@/utils/token.util.ts';
 
 const useEditorStore = defineStore({
   id: 'editor-store',
   state: () => ({
     //@ts-ignore
-    selected: new ProjectDto(),
+    selected: null,
     app: new App(),
   }),
   getters: {
@@ -21,7 +22,8 @@ const useEditorStore = defineStore({
         '@/api/modules/project/models/project.model.ts'
       );
       const project = await ProjectModel.default.getOne(id);
-      this.use(project);
+      localStorage.setItem('selected-project', id);
+      this.use(project.getData());
     },
     use(projectDto: any) {
       this.selected = projectDto;
@@ -41,6 +43,21 @@ const useEditorStore = defineStore({
         '@/api/modules/project/models/project.model.ts'
       );
       this.selected = (await ProjectModel.default.create(newProject)).getData();
+
+      const initComponent = new Container();
+      initComponent.setKeySalt(
+        `${this.selected.id}${String(TokenUtil.getAuthorized().id)}`,
+      );
+      initComponent.generateKey();
+      this.selected.data = JSON.stringify({
+        [initComponent.key]: initComponent.toJson(),
+      });
+
+      localStorage.setItem('selected-project', this.selected.id);
+
+      await this.save();
+
+      return this.selected;
     },
   },
 });

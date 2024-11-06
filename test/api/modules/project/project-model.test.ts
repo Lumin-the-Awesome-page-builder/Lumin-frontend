@@ -4,6 +4,7 @@ import CreateProjectDto from '@/api/modules/project/dto/create-project.dto.ts';
 import ApiResponseDto from '@/api/dto/api-response.dto.ts';
 import UpdateProjectDto from '@/api/modules/project/dto/update-project.dto.ts';
 import ProjectDto from '@/api/modules/project/dto/project.dto.ts';
+import PatchProjectTreeDto from '@/api/modules/project/dto/patch-project-tree.dto.ts';
 
 describe('ProjectModel class tests', () => {
   let apiResponseDto: ApiResponseDto<string>;
@@ -31,7 +32,7 @@ describe('ProjectModel class tests', () => {
         name: 'name',
         data: 'data',
         tags: ['tag'],
-        category: 1,
+        category_id: 1,
       });
     });
 
@@ -73,6 +74,16 @@ describe('ProjectModel class tests', () => {
         tags: ['tag'],
         category_id: 1,
         imageSrc: '../src/assets/imageCard/screenshot.png',
+      });
+    });
+
+    it('Test project patch tree dto', () => {
+      //@ts-ignore
+      const patchTree = new PatchProjectTreeDto(['test'], {});
+
+      expect(patchTree).toEqual({
+        path: ['test'],
+        data: {},
       });
     });
   });
@@ -145,6 +156,23 @@ describe('ProjectModel class tests', () => {
       url: `/${id}`,
       method: 'GET',
       data: null,
+    });
+  });
+
+  it('Test patch tree', async () => {
+    const id = 1;
+    //@ts-ignore
+    const data = new PatchProjectTreeDto(['test'], {});
+
+    const result = await projectModel.patchTree(id, data);
+
+    expect(result).toEqual({
+      ...apiResponseDto,
+    });
+    expect(projectModel.authorizedRequest).toBeCalledWith({
+      url: `/${id}/tree`,
+      method: 'PATCH',
+      data,
     });
   });
 });

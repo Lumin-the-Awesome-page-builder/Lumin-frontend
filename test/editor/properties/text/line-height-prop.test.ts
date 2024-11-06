@@ -6,21 +6,21 @@ describe('Line Height prop test', () => {
     const lineHeightProp = new LineHeightProp('value');
 
     expect(lineHeightProp.value).toBe('value');
-    expect(lineHeightProp.defaultValue).toBe('base');
-    expect(lineHeightProp.description).toBe('___');
-    expect(lineHeightProp.title).toBe('___');
-    expect(lineHeightProp.availableValues).toStrictEqual({
-      one: 'lh-1',
-      small: 'lh-sm',
-      base: 'lh-base',
-      large: 'lh-lg',
-    });
-    expect(LineHeightProp.name).toBe('lh');
+    expect(lineHeightProp.defaultValue).toStrictEqual([66]);
+    expect(lineHeightProp.availableValues).toStrictEqual([
+      {
+        0: 'lh-1',
+        33: 'lh-sm',
+        66: 'lh-base',
+        100: 'lh-lg',
+      },
+    ]);
+    expect(LineHeightProp.name).toBe('line-height');
   });
 
   it('Correct name getter', () => {
     const leadParagraphProp = new LineHeightProp('value');
 
-    expect(leadParagraphProp.getName()).toBe('lh');
+    expect(leadParagraphProp.getName()).toBe('line-height');
   });
 });

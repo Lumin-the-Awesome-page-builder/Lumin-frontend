@@ -6,13 +6,12 @@ describe('List Inline prop test', () => {
     const listInlineProp = new ListInlineProp('value');
 
     expect(listInlineProp.value).toBe('value');
-    expect(listInlineProp.defaultValue).toBe('inline');
-    expect(listInlineProp.description).toBe('___');
-    expect(listInlineProp.title).toBe('___');
-    expect(listInlineProp.availableValues).toStrictEqual({
-      inline: 'list-inline',
-      item: 'list-inline-item',
-    });
+    expect(listInlineProp.defaultValue).toStrictEqual([null]);
+    expect(listInlineProp.availableValues).toStrictEqual([
+      {
+        checked: 'list-inline',
+      },
+    ]);
     expect(ListInlineProp.name).toBe('list-inline');
   });
 

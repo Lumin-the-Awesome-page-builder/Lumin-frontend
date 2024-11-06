@@ -6,12 +6,12 @@ describe('Lead paragraph prop test', () => {
     const leadParagraphProp = new LeadParagraphProp('value');
 
     expect(leadParagraphProp.value).toBe('value');
-    expect(leadParagraphProp.defaultValue).toBe('lead');
-    expect(leadParagraphProp.description).toBe('___');
-    expect(leadParagraphProp.title).toBe('___');
-    expect(leadParagraphProp.availableValues).toStrictEqual({
-      lead: 'lead',
-    });
+    expect(leadParagraphProp.defaultValue).toStrictEqual([null]);
+    expect(leadParagraphProp.availableValues).toStrictEqual([
+      {
+        checked: 'lead',
+      },
+    ]);
     expect(LeadParagraphProp.name).toBe('lead-paragraph');
   });
 

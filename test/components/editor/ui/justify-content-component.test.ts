@@ -3,11 +3,18 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import OptionHeadingComponent from '@/components/editor/OptionHeadingComponent.vue';
 import { NButton } from 'naive-ui';
 import JustifyContentComponent from '@/components/editor/UI/JustifyContentComponent.vue';
+import Container from '@/editor/components/Container.ts';
+import JustifyContentProp from '@/editor/properties/JustifyContentProp.ts';
 
 describe('JustifyContentComponent', () => {
   let component;
   beforeEach(() => {
-    component = mount(JustifyContentComponent);
+    const prop = new JustifyContentProp([null], new Container('div'));
+    component = mount(JustifyContentComponent, {
+      props: {
+        prop,
+      },
+    });
   });
 
   it('should render correct option heading', () => {
@@ -25,8 +32,7 @@ describe('JustifyContentComponent', () => {
   });
 
   it('should render buttons correctly', () => {
-    const activeButtonIndex = 1;
-    component.vm.$data.activeButton = activeButtonIndex;
+    component.vm.activeButton = 1;
 
     const n_buttons = component.findAllComponents(NButton);
 
@@ -34,10 +40,10 @@ describe('JustifyContentComponent', () => {
   });
 
   it('should change active btn correctly', () => {
-    component.vm.$data.activeButton = 0;
+    component.vm.activeButton = 0;
 
-    component.vm.setActiveButton(1);
+    component.vm.setActiveButton(1, 1);
 
-    expect(component.vm.$data.activeButton).toBe(1);
+    expect(component.vm.activeButton).toBe(1);
   });
 });

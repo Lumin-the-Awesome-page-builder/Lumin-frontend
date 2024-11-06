@@ -3,11 +3,18 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import OptionHeadingComponent from '@/components/editor/OptionHeadingComponent.vue';
 import { NButton } from 'naive-ui';
 import FlexDirectionComponent from '@/components/editor/UI/FlexDirectionComponent.vue';
+import Container from '@/editor/components/Container.ts';
+import FlexDirectionProp from '@/editor/properties/FlexDirectionProp.ts';
 
 describe('FlexDirectionComponent', () => {
   let component;
   beforeEach(() => {
-    component = mount(FlexDirectionComponent);
+    const prop = new FlexDirectionProp([null], new Container('div'));
+    component = mount(FlexDirectionComponent, {
+      props: {
+        prop,
+      },
+    });
   });
 
   it('should render correct option heading', () => {
@@ -25,8 +32,7 @@ describe('FlexDirectionComponent', () => {
   });
 
   it('should render buttons correctly', () => {
-    const activeButtonIndex = 1;
-    component.vm.$data.activeButton = activeButtonIndex;
+    component.vm.activeButton = 1;
 
     const n_buttons = component.findAllComponents(NButton);
 
@@ -34,10 +40,10 @@ describe('FlexDirectionComponent', () => {
   });
 
   it('should change active btn correctly', () => {
-    component.vm.$data.activeButton = 0;
+    component.vm.activeButton = 0;
 
-    component.vm.setActiveButton(1);
+    component.vm.setActiveButton(1, 1);
 
-    expect(component.vm.$data.activeButton).toBe(1);
+    expect(component.vm.activeButton).toBe(1);
   });
 });
