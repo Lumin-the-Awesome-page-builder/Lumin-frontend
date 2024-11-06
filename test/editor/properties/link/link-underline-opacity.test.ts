@@ -6,17 +6,25 @@ describe('Link Underline Opacity prop test', () => {
     const linkUnderlineOpacity = new LinkUnderlineOpacityProp('value');
 
     expect(linkUnderlineOpacity.value).toBe('value');
-    expect(linkUnderlineOpacity.defaultValue).toBe('opacity100');
-    expect(linkUnderlineOpacity.description).toBe('___');
-    expect(linkUnderlineOpacity.title).toBe('___');
-    expect(linkUnderlineOpacity.availableValues).toStrictEqual({
-      opacity0: 'link-underline-opacity-0',
-      opacity10: 'link-underline-opacity-10',
-      opacity25: 'link-underline-opacity-25',
-      opacity50: 'link-underline-opacity-50',
-      opacity75: 'link-underline-opacity-75',
-      opacity100: 'link-underline-opacity-100',
-    });
+    expect(linkUnderlineOpacity.defaultValue).toStrictEqual([null, null]);
+    expect(linkUnderlineOpacity.availableValues).toStrictEqual([
+      {
+        0: 'link-underline-opacity-0',
+        10: 'link-underline-opacity-10',
+        25: 'link-underline-opacity-25',
+        50: 'link-underline-opacity-50',
+        75: 'link-underline-opacity-75',
+        100: 'link-underline-opacity-100',
+      },
+      {
+        0: 'link-underline-opacity-0-hover',
+        10: 'link-underline-opacity-10-hover',
+        25: 'link-underline-opacity-25-hover',
+        50: 'link-underline-opacity-50-hover',
+        75: 'link-underline-opacity-75-hover',
+        100: 'link-underline-opacity-100-hover',
+      },
+    ]);
     expect(LinkUnderlineOpacityProp.name).toBe('link-underline-opacity');
   });
 

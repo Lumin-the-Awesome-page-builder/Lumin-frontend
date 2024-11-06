@@ -16,7 +16,7 @@ const spies = {
   update: vi.fn(),
   setEventHandler: vi.fn(),
   availableProps: [],
-  key: "123"
+  key: '123',
 };
 
 function MockComponentClass() {
@@ -44,7 +44,7 @@ class MockComponent extends Component {
   replaceChild = vi.fn();
   removeChild = vi.fn();
   updateChild = vi.fn();
-  availableProps = []
+  availableProps = [];
 }
 
 //@ts-ignore
@@ -101,10 +101,10 @@ describe('App.ts unit tests', () => {
         availableProps: [],
         htmlElement: {
           classList: {
-            add: vi.fn()
-          }
-        }
-      }
+            add: vi.fn(),
+          },
+        },
+      };
       const propData: PropertyObject[] = [
         {
           name: 'MockProperty',
@@ -131,10 +131,10 @@ describe('App.ts unit tests', () => {
         availableProps: [],
         htmlElement: {
           classList: {
-            add: vi.fn()
-          }
-        }
-      }
+            add: vi.fn(),
+          },
+        },
+      };
       const propName = 'WrongPropertyName';
       const propData: PropertyObject[] = [
         {
@@ -237,7 +237,7 @@ describe('App.ts unit tests', () => {
     const mountPoint = 'app-root';
     document.body.innerHTML = `<div id="${mountPoint}" data-scope></div>`;
     const initState = JSON.stringify({
-      "data-123": {
+      'data-123': {
         key: 'data-123',
         name: 'mock',
         attrs: [],
@@ -249,15 +249,15 @@ describe('App.ts unit tests', () => {
         ],
         content: 'test content',
         children: {},
-      }
-  });
+      },
+    });
     app.init(mountPoint, 'salt', JSON.parse(initState));
     app.useProp(MockProperty);
     app.use('mock', MockComponent);
 
     app.mount();
     Object.keys(app.root).forEach((key: any) => {
-      const el = app.root[key]
+      const el = app.root[key];
       expect(el.render).toHaveBeenCalledWith();
     });
   });
@@ -331,16 +331,14 @@ describe('App.ts unit tests', () => {
         };
       });
       it('Test unknown parent', () => {
-        const scopeIdentifier = 'test';
-        app.scopeIdentifier = scopeIdentifier;
+        app.scopeIdentifier = 'test';
         app.componentLibrary['test'] = Mock;
 
         assert.throws(() => app.add('test', '', 'test'));
       });
 
       it('Test success addition', () => {
-        const scopeIdentifier = 'test';
-        app.scopeIdentifier = scopeIdentifier;
+        app.scopeIdentifier = 'test';
         app.componentLibrary['test'] = Mock;
         app.state['test'] = new Mock();
 
@@ -355,8 +353,7 @@ describe('App.ts unit tests', () => {
       });
 
       it('Test pure component addition', () => {
-        const scopeIdentifier = 'test';
-        app.scopeIdentifier = scopeIdentifier;
+        app.scopeIdentifier = 'test';
         app.componentLibrary['pure'] = Mock;
         app.state['test'] = new Mock();
         app.pureStyles = {};

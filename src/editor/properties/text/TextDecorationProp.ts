@@ -9,7 +9,7 @@ export default class TextDecorationProp extends Property {
       none: 'text-decoration-none',
       line_through: 'text-decoration-line-through',
       underline: 'text-decoration-underline',
-    }
+    },
   ];
 
   getName(): string {

@@ -100,11 +100,13 @@ export default {
   },
   setup() {
     const componentSetupStore = useComponentSetupStore()
-    
+
     return { componentSetupStore }
   },
   methods: {
     isAvailable(name) {
+      console.log(this)
+      console.log(this.component)
       return this.component.availableProps.includes(name)
     }
   },

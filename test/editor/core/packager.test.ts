@@ -73,7 +73,7 @@ describe('Package class tests', () => {
     app.useProp(FlexWrapProp);
     app.useProp(GutterProp);
     app.useProp(JustifyContentProp);
-    app.init(mountPoint, '123', {...tree});
+    app.init(mountPoint, '123', { ...tree });
     app.mount();
     packager = new Packager(app);
   });
@@ -92,8 +92,8 @@ describe('Package class tests', () => {
       setAttribute: vi.fn(),
       addEventListener: vi.fn(),
       classList: {
-        add: vi.fn()
-      }
+        add: vi.fn(),
+      },
     }));
 
     beforeEach(() => {

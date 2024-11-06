@@ -10,7 +10,7 @@ export default class LinkUnderlineOffsetProp extends Property {
       33: 'link-offset-1',
       66: 'link-offset-2',
       100: 'link-offset-3',
-    }
+    },
   ];
 
   getName(): string {

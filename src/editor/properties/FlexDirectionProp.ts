@@ -8,7 +8,7 @@ export default class FlexDirectionProp extends Property {
     {
       col: 'flex-column',
       row: 'flex-row',
-    }
+    },
   ];
 
   getName(): string {

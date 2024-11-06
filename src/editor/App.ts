@@ -50,25 +50,23 @@ export class App {
   }
 
   public buildProps(component: Component, props: PropertyObject[]): any[] {
-    const names = props.map(el => el.name)
-
-    component.availableProps.forEach(el => {
+    const names = props.map((el) => el.name);
+    component.availableProps.forEach((el) => {
       if (!names.includes(el)) {
         const propConstructor = this.propLibrary[el];
 
-        if (!propConstructor)
-          throw new DOMException(`Unknown property: ${el}`);
+        if (!propConstructor) throw new DOMException(`Unknown property: ${el}`);
 
-        const value = (new propConstructor([], component)).defaultValue
+        const value = new propConstructor([], component).defaultValue;
 
         props.push({
           name: el,
-          value
-        })
+          value,
+        });
       }
-    })
+    });
 
-    console.log(props)
+    console.log(props);
 
     return props.map((prop) => {
       const propConstructor = this.propLibrary[prop.name];
@@ -98,10 +96,12 @@ export class App {
     }
   }
 
-  public buildTree(state: Record<string, ComponentObject>): Record<string, Component> {
+  public buildTree(
+    state: Record<string, ComponentObject>,
+  ): Record<string, Component> {
     if (state) {
       const tree = Object.keys(state).map((key) => {
-        const el = state[key]
+        const el = state[key];
         const constr = this.componentLibrary[el.name];
 
         if (!constr) throw new DOMException(`Unknown component: ${el.name}`);
@@ -136,7 +136,9 @@ export class App {
 
       this.mountPureStyles();
 
-      return tree.length ? tree.reduce((prev, cur) => Object.assign(prev, cur)) : {};
+      return tree.length
+        ? tree.reduce((prev, cur) => Object.assign(prev, cur))
+        : {};
     } else {
       return {};
     }

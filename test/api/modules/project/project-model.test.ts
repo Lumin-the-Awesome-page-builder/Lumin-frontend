@@ -79,13 +79,13 @@ describe('ProjectModel class tests', () => {
 
     it('Test project patch tree dto', () => {
       //@ts-ignore
-      const patchTree = new PatchProjectTreeDto(['test'], {})
+      const patchTree = new PatchProjectTreeDto(['test'], {});
 
       expect(patchTree).toEqual({
         path: ['test'],
-        data: {}
-      })
-    })
+        data: {},
+      });
+    });
   });
 
   it('Test projectModel creation', () => {
@@ -162,7 +162,7 @@ describe('ProjectModel class tests', () => {
   it('Test patch tree', async () => {
     const id = 1;
     //@ts-ignore
-    const data = new PatchProjectTreeDto(['test'], {})
+    const data = new PatchProjectTreeDto(['test'], {});
 
     const result = await projectModel.patchTree(id, data);
 
@@ -174,5 +174,5 @@ describe('ProjectModel class tests', () => {
       method: 'PATCH',
       data,
     });
-  })
+  });
 });

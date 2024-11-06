@@ -6,8 +6,8 @@ export default class LeadParagraphProp extends Property {
   defaultValue: any[] = [null];
   availableValues: Record<any, any>[] = [
     {
-      'checked': 'lead',
-    }
+      checked: 'lead',
+    },
   ];
 
   getName(): string {

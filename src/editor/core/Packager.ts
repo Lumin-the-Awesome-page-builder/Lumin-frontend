@@ -9,11 +9,15 @@ export default class Packager {
 
     const body = document.createElement('body');
     if (state == null) {
-      const tree = this.app.buildTree(this.app.initState)
-      Object.keys(tree).forEach((key) => body.appendChild(tree[key].render(true)));
+      const tree = this.app.buildTree(this.app.initState);
+      Object.keys(tree).forEach((key) =>
+        body.appendChild(tree[key].render(true)),
+      );
     } else {
-      const tree = this.app.buildTree(state)
-      Object.keys(tree).forEach((key) => body.appendChild(tree[key].render(true)));
+      const tree = this.app.buildTree(state);
+      Object.keys(tree).forEach((key) =>
+        body.appendChild(tree[key].render(true)),
+      );
     }
 
     const head = document.createElement('head');

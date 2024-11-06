@@ -48,6 +48,7 @@ import { h } from 'vue';
 import OptionHeadingComponent from '@/components/editor/OptionHeadingComponent.vue';
 import SliderComponent from '@/components/editor/SliderComponent.vue';
 import FontProp from '@/editor/properties/text/FontProp.ts';
+import { NButton } from 'naive-ui';
 
 const renderMark = (weight: string, style: string) => {
   return h('div', [
@@ -61,7 +62,7 @@ const renderMark = (weight: string, style: string) => {
 
 export default {
   name: 'FontComponent',
-  components: { OptionHeadingComponent, SliderComponent },
+  components: { OptionHeadingComponent, SliderComponent, "n-button": NButton },
   props: {
     prop: {
       type: FontProp

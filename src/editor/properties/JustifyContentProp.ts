@@ -12,7 +12,7 @@ export default class JustifyContentProp extends Property {
       around: 'justify-content-around',
       between: 'justify-content-between',
       evenly: 'justify-content-evenly',
-    }
+    },
   ];
 
   getName(): string {

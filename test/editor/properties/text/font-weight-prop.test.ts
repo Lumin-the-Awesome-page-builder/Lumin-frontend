@@ -6,26 +6,26 @@ describe('Font weight prop test', () => {
     const fontWeightProp = new FontProp('value');
 
     expect(fontWeightProp.value).toBe('value');
-    expect(fontWeightProp.defaultValue).toBe('normal');
-    expect(fontWeightProp.description).toBe('___');
-    expect(fontWeightProp.title).toBe('___');
-    expect(fontWeightProp.availableValues).toStrictEqual({
-      bold: 'fw-bold',
-      bolder: 'fw-bolder',
-      semibold: 'fw-semibold',
-      medium: 'fw-medium',
-      normal: 'fw-normal',
-      light: 'fw-light',
-      lighter: 'fw-lighter',
-      italic: 'fst-italic',
-      normal: 'fst-normal',
-    });
-    expect(FontProp.name).toBe('fw');
+    expect(fontWeightProp.defaultValue).toStrictEqual([50, 'normal']);
+    expect(fontWeightProp.availableValues).toStrictEqual([
+      {
+        0: 'fw-lighter',
+        25: 'fw-light',
+        50: 'fw-normal',
+        75: 'fw-bold',
+        100: 'fw-bolder',
+      },
+      {
+        normal: 'fst-normal',
+        italic: 'fst-italic',
+      },
+    ]);
+    expect(FontProp.name).toBe('font');
   });
 
   it('Correct name getter', () => {
     const fontWeightProp = new FontProp('value');
 
-    expect(fontWeightProp.getName()).toBe('fw');
+    expect(fontWeightProp.getName()).toBe('font');
   });
 });

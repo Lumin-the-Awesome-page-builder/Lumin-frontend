@@ -6,12 +6,12 @@ describe('List Unsyled prop test', () => {
     const listUnstyledProp = new ListUnstyledProp('value');
 
     expect(listUnstyledProp.value).toBe('value');
-    expect(listUnstyledProp.defaultValue).toBe('unstyled');
-    expect(listUnstyledProp.description).toBe('___');
-    expect(listUnstyledProp.title).toBe('___');
-    expect(listUnstyledProp.availableValues).toStrictEqual({
-      unsyled: 'list-unstyled',
-    });
+    expect(listUnstyledProp.defaultValue).toStrictEqual([null]);
+    expect(listUnstyledProp.availableValues).toStrictEqual([
+      {
+        checked: 'list-unstyled',
+      },
+    ]);
     expect(ListUnstyledProp.name).toBe('list-unstyled');
   });
 

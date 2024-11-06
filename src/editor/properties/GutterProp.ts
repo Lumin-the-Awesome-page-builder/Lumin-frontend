@@ -12,7 +12,7 @@ export default class GutterProp extends Property {
       60: 'gap-3',
       80: 'gap-4',
       100: 'gap-5',
-    }
+    },
   ];
 
   getName(): string {

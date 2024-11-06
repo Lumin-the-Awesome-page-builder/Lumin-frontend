@@ -6,11 +6,11 @@ export default class InlineTextProp extends Property {
   defaultValue: any[] = [null, null];
   availableValues: Record<any, any>[] = [
     {
-      'checked': 'mark',
+      checked: 'mark',
     },
     {
-      'checked': 'small'
-    }
+      checked: 'small',
+    },
   ];
 
   getName(): string {

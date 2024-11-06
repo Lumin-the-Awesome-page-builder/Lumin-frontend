@@ -14,8 +14,8 @@ export default class FontProp extends Property {
     },
     {
       normal: 'fst-normal',
-      italic: 'fst-italic'
-    }
+      italic: 'fst-italic',
+    },
   ];
 
   getName(): string {

@@ -98,17 +98,17 @@ export default abstract class Component {
   }
 
   removeChild(key: string) {
-    delete this.children[key]
+    delete this.children[key];
   }
 
   replaceChild(onReplace: Component) {
-    this.children[onReplace.key] = onReplace
+    this.children[onReplace.key] = onReplace;
   }
 
   appendChildren(children: Record<string, Component>) {
     Object.keys(children).forEach((key) => {
-      children[key].setParent(this)
-    })
+      children[key].setParent(this);
+    });
     Object.assign(this.children, children);
   }
 
@@ -166,11 +166,13 @@ export default abstract class Component {
   toJson(): ComponentObject {
     const systemArgs = ['class', this.key, this.scopeIdentifier];
     let children = Object.keys(this.children).map((key) => {
-      const el = this.children[key]
-      return { [el.key]: el.toJson() }
-    })
+      const el = this.children[key];
+      return { [el.key]: el.toJson() };
+    });
     if (children.length)
-      children = children.reduce((prev, current) => Object.assign(prev, current))
+      children = children.reduce((prev, current) =>
+        Object.assign(prev, current),
+      );
     return {
       name: this.name,
       key: this.key,

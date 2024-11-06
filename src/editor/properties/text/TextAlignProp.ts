@@ -9,7 +9,7 @@ export default class TextAlignProp extends Property {
       start: 'text-start',
       center: 'text-center',
       end: 'text-end',
-    }
+    },
   ];
 
   getName(): string {

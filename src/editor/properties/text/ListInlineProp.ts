@@ -6,8 +6,8 @@ export default class ListInlineProp extends Property {
   defaultValue: any[] = [null];
   availableValues: Record<any, any>[] = [
     {
-      'checked': 'list-inline',
-    }
+      checked: 'list-inline',
+    },
   ];
 
   getName(): string {

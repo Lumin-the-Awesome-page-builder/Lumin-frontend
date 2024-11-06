@@ -6,8 +6,8 @@ export default class ImgFluidProp extends Property {
   defaultValue: any[] = [null];
   availableValues: Record<any, any>[] = [
     {
-      'checked': 'img-fluid',
-    }
+      checked: 'img-fluid',
+    },
   ];
 
   getName(): string {

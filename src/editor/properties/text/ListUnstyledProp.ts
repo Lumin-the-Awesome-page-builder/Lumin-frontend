@@ -6,8 +6,8 @@ export default class ListUnstyledProp extends Property {
   defaultValue: any[] = [null];
   availableValues: Record<any, any>[] = [
     {
-      'checked': 'list-unstyled',
-    }
+      checked: 'list-unstyled',
+    },
   ];
 
   getName(): string {

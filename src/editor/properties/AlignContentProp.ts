@@ -11,7 +11,7 @@ export default class AlignContentProp extends Property {
       start: 'align-content-start',
       between: 'align-content-between',
       around: 'align-content-around',
-    }
+    },
   ];
 
   getName(): string {

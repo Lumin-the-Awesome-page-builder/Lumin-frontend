@@ -12,7 +12,7 @@ export default class BorderRadiusProp extends Property {
       60: 'rounded-3',
       80: 'rounded-4',
       100: 'rounded-5',
-    }
+    },
   ];
 
   getName(): string {

@@ -14,7 +14,7 @@ export default class LinkColorProp extends Property {
       info: 'link-info',
       light: 'link-light',
       dark: 'link-dark',
-    }
+    },
   ];
 
   getName(): string {

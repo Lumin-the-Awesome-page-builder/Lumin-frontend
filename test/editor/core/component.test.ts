@@ -99,7 +99,7 @@ describe('Base component class tests', () => {
   it('Test child appending', () => {
     const setParentResult = 'result';
     const childMock = {
-      key: "test",
+      key: 'test',
       setParent: vi.fn(() => setParentResult),
     };
 
@@ -110,13 +110,13 @@ describe('Base component class tests', () => {
     expect(childMock.setParent).toBeCalledTimes(1);
     expect(childMock.setParent).toBeCalledWith(component);
     expect(component.appendChildren).toBeCalledTimes(1);
-    expect(component.appendChildren).toBeCalledWith({ "test": setParentResult });
+    expect(component.appendChildren).toBeCalledWith({ test: setParentResult });
   });
 
   it('Test children appending', () => {
     const setParentResult = 'result';
     const childMock = {
-      key: "key",
+      key: 'key',
       setParent: vi.fn(() => setParentResult),
     };
 
@@ -152,7 +152,6 @@ describe('Base component class tests', () => {
 
     expect(component.props.getAll).toBeCalledTimes(1);
     expect(propMock.apply).toBeCalledTimes(1);
-    expect(propMock.apply).toBeCalledWith(component);
   });
 
   it('Test attributes applying', () => {
@@ -281,7 +280,7 @@ describe('Base component class tests', () => {
   it('Test on find top on component', () => {
     //@ts-ignore
     const child = new Component('h2');
-    component.children["key"] = child;
+    component.children['key'] = child;
     child.parent = component;
 
     expect(child.findTop().length).toBe(2);

@@ -6,8 +6,8 @@ export default class MonoSpaceProp extends Property {
   defaultValue: any[] = [null];
   availableValues: Record<any, any>[] = [
     {
-      'checked': 'font-monospace',
-    }
+      checked: 'font-monospace',
+    },
   ];
 
   getName(): string {

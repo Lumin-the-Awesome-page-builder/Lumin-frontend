@@ -20,7 +20,7 @@ export default class LinkUnderlineOpacityProp extends Property {
       50: 'link-underline-opacity-50-hover',
       75: 'link-underline-opacity-75-hover',
       100: 'link-underline-opacity-100-hover',
-    }
+    },
   ];
 
   getName(): string {

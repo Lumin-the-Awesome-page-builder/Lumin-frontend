@@ -19,7 +19,7 @@ export default class ColWidthProp extends Property {
       83: 'col-10',
       91: 'col-11',
       100: 'col-12',
-    }
+    },
   ];
 
   getName(): string {

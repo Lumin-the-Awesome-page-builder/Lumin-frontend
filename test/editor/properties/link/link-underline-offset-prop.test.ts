@@ -6,14 +6,15 @@ describe('Link Underline Offset prop test', () => {
     const linkUnderlineOffsetProp = new LinkUnderlineOffsetProp('value');
 
     expect(linkUnderlineOffsetProp.value).toBe('value');
-    expect(linkUnderlineOffsetProp.defaultValue).toBe('link-offset-1');
-    expect(linkUnderlineOffsetProp.description).toBe('___');
-    expect(linkUnderlineOffsetProp.title).toBe('___');
-    expect(linkUnderlineOffsetProp.availableValues).toStrictEqual({
-      one: 'link-offset-1',
-      two: 'link-offset-2',
-      three: 'link-offset-3',
-    });
+    expect(linkUnderlineOffsetProp.defaultValue).toStrictEqual([null]);
+    expect(linkUnderlineOffsetProp.availableValues).toStrictEqual([
+      {
+        0: 'link-offset-0',
+        33: 'link-offset-1',
+        66: 'link-offset-2',
+        100: 'link-offset-3',
+      },
+    ]);
     expect(LinkUnderlineOffsetProp.name).toBe('link-offset');
   });
 

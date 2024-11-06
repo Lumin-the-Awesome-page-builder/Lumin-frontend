@@ -9,7 +9,7 @@ export default class TextTransformProp extends Property {
       lowercase: 'text-lowercase',
       uppercase: 'text-uppercase',
       capitalize: 'text-capitalize',
-    }
+    },
   ];
 
   getName(): string {

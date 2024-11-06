@@ -11,7 +11,7 @@ export default class AlignItemsProp extends Property {
       center: 'align-items-center',
       baseline: 'align-items-baseline',
       stretch: 'align-items-stretch',
-    }
+    },
   ];
 
   getName(): string {

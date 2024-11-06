@@ -6,25 +6,25 @@ describe('Link Underline prop test', () => {
     const linkUnderlineProp = new LinkColorProp('value');
 
     expect(linkUnderlineProp.value).toBe('value');
-    expect(linkUnderlineProp.defaultValue).toBe('primary');
-    expect(linkUnderlineProp.description).toBe('___');
-    expect(linkUnderlineProp.title).toBe('___');
-    expect(linkUnderlineProp.availableValues).toStrictEqual({
-      primary: 'link-underline-primary',
-      secondary: 'link-underline-secondary',
-      success: 'link-underline-success',
-      danger: 'link-underline-danger',
-      warning: 'link-underline-warning',
-      info: 'link-underline-info',
-      light: 'link-underline-light',
-      dark: 'link-underline-dark',
-    });
-    expect(LinkColorProp.name).toBe('link-underline');
+    expect(linkUnderlineProp.defaultValue).toStrictEqual(['primary']);
+    expect(linkUnderlineProp.availableValues).toStrictEqual([
+      {
+        primary: 'link-primary',
+        secondary: 'link-secondary',
+        success: 'link-success',
+        danger: 'link-danger',
+        warning: 'link-warning',
+        info: 'link-info',
+        light: 'link-light',
+        dark: 'link-dark',
+      },
+    ]);
+    expect(LinkColorProp.name).toBe('link-color');
   });
 
   it('Correct name getter', () => {
     const linkUnderlineProp = new LinkColorProp('value');
 
-    expect(linkUnderlineProp.getName()).toBe('link-underline');
+    expect(linkUnderlineProp.getName()).toBe('link-color');
   });
 });

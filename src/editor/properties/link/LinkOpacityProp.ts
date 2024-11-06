@@ -20,7 +20,7 @@ export default class LinkOpacityProp extends Property {
       50: 'link-opacity-50-hover',
       75: 'link-opacity-75-hover',
       100: 'link-opacity-100-hover',
-    }
+    },
   ];
 
   getName(): string {

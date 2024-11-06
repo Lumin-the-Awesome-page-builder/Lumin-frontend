@@ -12,7 +12,7 @@ vi.mock('@/api/modules/project/models/project.model.ts', () => {
       update: vi.fn(() => 'updated'),
       create: vi.fn(() => ({
         getData: () => ({ id: 111 }),
-      }))
+      })),
     },
   };
 });
@@ -20,10 +20,10 @@ vi.mock('@/api/modules/project/models/project.model.ts', () => {
 vi.mock('@/utils/token.util.ts', () => {
   return {
     default: {
-      getAuthorized: () => ({id: 112})
-    }
-  }
-})
+      getAuthorized: () => ({ id: 112 }),
+    },
+  };
+});
 
 describe('EditorStore tests', () => {
   beforeEach(() => {
@@ -36,40 +36,37 @@ describe('EditorStore tests', () => {
     const setItemMock = vi.fn();
     vi.stubGlobal('localStorage', {
       setItem: setItemMock,
-    })
+    });
 
     await store.useById(123);
 
     expect(ProjectModel.getOne).toBeCalledWith(123);
     expect(store.use).toBeCalledWith('project');
-    expect(setItemMock).toBeCalledWith('selected-project', 123)
+    expect(setItemMock).toBeCalledWith('selected-project', 123);
   });
 
   it('Test open new', async () => {
-    const ProjectModel = (await import(
-      '@/api/modules/project/models/project.model.ts'
-      )).default;
     const store = useEditorStore();
-    store.save = vi.fn()
+    store.save = vi.fn();
     const setItemMock = vi.fn();
     vi.stubGlobal('localStorage', {
       setItem: setItemMock,
-    })
-    const stringifyMock = vi.fn(() => "data")
+    });
+    const stringifyMock = vi.fn(() => 'data');
     vi.stubGlobal('JSON', {
-      stringify: stringifyMock
-    })
+      stringify: stringifyMock,
+    });
 
-    const res = await store.openNew()
+    const res = await store.openNew();
 
-    expect(setItemMock).toBeCalledWith('selected-project', 111)
-    expect(store.save).toBeCalled()
-    expect(stringifyMock).toBeCalled()
+    expect(setItemMock).toBeCalledWith('selected-project', 111);
+    expect(store.save).toBeCalled();
+    expect(stringifyMock).toBeCalled();
     expect(res).toEqual({
       id: 111,
-      data: "data"
-    })
-  })
+      data: 'data',
+    });
+  });
 
   it('Test use', () => {
     const store = useEditorStore();

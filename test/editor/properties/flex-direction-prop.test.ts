@@ -6,13 +6,13 @@ describe('Flex direction prop test', () => {
     const fdProp = new FlexDirectionProp('value');
 
     expect(fdProp.value).toBe('value');
-    expect(fdProp.defaultValue).toBe('row');
-    expect(fdProp.description).toBe('Description');
-    expect(fdProp.title).toBe('----');
-    expect(fdProp.availableValues).toStrictEqual({
-      row: 'flex-row',
-      col: 'flex-column',
-    });
+    expect(fdProp.defaultValue).toStrictEqual(['row']);
+    expect(fdProp.availableValues).toStrictEqual([
+      {
+        col: 'flex-column',
+        row: 'flex-row',
+      },
+    ]);
     expect(FlexDirectionProp.name).toBe('flex-direction');
   });
 

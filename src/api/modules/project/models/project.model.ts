@@ -34,8 +34,13 @@ export class ProjectModel extends ApiModelUtil {
     return await this.authorizedRequest(new ApiRequestDto(`/${id}`, 'GET'));
   }
 
-  public async patchTree(id: number, patchProjectTreeDto: PatchProjectTreeDto): Promise<ApiResponseDto<ProjectDto>> {
-    return await this.authorizedRequest(new ApiRequestDto(`/${id}/tree`, 'PATCH', patchProjectTreeDto));
+  public async patchTree(
+    id: number,
+    patchProjectTreeDto: PatchProjectTreeDto,
+  ): Promise<ApiResponseDto<ProjectDto>> {
+    return await this.authorizedRequest(
+      new ApiRequestDto(`/${id}/tree`, 'PATCH', patchProjectTreeDto),
+    );
   }
 }
 

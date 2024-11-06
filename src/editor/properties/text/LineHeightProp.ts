@@ -11,7 +11,7 @@ export default class LineHeightProp extends Property {
       33: 'lh-sm',
       66: 'lh-base',
       100: 'lh-lg',
-    }
+    },
   ];
 
   getName(): string {

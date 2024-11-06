@@ -17,10 +17,8 @@
   </template>
   
   <script lang="ts">
-  import { ref } from 'vue';
   import OptionHeadingComponent from '../../OptionHeadingComponent.vue';
   import SliderComponent from '../../SliderComponent.vue';
-  import LinkOpacityProp from '@/editor/properties/link/LinkOpacityProp.ts';
   import LinkUnderlineOffsetProp from '@/editor/properties/link/LinkUnderlineOffsetProp.ts';
   
   export default {
