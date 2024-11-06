@@ -144,9 +144,9 @@ describe('App.ts unit tests', () => {
         document.createElement('div'),
         document.createElement('style'),
       ]);
-      const state: ComponentObject[] = [
+      const state: Record<string, ComponentObject> = {
         //@ts-ignore
-        {
+        'data-123': {
           key: 'data-123',
           name: 'mock',
           attrs: [],
@@ -157,11 +157,11 @@ describe('App.ts unit tests', () => {
             },
           ],
           content: 'test content',
-          children: [],
+          children: {},
           pure: true,
           specific: { html: '<style>#a{}</style><div></div>' },
         },
-      ];
+      };
       //@ts-ignore
       app.use('mock', component);
 
@@ -217,8 +217,8 @@ describe('App.ts unit tests', () => {
   it('run', () => {
     const mountPoint = 'app-root';
     document.body.innerHTML = `<div id="${mountPoint}" data-scope></div>`;
-    const initState = JSON.stringify([
-      {
+    const initState = JSON.stringify({
+      "data-123": {
         key: 'data-123',
         name: 'mock',
         attrs: [],
@@ -229,9 +229,9 @@ describe('App.ts unit tests', () => {
           },
         ],
         content: 'test content',
-        children: [],
-      },
-    ]);
+        children: {},
+      }
+  });
     app.init(mountPoint, 'salt', JSON.parse(initState));
     app.useProp(MockProperty);
     app.use('mock', MockComponent);
@@ -265,7 +265,7 @@ describe('App.ts unit tests', () => {
       app.state[component.key] = component;
     });
     it('Update parent exists', () => {
-      parentComponent.children.push(component);
+      parentComponent.children[component.key] = component;
       component.parent = parentComponent;
 
       app.update(component);

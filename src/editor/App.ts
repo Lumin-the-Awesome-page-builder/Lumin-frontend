@@ -5,7 +5,7 @@ import Property, { PropertyObject } from '@/editor/core/property/Property.ts';
 
 export class App {
   public rootHTML: HTMLElement = document.createElement('div');
-  public root: Component[] = [];
+  public root: Record<string, Component> = {};
   public state: Record<string, Component> = {};
   public componentLibrary: Record<string, any> = {};
   public propLibrary: Record<string, any> = {};
@@ -99,9 +99,10 @@ export class App {
     }
   }
 
-  public buildTree(state: ComponentObject[]): Component[] {
+  public buildTree(state: Record<string, ComponentObject>): Record<string, Component> {
     if (state) {
-      const tree = state.map((el) => {
+      const tree = Object.keys(state).map((key) => {
+        const el = state[key]
         const constr = this.componentLibrary[el.name];
 
         if (!constr) throw new DOMException(`Unknown component: ${el.name}`);
@@ -131,14 +132,14 @@ export class App {
 
         this.state[component.key] = component;
 
-        return component;
+        return { [component.key]: component };
       });
 
       this.mountPureStyles();
 
-      return tree;
+      return tree.length ? tree.reduce((prev, cur) => Object.assign(prev, cur)) : {};
     } else {
-      return [];
+      return {};
     }
   }
 
@@ -146,8 +147,8 @@ export class App {
     this.root = this.buildTree(this.initState);
 
     this.rootHTML.innerHTML = '';
-    this.root.forEach((el) => {
-      this.rootHTML.appendChild(el.render());
+    Object.keys(this.root).forEach((key) => {
+      this.rootHTML.appendChild(this.root[key].render());
     });
   }
 

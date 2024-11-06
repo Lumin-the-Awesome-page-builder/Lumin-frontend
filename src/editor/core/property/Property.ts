@@ -10,7 +10,7 @@ export default abstract class Property {
   public abstract availableValues: Record<any, any>[];
   public abstract defaultValue: any[];
 
-  constructor(protected value: any[], public component: Component) {}
+  constructor(public value: any[], public component: Component) {}
 
   public clear() {
     this.value.forEach((el, index) => {

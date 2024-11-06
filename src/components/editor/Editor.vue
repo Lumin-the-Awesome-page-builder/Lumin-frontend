@@ -30,9 +30,10 @@ export default {
   async mounted() {
     await this.editorStore.useById(Number(this.$route.params.id))
     const app = this.$mount_editor('app-builder', `${this.$route.params.id}${TokenUtil.getAuthorized().id}`, this.editorStore.getTree)
-    this.componentSetupStore.selectComponent(app.root[0])
-    app.subscribe('click', (topPath: Component[]) => {
-      this.componentSetupStore.selectComponent(topPath[0])
+    await this.componentSetupStore.selectComponent(app.root, Object.keys(app.root)[0])
+    app.subscribe('click', async (topPath: Component[]) => {
+      console.log(topPath)
+      await this.componentSetupStore.selectComponent(topPath, topPath.length - 1)
     })
 
     this.editorStore.setApp(app)
