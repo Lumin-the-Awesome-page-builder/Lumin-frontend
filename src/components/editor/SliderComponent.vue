@@ -2,8 +2,9 @@
   <div class="sliderContainer">
     <h3 class="subheading">{{ subheading }}</h3>
     <n-slider 
-      class="slider" 
-      v-model:value="value" 
+      class="slider"
+      @update:value="onUpdateValue"
+      v-model:value="value"
       :format-tooltip="formatTooltip" 
       :marks="marks" 
       step="mark" 
@@ -18,6 +19,7 @@ import { NSlider } from 'naive-ui'
 export default {
   name: 'SliderComponent',
   components: { 'n-slider': NSlider },
+  emits: ["update"],
   props: {
     marks: {
       type: Object,
@@ -45,6 +47,11 @@ export default {
   methods: {
     formatTooltip(value: number) {
       return this.marks[value] || `${value}`;
+    },
+    onUpdateValue() {
+      this.$nextTick(() => {
+        this.$emit("update", this.value);
+      })
     }
   }
 };

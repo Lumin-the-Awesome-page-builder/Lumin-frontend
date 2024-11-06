@@ -1,14 +1,24 @@
 import { mount } from '@vue/test-utils';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import OptionHeadingComponent from '@/components/editor/OptionHeadingComponent.vue';
 import SliderComponent from '@/components/editor/SliderComponent.vue';
 import sliderComponentPropsChecker from './link/slider-component-props-checker.ts';
 import GutterComponent from '@/components/editor/UI/GutterComponent.vue';
+import Container from '@/editor/components/Container.ts';
+import GutterProp from '@/editor/properties/GutterProp.ts';
 
 describe('GutterComponent', () => {
   let component;
+  let mockSetValue;
   beforeEach(() => {
-    component = mount(GutterComponent);
+    const prop = new GutterProp([null], new Container('div'));
+    mockSetValue = vi.fn();
+    prop.setValue = mockSetValue;
+    component = mount(GutterComponent, {
+      props: {
+        prop,
+      },
+    });
   });
 
   it('should render correct option heading', () => {
@@ -31,8 +41,15 @@ describe('GutterComponent', () => {
     expect(sliderComponents).toHaveLength(1);
     expect(
       sliderComponents.every((slider, index) =>
-        sliderComponentPropsChecker(slider, component.vm.$data.values[index]),
+        sliderComponentPropsChecker(slider, component.vm.values[index]),
       ),
     );
+  });
+  it('should update slider correctly', async () => {
+    const sliders = component.findAllComponents(SliderComponent);
+
+    sliders.every((slider) => slider.vm.$emit('update', 60));
+
+    expect(mockSetValue).toBeCalled();
   });
 });

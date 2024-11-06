@@ -1,7 +1,7 @@
 <template>
   <div class="sliderContainer">
     <h3 class="subheading">{{ subheading }}</h3>
-    <n-checkbox :size="size" v-model="isChecked" :label="label" />
+    <n-checkbox @update:checked="checked" v-model:value="isChecked" :size="size" :label="label" />
   </div>
 </template>
 
@@ -11,6 +11,7 @@ import { NCheckbox } from 'naive-ui'
 export default {
   name: 'CheckboxComponent',
   components: { "n-checkbox": NCheckbox },
+  emits: ['update'],
   props: {
     subheading: {
       type: String,
@@ -24,10 +25,23 @@ export default {
       type: String,
       default: 'medium',
     },
+    initValue: {
+      type: Boolean,
+      default: false,
+    }
   },
   data: () => ({
-    isChecked: false,
+    isChecked: 0,
   }),
+  mounted() {
+    this.isChecked = this.initValue ? 1 : 0
+  },
+  methods: {
+    checked() {
+      this.isChecked = this.isChecked == 1 ? 0 : 1
+      this.$emit('update', this.isChecked)
+    }
+  }
 };
 </script>
 

@@ -6,14 +6,14 @@ describe('Text Align prop test', () => {
     const textAlignProp = new TextAlignProp('value');
 
     expect(textAlignProp.value).toBe('value');
-    expect(textAlignProp.defaultValue).toBe('start');
-    expect(textAlignProp.description).toBe('___');
-    expect(textAlignProp.title).toBe('___');
-    expect(textAlignProp.availableValues).toStrictEqual({
-      start: 'text-start',
-      end: 'text-end',
-      center: 'text-center',
-    });
+    expect(textAlignProp.defaultValue).toStrictEqual(['start']);
+    expect(textAlignProp.availableValues).toStrictEqual([
+      {
+        start: 'text-start',
+        center: 'text-center',
+        end: 'text-end',
+      },
+    ]);
     expect(TextAlignProp.name).toBe('text-align');
   });
 

@@ -9,11 +9,11 @@
         <n-button
           v-for="(button, index) in buttons"
           :key="index"
-          :color="button.color"
+          :color="colors[button]"
           :class="{ 'hover-effect': activeButton !== index }"
-          :style="{ opacity: activeButton === index ? 1 : 0.5 }"
+          :style="{ opacity: activeButton === index ? 1 : 0.3 }"
           class="circle-button"
-          @click="setActiveButton(index)"
+          @click="setActiveButton(index, button)"
         />
       </n-button-group>
     </div>
@@ -22,29 +22,40 @@
   <script lang="ts">
   import OptionHeadingComponent from '@/components/editor/OptionHeadingComponent.vue'
   import { NButton } from 'naive-ui'
+  import LinkColorProp from '@/editor/properties/link/LinkColorProp.ts';
   
   export default {
     name: 'LinkColorComponent',
     components: { OptionHeadingComponent, "n-button": NButton },
-    data() {
-      return {
-        activeButton: 0 as number,
-        buttons: [
-          { type: 'primary', color: '#007bff' }, 
-          { type: 'secondary', color: '#6c757d' }, 
-          { type: 'success', color: '#28a745' },   
-          { type: 'danger', color: '#dc3545' },
-          { type: 'warning', color: '#ffc107' },
-          { type: 'info', color: '#17a2b8' },
-          { type: 'light', color: '#f8f9fa' },
-          { type: 'dark', color: '#343a40' },
-        ],
-      };
+    props: {
+      prop: {
+        type: LinkColorProp
+      }
     },
-    methods: {
-      setActiveButton(index: number) {
-        this.activeButton = index;
+    data: () => ({
+      activeButton: 0,
+      colors: {
+        primary: '#007bff',
+        secondary: '#6c757d',
+        success: '#28a745',
+        danger: '#dc3545',
+        warning: '#ffc107',
+        info: '#17a2b8',
+        light: '#f8f9fa',
+        dark: '#343a40',
       },
+    }),
+    methods: {
+      setActiveButton(index: number, value) {
+        const onSet = (this.activeButton == index) ? null : value
+        this.activeButton = (this.activeButton == index) ? null : index
+        this.prop.setValue(onSet)
+      },
+    },
+    computed: {
+      buttons() {
+        return Object.keys(this.prop.availableValues[0])
+      }
     },
   };
   </script>

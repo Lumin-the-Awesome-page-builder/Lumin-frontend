@@ -11,7 +11,7 @@
         :key="index"
         :ghost="activeButton !== index"
         color="#7b7bfe"
-        @click="setActiveButton(index)"
+        @click="setActiveButton(index, button)"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -30,33 +30,48 @@
 <script lang="ts">
 import OptionHeadingComponent from '@/components/editor/OptionHeadingComponent.vue';
 import { NButton } from 'naive-ui';
+import AlignContentProp from '@/editor/properties/AlignContentProp.ts';
 
 export default {
   name: 'alignContentComponent',
-  components: { OptionHeadingComponent, "n-button": NButton },
+  components: { OptionHeadingComponent, "n-button": NButton },    props: {
+    prop: {
+      type: AlignContentProp
+    }
+  },
   data: () => ({
     activeButton: null as number | null,
-    buttons: [
-      {
+    buttonsConf: {
+      center: {
         path: 'M120-120v-80h720v80H120Zm0-160v-80h720v80H120Zm0-160v-80h720v80H120Zm0-160v-80h720v80H120Zm0-160v-80h720v80H120Z',
       },
-      {
+      end: {
         path: 'M800-80v-800h80v800h-80ZM560-280v-400h120v400H560Zm-240 0v-400h120v400H320Z',
       },
-      {
+      start: {
         path: 'M2.5 1.25L2.5 13.75L1.25 13.75L1.25 1.25L2.5 1.25ZM6.25 4.375L6.25 10.625L4.375 10.625L4.375 4.375L6.25 4.375ZM10 4.375L10 10.625L8.125 10.625L8.125 4.375L10 4.375Z',
       },
-      {
+      between: {
         path: 'M800-80v-800h80v800h-80ZM80-80v-800h80v800H80Zm440-480v-120h200v120H520Zm-280 0v-120h200v120H240Zm280 280v-120h200v120H520Zm-280 0v-120h200v120H240Z',
       },
-      {
+      around: {
         path: 'M800-80v-800h80v800h-80ZM80-80v-800h80v800H80Zm480-200v-400h120v400H560Zm-280 0v-400h120v400H280Z',
       },
-    ],
+    },
   }),
   methods: {
-    setActiveButton(index: number) {
-      this.activeButton = index;
+    setActiveButton(index: number, button) {
+      const onSet = (this.activeButton == index) ? null : button.value
+      this.activeButton = (this.activeButton == index) ? null : index
+      this.prop.setValue(onSet)
+    },
+  },
+  computed: {
+    buttons() {
+      return Object.keys(this.prop.availableValues[0]).map(key => ({
+        ...this.buttonsConf[key],
+        value: key
+      }))
     },
   },
 };

@@ -6,12 +6,12 @@ describe('Border Radius prop test', () => {
     const imgFluidProp = new ImgFluidProp('value');
 
     expect(imgFluidProp.value).toBe('value');
-    expect(imgFluidProp.defaultValue).toBe('imgFluid');
-    expect(imgFluidProp.description).toBe('___');
-    expect(imgFluidProp.title).toBe('___');
-    expect(imgFluidProp.availableValues).toStrictEqual({
-      imgFluid: 'img-fluid',
-    });
+    expect(imgFluidProp.defaultValue).toStrictEqual([null]);
+    expect(imgFluidProp.availableValues).toStrictEqual([
+      {
+        checked: 'img-fluid',
+      },
+    ]);
     expect(ImgFluidProp.name).toBe('img-fluid');
   });
 

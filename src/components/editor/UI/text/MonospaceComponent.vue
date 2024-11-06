@@ -12,6 +12,7 @@
           :subheading="checkbox.subheading"
           :label="checkbox.label"
           :size="checkbox.size"
+          @update="checked(index, $event)"
         />
       </div>
     </div>
@@ -20,17 +21,38 @@
   <script lang="ts">
   import CheckboxComponent from '../../CheckboxComponent.vue';
   import OptionHeadingComponent from '@/components/editor/OptionHeadingComponent.vue';
+  import MonoSpaceProp from '@/editor/properties/text/MonoSpaceProp.ts';
   
   export default {
     name: 'MonospaceComponent',
     components: {
       CheckboxComponent, OptionHeadingComponent
     },
-    data: () => ({
-      checkboxes: [
-        { subheading: 'Моноширный шрифт', label: 'Включить', size: 'large' },
-      ],
-    }),
+    props: {
+      prop: {
+        type: MonoSpaceProp
+      }
+    },
+    computed: {
+      checkboxes() {
+        return [
+          {
+            subheading: 'Моноширный шрифт',
+            label: 'Включить',
+            size: 'large',
+            value: !!this.prop.value[0],
+          }
+        ]
+      }
+    },
+    methods: {
+      checked(index, data) {
+        if (data)
+          this.prop.setValue('checked', index)
+        else
+          this.prop.setValue(null, index)
+      }
+    }
   }
   </script>
   

@@ -1,13 +1,23 @@
 import { mount } from '@vue/test-utils';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import OptionHeadingComponent from '@/components/editor/OptionHeadingComponent.vue';
 import { NButton } from 'naive-ui';
 import TextAlignComponent from '@/components/editor/UI/text/TextAlignComponent.vue';
+import Text from '@/editor/components/Text.ts';
+import TextAlignProp from '@/editor/properties/text/TextAlignProp.ts';
 
 describe('TextAlignComponent', () => {
   let component;
+  let mockSetValue;
   beforeEach(() => {
-    component = mount(TextAlignComponent);
+    const prop = new TextAlignProp(['start'], new Text());
+    mockSetValue = vi.fn();
+    prop.setValue = mockSetValue;
+    component = mount(TextAlignComponent, {
+      props: {
+        prop,
+      },
+    });
   });
 
   it('should render correct option heading', () => {
@@ -23,21 +33,24 @@ describe('TextAlignComponent', () => {
   });
 
   it('should render buttons correctly', () => {
-    const activeButtonIndex = 0;
-    component.vm.$data.activeButton = activeButtonIndex;
+    component.vm.activeButton = 0;
 
-    console.log(component.vm.$data.buttons);
+    console.log(component.vm.buttons);
 
     const n_buttons = component.findAllComponents(NButton);
 
     expect(n_buttons).toHaveLength(3);
   });
-
   it('should change active btn correctly', () => {
-    component.vm.$data.activeButton = 0;
+    component.vm.activeButton = 1;
 
-    component.vm.setActiveButton(1);
+    const button = {
+      value: 123,
+    };
 
-    expect(component.vm.$data.activeButton).toBe(1);
+    component.vm.setActiveButton(0, button);
+
+    expect(mockSetValue).toHaveBeenCalledWith(123);
+    expect(component.vm.activeButton).toBe(0);
   });
 });

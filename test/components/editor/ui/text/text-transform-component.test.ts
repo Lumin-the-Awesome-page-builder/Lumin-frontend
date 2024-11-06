@@ -3,13 +3,18 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import OptionHeadingComponent from '@/components/editor/OptionHeadingComponent.vue';
 import { NButton } from 'naive-ui';
 import TextTransformComponent from '@/components/editor/UI/text/TextTransformComponent.vue';
+import TextTransformProp from '@/editor/properties/text/TextTransformProp.ts';
 
 describe('TextTransformComponent', () => {
   let component;
   beforeEach(() => {
-    component = mount(TextTransformComponent);
+    const prop = new TextTransformProp([null], new Text());
+    component = mount(TextTransformComponent, {
+      props: {
+        prop,
+      },
+    });
   });
-
   it('should render correct option heading', () => {
     const optionHeadingComponent = component.findComponent(
       OptionHeadingComponent,
@@ -23,10 +28,9 @@ describe('TextTransformComponent', () => {
   });
 
   it('should render buttons correctly', () => {
-    const activeButtonIndex = 0;
-    component.vm.$data.activeButton = activeButtonIndex;
+    component.vm.activeButton = 0;
 
-    console.log(component.vm.$data.buttons);
+    console.log(component.vm.buttons);
 
     const n_buttons = component.findAllComponents(NButton);
 
@@ -34,10 +38,10 @@ describe('TextTransformComponent', () => {
   });
 
   it('should change active btn correctly', () => {
-    component.vm.$data.activeButton = 0;
+    component.vm.activeButton = 0;
 
-    component.vm.setActiveButton(1);
+    component.vm.setActiveButton(1, 1);
 
-    expect(component.vm.$data.activeButton).toBe(1);
+    expect(component.vm.activeButton).toBe(1);
   });
 });

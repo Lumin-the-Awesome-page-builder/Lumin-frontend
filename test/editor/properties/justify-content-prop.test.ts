@@ -6,17 +6,17 @@ describe('Justify-content prop test', () => {
     const justifyContentProp = new JustifyContentProp('value');
 
     expect(justifyContentProp.value).toBe('value');
-    expect(justifyContentProp.defaultValue).toBe('start');
-    expect(justifyContentProp.description).toBe('___');
-    expect(justifyContentProp.title).toBe('___');
-    expect(justifyContentProp.availableValues).toStrictEqual({
-      start: 'justify-content-start',
-      end: 'justify-content-end',
-      center: 'justify-content-center',
-      between: 'justify-content-between',
-      around: 'justify-content-around',
-      evenly: 'justify-content-evenly',
-    });
+    expect(justifyContentProp.defaultValue).toStrictEqual(['start']);
+    expect(justifyContentProp.availableValues).toStrictEqual([
+      {
+        center: 'justify-content-center',
+        end: 'justify-content-end',
+        start: 'justify-content-start',
+        around: 'justify-content-around',
+        between: 'justify-content-between',
+        evenly: 'justify-content-evenly',
+      },
+    ]);
     expect(JustifyContentProp.name).toBe('justify-content');
   });
 

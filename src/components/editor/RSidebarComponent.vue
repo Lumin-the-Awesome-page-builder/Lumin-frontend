@@ -45,6 +45,10 @@
         <template #header>
           <span class="custom-header">Параметры блока</span>
         </template>
+        
+        <ComponentSetupComponent />
+        
+        <div><n-button color="#7b7bfe"> Сохранить </n-button></div>
       </n-collapse-item>
     </n-collapse>
   </div>
@@ -59,9 +63,12 @@ import { useChangeDataStore } from '@/store/modals/change-data-project-component
 import { useChooseDomainStore } from '@/store/modals/choose-domen-component.store.ts';
 import ChooseDomainComponent from '@/components/modals/ChooseDomainComponent.vue';
 import ChangeDataComponent from '@/components/modals/ChangeProjectDataComponent.vue';
+import ComponentSetupComponent from '@/components/editor/ComponentSetupComponent.vue';
 
 export default {
-  components: { ChangeDataComponent, ChooseDomainComponent },
+  components: {
+    ComponentSetupComponent, ChangeDataComponent, ChooseDomainComponent
+  },
   setup() {
     return {
       editorStore: useEditorStore(),

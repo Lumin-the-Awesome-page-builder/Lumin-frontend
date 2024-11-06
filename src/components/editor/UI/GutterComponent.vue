@@ -12,34 +12,45 @@
         :marks="slider.marks"
         :initialValue="slider.value"
         :subheading="slider.subheading"
+        @update="update(index, $event)"
       />
     </div>
   </template>
   
   <script lang="ts">
-  import { ref } from 'vue';
   import OptionHeadingComponent from '../OptionHeadingComponent.vue';
   import SliderComponent from '../SliderComponent.vue';
+  import GutterProp from '@/editor/properties/GutterProp.ts';
   
   export default {
     name: 'GutterComponent',
     components: { OptionHeadingComponent, SliderComponent },
-    data: () => ({
-      values: [
-        {
-          subheading: 'Отступы между элементами',
-          value: 0,
-          marks: {
-            0: '0',
-            20: '1',
-            40: '2',
-            60: '3',
-            80: '4',
-            100: '5',
+    props: {
+      prop: {
+        type: GutterProp
+      }
+    },
+    methods: {
+      update(index, data) {
+        this.prop.setValue(data, index)
+      }
+    },
+    computed: {
+      values() {
+        return [
+          {
+            subheading: 'Отступы между элементами',
+            value: this.prop.value[0] !== null ? this.prop.value[0] : this.prop.defaultValue[0],
+            marks: {
+              ...Object.keys(this.prop.availableValues[0]).map(key => {
+                const numKey = Number(key);
+                return { [numKey]: `${numKey}%` };
+              }).reduce((acc, curr) => Object.assign(acc, curr), {})
+            },
           },
-        },
-      ]
-    }),
+        ]
+      }
+    }
   };
   </script>
   

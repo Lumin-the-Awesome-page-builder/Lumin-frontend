@@ -12,6 +12,7 @@
           :subheading="checkbox.subheading"
           :label="checkbox.label"
           :size="checkbox.size"
+          @update="checked(index, $event)"
         />
       </div>
     </div>
@@ -20,17 +21,38 @@
   <script lang="ts">
   import CheckboxComponent from '@/components/editor/CheckboxComponent.vue';
   import OptionHeadingComponent from '@/components/editor/OptionHeadingComponent.vue';
+  import ListUnstyledProp from '@/editor/properties/text/ListUnstyledProp.ts';
   
   export default {
     name: 'ListUnstyledComponent',
     components: {
       CheckboxComponent, OptionHeadingComponent
     },
-    data: () => ({
-      checkboxes: [
-        { subheading: 'Отлючить стилизацию списка', label: 'Отключить', size: 'large' },
-      ],
-    }),
+    props: {
+      prop: {
+        type: ListUnstyledProp
+      }
+    },
+    computed: {
+      checkboxes() {
+        return [
+          {
+            subheading: 'Отлючить стилизацию списка',
+            label: 'Отключить',
+            size: 'large',
+            value: !!this.prop.value[0],
+          },
+        ]
+      }
+    },
+    methods: {
+      checked(index, data) {
+        if (data)
+          this.prop.setValue('checked', index)
+        else
+          this.prop.setValue(null, index)
+      }
+    }
   }
   </script>
   

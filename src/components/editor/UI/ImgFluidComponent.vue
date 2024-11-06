@@ -12,6 +12,7 @@
           :subheading="checkbox.subheading"
           :label="checkbox.label"
           :size="checkbox.size"
+          @update="checked(index, $event)"
         />
       </div>
     </div>
@@ -20,17 +21,38 @@
   <script lang="ts">
   import CheckboxComponent from '@/components/editor/CheckboxComponent.vue';
   import OptionHeadingComponent from '@/components/editor/OptionHeadingComponent.vue';
+  import ImgFluidProp from '@/editor/properties/ImgFluidProp.ts';
   
   export default {
     name: 'ImgFluidComponent',
     components: {
       CheckboxComponent, OptionHeadingComponent
     },
-    data: () => ({
-      checkboxes: [
-        { subheading: 'Fluid image', label: 'Включить', size: 'large' },
-      ],
-    }),
+    props: {
+      prop: {
+        type: ImgFluidProp
+      },
+    },
+    methods: {
+      checked(index, data) {
+        if (data)
+          this.prop.setValue('checked', index)
+        else
+          this.prop.setValue(null, index)
+      }
+    },
+    computed: {
+      checkboxes() {
+        return [
+          {
+            subheading: 'Fluid image',
+            label: 'Включить',
+            size: 'large',
+            value: !!this.prop.value[0],
+          }
+        ]
+      }
+    }
   }
   </script>
   

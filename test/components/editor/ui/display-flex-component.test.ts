@@ -4,11 +4,18 @@ import OptionHeadingComponent from '@/components/editor/OptionHeadingComponent.v
 import CheckboxComponent from '@/components/editor/CheckboxComponent.vue';
 import checkboxComponentPropsChecker from './text/checkbox-component-props-checker.ts';
 import DisplayFlexComponent from '@/components/editor/UI/DisplayFlexComponent.vue';
+import Container from '@/editor/components/Container.ts';
+import FlexProp from '@/editor/properties/FlexProp.ts';
 
 describe('DisplayFlexComponent', () => {
   let component;
   beforeEach(() => {
-    component = mount(DisplayFlexComponent);
+    const prop = new FlexProp([null], new Container('div'));
+    component = mount(DisplayFlexComponent, {
+      props: {
+        prop,
+      },
+    });
   });
 
   it('should render correct option heading', () => {
@@ -31,10 +38,7 @@ describe('DisplayFlexComponent', () => {
     expect(sliderComponents).toHaveLength(2);
     expect(
       sliderComponents.every((checkbox, index) =>
-        checkboxComponentPropsChecker(
-          checkbox,
-          component.vm.$data.checkboxes[index],
-        ),
+        checkboxComponentPropsChecker(checkbox, component.vm.checkboxes[index]),
       ),
     );
   });

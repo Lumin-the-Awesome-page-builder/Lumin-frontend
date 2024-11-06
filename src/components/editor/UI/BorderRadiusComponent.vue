@@ -11,34 +11,45 @@
         :marks="slider.marks"
         :initialValue="slider.value"
         :subheading="slider.subheading"
+        @update="update(index, $event)"
       />
     </div>
   </template>
   
   <script lang="ts">
-  import { ref } from 'vue';
   import OptionHeadingComponent from '../OptionHeadingComponent.vue';
   import SliderComponent from '../SliderComponent.vue';
+  import BorderRadiusProp from '@/editor/properties/BorderRadiusProp.ts';
   
   export default {
     name: 'BorderRadiusComponent',
     components: { OptionHeadingComponent, SliderComponent },
-    data: () => ({
-      values: [
-        {
-          subheading: 'Размер скругления',
-          value: 0,
-          marks: {
-            0: '0',
-            20: '1px',
-            40: '2px',
-            60: '3px',
-            80: '4px',
-            100: '5px',
-          },
-        },
-      ]
-    })
+    props: {
+      prop: {
+        type: BorderRadiusProp
+      }
+    },
+    methods: {
+      update(index, data) {
+        this.prop.setValue(data, index)
+      }
+    },
+    computed: {
+      values() {
+        return [
+          {
+            subheading: 'Размер скругления',
+            value: this.prop.value[0] !== null ? this.prop.value[0] : this.prop.defaultValue[0],
+            marks: {
+              ...Object.keys(this.prop.availableValues[0]).map(key => {
+                const numKey = Number(key);
+                return { [numKey]: `${numKey}%` };
+              }).reduce((acc, curr) => Object.assign(acc, curr), {})
+            },
+          }
+        ]
+      }
+    }
   };
   </script>
   

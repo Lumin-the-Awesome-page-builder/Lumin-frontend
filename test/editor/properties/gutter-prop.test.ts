@@ -6,17 +6,17 @@ describe('Gutter prop test', () => {
     const fdProp = new GutterProp('value');
 
     expect(fdProp.value).toBe('value');
-    expect(fdProp.defaultValue).toBe('g0');
-    expect(fdProp.description).toBe('___');
-    expect(fdProp.title).toBe('___');
-    expect(fdProp.availableValues).toStrictEqual({
-      g0: 'gap-0',
-      g1: 'gap-1',
-      g2: 'gap-2',
-      g3: 'gap-3',
-      g4: 'gap-4',
-      g5: 'gap-5',
-    });
+    expect(fdProp.defaultValue).toStrictEqual([0]);
+    expect(fdProp.availableValues).toStrictEqual([
+      {
+        0: 'gap-0',
+        20: 'gap-1',
+        40: 'gap-2',
+        60: 'gap-3',
+        80: 'gap-4',
+        100: 'gap-5',
+      },
+    ]);
     expect(GutterProp.name).toBe('gap');
   });
 

@@ -6,6 +6,7 @@
 import useAuthStore from '@/store/auth.store';
 import router from '@/router';
 import AuthVkInputDto from '@/api/modules/auth/dto/login/auth-vk-input.dto';
+import appConf from '@/api/conf/app.conf';
 
 export default {
   name: "VKIDAuthComponent",
@@ -28,7 +29,7 @@ export default {
           // Инициализация конфигурации
           VKID.Config.init({
             app: 52585823,
-            redirectUrl: 'https://lumin.dudosyka.ru/auth',
+            redirectUrl: `https://${appConf.redirectUrl}/auth`,
             responseMode: VKID.ConfigResponseMode.Callback,
             source: VKID.ConfigSource.LOWCODE,
             scope: "email",

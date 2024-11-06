@@ -1,14 +1,24 @@
 import { mount } from '@vue/test-utils';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import OptionHeadingComponent from '@/components/editor/OptionHeadingComponent.vue';
 import SliderComponent from '@/components/editor/SliderComponent.vue';
 import sliderComponentPropsChecker from './slider-component-props-checker.ts';
 import LinkUnderlineOpacityComponent from '@/components/editor/UI/link/LinkUnderlineOpacityComponent.vue';
+import Link from '@/editor/components/Link.ts';
+import LinkUnderlineOpacityProp from '@/editor/properties/link/LinkUnderlineOpacityProp.ts';
 
 describe('LinkUnderlineOpacityComponent', () => {
   let component;
+  let mockSetValue;
   beforeEach(() => {
-    component = mount(LinkUnderlineOpacityComponent);
+    mockSetValue = vi.fn();
+    const prop = new LinkUnderlineOpacityProp([null], new Link());
+    prop.setValue = mockSetValue;
+    component = mount(LinkUnderlineOpacityComponent, {
+      props: {
+        prop,
+      },
+    });
   });
 
   it('should render correct option heading', () => {
@@ -28,11 +38,18 @@ describe('LinkUnderlineOpacityComponent', () => {
   it('should render slider correctly', () => {
     const sliderComponents = component.findAllComponents(SliderComponent);
 
-    expect(sliderComponents).toHaveLength(1);
+    expect(sliderComponents).toHaveLength(2);
     expect(
       sliderComponents.every((slider, index) =>
-        sliderComponentPropsChecker(slider, component.vm.$data.values[index]),
+        sliderComponentPropsChecker(slider, component.vm.values[index]),
       ),
     );
+  });
+  it('should update slider correctly', async () => {
+    const sliders = component.findAllComponents(SliderComponent);
+
+    sliders.every((slider) => slider.vm.$emit('update', 60));
+
+    expect(mockSetValue).toBeCalled();
   });
 });

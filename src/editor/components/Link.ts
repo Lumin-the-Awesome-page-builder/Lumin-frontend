@@ -1,10 +1,10 @@
 import Component from '@/editor/core/component/Component.ts';
 import LinkOpacityProp from '@/editor/properties/link/LinkOpacityProp.ts';
-import LinkUnderlineProp from '@/editor/properties/link/LinkUnderlineProp.ts';
-import LinkUnderlineOpacity from '@/editor/properties/link/LinkUnderlineOpacity.ts';
+import LinkColorProp from '@/editor/properties/link/LinkColorProp.ts';
+import LinkUnderlineOpacityProp from '@/editor/properties/link/LinkUnderlineOpacityProp.ts';
 import LinkUnderlineOffsetProp from '@/editor/properties/link/LinkUnderlineOffsetProp.ts';
-import FontWeightProp from '@/editor/properties/text/FontWeightProp.ts';
-import InlineTextProps from '@/editor/properties/text/InlineTextProps.ts';
+import FontProp from '@/editor/properties/text/FontProp.ts';
+import InlineTextProp from '@/editor/properties/text/InlineTextProp.ts';
 import LeadParagraphProp from '@/editor/properties/text/LeadParagraphProp.ts';
 import MonoSpaceProp from '@/editor/properties/text/MonoSpaceProp.ts';
 import TextAlignProp from '@/editor/properties/text/TextAlignProp.ts';
@@ -20,11 +20,11 @@ export default class Link extends Component {
 
   availableProps: string[] = [
     LinkOpacityProp.name,
-    LinkUnderlineProp.name,
-    LinkUnderlineOpacity.name,
+    LinkColorProp.name,
+    LinkUnderlineOpacityProp.name,
     LinkUnderlineOffsetProp.name,
-    FontWeightProp.name,
-    InlineTextProps.name,
+    FontProp.name,
+    InlineTextProp.name,
     LeadParagraphProp.name,
     MonoSpaceProp.name,
     TextAlignProp.name,
