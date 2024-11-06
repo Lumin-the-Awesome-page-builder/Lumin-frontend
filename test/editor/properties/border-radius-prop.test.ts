@@ -6,17 +6,17 @@ describe('Border Radius prop test', () => {
     const borderRadiusProp = new BorderRadiusProp('value');
 
     expect(borderRadiusProp.value).toBe('value');
-    expect(borderRadiusProp.defaultValue).toBe('r0');
-    expect(borderRadiusProp.description).toBe('___');
-    expect(borderRadiusProp.title).toBe('___');
-    expect(borderRadiusProp.availableValues).toStrictEqual({
-      r0: 'rounded-0',
-      r1: 'rounded-1',
-      r2: 'rounded-2',
-      r3: 'rounded-3',
-      r4: 'rounded-4',
-      r5: 'rounded-5',
-    });
+    expect(borderRadiusProp.defaultValue).toStrictEqual([0]);
+    expect(borderRadiusProp.availableValues).toStrictEqual([
+      {
+        0: 'rounded-0',
+        20: 'rounded-1',
+        40: 'rounded-2',
+        60: 'rounded-3',
+        80: 'rounded-4',
+        100: 'rounded-5',
+      },
+    ]);
     expect(BorderRadiusProp.name).toBe('border-radius');
   });
 

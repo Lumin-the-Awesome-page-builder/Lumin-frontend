@@ -22,6 +22,7 @@ const useEditorStore = defineStore({
         '@/api/modules/project/models/project.model.ts'
       );
       const project = await ProjectModel.default.getOne(id);
+      localStorage.setItem('selected-project', id);
       this.use(project.getData());
     },
     use(projectDto: any) {
@@ -45,10 +46,14 @@ const useEditorStore = defineStore({
 
       const initComponent = new Container();
       initComponent.setKeySalt(
-        String(this.selected.id) + String(TokenUtil.getAuthorized().id),
+        `${this.selected.id}${String(TokenUtil.getAuthorized().id)}`,
       );
       initComponent.generateKey();
-      this.selected.data = JSON.stringify([initComponent.toJson()]);
+      this.selected.data = JSON.stringify({
+        [initComponent.key]: initComponent.toJson(),
+      });
+
+      localStorage.setItem('selected-project', this.selected.id);
 
       await this.save();
 

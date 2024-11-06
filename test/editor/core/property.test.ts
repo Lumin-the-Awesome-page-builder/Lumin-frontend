@@ -1,35 +1,30 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import Property from '@/editor/core/property/Property.ts';
-import Attribute from '@/editor/core/attribute/Attribute.ts';
 
 describe('Base property class tests', () => {
-  const propertyValue = 'prop-val';
+  const targetMock = {};
+  const propertyValue = ['prop-val'];
   let property: Property;
   beforeEach(() => {
     //@ts-ignore
-    property = new Property(propertyValue);
+    property = new Property(propertyValue, targetMock);
   });
   it('Test property creation', () => {
     expect(property.value).toBe(propertyValue);
   });
 
   it('Test prop applying', () => {
-    const targetMock = {
-      attributes: {
-        append: vi.fn(),
-      },
-    };
-
     const propertyClassValue = 'test-class';
-    property.availableValues = {
-      [propertyValue]: propertyClassValue,
-    };
+    property.availableValues = [
+      {
+        [propertyValue]: propertyClassValue,
+      },
+    ];
+    targetMock.htmlElement = { classList: { add: vi.fn() } };
     //@ts-ignore
-    property.apply(targetMock);
+    property.apply();
 
-    expect(targetMock.attributes.append).toBeCalledTimes(1);
-    expect(targetMock.attributes.append).toBeCalledWith(
-      new Attribute('class', propertyClassValue),
-    );
+    expect(targetMock.htmlElement.classList.add).toBeCalledTimes(1);
+    expect(targetMock.htmlElement.classList.add).toBeCalledWith('test-class');
   });
 });

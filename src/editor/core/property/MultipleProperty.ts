@@ -1,24 +1,40 @@
-import Component from '@/editor/core/component/Component.ts';
-import Attribute from '@/editor/core/attribute/Attribute.ts';
 import Property from '@/editor/core/property/Property.ts';
+import Component from '@/editor/core/component/Component.ts';
 
 export default abstract class MultipleProperty extends Property {
-  public abstract title: string;
-  public abstract description: string;
-  public abstract availableValues: Record<string, any>;
-  public abstract defaultValue: string;
+  public abstract availableValues: Record<number, any>[];
+  public abstract defaultValue: number[];
 
-  constructor(public values: []) {
-    super();
+  constructor(
+    public values: any[],
+    public component: Component,
+  ) {
+    super(values, component);
   }
 
-  override apply(target: Component): Component {
-    this.values.forEach((value) => {
-      target.attributes.append(
-        new Attribute('class', this.availableValues[value]),
-      );
+  override clear() {
+    this.values.forEach((el, index) => {
+      if (el != null) {
+        el.forEach((el) => {
+          this.component.htmlElement.classList.remove(
+            this.availableValues[index][el],
+          );
+        });
+      }
     });
-    return target;
+  }
+
+  override apply() {
+    this.values.forEach((el, index) => {
+      if (el != null) {
+        console.log(el);
+        el.forEach((el) => {
+          this.component.htmlElement.classList.add(
+            this.availableValues[index][el],
+          );
+        });
+      }
+    });
   }
 
   public abstract getName(): string;

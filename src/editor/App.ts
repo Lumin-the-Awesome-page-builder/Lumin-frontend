@@ -5,7 +5,7 @@ import Property, { PropertyObject } from '@/editor/core/property/Property.ts';
 
 export class App {
   public rootHTML: HTMLElement = document.createElement('div');
-  public root: Component[] = [];
+  public root: Record<string, Component> = {};
   public state: Record<string, Component> = {};
   public componentLibrary: Record<string, any> = {};
   public propLibrary: Record<string, any> = {};
@@ -25,10 +25,9 @@ export class App {
   init(
     mountPoint: string,
     identifierSalt: string,
-    initState: ComponentObject[] = [],
+    initState: Record<string, ComponentObject> = {},
   ) {
     this.mountPoint = mountPoint;
-    console.log(this.mountPoint);
     this.identifiersSalt = identifierSalt;
     this.initState = initState;
 
@@ -50,14 +49,32 @@ export class App {
     this.propLibrary[prop.name] = prop;
   }
 
-  public buildProps(props: PropertyObject[]): any[] {
+  public buildProps(component: Component, props: PropertyObject[]): any[] {
+    const names = props.map((el) => el.name);
+    component.availableProps.forEach((el) => {
+      if (!names.includes(el)) {
+        const propConstructor = this.propLibrary[el];
+
+        if (!propConstructor) throw new DOMException(`Unknown property: ${el}`);
+
+        const value = new propConstructor([], component).defaultValue;
+
+        props.push({
+          name: el,
+          value,
+        });
+      }
+    });
+
+    console.log(props);
+
     return props.map((prop) => {
       const propConstructor = this.propLibrary[prop.name];
 
       if (!propConstructor)
         throw new DOMException(`Unknown property: ${prop.name}`);
 
-      return new propConstructor(prop.value);
+      return new propConstructor(prop.value, component);
     });
   }
 
@@ -79,9 +96,12 @@ export class App {
     }
   }
 
-  public buildTree(state: ComponentObject[]): Component[] {
+  public buildTree(
+    state: Record<string, ComponentObject>,
+  ): Record<string, Component> {
     if (state) {
-      const tree = state.map((el) => {
+      const tree = Object.keys(state).map((key) => {
+        const el = state[key];
         const constr = this.componentLibrary[el.name];
 
         if (!constr) throw new DOMException(`Unknown component: ${el.name}`);
@@ -92,7 +112,7 @@ export class App {
 
         component.scopeIdentifier = this.scopeIdentifier;
         component.setAttrs(attrs);
-        component.setProps(this.buildProps(el.props));
+        component.setProps(this.buildProps(component, el.props));
         component.appendChildren(this.buildTree(el.children));
         component.setContent(el.content);
         component.setKeySalt(this.identifiersSalt);
@@ -111,14 +131,16 @@ export class App {
 
         this.state[component.key] = component;
 
-        return component;
+        return { [component.key]: component };
       });
 
       this.mountPureStyles();
 
-      return tree;
+      return tree.length
+        ? tree.reduce((prev, cur) => Object.assign(prev, cur))
+        : {};
     } else {
-      return [];
+      return {};
     }
   }
 
@@ -126,8 +148,8 @@ export class App {
     this.root = this.buildTree(this.initState);
 
     this.rootHTML.innerHTML = '';
-    this.root.forEach((el) => {
-      this.rootHTML.appendChild(el.render());
+    Object.keys(this.root).forEach((key) => {
+      this.rootHTML.appendChild(this.root[key].render());
     });
   }
 

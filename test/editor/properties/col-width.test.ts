@@ -6,23 +6,24 @@ describe('Col width prop test', () => {
     const justifyContentProp = new ColWidthProp('value');
 
     expect(justifyContentProp.value).toBe('value');
-    expect(justifyContentProp.defaultValue).toBe('col');
-    expect(justifyContentProp.description).toBe('___');
-    expect(justifyContentProp.title).toBe('___');
-    expect(justifyContentProp.availableValues).toStrictEqual({
-      c1: 'col-1',
-      c2: 'col-2',
-      c3: 'col-3',
-      c4: 'col-4',
-      c5: 'col-5',
-      c6: 'col-6',
-      c7: 'col-7',
-      c8: 'col-8',
-      c9: 'col-9',
-      c10: 'col-10',
-      c11: 'col-11',
-      c12: 'col-12',
-    });
+    expect(justifyContentProp.defaultValue).toStrictEqual([0]);
+    expect(justifyContentProp.availableValues).toStrictEqual([
+      {
+        0: 'col',
+        8: 'col-1',
+        16: 'col-2',
+        25: 'col-3',
+        33: 'col-4',
+        41: 'col-5',
+        50: 'col-6',
+        58: 'col-7',
+        66: 'col-8',
+        75: 'col-9',
+        83: 'col-10',
+        91: 'col-11',
+        100: 'col-12',
+      },
+    ]);
     expect(ColWidthProp.name).toBe('col');
   });
 

@@ -3,11 +3,18 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import OptionHeadingComponent from '@/components/editor/OptionHeadingComponent.vue';
 import { NButton } from 'naive-ui';
 import TextDecorationComponent from '@/components/editor/UI/text/TextDecorationComponent.vue';
+import Text from '@/editor/components/Text.ts';
+import TextDecorationProp from '@/editor/properties/text/TextDecorationProp.ts';
 
 describe('TextDecorationComponent', () => {
   let component;
   beforeEach(() => {
-    component = mount(TextDecorationComponent);
+    const prop = new TextDecorationProp([1], new Text());
+    component = mount(TextDecorationComponent, {
+      props: {
+        prop,
+      },
+    });
   });
 
   it('should render correct option heading', () => {
@@ -25,8 +32,7 @@ describe('TextDecorationComponent', () => {
   });
 
   it('should render buttons correctly', () => {
-    const activeButtonIndex = 0;
-    component.vm.$data.activeButton = activeButtonIndex;
+    component.vm.activeButton = 0;
 
     const n_buttons = component.findAllComponents(NButton);
 
@@ -34,10 +40,11 @@ describe('TextDecorationComponent', () => {
   });
 
   it('should change active btn correctly', () => {
-    component.vm.$data.activeButton = 0;
+    component.vm.activeButton = 0;
 
-    component.vm.setActiveButton(1);
+    component.vm.setActiveButton(1, 1);
 
-    expect(component.vm.$data.activeButton).toBe(1);
+    expect(component.vm.activeButton).toBe(1);
+    expect();
   });
 });

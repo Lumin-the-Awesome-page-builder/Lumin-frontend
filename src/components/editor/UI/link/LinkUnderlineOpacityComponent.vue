@@ -11,34 +11,55 @@
         :marks="slider.marks"
         :initialValue="slider.value"
         :subheading="slider.subheading"
+        @update="update(index, $event)"
       />
     </div>
   </template>
   
   <script lang="ts">
-  import { ref } from 'vue';
   import OptionHeadingComponent from '../../OptionHeadingComponent.vue';
   import SliderComponent from '../../SliderComponent.vue';
+  import LinkUnderlineOpacityProp from '@/editor/properties/link/LinkUnderlineOpacityProp.ts';
   
   export default {
     name: 'LinkUnderlineOpacityComponent',
     components: { OptionHeadingComponent, SliderComponent },
-    data: () => ({
-      values: [
-        {
-          subheading: 'Прозрачность',
-          value: 10,
-          marks: {
-            0: '0%',
-            10: '10%',
-            25: '25%',
-            50: '50%',
-            75: '75%',
-            100: '100%',
+    props: {
+      prop: {
+        type: LinkUnderlineOpacityProp
+      }
+    },
+    methods: {
+      update(index, data) {
+        this.prop.setValue(data, index)
+      }
+    },
+    computed: {
+      values() {
+        return [
+          {
+            subheading: 'Стандартная прозрачность',
+            value: this.prop.value[0] !== null ? this.prop.value[0] : 0,
+            marks: {
+              ...Object.keys(this.prop.availableValues[0]).map(key => {
+                const numKey = Number(key);
+                return { [numKey]: `${numKey}%` };
+              }).reduce((acc, curr) => Object.assign(acc, curr), {})
+            }
           },
-        },
-      ]
-    })
+          {
+            subheading: 'Прозрачность при наведении',
+            value: this.prop.value[1] !== null ? this.prop.value[1] : 0,
+            marks: {
+              ...Object.keys(this.prop.availableValues[1]).map(key => {
+                const numKey = Number(key);
+                return { [numKey]: `${numKey}%` };
+              }).reduce((acc, curr) => Object.assign(acc, curr), {})
+            }
+          }
+        ]
+      }
+    }
   };
   </script>
   

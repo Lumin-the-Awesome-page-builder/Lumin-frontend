@@ -3,11 +3,18 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import OptionHeadingComponent from '@/components/editor/OptionHeadingComponent.vue';
 import { NButton } from 'naive-ui';
 import AlignItemsComponent from '@/components/editor/UI/AlignItemsComponent.vue';
+import AlignItemsProp from '@/editor/properties/AlignItemsProp.ts';
+import Container from '@/editor/components/Container.ts';
 
 describe('AlignItemsComponent', () => {
   let component;
   beforeEach(() => {
-    component = mount(AlignItemsComponent);
+    const prop = new AlignItemsProp([null], new Container('div'));
+    component = mount(AlignItemsComponent, {
+      props: {
+        prop,
+      },
+    });
   });
 
   it('should render correct option heading', () => {
@@ -25,10 +32,9 @@ describe('AlignItemsComponent', () => {
   });
 
   it('should render buttons correctly', () => {
-    const activeButtonIndex = 0;
-    component.vm.$data.activeButton = activeButtonIndex;
+    component.vm.activeButton = 0;
 
-    console.log(component.vm.$data.buttons);
+    console.log(component.vm.buttons);
 
     const n_buttons = component.findAllComponents(NButton);
 
@@ -36,10 +42,10 @@ describe('AlignItemsComponent', () => {
   });
 
   it('should change active btn correctly', () => {
-    component.vm.$data.activeButton = 0;
+    component.vm.activeButton = 0;
 
-    component.vm.setActiveButton(1);
+    component.vm.setActiveButton(1, 1);
 
-    expect(component.vm.$data.activeButton).toBe(1);
+    expect(component.vm.activeButton).toBe(1);
   });
 });

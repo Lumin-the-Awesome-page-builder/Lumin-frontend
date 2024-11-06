@@ -99,6 +99,7 @@ describe('Base component class tests', () => {
   it('Test child appending', () => {
     const setParentResult = 'result';
     const childMock = {
+      key: 'test',
       setParent: vi.fn(() => setParentResult),
     };
 
@@ -109,27 +110,25 @@ describe('Base component class tests', () => {
     expect(childMock.setParent).toBeCalledTimes(1);
     expect(childMock.setParent).toBeCalledWith(component);
     expect(component.appendChildren).toBeCalledTimes(1);
-    expect(component.appendChildren).toBeCalledWith([setParentResult]);
+    expect(component.appendChildren).toBeCalledWith({ test: setParentResult });
   });
 
   it('Test children appending', () => {
     const setParentResult = 'result';
     const childMock = {
+      key: 'key',
       setParent: vi.fn(() => setParentResult),
     };
 
     //@ts-ignore
-    component.children = {
-      push: vi.fn(),
-    };
+    component.children = {};
 
     //@ts-ignore
-    component.appendChildren([childMock]);
+    component.appendChildren({ [childMock.key]: childMock });
 
     expect(childMock.setParent).toBeCalledTimes(1);
     expect(childMock.setParent).toBeCalledWith(component);
-    expect(component.children.push).toBeCalledTimes(1);
-    expect(component.children.push).toBeCalledWith(setParentResult);
+    expect(Object.keys(component.children)).toHaveLength(1);
   });
 
   it('Test content setup', () => {
@@ -153,7 +152,6 @@ describe('Base component class tests', () => {
 
     expect(component.props.getAll).toBeCalledTimes(1);
     expect(propMock.apply).toBeCalledTimes(1);
-    expect(propMock.apply).toBeCalledWith(component);
   });
 
   it('Test attributes applying', () => {
@@ -198,15 +196,11 @@ describe('Base component class tests', () => {
     it('Test render empty children', () => {
       component.content = 'test-content';
       //@ts-ignore
-      component.children = {
-        length: 0,
-        forEach: vi.fn(),
-      };
+      component.children = {};
 
       component.render();
 
       expect(component.htmlElement.innerText).toBe(component.content);
-      expect(component.children.forEach).toBeCalledTimes(0);
       expect(component.htmlElement.classList.add).toBeCalledTimes(0);
     });
 
@@ -229,10 +223,7 @@ describe('Base component class tests', () => {
 
     it('Test render empty child list and content', () => {
       //@ts-ignore
-      component.children = {
-        length: 0,
-        forEach: vi.fn(),
-      };
+      component.children = {};
       component.content = '';
 
       component.render();
@@ -241,7 +232,6 @@ describe('Base component class tests', () => {
       expect(component.htmlElement.classList.add).toBeCalledTimes(1);
       expect(component.htmlElement.innerHTML).toBe('');
       expect(component.htmlElement.innerText).toBe('');
-      expect(component.children.forEach).toBeCalledTimes(0);
     });
   });
 
@@ -290,7 +280,7 @@ describe('Base component class tests', () => {
   it('Test on find top on component', () => {
     //@ts-ignore
     const child = new Component('h2');
-    component.children.push(child);
+    component.children['key'] = child;
     child.parent = component;
 
     expect(child.findTop().length).toBe(2);
@@ -300,19 +290,19 @@ describe('Base component class tests', () => {
   it('Test remove child', () => {
     //@ts-ignore
     const child = new Component();
-    component.children.push(child);
+    component.children = { [child.key]: child };
     child.parent = component;
 
     component.removeChild(child.key);
 
-    expect(component.children.length).toBe(0);
+    expect(Object.keys(component.children)).toHaveLength(0);
   });
 
   it('Test replace child', () => {
     //@ts-ignore
     const child = new Component('h1');
     child.generateKey();
-    component.children.push(child);
+    component.children = { [child.key]: child };
     //@ts-ignore
     const newChild = new Component('h2');
     newChild.key = child.key;
@@ -320,6 +310,6 @@ describe('Base component class tests', () => {
 
     component.replaceChild(newChild);
 
-    expect(component.children[0]).toBe(newChild);
+    expect(component.children[child.key]).toBe(newChild);
   });
 });

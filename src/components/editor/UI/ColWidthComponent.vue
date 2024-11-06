@@ -12,40 +12,60 @@
       :marks="slider.marks"
       :initialValue="slider.value"
       :subheading="slider.subheading"
+      @update="update(index, $event)"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { ref } from 'vue';
 import OptionHeadingComponent from '../OptionHeadingComponent.vue';
 import SliderComponent from '../SliderComponent.vue';
+import ColWidthProp from '@/editor/properties/ColWidthProp.ts';
 
 export default {
   name: 'ColWidthComponent',
   components: { OptionHeadingComponent, SliderComponent },
+  props: {
+    prop: ColWidthProp,
+  },
   data: () => ({
-    values: [
-      {
-        subheading: 'Ширина колонки',
-        value: 0,
-        marks: {
-          0: '1/12',
-          8: '2/12',
-          17: '3/12',
-          25: '4/12',
-          33: '5/12',
-          42: '6/12',
-          50: '7/12',
-          58: '8/12',
-          67: '9/12',
-          75: '10/12',
-          83: '11/12',
-          100: '12/12',
-        },
-      },
-    ]
-  })
+    labels: {
+      0: 'auto',
+      8: '1/12',
+      16: '2/12',
+      25: '3/12',
+      33: '4/12',
+      41: '5/12',
+      50: '6/12',
+      58: '7/12',
+      66: '8/12',
+      75: '9/12',
+      83: '10/12',
+      91: '11/12',
+      100: '12/12',
+    },
+  }),
+  methods: {
+    update(index, data) {
+      this.prop.setValue(data, index)
+    }
+  },
+  computed: {
+    values() {
+      return [
+        {
+          subheading: 'Ширина колонки',
+          value: this.prop.value[0] == null ? this.prop.value[0] : this.prop.defaultValue[0],
+          marks: {
+            ...Object.keys(this.prop.availableValues[0]).map(key => {
+              const numKey = Number(key);
+              return { [numKey]: this.labels[numKey] };
+            }).reduce((acc, curr) => Object.assign(acc, curr), {})
+          },
+        }
+      ]
+    }
+  }
 };
 </script>
 

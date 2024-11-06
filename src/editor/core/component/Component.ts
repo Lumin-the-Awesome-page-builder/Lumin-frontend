@@ -19,7 +19,7 @@ export default abstract class Component {
   public htmlElement: HTMLElement = document.createElement('div');
   public props: PropertyCollection = PropertyCollection.empty();
   public attributes: AttributeCollection = AttributeCollection.empty();
-  public children: Component[] = [];
+  public children: Record<string, Component> = {};
   public content: string = '';
   public key: string = '';
   public keySalt: string = '';
@@ -94,21 +94,22 @@ export default abstract class Component {
   }
 
   appendChild(child: Component) {
-    this.appendChildren([child.setParent(this)]);
+    this.appendChildren({ [child.key]: child.setParent(this) });
   }
 
   removeChild(key: string) {
-    this.children = this.children.filter((el) => el.key != key);
+    delete this.children[key];
   }
 
   replaceChild(onReplace: Component) {
-    this.children = this.children.map((el) =>
-      el.key == onReplace.key ? onReplace : el,
-    );
+    this.children[onReplace.key] = onReplace;
   }
 
-  appendChildren(children: Component[]) {
-    this.children.push(...children.map((el) => el.setParent(this)));
+  appendChildren(children: Record<string, Component>) {
+    Object.keys(children).forEach((key) => {
+      children[key].setParent(this);
+    });
+    Object.assign(this.children, children);
   }
 
   setContent(content: string) {
@@ -117,7 +118,7 @@ export default abstract class Component {
 
   applyProps(): void {
     this.props.getAll().forEach((prop) => {
-      prop.apply(this);
+      prop.apply();
     });
   }
 
@@ -140,14 +141,14 @@ export default abstract class Component {
     this.htmlElement.innerHTML = '';
     this.htmlElement.innerText = '';
 
-    if (this.children && this.children.length)
-      this.children.forEach((el) =>
-        this.htmlElement.appendChild(el.render(pure)),
+    if (this.children && Object.keys(this.children).length)
+      Object.keys(this.children).forEach((key) =>
+        this.htmlElement.appendChild(this.children[key].render(pure)),
       );
     else this.htmlElement.innerText = this.content;
 
     if (
-      !this.children.length &&
+      !Object.keys(this.children).length &&
       (!this.content || this.content == '') &&
       !pure
     ) {
@@ -164,6 +165,14 @@ export default abstract class Component {
 
   toJson(): ComponentObject {
     const systemArgs = ['class', this.key, this.scopeIdentifier];
+    let children = Object.keys(this.children).map((key) => {
+      const el = this.children[key];
+      return { [el.key]: el.toJson() };
+    });
+    if (children.length)
+      children = children.reduce((prev, current) =>
+        Object.assign(prev, current),
+      );
     return {
       name: this.name,
       key: this.key,
@@ -178,7 +187,7 @@ export default abstract class Component {
         name: prop.getName(),
         value: prop.value,
       })),
-      children: this.children.map((el) => el.toJson()),
+      children,
       content: this.content,
       specific: this.specific,
       pure: this.pure,

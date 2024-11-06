@@ -6,16 +6,16 @@ describe('Align Items prop test', () => {
     const alignItemsProp = new AlignItemsProp('value');
 
     expect(alignItemsProp.value).toBe('value');
-    expect(alignItemsProp.defaultValue).toBe('start');
-    expect(alignItemsProp.description).toBe('___');
-    expect(alignItemsProp.title).toBe('___');
-    expect(alignItemsProp.availableValues).toStrictEqual({
-      start: 'align-items-start',
-      end: 'align-items-end',
-      center: 'align-items-center',
-      between: 'align-items-baseline',
-      around: 'align-items-stretch',
-    });
+    expect(alignItemsProp.defaultValue).toStrictEqual(['start']);
+    expect(alignItemsProp.availableValues).toStrictEqual([
+      {
+        start: 'align-items-start',
+        end: 'align-items-end',
+        center: 'align-items-center',
+        baseline: 'align-items-baseline',
+        stretch: 'align-items-stretch',
+      },
+    ]);
     expect(AlignItemsProp.name).toBe('align-items');
   });
 
