@@ -41,6 +41,7 @@ import VkAuthComponent from '@/components/auth/VkAuthComponent.vue';
 import AuthYandexInputDto from '@/api/modules/auth/dto/login/auth-yandex-input.dto.ts';
 import YandexAuthComponent from '@/components/auth/YandexAuthComponent.vue';
 import yandexConf from '@/api/conf/yandex.conf.ts';
+import appConf from '@/api/conf/app.conf.ts';
 
 export default {
   name: "LoginComponent",
@@ -84,7 +85,7 @@ export default {
       }
     },
     loginWithYandex() {
-      window.location.href = `https://oauth.yandex.ru/authorize?client_id=${yandexConf.clientId}&response_type=token&redirect_uri=https%3A%2F%2F${yandexConf.host}%2Fauth&widget_kind=button-stub&suggest_hostname=https%3A%2F%2F${yandexConf.host}&et=${Date.now()}`
+      window.location.href = `https://oauth.yandex.ru/authorize?client_id=${yandexConf.clientId}&response_type=token&redirect_uri=https%3A%2F%2F${appConf.redirectUrl}%2Fauth&widget_kind=button-stub&suggest_hostname=https%3A%2F%2F${appConf.redirectUrl}&et=${Date.now()}`
       localStorage.setItem('authByYandex', true);
     },
     async checkLoginStatus() {
