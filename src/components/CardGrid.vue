@@ -56,17 +56,18 @@
   .cards-scroll-area {
       height: 100%;
       max-height: 60vh;
-      overflow-y: auto; 
+      overflow-y: auto;
+      padding-right: 1rem;
   }
   .card-grid {
       display: flex;
       flex-wrap: wrap;
       gap: 3rem;
-      justify-content: flex-start;
+      justify-content: space-between;
   }
   .card-grid > * {
-      flex: 0 1 440px;
-      max-width: 440px;
+      flex: 0 1 40vw;
+      max-width: 40vw;
   }
   </style>
   

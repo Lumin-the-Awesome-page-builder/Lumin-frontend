@@ -45,7 +45,7 @@ describe('EditorStore tests', () => {
 
     expect(ProjectModel.getOne).toBeCalledWith(123);
     expect(store.use).toBeCalledWith('project');
-    expect(setItemMock).toBeCalledWith('selected-project', 123);
+    expect(setItemMock).toBeCalledWith('selected-project', '123');
     expect(result).toEqual({ ...getOneResult });
   });
 
@@ -93,9 +93,52 @@ describe('EditorStore tests', () => {
       id: 123,
     };
 
-    const result = await store.save();
+    const result = await store.save('data');
 
     expect(ProjectModel.update).toBeCalledWith(123, { id: 123 });
     expect(result).equal('updated');
+  });
+
+  it('Test pick block', () => {
+    const store = useEditorStore();
+    store.blockOnCreate = null;
+
+    store.pickBlock({ component: '123', icon: 'obj' });
+
+    expect(store.blockOnCreate).toEqual({ component: '123', icon: 'obj' });
+  });
+
+  it('test clear block selection', () => {
+    const store = useEditorStore();
+    const removeMock = vi.fn();
+    store.blockOnCreate = {
+      component: 'test',
+      icon: {
+        remove: removeMock,
+      },
+    };
+
+    store.clearBlockSelection();
+
+    expect(removeMock).toBeCalled();
+    expect(store.blockOnCreate).toEqual({ component: null, icon: null });
+  });
+
+  it('place block', () => {
+    const store = useEditorStore();
+    store.blockOnCreate = {
+      component: 'test',
+      icon: true,
+    };
+    const addMock = vi.fn();
+    store.app = {
+      add: addMock,
+    };
+    store.clearBlockSelection = vi.fn();
+
+    store.placeBlock('parent');
+
+    expect(addMock).toBeCalledWith('test', '', 'parent');
+    expect(store.clearBlockSelection).toBeCalled();
   });
 });

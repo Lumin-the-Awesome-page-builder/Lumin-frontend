@@ -17,6 +17,7 @@
         />
       </n-button-group>
     </div>
+  <n-divider />
   </template>
   
   <script lang="ts">
@@ -45,6 +46,10 @@
         dark: '#343a40',
       },
     }),
+    mounted() {
+      const value = this.prop.value[1] ? this.prop.value[1] : this.prop.defaultValue[1]
+      this.activeButton = Object.keys(this.colors).indexOf(value)
+    },
     methods: {
       setActiveButton(index: number, value) {
         const onSet = (this.activeButton == index) ? null : value

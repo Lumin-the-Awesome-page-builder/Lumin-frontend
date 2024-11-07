@@ -6,7 +6,7 @@ describe('Text transform prop test', () => {
     const textTransformProp = new TextTransformProp('value');
 
     expect(textTransformProp.value).toBe('value');
-    expect(textTransformProp.defaultValue).toStrictEqual(['text-capitalize']);
+    expect(textTransformProp.defaultValue).toStrictEqual(['capitalize']);
     expect(textTransformProp.availableValues).toStrictEqual([
       {
         lowercase: 'text-lowercase',

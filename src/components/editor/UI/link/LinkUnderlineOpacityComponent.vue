@@ -14,6 +14,7 @@
         @update="update(index, $event)"
       />
     </div>
+  <n-divider />
   </template>
   
   <script lang="ts">

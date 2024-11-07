@@ -14,19 +14,19 @@
         <template #header>
           <span class="custom-header">Параметры блока</span>
         </template>
-
-        <ComponentSetupComponent />
-
-        <div><n-button color="#7b7bfe"> Сохранить </n-button></div>
+        
+        <ComponentSetupComponent :key="test" />
+        
+      </n-collapse-item>
+      <n-collapse-item name="3">
+        <template #header>
+          <span class="custom-header">Доступные блоки</span>
+        </template>
+        
+        <AvailableBlocksComponent :blocks="availableBlocks" />
+        
       </n-collapse-item>
     </n-collapse>
-    <n-divider />
-    <div class="block-options">
-      <h3 class="options-heading">Опция блока №1</h3>
-      <span class="options-details"> Детали опции </span>
-      <n-button color="#7b7bfe"> Сохранить </n-button>
-    </div>
-    <n-divider />
   </div>
 </template>
 
@@ -35,17 +35,35 @@ import useEditorStore from '@/store/editor.store.ts';
 import useProjectPreviewModalStore from '@/store/project-preview-modal.store.ts'
 import { useNotification } from 'naive-ui';
 import ComponentSetupComponent from '@/components/editor/ComponentSetupComponent.vue';
+import AvailableBlocksComponent from '@/components/editor/AvailableBlocksComponent.vue';
+import useComponentSetupStore from '@/store/component-setup.store.ts';
 
 export default {
   components: {
-    ComponentSetupComponent,
+    ComponentSetupComponent, AvailableBlocksComponent
   },
   setup() {
     return {
       notificationStore: useNotification(),
       editorStore: useEditorStore(),
       projectPreviewModalStore: useProjectPreviewModalStore(),
+      componentSetupStore: useComponentSetupStore()
     }
+  },
+  data: () => ({
+    test: 123
+  }),
+  mounted() {
+    this.componentSetupStore.$onAction(({name, after}) => {
+      //Force refresh the ComponentSetup
+      if (name === 'selectComponent') {
+        after(() => {
+          this.$nextTick(() => {
+            this.test += 1
+          })
+        })
+      }
+    })
   },
   methods: {
     async save() {
@@ -58,8 +76,14 @@ export default {
       this.projectPreviewModalStore.closeModal()
       result.toastIfError(this.notificationStore)
       if (result.success) {
+        this.editorStore.clearBlockSelection()
         this.$router.push({ path: '/dashboard' })
       }
+    }
+  },
+  computed: {
+    availableBlocks() {
+      return this.editorStore.getAvailableBlocks;
     }
   }
 };
@@ -78,6 +102,7 @@ export default {
   border-left: 1px solid #e2e2e8;
   gap: 1rem;
   padding: 0.5rem;
+  padding-right: 2rem;
 }
 .block-options {
   display: flex;
