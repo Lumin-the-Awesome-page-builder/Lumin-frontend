@@ -17,11 +17,12 @@ describe('RSidebarComponent test', () => {
     container.availableProps = [];
     RSidebarComponent.setup = vi.fn(() => {
       const componentStore = useComponentSetupStore();
-      componentStore.selectComponent([container], 0);
+      componentStore.selectComponent(container);
 
       return {
         editorStore: useEditorStore(),
         projectPreviewModalStore: useProjectPreviewModalStore(),
+        componentSetupStore: componentStore,
       };
     });
     const wrapper = mount(RSidebarComponent);
@@ -36,12 +37,13 @@ describe('RSidebarComponent test', () => {
     container.availableProps = [];
     RSidebarComponent.setup = vi.fn(() => {
       const componentStore = useComponentSetupStore();
-      componentStore.selectComponent([container], 0);
+      componentStore.selectComponent(container);
       const editorStore = useEditorStore();
       editorStore.blockOnCreate = { icon: null, component: null };
       return {
         editorStore: useEditorStore(),
         projectPreviewModalStore: useProjectPreviewModalStore(),
+        componentSetupStore: componentStore,
       };
     });
     const routerMock = vi.fn();

@@ -3,7 +3,7 @@ import Property from '@/editor/core/property/Property.ts';
 export default class ContentProp extends Property {
   static name: string = 'content';
 
-  defaultValue: any[] = ['Test'];
+  defaultValue: any[] = ['Текст...'];
   availableValues: Record<any, any>[] = [];
 
   getName(): string {

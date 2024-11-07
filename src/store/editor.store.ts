@@ -5,6 +5,7 @@ import { generateSlug } from 'random-word-slugs';
 import Container from '@/editor/components/Container.ts';
 import TokenUtil from '@/utils/token.util.ts';
 import Packager from '@/editor/core/Packager.ts';
+import Component from '@/editor/core/component/Component.ts';
 
 const useEditorStore = defineStore({
   id: 'editor-store',
@@ -15,6 +16,17 @@ const useEditorStore = defineStore({
     blockOnCreate: {
       icon: null,
       component: null,
+    },
+    contextMenu: {
+      active: false,
+      items: [],
+      position: {
+        x: 0,
+        y: 0,
+      },
+      handler: (item) => {
+        console.log(item);
+      },
     },
   }),
   getters: {
@@ -27,6 +39,7 @@ const useEditorStore = defineStore({
         name: el,
         title: state.app.componentLibrary[el].title,
       })),
+    getContextMenuItems: (state) => state.contextMenu.items,
   },
   actions: {
     async useById(id: number) {
@@ -91,6 +104,24 @@ const useEditorStore = defineStore({
       if (!this.anyBlockPicked) return;
       this.app.add(this.blockOnCreate.component, '', parent);
       this.clearBlockSelection();
+    },
+    openContext(items: Component[], position, handler) {
+      this.contextMenu.active = true;
+      this.contextMenu.items = items;
+      this.contextMenu.handler = handler;
+      this.contextMenu.position = position;
+    },
+    triggerContextItem(item: Component) {
+      this.contextMenu.handler(item);
+      this.closeContext();
+    },
+    closeContext() {
+      this.contextMenu.items = [];
+      this.contextMenu.position = { x: 0, y: 0 };
+      this.contextMenu.handler = (_) => {
+        console.log(_);
+      };
+      this.contextMenu.active = false;
     },
   },
 });

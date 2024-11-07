@@ -1,3 +1,6 @@
+/*
+    Sticky block styles
+*/
 .picked-up-block {
     width: 200px;
     display: flex;
@@ -23,4 +26,33 @@
     font-size: 20px;
     font-weight: 600;
     color: rgb(111, 108, 153);
+}
+
+
+/*
+    Context menu styles
+*/
+.context-menu {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    max-height: 400px;
+    overflow: auto;
+    border-radius: .5rem;
+    box-shadow: 0 0 10px rgb(111, 108, 153);
+    padding: .6rem;
+    position: absolute;
+    opacity: 0;
+    transition: opacity 0.1s ease;
+    gap: .3rem;
+    background-color: #f8f8ff
+}
+
+.context-menu > button{
+    display: flex;
+    width: 100%;
+}
+
+.selected {
+    box-shadow: 0 0 10px rgb(111, 108, 153);
 }

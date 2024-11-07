@@ -12,6 +12,7 @@
       placeholder="Basic Textarea"
     />
   </div>
+  <n-divider />
 </template>
 
 <script lang="ts">
@@ -31,9 +32,10 @@ export default {
     value: ""
   }),
   mounted() {
-    console.log(this.prop.value)
-    console.log(this.prop.defaultValue)
     this.value = this.prop.value[0] ? this.prop.value[0] : this.prop.defaultValue[0];
+  },
+  created() {
+    console.log("created")
   },
   methods: {
     update() {

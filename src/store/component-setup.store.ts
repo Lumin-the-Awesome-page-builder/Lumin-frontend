@@ -1,13 +1,14 @@
 import { defineStore } from 'pinia';
 import Component from '@/editor/core/component/Component.ts';
 import PatchProjectTreeDto from '@/api/modules/project/dto/patch-project-tree.dto.ts';
+
 const useComponentSetupStore = defineStore({
   id: 'component-setup-store',
   state: (): { component: Component | null } => ({
     component: null,
   }),
   actions: {
-    async selectComponent(path: Component[], index: number) {
+    async selectComponent(component: Component) {
       if (this.component) {
         const updatePath = this.component
           .findTop()
@@ -22,7 +23,7 @@ const useComponentSetupStore = defineStore({
           new PatchProjectTreeDto(updatePath, packed),
         );
       }
-      this.component = path[index];
+      this.component = component;
     },
   },
 });
