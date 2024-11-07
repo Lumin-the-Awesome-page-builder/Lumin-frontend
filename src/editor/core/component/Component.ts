@@ -9,13 +9,14 @@ export type ComponentObject = {
   attrs: AttributeObject[];
   props: PropertyObject[];
   content: string;
-  children: ComponentObject[];
+  children: Record<string, ComponentObject>;
   specific: any;
   pure: boolean;
 };
 
 export default abstract class Component {
   public abstract name: string;
+  static title: string = "Component"
   public htmlElement: HTMLElement = document.createElement('div');
   public props: PropertyCollection = PropertyCollection.empty();
   public attributes: AttributeCollection = AttributeCollection.empty();
@@ -147,12 +148,17 @@ export default abstract class Component {
       );
     else this.htmlElement.innerText = this.content;
 
+    console.log(this.children, this.content, pure)
+
     if (
       !Object.keys(this.children).length &&
       (!this.content || this.content == '') &&
-      !pure
+      !pure &&
+      this.parent == null
     ) {
       this.htmlElement.classList.add('empty-item');
+    } else {
+      this.htmlElement.classList.remove('empty-item');
     }
 
     return this.htmlElement;
@@ -165,7 +171,7 @@ export default abstract class Component {
 
   toJson(): ComponentObject {
     const systemArgs = ['class', this.key, this.scopeIdentifier];
-    let children = Object.keys(this.children).map((key) => {
+    let children: any = Object.keys(this.children).map((key) => {
       const el = this.children[key];
       return { [el.key]: el.toJson() };
     });

@@ -322,6 +322,8 @@ describe('App.ts unit tests', () => {
           specific: {
             html: '',
           },
+          setProps: vi.fn(),
+          availableProps: []
         };
         Mock = function () {
           Object.keys(mock).forEach((el) => (this[el] = mock[el]));

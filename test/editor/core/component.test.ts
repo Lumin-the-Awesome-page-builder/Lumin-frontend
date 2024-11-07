@@ -187,6 +187,7 @@ describe('Base component class tests', () => {
         //@ts-ignore
         classList: {
           add: vi.fn(),
+          remove: vi.fn()
         },
         appendChild: vi.fn(),
         addEventListener: vi.fn(),

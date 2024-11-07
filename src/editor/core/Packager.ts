@@ -36,28 +36,15 @@ export default class Packager {
 
     const htmlString = htmlPage.outerHTML;
 
-    console.log(htmlPage);
-
     return new Blob([htmlString], { type: 'text/html' });
   }
 
   public json() {
-    const topLevelChildren = Array.from(
-      document.getElementById(this.app.mountPoint).children,
-    );
+    const tree = Object.keys(this.app.root)
+      .map((el) => ({ [el]: this.app.root[el].toJson() }))
 
-    return JSON.stringify(
-      topLevelChildren
-        .map((el) => {
-          const key = Array.from(el.attributes).filter((el) =>
-            el.name.startsWith(`data-${this.app.identifiersSalt}-`),
-          );
-          if (key.length) return this.app.state[key[0].name];
-          else return null;
-        })
-        .filter((el) => el)
-        .map((el) => ({ [el.key]: el.toJson() }))
-        .reduce((prev, current) => Object.assign(prev, current)),
-    );
+    return tree.length ? JSON.stringify(
+        tree.reduce((prev, current) => Object.assign(prev, current)),
+    ) : '{}';
   }
 }

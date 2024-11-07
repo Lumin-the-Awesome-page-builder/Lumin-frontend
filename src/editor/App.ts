@@ -12,7 +12,7 @@ export class App {
   public mountPoint: string = '';
   public identifiersSalt: string = '';
   public scopeIdentifier: string = '';
-  public initState: ComponentObject[] = [];
+  public initState: Record<string, ComponentObject> = {};
   public pureStyles: Record<string, HTMLElement> = {};
 
   // "event": [([parents] => {},)]
@@ -181,6 +181,7 @@ export class App {
     component.setEventHandler((e, arr) => this.handler(e, arr));
     component.setKeySalt(this.identifiersSalt);
     component.generateKey();
+    component.setProps(this.buildProps(component, []))
 
     const parent = this.state[parentKey];
     if (!parent) {

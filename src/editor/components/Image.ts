@@ -8,6 +8,7 @@ export default class Image extends Component {
   }
 
   name: string = 'image';
+  static title: string = 'Картинка';
 
   availableProps: string[] = [BorderRadiusProp.name];
 }

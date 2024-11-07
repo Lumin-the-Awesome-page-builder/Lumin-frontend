@@ -37,6 +37,8 @@ describe('RSidebarComponent test', () => {
     RSidebarComponent.setup = vi.fn(() => {
       const componentStore = useComponentSetupStore();
       componentStore.selectComponent([container], 0);
+      const editorStore = useEditorStore()
+      editorStore.blockOnCreate = { icon: null, component: null }
       return {
         editorStore: useEditorStore(),
         projectPreviewModalStore: useProjectPreviewModalStore(),

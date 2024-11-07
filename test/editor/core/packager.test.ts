@@ -93,6 +93,7 @@ describe('Package class tests', () => {
       addEventListener: vi.fn(),
       classList: {
         add: vi.fn(),
+        remove: vi.fn(),
       },
     }));
 

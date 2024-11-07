@@ -9,13 +9,13 @@ const useComponentSetupStore = defineStore({
   actions: {
     async selectComponent(path: Component[], index: number) {
       if (this.component) {
-        const updatePath = this.component.findTop().map((item) => item.key);
-        const packed = JSON.stringify(this.component.toJson());
+        const updatePath = this.component.findTop().map((item) => item.key).filter(el => el != this.component.key);
+        const packed = this.component.toJson();
         const projectModel = (
           await import('@/api/modules/project/models/project.model.ts')
         ).default;
         await projectModel.patchTree(
-          localStorage.getItem('selected-project'),
+          parseInt(localStorage.getItem('selected-project')),
           new PatchProjectTreeDto(updatePath, packed),
         );
       }

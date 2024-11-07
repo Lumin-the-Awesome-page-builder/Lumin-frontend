@@ -12,6 +12,7 @@ export default class Header extends Component {
   }
 
   name: string = 'header';
+  static title: string = 'Заголовок';
 
   availableProps: string[] = [
     FontProp.name,

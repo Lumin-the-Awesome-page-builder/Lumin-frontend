@@ -27,6 +27,7 @@ import LinkUnderlineOffsetProp from '@/editor/properties/link/LinkUnderlineOffse
 import LinkUnderlineOpacityProp from '@/editor/properties/link/LinkUnderlineOpacityProp.ts';
 import ImgFluidProp from '@/editor/properties/ImgFluidProp.ts';
 import BorderRadiusProp from '@/editor/properties/BorderRadiusProp.ts';
+import ContentProp from '@/editor/properties/ContentProp.ts';
 
 export function getEditorInstance() {
   const editor = new App();
@@ -71,6 +72,7 @@ export function getEditorInstance() {
 
   // Image
   editor.useProp(ImgFluidProp);
+  editor.useProp(ContentProp);
 
   return editor;
 }

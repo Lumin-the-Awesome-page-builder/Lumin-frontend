@@ -1,4 +1,6 @@
 <template>
+  <ContentComponent v-if="contentComponentAvailable" :prop="component.props.get('content')" />
+  
   <LinkColorComponent v-if="linkColorAvailable" :prop="component.props.get('link-color')" />
   <LinkOpacityComponent v-if="linkOpacityAvailable" :prop="component.props.get('link-opacity')" />
   <LinkUnderlineOffsetComponent v-if="linkUnderlineOffsetAvailable" :prop="component.props.get('link-offset')" />
@@ -48,6 +50,7 @@ import LinkUnderlineOffsetComponent from '@/components/editor/UI/link/LinkUnderl
 import LinkUnderlineOpacityComponent from '@/components/editor/UI/link/LinkUnderlineOpacityComponent.vue';
 import FontComponent from '@/components/editor/UI/text/FontComponent.vue';
 import TextDecorationComponent from '@/components/editor/UI/text/TextDecorationComponent.vue';
+import ContentComponent from '@/components/editor/UI/ContentComponent.vue'
 import useComponentSetupStore from '@/store/component-setup.store.ts';
 import LinkColorProp from '@/editor/properties/link/LinkColorProp.ts';
 import LinkOpacityProp from '@/editor/properties/link/LinkOpacityProp.ts';
@@ -71,6 +74,8 @@ import InlineTextProp from '@/editor/properties/text/InlineTextProp.ts';
 import FontProp from '@/editor/properties/text/FontProp.ts';
 import LinkUnderlineOpacityProp from '@/editor/properties/link/LinkUnderlineOpacityProp.ts';
 import LinkUnderlineOffsetProp from '@/editor/properties/link/LinkUnderlineOffsetProp.ts';
+import ContentProp from '@/editor/properties/ContentProp.ts';
+
 
 export default {
   name: 'ComponentSetupComponent',
@@ -96,7 +101,8 @@ export default {
     LinkOpacityComponent,
     LinkUnderlineOffsetComponent,
     LinkUnderlineOpacityComponent,
-    FontComponent
+    FontComponent,
+    ContentComponent
   },
   setup() {
     const componentSetupStore = useComponentSetupStore()
@@ -105,8 +111,6 @@ export default {
   },
   methods: {
     isAvailable(name) {
-      console.log(this)
-      console.log(this.component)
       return this.component.availableProps.includes(name)
     }
   },
@@ -179,6 +183,9 @@ export default {
     },
     justifyContentAvailable() {
       return this.isAvailable(JustifyContentProp.name);
+    },
+    contentComponentAvailable() {
+      return this.isAvailable(ContentProp.name)
     }
   }
 }
