@@ -7,6 +7,7 @@ export class TokenUtil {
   private readonly accessTokenKey = 'access';
   private readonly refreshTokenKey = 'refresh';
   private readonly authorizedUserKey = 'authorized';
+  private readonly authByYandexKey = 'authByYandex';
   private authorizedUserDto: AuthorizedUserDto | null = null;
 
   constructor() {
@@ -74,6 +75,7 @@ export class TokenUtil {
     localStorage.removeItem(this.accessTokenKey);
     localStorage.removeItem(this.refreshTokenKey);
     localStorage.removeItem(this.authorizedUserKey);
+    localStorage.removeItem(this.authByYandexKey);
   }
 }
 

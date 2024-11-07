@@ -157,14 +157,16 @@ describe('Token Util tests', () => {
     tokenUtil.accessTokenKey = 'access';
     tokenUtil.refreshTokenKey = 'refresh';
     tokenUtil.authorizedUserKey = 'authUserKey';
+    tokenUtil.authByYandexKey = 'authByYandexKey';
 
     tokenUtil.logout();
 
     expect(tokenUtil.accessToken).toBe(null);
     expect(tokenUtil.refreshToken).toBe(null);
-    expect(removeItemMock).toBeCalledTimes(3);
+    expect(removeItemMock).toBeCalledTimes(4);
     expect(removeItemMock).toBeCalledWith(tokenUtil.accessTokenKey);
     expect(removeItemMock).toBeCalledWith(tokenUtil.refreshTokenKey);
     expect(removeItemMock).toBeCalledWith(tokenUtil.authorizedUserKey);
+    expect(removeItemMock).toBeCalledWith(tokenUtil.authByYandexKey);
   });
 });
