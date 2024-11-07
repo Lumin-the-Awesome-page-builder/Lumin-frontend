@@ -24,6 +24,7 @@ const useEditorStore = defineStore({
       const project = await ProjectModel.default.getOne(id);
       localStorage.setItem('selected-project', id);
       this.use(project.getData());
+      return project;
     },
     use(projectDto: any) {
       this.selected = projectDto;
@@ -42,7 +43,13 @@ const useEditorStore = defineStore({
       const ProjectModel = await import(
         '@/api/modules/project/models/project.model.ts'
       );
-      this.selected = (await ProjectModel.default.create(newProject)).getData();
+      const result = await ProjectModel.default.create(newProject);
+
+      if (!result.success) {
+        return result;
+      }
+
+      this.selected = result.getData();
 
       const initComponent = new Container();
       initComponent.setKeySalt(
@@ -55,9 +62,7 @@ const useEditorStore = defineStore({
 
       localStorage.setItem('selected-project', this.selected.id);
 
-      await this.save();
-
-      return this.selected;
+      return await this.save();
     },
   },
 });

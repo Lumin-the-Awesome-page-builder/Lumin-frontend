@@ -23,11 +23,11 @@
       </div>
       <n-button @click="register" color="#3535FFA6" class="btn">Зарегистрироваться</n-button>
     </div>
-  <div class="line"></div>
-  <div class="socialsNetworkBlock">
-    <img alt="VK auth" src="@/assets/svg/VK.svg" class="socialsNetworkImg"/>
-    <img alt="Yandex auth" src="@/assets/svg/Yandex.svg" class="socialsNetworkImg"/>
-  </div>
+    <div class="line"></div>
+    <div class="socialsNetworkBlock">
+      <img alt="VK auth" src="@/assets/svg/VK.svg" class="socialsNetworkImg"/>
+      <img alt="Yandex auth" src="@/assets/svg/Yandex.svg" class="socialsNetworkImg"/>
+    </div>
   </div>
 </template>
 
@@ -38,9 +38,14 @@ import { EyeOff, EyeSharp } from '@vicons/ionicons5';
 import useAuthStore from '@/store/auth.store.ts';
 import router from '@/router/index.ts'
 import RegistrationInputDto from '@/api/modules/auth/dto/registration-input.dto.ts';
+import { defineComponent } from 'vue';
+import { useNotification } from 'naive-ui';
 
-export default {
+export default defineComponent({
   name: "RegistrationComponent",
+  setup() {
+    return { notification: useNotification() };
+  },
   data() {
     return {
       emailData: "",
@@ -67,15 +72,15 @@ export default {
       
       const registration = await authStore.register(new RegistrationInputDto(this.emailData, this.passwordData));
 
-      if (registration) {
+      registration.toastIfError(this.notification)
+
+      if (registration.success) {
         await router.push({ path: "/dashboard" });
-      } else {
-        alert("Bad credentials")
       }
     }
   }
 
-}
+})
 </script>
 
 <style scoped>

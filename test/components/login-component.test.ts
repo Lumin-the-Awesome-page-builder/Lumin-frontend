@@ -1,7 +1,13 @@
 import { mount } from '@vue/test-utils';
-import { it, expect, describe } from 'vitest';
+import { expect, vi, describe, it } from 'vitest';
 import LoginComponent from '@/components/LoginComponent.vue';
 import { EyeOff, EyeSharp } from '@vicons/ionicons5';
+
+vi.mock('naive-ui', () => {
+  return {
+    useNotification: vi.fn(() => 'notificationStore'),
+  };
+});
 
 describe('Test LoginComponent', () => {
   const wrapper = mount(LoginComponent);

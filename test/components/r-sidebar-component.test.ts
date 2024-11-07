@@ -7,8 +7,16 @@ import useComponentSetupStore from '@/store/component-setup.store.ts';
 import useEditorStore from '@/store/editor.store.ts';
 import useProjectPreviewModalStore from '@/store/project-preview-modal.store.ts';
 
+vi.mock('naive-ui', () => {
+  return {
+    useNotification: vi.fn(() => 'notificationStore'),
+  };
+});
+
 describe('RSidebarComponent test', () => {
+  let toastIfErrorMock;
   beforeEach(() => {
+    toastIfErrorMock = vi.fn();
     setActivePinia(createPinia());
   });
 
@@ -25,10 +33,14 @@ describe('RSidebarComponent test', () => {
       };
     });
     const wrapper = mount(RSidebarComponent);
-    wrapper.vm.editorStore = { save: vi.fn(() => true) };
+    wrapper.vm.editorStore = {
+      save: vi.fn(() => ({ toastIfError: toastIfErrorMock })),
+    };
+
     await wrapper.vm.save();
 
     expect(wrapper.vm.editorStore.save).toBeCalled();
+    expect(toastIfErrorMock).toBeCalledWith('notificationStore');
   });
 
   it('Test exit method', async () => {
@@ -52,7 +64,7 @@ describe('RSidebarComponent test', () => {
         },
       },
     });
-    wrapper.vm.save = vi.fn();
+    wrapper.vm.save = vi.fn(() => ({ toastIfError: toastIfErrorMock }));
 
     await wrapper.vm.exit();
 

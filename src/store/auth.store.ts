@@ -27,7 +27,7 @@ const useAuthStore = defineStore({
 
       this.isLoggedIn = res.success && authorized.success;
 
-      return this.isLoggedIn;
+      return authorized;
     },
 
     async loginViaYandex(authYandexInputDto: AuthYandexInputDto) {
@@ -41,7 +41,7 @@ const useAuthStore = defineStore({
 
       this.isLoggedIn = res.success && authorized.success;
 
-      return this.isLoggedIn;
+      return authorized;
     },
 
     async loginViaVk(authVkInputDto: AuthVkInputDto) {
@@ -55,7 +55,7 @@ const useAuthStore = defineStore({
 
       this.isLoggedIn = res.success && authorized.success;
 
-      return this.isLoggedIn;
+      return authorized;
     },
     async register(registrationInputDto: RegistrationInputDto) {
       const result = await AuthModel.registration(registrationInputDto);
@@ -68,7 +68,7 @@ const useAuthStore = defineStore({
 
       this.isLoggedIn = result.success && result.success;
 
-      return this.isLoggedIn;
+      return authorized;
     },
   },
 });

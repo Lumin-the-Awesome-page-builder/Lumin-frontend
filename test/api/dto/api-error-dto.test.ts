@@ -14,22 +14,16 @@ describe('Base apiErrorDto class tests', () => {
   });
 
   it('Test apiErrorDto showServerErrorToast', () => {
-    const nextTickMock = vi.fn();
-    const toastMock = {
-      add: vi.fn(),
-    };
-    const toastAddData = {
-      severity: 'error',
-      summary: 'Произошла ошибка',
-      detail: `Что-то пошло не так. Пожалуйста, свяжитесь с администратором.
-    <p style="font-weight: 600; text-decoration: underline; cursor: pointer;">${String(apiErrorDto.data)}</p>`,
-      life: 10000,
-    };
+    const notificationStore = { error: vi.fn() };
 
-    apiErrorDto.showServerErrorToast(toastMock, nextTickMock);
+    apiErrorDto.showServerErrorToast(notificationStore);
 
-    expect(toastMock.add).toBeCalledTimes(1);
-    expect(toastMock.add).toBeCalledWith(toastAddData);
-    expect(nextTickMock).toBeCalledTimes(1);
+    expect(notificationStore.error).toBeCalledTimes(1);
+    expect(notificationStore.error).toBeCalledWith({
+      content: 'Что-то пошло не так.',
+      meta: 'Ошибка сервера. Попробуйте ещё раз.',
+      duration: 2500,
+      keepAliveOnHover: true,
+    });
   });
 });

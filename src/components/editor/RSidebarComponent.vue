@@ -14,9 +14,9 @@
         <template #header>
           <span class="custom-header">Параметры блока</span>
         </template>
-        
+
         <ComponentSetupComponent />
-        
+
         <div><n-button color="#7b7bfe"> Сохранить </n-button></div>
       </n-collapse-item>
     </n-collapse>
@@ -33,6 +33,7 @@
 <script lang="ts">
 import useEditorStore from '@/store/editor.store.ts';
 import useProjectPreviewModalStore from '@/store/project-preview-modal.store.ts'
+import { useNotification } from 'naive-ui';
 import ComponentSetupComponent from '@/components/editor/ComponentSetupComponent.vue';
 
 export default {
@@ -41,18 +42,24 @@ export default {
   },
   setup() {
     return {
+      notificationStore: useNotification(),
       editorStore: useEditorStore(),
       projectPreviewModalStore: useProjectPreviewModalStore(),
     }
   },
   methods: {
     async save() {
-      await this.editorStore.save()
+      const result = await this.editorStore.save()
+      result.toastIfError(this.notificationStore)
+      return result;
     },
     async exit() {
-      await this.save()
+      const result = await this.save()
       this.projectPreviewModalStore.closeModal()
-      this.$router.push({ path: '/dashboard' })
+      result.toastIfError(this.notificationStore)
+      if (result.success) {
+        this.$router.push({ path: '/dashboard' })
+      }
     }
   }
 };

@@ -1,9 +1,9 @@
-import { mount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import { test, expect } from 'vitest';
 import AuthView from '@/views/AuthView.vue';
 import LoginComponent from '@/components/LoginComponent.vue';
 
-const wrapper = mount(AuthView);
+const wrapper = shallowMount(AuthView);
 
 test('renders LoginComponent', () => {
   const loginComponent = wrapper.findComponent(LoginComponent);

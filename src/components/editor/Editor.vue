@@ -1,12 +1,14 @@
 <template>
-  <div class="editor-wrapper">
-    <div class="editor-section">
-      <Workspace />
+  <n-notification-provider>
+    <div class="editor-wrapper">
+      <div class="editor-section">
+        <Workspace />
+      </div>
+      <div class="editor-contolls">
+        <RSidebarComponent />
+      </div>
     </div>
-    <div class="editor-contolls">
-      <RSidebarComponent />
-    </div>
-  </div>
+  </n-notification-provider>
 </template>
 
 <script lang="ts">
