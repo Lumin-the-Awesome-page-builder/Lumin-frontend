@@ -16,7 +16,7 @@ export default class Text extends Component {
   name: string = 'text';
   static title: string = 'Текст';
 
-  content = "Text"
+  content = 'Text';
 
   availableProps: string[] = [
     FontProp.name,
@@ -25,6 +25,6 @@ export default class Text extends Component {
     MonoSpaceProp.name,
     TextAlignProp.name,
     TextTransformProp.name,
-    ContentProp.name
+    ContentProp.name,
   ];
 }

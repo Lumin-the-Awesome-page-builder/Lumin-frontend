@@ -181,7 +181,7 @@ export class App {
     component.setEventHandler((e, arr) => this.handler(e, arr));
     component.setKeySalt(this.identifiersSalt);
     component.generateKey();
-    component.setProps(this.buildProps(component, []))
+    component.setProps(this.buildProps(component, []));
 
     const parent = this.state[parentKey];
     if (!parent) {

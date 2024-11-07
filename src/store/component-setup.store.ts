@@ -9,7 +9,10 @@ const useComponentSetupStore = defineStore({
   actions: {
     async selectComponent(path: Component[], index: number) {
       if (this.component) {
-        const updatePath = this.component.findTop().map((item) => item.key).filter(el => el != this.component.key);
+        const updatePath = this.component
+          .findTop()
+          .map((item) => item.key)
+          .filter((el) => el != this.component.key);
         const packed = this.component.toJson();
         const projectModel = (
           await import('@/api/modules/project/models/project.model.ts')

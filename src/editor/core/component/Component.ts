@@ -16,7 +16,7 @@ export type ComponentObject = {
 
 export default abstract class Component {
   public abstract name: string;
-  static title: string = "Component"
+  static title: string = 'Component';
   public htmlElement: HTMLElement = document.createElement('div');
   public props: PropertyCollection = PropertyCollection.empty();
   public attributes: AttributeCollection = AttributeCollection.empty();
@@ -148,7 +148,7 @@ export default abstract class Component {
       );
     else this.htmlElement.innerText = this.content;
 
-    console.log(this.children, this.content, pure)
+    console.log(this.children, this.content, pure);
 
     if (
       !Object.keys(this.children).length &&

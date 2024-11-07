@@ -31,6 +31,6 @@ export default class Link extends Component {
     MonoSpaceProp.name,
     TextAlignProp.name,
     TextTransformProp.name,
-    ContentProp.name
+    ContentProp.name,
   ];
 }

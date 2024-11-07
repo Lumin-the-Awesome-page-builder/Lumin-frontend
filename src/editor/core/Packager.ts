@@ -40,11 +40,14 @@ export default class Packager {
   }
 
   public json() {
-    const tree = Object.keys(this.app.root)
-      .map((el) => ({ [el]: this.app.root[el].toJson() }))
+    const tree = Object.keys(this.app.root).map((el) => ({
+      [el]: this.app.root[el].toJson(),
+    }));
 
-    return tree.length ? JSON.stringify(
-        tree.reduce((prev, current) => Object.assign(prev, current)),
-    ) : '{}';
+    return tree.length
+      ? JSON.stringify(
+          tree.reduce((prev, current) => Object.assign(prev, current)),
+        )
+      : '{}';
   }
 }

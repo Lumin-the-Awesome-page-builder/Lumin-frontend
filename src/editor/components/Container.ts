@@ -22,7 +22,7 @@ export default class Container extends Component {
     FlexProp.name,
     FlexWrapProp.name,
     GutterProp.name,
-    JustifyContentProp.name
+    JustifyContentProp.name,
   ];
 
   name: string = 'container';

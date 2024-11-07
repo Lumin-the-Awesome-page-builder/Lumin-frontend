@@ -14,17 +14,19 @@ const useEditorStore = defineStore({
     app: new App(),
     blockOnCreate: {
       icon: null,
-      component: null
+      component: null,
     },
   }),
   getters: {
     getProject: (state) => state.selected,
     getTree: (state) => state.selected.data,
-    anyBlockPicked: state => (state.blockOnCreate.component && state.blockOnCreate.icon),
-    getAvailableBlocks: state => Object.keys(state.app.componentLibrary).map(el => ({
-      name: el,
-      title: state.app.componentLibrary[el].title,
-    }))
+    anyBlockPicked: (state) =>
+      state.blockOnCreate.component && state.blockOnCreate.icon,
+    getAvailableBlocks: (state) =>
+      Object.keys(state.app.componentLibrary).map((el) => ({
+        name: el,
+        title: state.app.componentLibrary[el].title,
+      })),
   },
   actions: {
     async useById(id: number) {
@@ -45,10 +47,12 @@ const useEditorStore = defineStore({
       const ProjectModel = await import(
         '@/api/modules/project/models/project.model.ts'
       );
-      const packager = new Packager(this.app)
-      const data = state ? state : {
-        data: packager.json()
-      }
+      const packager = new Packager(this.app);
+      const data = state
+        ? state
+        : {
+            data: packager.json(),
+          };
       return await ProjectModel.default.update(this.selected.id, data);
     },
     async openNew() {
@@ -73,22 +77,21 @@ const useEditorStore = defineStore({
 
       return this.selected;
     },
-    pickBlock(block: { component: string, icon: HTMLElement }) {
+    pickBlock(block: { component: string; icon: HTMLElement }) {
       this.blockOnCreate = block;
     },
     clearBlockSelection() {
-      if (this.blockOnCreate.icon)
-        this.blockOnCreate.icon.remove()
+      if (this.blockOnCreate.icon) this.blockOnCreate.icon.remove();
       this.blockOnCreate = {
         icon: null,
-        component: null
-      }
+        component: null,
+      };
     },
     placeBlock(parent: string) {
       if (!this.anyBlockPicked) return;
-      this.app.add(this.blockOnCreate.component, "", parent);
-      this.clearBlockSelection()
-    }
+      this.app.add(this.blockOnCreate.component, '', parent);
+      this.clearBlockSelection();
+    },
   },
 });
 

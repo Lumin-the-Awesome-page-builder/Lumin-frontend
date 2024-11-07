@@ -2,7 +2,6 @@ import { describe, vi, it, beforeEach, expect } from 'vitest';
 import ProjectModel from '@/api/modules/project/models/project.model.ts';
 import { createPinia, setActivePinia } from 'pinia';
 import useEditorStore from '@/store/editor.store.ts';
-import Packager from '@/editor/core/Packager.ts';
 
 vi.mock('@/api/modules/project/models/project.model.ts', () => {
   return {
@@ -25,7 +24,6 @@ vi.mock('@/utils/token.util.ts', () => {
     },
   };
 });
-
 
 describe('EditorStore tests', () => {
   beforeEach(() => {
@@ -101,44 +99,44 @@ describe('EditorStore tests', () => {
 
   it('Test pick block', () => {
     const store = useEditorStore();
-    store.blockOnCreate = null
+    store.blockOnCreate = null;
 
-    store.pickBlock({ component: '123', icon: 'obj' })
+    store.pickBlock({ component: '123', icon: 'obj' });
 
-    expect(store.blockOnCreate).toEqual({ component: '123', icon: 'obj' })
-  })
+    expect(store.blockOnCreate).toEqual({ component: '123', icon: 'obj' });
+  });
 
   it('test clear block selection', () => {
     const store = useEditorStore();
-    const removeMock = vi.fn()
+    const removeMock = vi.fn();
     store.blockOnCreate = {
-      component: "test",
+      component: 'test',
       icon: {
-        remove: removeMock
-      }
-    }
+        remove: removeMock,
+      },
+    };
 
-    store.clearBlockSelection()
+    store.clearBlockSelection();
 
-    expect(removeMock).toBeCalled()
-    expect(store.blockOnCreate).toEqual({ component: null, icon: null })
-  })
+    expect(removeMock).toBeCalled();
+    expect(store.blockOnCreate).toEqual({ component: null, icon: null });
+  });
 
   it('place block', () => {
     const store = useEditorStore();
     store.blockOnCreate = {
-      component: "test",
-      icon: true
-    }
-    const addMock = vi.fn()
+      component: 'test',
+      icon: true,
+    };
+    const addMock = vi.fn();
     store.app = {
-      add: addMock
-    }
-    store.clearBlockSelection = vi.fn()
+      add: addMock,
+    };
+    store.clearBlockSelection = vi.fn();
 
-    store.placeBlock("parent")
+    store.placeBlock('parent');
 
-    expect(addMock).toBeCalledWith("test", "", "parent")
-    expect(store.clearBlockSelection).toBeCalled()
-  })
+    expect(addMock).toBeCalledWith('test', '', 'parent');
+    expect(store.clearBlockSelection).toBeCalled();
+  });
 });

@@ -1,36 +1,36 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { mount, shallowMount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import Editor from '@/components/editor/Editor.vue';
 import EditorPlugin from '@/editor/plugin.ts';
 import router from '@/router';
 import { createPinia, setActivePinia } from 'pinia';
 
 vi.mock('@/store/editor.store.ts', () => {
-  const useById = vi.fn()
-  const setApp = vi.fn()
+  const useById = vi.fn();
+  const setApp = vi.fn();
   return {
     default: () => ({
       useById,
-      getTree: "{}",
-      setApp
-    })
-  }
-})
+      getTree: '{}',
+      setApp,
+    }),
+  };
+});
 
 vi.mock('@/store/component-setup.store.ts', () => {
-  const selectComponent = vi.fn()
+  const selectComponent = vi.fn();
   return {
     default: () => ({
-      selectComponent
-    })
-  }
-})
+      selectComponent,
+    }),
+  };
+});
 
 vi.mock('@/utils/token.util.ts', () => ({
   default: {
-    getAuthorized: vi.fn(() => ({ id: 123 }))
-  }
-}))
+    getAuthorized: vi.fn(() => ({ id: 123 })),
+  },
+}));
 
 describe('Editor component', async () => {
   beforeEach(() => {
@@ -38,8 +38,8 @@ describe('Editor component', async () => {
   });
 
   it('Test mounting base tree', async () => {
-    const root = document.createElement('div')
-    root.id = 'app-builder'
+    const root = document.createElement('div');
+    root.id = 'app-builder';
     document.body.appendChild(root);
     const wrapper = shallowMount(Editor, {
       attachTo: document.body,
@@ -57,6 +57,6 @@ describe('Editor component', async () => {
 
     await wrapper.vm.$nextTick();
 
-    expect(wrapper.vm.editorStore.useById).toBeCalledWith(123)
+    expect(wrapper.vm.editorStore.useById).toBeCalledWith(123);
   });
 });
