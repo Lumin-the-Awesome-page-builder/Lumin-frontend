@@ -25,8 +25,8 @@
     </div>
   <div class="line"></div>
   <div class="socialsNetworkBlock">
-    <VkAuthComponent/>
-    <YandexAuthComponent @click="loginWithYandex"/>
+    <VkAuthComponent class="socialsNetworkIcon"/>
+    <YandexAuthComponent class="socialsNetworkIcon" @click="loginWithYandex"/>
   </div>
   </div>
 </template>
@@ -194,5 +194,9 @@ export default {
 .block_title {
   margin-top: 1rem;
   cursor: default;
+}
+
+.socialsNetworkIcon {
+  cursor: pointer;
 }
 </style>
