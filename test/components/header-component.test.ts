@@ -17,6 +17,7 @@ describe('Test header component', () => {
         },
       },
     });
+    wrapper.vm.logout = vi.fn();
     wrapper.vm.dashboardStore = {
       loadProjects: vi.fn(),
       loadWidgets: vi.fn(),
@@ -77,5 +78,10 @@ describe('Test header component', () => {
     vm.downloadSelected();
 
     expect(vm.dashboardStore.downloadSelected).toBeCalled();
+  });
+
+  it('Test logout button', () => {
+    vm.logout();
+    expect(vm.logout).toBeCalled();
   });
 });

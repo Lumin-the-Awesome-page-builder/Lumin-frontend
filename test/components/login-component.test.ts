@@ -1,29 +1,31 @@
 import { mount } from '@vue/test-utils';
-import { test, expect } from 'vitest';
+import { it, expect, describe } from 'vitest';
 import LoginComponent from '@/components/LoginComponent.vue';
 import { EyeOff, EyeSharp } from '@vicons/ionicons5';
 
-const wrapper = mount(LoginComponent);
+describe('Test LoginComponent', () => {
+  const wrapper = mount(LoginComponent);
 
-test('displays email and password labels correctly', () => {
-  const emailLabel = wrapper.find('.block_title.title');
-  const passwordLabel = wrapper.findAll('.block_title.title')[1];
+  it('displays email and password labels correctly', () => {
+    const emailLabel = wrapper.find('.block_title.title');
+    const passwordLabel = wrapper.findAll('.block_title.title')[1];
 
-  expect(emailLabel.text()).toBe('Адрес эл. почты');
-  expect(passwordLabel.text()).toBe('Пароль');
-});
+    expect(emailLabel.text()).toBe('Адрес эл. почты');
+    expect(passwordLabel.text()).toBe('Пароль');
+  });
 
-test('toggles password visibility', () => {
-  expect(wrapper.vm.typeInput).toBe('password');
-  expect(wrapper.vm.icon).toStrictEqual(EyeSharp);
+  it('toggles password visibility', () => {
+    expect(wrapper.vm.typeInput).toBe('password');
+    expect(wrapper.vm.icon).toStrictEqual(EyeSharp);
 
-  wrapper.vm.showPassword();
+    wrapper.vm.showPassword();
 
-  expect(wrapper.vm.typeInput).toBe('text');
-  expect(wrapper.vm.icon).toStrictEqual(EyeOff);
+    expect(wrapper.vm.typeInput).toBe('text');
+    expect(wrapper.vm.icon).toStrictEqual(EyeOff);
 
-  wrapper.vm.showPassword();
+    wrapper.vm.showPassword();
 
-  expect(wrapper.vm.typeInput).toBe('password');
-  expect(wrapper.vm.icon).toStrictEqual(EyeSharp);
+    expect(wrapper.vm.typeInput).toBe('password');
+    expect(wrapper.vm.icon).toStrictEqual(EyeSharp);
+  });
 });

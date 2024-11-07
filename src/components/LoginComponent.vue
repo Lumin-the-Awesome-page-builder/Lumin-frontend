@@ -22,6 +22,9 @@
         </n-input>
       </div>
       <n-button @click="login" color="#3535FFA6" class="btn">Войти</n-button>
+      <div class="signup-block">
+        <p>Нет аккаунта?</p><a class="signup" @click="signUp">Зарегестрируйтесь!</a>
+      </div>
     </div>
   <div class="line"></div>
   <div class="socialsNetworkBlock">
@@ -62,6 +65,9 @@ export default {
     this.checkLoginStatus();
   },
   methods: {
+    signUp() {
+      router.push({ name: 'signup' });
+    },
     showPassword(){
       if(this.showPass){
         this.typeInput = "password"
@@ -196,7 +202,21 @@ export default {
   cursor: default;
 }
 
+
 .socialsNetworkIcon {
   cursor: pointer;
+}
+.signup-block {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 7%;
+}
+
+.signup {
+  text-decoration: underline;
+}
+.signup:hover {
+  cursor: pointer;
+  text-decoration: none;
 }
 </style>

@@ -63,14 +63,22 @@
           <Backend />
         </n-icon>
         Backend</div>
+      <div @click="logout" class="nav-element">
+        <n-icon>
+          <LogOut />
+        </n-icon>
+        Logout
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { AddCircle as Create, CodeDownload as Download, Trash as Delete, AlbumsSharp as Projects, AppsSharp as Widgets, Basket as Store, Terminal as Backend } from '@vicons/ionicons5';
+import { AddCircle as Create, CodeDownload as Download, Trash as Delete, AlbumsSharp as Projects, AppsSharp as Widgets, Basket as Store, Terminal as Backend, LogOut as LogOut } from '@vicons/ionicons5';
 import useDashboardStore from '@/store/dashboard.store.ts'
 import useEditorStore from '@/store/editor.store.ts'
+import TokenUtil  from '@/utils/token.util.ts';
+import router from '@/router';
 
 export default {
   components: {
@@ -80,7 +88,8 @@ export default {
     Projects,
     Widgets,
     Store,
-    Backend
+    Backend,
+    LogOut,
   },
   setup() {
     return {
@@ -93,6 +102,10 @@ export default {
     this.dashboardStore.loadProjects()
   },
   methods: {
+    logout() {
+      TokenUtil.logout();
+      router.push({ name: 'auth' });
+    },
     loadProjects() {
       this.dashboardStore.loadProjects()
     },
