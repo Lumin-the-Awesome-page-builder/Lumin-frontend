@@ -20,7 +20,7 @@
             </span>
             </div>
           </div>
-          <n-button quaternary color="#FF356BA6" class="btnText"> Удалить
+          <n-button quaternary color="#FF356BA6" class="btnText deleteBtn"> Удалить
             <template #icon>
               <n-icon>
                 <Delete/>
@@ -145,10 +145,12 @@ export default {
   border-radius: 1.5rem;
   justify-content: center;
   align-items: center;
-  width: 90vw;
+  width: 80vw;
   min-width: 500px;
-  min-height: 500px;
-  height: 90vh;
+  min-height: 700px;
+  height: 80vh;
+  max-width: 80vw;
+  max-height: 80vh;
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
   z-index: 10;
@@ -159,9 +161,9 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: relative;
-  bottom: 6%;
-  left: 50%;
+  position: fixed;
+  left: 88%;
+  bottom: 93%;
   width: 50px;
   min-height: 50px;
   max-height: 50px;
@@ -175,8 +177,8 @@ export default {
 }
 
 .preview {
-  width: 80vw;
-  height: 70vh;
+  width: 70vw;
+  height: auto;
 }
 
 .controlGroup {
@@ -189,14 +191,18 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-left: 2%;
+  width: 77vw;
 }
 
 .btnGroup {
-  width: 25%;
+  width: 35%;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
+  min-width: 100px;
+  max-width: 500px;
 
 }
 
@@ -204,17 +210,19 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
   margin-top: 1rem;
 }
 
 .leftPart {
-  width: 35%;
-  min-width: 300px;
+  width: auto;
+  gap: 3rem;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: baseline;
+  margin-left: 2%;
+  max-width: 500px;
 }
 
 .info {
@@ -222,7 +230,7 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 300px;
+  width: auto;
 }
 
 .text {
@@ -260,4 +268,9 @@ export default {
 .btn {
   font-size: 1.1rem;
 }
+
+.deleteBtn {
+  margin-right: 3%;
+}
+
 </style>

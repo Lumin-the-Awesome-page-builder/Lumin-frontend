@@ -28,8 +28,8 @@
     </div>
   <div class="line"></div>
   <div class="socialsNetworkBlock">
-    <VkAuthComponent/>
-    <YandexAuthComponent @click="loginWithYandex"/>
+    <VkAuthComponent class="socialsNetworkIcon"/>
+    <YandexAuthComponent class="socialsNetworkIcon" @click="loginWithYandex"/>
   </div>
   </div>
 </template>
@@ -202,6 +202,10 @@ export default {
   cursor: default;
 }
 
+
+.socialsNetworkIcon {
+  cursor: pointer;
+}
 .signup-block {
   display: flex;
   flex-direction: row;
