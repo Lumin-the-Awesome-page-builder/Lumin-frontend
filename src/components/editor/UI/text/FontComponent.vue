@@ -41,6 +41,7 @@
       </n-button-group>
     </div>
   </div>
+  <n-divider />
 </template>
 
 <script lang="ts">
@@ -88,6 +89,10 @@ export default {
       }
     }
   }),
+  mounted() {
+    const value = this.prop.value[1] ? this.prop.value[1] : this.prop.defaultValue[1]
+    this.activeButton = Object.keys(this.buttonsConf).indexOf(value)
+  },
   methods: {
     update(index, data) {
       this.prop.setValue(data, index)

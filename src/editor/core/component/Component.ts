@@ -17,6 +17,7 @@ export type ComponentObject = {
 export default abstract class Component {
   public abstract name: string;
   static title: string = 'Component';
+  public abstract getTitle(): string;
   public htmlElement: HTMLElement = document.createElement('div');
   public props: PropertyCollection = PropertyCollection.empty();
   public attributes: AttributeCollection = AttributeCollection.empty();
@@ -47,7 +48,10 @@ export default abstract class Component {
     return parents;
   }
 
-  constructor(public elementName: string) {
+  constructor(
+    public elementName: string,
+    public objectName: string,
+  ) {
     this.htmlElement = document.createElement(this.elementName);
   }
 
@@ -58,7 +62,8 @@ export default abstract class Component {
   setListener(eventName) {
     this.htmlElement.addEventListener(eventName, (ev) => {
       ev.stopPropagation();
-      this.handler(eventName, this.findTop());
+      ev.preventDefault();
+      this.handler(eventName, this.findTop(), ev);
     });
   }
 

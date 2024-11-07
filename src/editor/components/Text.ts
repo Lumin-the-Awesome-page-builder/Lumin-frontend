@@ -27,4 +27,7 @@ export default class Text extends Component {
     TextTransformProp.name,
     ContentProp.name,
   ];
+  getTitle() {
+    return Text.title;
+  }
 }

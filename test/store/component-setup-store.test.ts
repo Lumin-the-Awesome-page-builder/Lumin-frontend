@@ -22,7 +22,7 @@ describe('ComponentSetupStore tests', () => {
 
     await store.selectComponent(['test'], 0);
 
-    expect(store.component).toBe('test');
+    expect(store.component).toEqual(['test']);
   });
 
   it('test selectComponent (current component not null)', async () => {
@@ -44,7 +44,7 @@ describe('ComponentSetupStore tests', () => {
 
     await store.selectComponent(['test2'], 0);
 
-    expect(store.component).toBe('test2');
+    expect(store.component).toEqual(['test2']);
     expect(findTopMock).toBeCalled();
     expect(getItemMock).toBeCalledWith('selected-project');
     expect(ProjectModel.patchTree).toBeCalledWith(123, patchProjectDto);

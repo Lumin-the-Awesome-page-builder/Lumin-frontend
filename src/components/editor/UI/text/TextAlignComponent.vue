@@ -25,6 +25,7 @@
         </n-button>
       </n-button-group>
     </div>
+  <n-divider />
   </template>
   
   <script lang="ts">
@@ -57,6 +58,10 @@
         },
       },
     }),
+    mounted() {
+      const value = this.prop.value[0] ? this.prop.value[0] : this.prop.defaultValue[0]
+      this.activeButton = Object.keys(this.buttonsConf).indexOf(value)
+    },
     methods: {
       setActiveButton(index: number, button) {
         const onSet = (this.activeButton == index) ? null : button.value

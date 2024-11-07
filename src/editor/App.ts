@@ -117,7 +117,9 @@ export class App {
         component.setContent(el.content);
         component.setKeySalt(this.identifiersSalt);
         component.setKey(el.key);
-        component.setEventHandler((e, arr) => this.handler(e, arr));
+        component.setEventHandler((e, arr, domEvent) =>
+          this.handler(e, arr, domEvent),
+        );
         component.pure = !!el.pure;
         component.specific = { ...el.specific };
 
@@ -161,13 +163,10 @@ export class App {
     this.subs[event].push(handler);
   }
 
-  public handler(eventType, elements) {
+  public handler(eventType, elements, domEvent) {
     if (Object.keys(this.subs).includes(eventType)) {
-      console.log(elements);
-      console.log(this.subs[eventType]);
       this.subs[eventType].forEach((el) => {
-        console.log(el);
-        el(elements);
+        el(elements, domEvent);
       });
     }
   }
@@ -178,7 +177,7 @@ export class App {
     const component = new constr();
     const attrs = [{ name: this.scopeIdentifier, value: '' }];
     component.setAttrs(attrs);
-    component.setEventHandler((e, arr) => this.handler(e, arr));
+    component.setEventHandler((e, arr, ev) => this.handler(e, arr, ev));
     component.setKeySalt(this.identifiersSalt);
     component.generateKey();
     component.setProps(this.buildProps(component, []));

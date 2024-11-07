@@ -33,4 +33,7 @@ export default class Link extends Component {
     TextTransformProp.name,
     ContentProp.name,
   ];
+  getTitle() {
+    return Link.title;
+  }
 }
