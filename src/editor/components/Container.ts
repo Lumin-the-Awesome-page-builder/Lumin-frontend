@@ -26,4 +26,5 @@ export default class Container extends Component {
   ];
 
   name: string = 'container';
+  static title: string = 'Контейнер';
 }

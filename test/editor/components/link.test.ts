@@ -10,6 +10,7 @@ import LinkOpacityProp from '@/editor/properties/link/LinkOpacityProp.ts';
 import LinkColorProp from '@/editor/properties/link/LinkColorProp.ts';
 import LinkUnderlineOpacityProp from '@/editor/properties/link/LinkUnderlineOpacityProp.ts';
 import LinkUnderlineOffsetProp from '@/editor/properties/link/LinkUnderlineOffsetProp.ts';
+import ContentProp from '@/editor/properties/ContentProp.ts';
 
 describe('Test link component', () => {
   it('Test component creation', () => {
@@ -31,6 +32,7 @@ describe('Test link component', () => {
       MonoSpaceProp.name,
       TextAlignProp.name,
       TextTransformProp.name,
+      ContentProp.name,
     ]);
   });
 });

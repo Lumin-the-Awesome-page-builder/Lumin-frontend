@@ -19,6 +19,15 @@
         
         <div><n-button color="#7b7bfe"> Сохранить </n-button></div>
       </n-collapse-item>
+      <n-collapse-item name="3">
+        <template #header>
+          <span class="custom-header">Доступные блоки</span>
+        </template>
+        
+        <AvailableBlocksComponent :blocks="availableBlocks" />
+        
+        <div><n-button color="#7b7bfe"> Сохранить </n-button></div>
+      </n-collapse-item>
     </n-collapse>
     <n-divider />
     <div class="block-options">
@@ -34,10 +43,11 @@
 import useEditorStore from '@/store/editor.store.ts';
 import useProjectPreviewModalStore from '@/store/project-preview-modal.store.ts'
 import ComponentSetupComponent from '@/components/editor/ComponentSetupComponent.vue';
+import AvailableBlocksComponent from '@/components/editor/AvailableBlocksComponent.vue';
 
 export default {
   components: {
-    ComponentSetupComponent,
+    ComponentSetupComponent, AvailableBlocksComponent
   },
   setup() {
     return {
@@ -52,7 +62,13 @@ export default {
     async exit() {
       await this.save()
       this.projectPreviewModalStore.closeModal()
+      this.editorStore.clearBlockSelection()
       this.$router.push({ path: '/dashboard' })
+    }
+  },
+  computed: {
+    availableBlocks() {
+      return this.editorStore.getAvailableBlocks;
     }
   }
 };

@@ -37,11 +37,7 @@ describe('ComponentSetupStore tests', () => {
     vi.stubGlobal('localStorage', {
       getItem: getItemMock,
     });
-    const stringifyMock = vi.fn(() => 'comp');
-    vi.stubGlobal('JSON', {
-      stringify: stringifyMock,
-    });
-    const patchProjectDto = new PatchProjectTreeDto(['key'], 'comp');
+    const patchProjectDto = new PatchProjectTreeDto(['key'], 'test');
     const ProjectModel = (
       await import('@/api/modules/project/models/project.model.ts')
     ).default;
@@ -50,7 +46,6 @@ describe('ComponentSetupStore tests', () => {
 
     expect(store.component).toBe('test2');
     expect(findTopMock).toBeCalled();
-    expect(stringifyMock).toBeCalledWith('test');
     expect(getItemMock).toBeCalledWith('selected-project');
     expect(ProjectModel.patchTree).toBeCalledWith(123, patchProjectDto);
   });

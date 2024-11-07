@@ -1,0 +1,26 @@
+.picked-up-block {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5rem;
+    position: absolute;
+    transition: transform 0.13s ease;
+    z-index: 1000;
+}
+.picked-up-block > .overlay {
+    width: 200px;
+    height: 200px;
+    background-image: url("https://cdn-icons-png.flaticon.com/512/1266/1266442.png");
+    background-size: cover;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: end;
+}
+.picked-up-block > span {
+    padding-left: 0.5rem;
+    font-size: 20px;
+    font-weight: 600;
+    color: rgb(111, 108, 153);
+}
