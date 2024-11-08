@@ -123,13 +123,11 @@ export default {
       this.editorStore.use(this.data)
       this.$router.push({ path: `/project/${this.data.id}/edit` })
     },
-    share() {
-
-    },
+    share() {},
     deleteProject() {
       const id = this.data.id
       const name = this.data.name
-      this.deleteModalStore.openModal({ project: { id: id, name: name } })
+      this.deleteModalStore.openModal({ id: id, name: name })
     }
   }
 }
@@ -158,7 +156,6 @@ export default {
   justify-content: center;
   row-gap: 2rem;
   align-items: center;
-  width: 80vw;
   min-width: 500px;
   min-height: 500px;
   max-width: 80vw;
