@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
-import Editor from '@/components/editor/Editor.vue'
+import Editor from '@/components/editor/Editor.vue';
 import { describe, it, expect } from 'vitest';
 import EditorView from '@/views/EditorView.vue';
 

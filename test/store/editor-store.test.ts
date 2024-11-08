@@ -108,8 +108,8 @@ describe('EditorStore tests', () => {
 
       expect(ProjectModel.update).toBeCalledWith(123, { data: '{}' });
       expect(result).equal('updated');
-    })
-  })
+    });
+  });
 
   it('Test pick block', () => {
     const store = useEditorStore();

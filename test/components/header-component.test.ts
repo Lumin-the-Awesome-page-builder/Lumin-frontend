@@ -45,7 +45,12 @@ describe('Test header component', () => {
       id: 1,
     }));
     wrapper.vm.editorStore = {
-      openNew: vi.fn(() => ({ id: 1, success: true, getData: getDataMock, toastIfError: toastIfErrorMock })),
+      openNew: vi.fn(() => ({
+        id: 1,
+        success: true,
+        getData: getDataMock,
+        toastIfError: toastIfErrorMock,
+      })),
     };
     vm = wrapper.vm;
   });
