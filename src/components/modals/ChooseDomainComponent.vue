@@ -1,7 +1,7 @@
 <template>
   <n-message-provider>
     <n-modal
-      v-model:show="visible"
+      v-model:show="chooseDomainStore.showModal"
       transform-origin="center"
       style="width: 600px"
       preset="card"
