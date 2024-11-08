@@ -32,12 +32,12 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (TokenUtil.isAuthorized()) {
-    if (to.path === '/auth' || to.path === '/signup') {
+    if (to.path === '/' || to.path === '/auth' || to.path === '/signup') {
       next({ path: '/dashboard' });
       return;
     }
   } else if (!TokenUtil.isAuthorized()) {
-    if (to.path !== '/auth' && to.path !== '/signup') {
+    if (to.path === '/' || (to.path !== '/auth' && to.path !== '/signup')) {
       next({ path: '/auth' });
       return;
     }

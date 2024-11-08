@@ -62,12 +62,12 @@
   .card-grid {
       display: flex;
       flex-wrap: wrap;
-      gap: 3rem;
+      row-gap: 3rem;
       justify-content: space-between;
   }
   .card-grid > * {
-      flex: 0 1 40vw;
-      max-width: 40vw;
+    flex: 0 0 27vw;
+    width: 30%;
   }
   </style>
   
