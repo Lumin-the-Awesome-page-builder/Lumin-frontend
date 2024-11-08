@@ -155,6 +155,13 @@ export default {
     link.click();
     document.body.removeChild(link);
   },
+
+  editData() {
+    this.changeProjectDataStore.openModal({
+      ...this.editorStore.getProject
+    })
+  },
+
   computed: {
     availableBlocks() {
       return this.editorStore.getAvailableBlocks;
