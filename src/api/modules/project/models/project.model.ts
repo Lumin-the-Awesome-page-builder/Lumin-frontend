@@ -14,7 +14,9 @@ export class ProjectModel extends ApiModelUtil {
   public async create(
     data: CreateProjectDto,
   ): Promise<ApiResponseDto<ProjectDto>> {
-    return await this.authorizedRequest(new ApiRequestDto('/lumin/project', 'POST', data));
+    return await this.authorizedRequest(
+      new ApiRequestDto('/lumin/project', 'POST', data),
+    );
   }
 
   public async update(
@@ -27,11 +29,15 @@ export class ProjectModel extends ApiModelUtil {
   }
 
   public async delete(id: number): Promise<ApiResponseDto<{ status: any }>> {
-    return await this.authorizedRequest(new ApiRequestDto(`/lumin/project/${id}`, 'DELETE'));
+    return await this.authorizedRequest(
+      new ApiRequestDto(`/lumin/project/${id}`, 'DELETE'),
+    );
   }
 
   public async getOne(id: number): Promise<ApiResponseDto<ProjectDto>> {
-    return await this.authorizedRequest(new ApiRequestDto(`/lumin/project/${id}`, 'GET'));
+    return await this.authorizedRequest(
+      new ApiRequestDto(`/lumin/project/${id}`, 'GET'),
+    );
   }
 
   public async patchTree(
@@ -39,7 +45,11 @@ export class ProjectModel extends ApiModelUtil {
     patchProjectTreeDto: PatchProjectTreeDto,
   ): Promise<ApiResponseDto<ProjectDto>> {
     return await this.authorizedRequest(
-      new ApiRequestDto(`/lumin/project/${id}/tree`, 'PATCH', patchProjectTreeDto),
+      new ApiRequestDto(
+        `/lumin/project/${id}/tree`,
+        'PATCH',
+        patchProjectTreeDto,
+      ),
     );
   }
 }

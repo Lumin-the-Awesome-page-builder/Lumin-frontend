@@ -8,11 +8,11 @@ import RegistrationInputDto from '@/api/modules/auth/dto/registration-input.dto.
 import AuthVkInputDto from '@/api/modules/auth/dto/login/auth-vk-input.dto.ts';
 import AuthYandexInputDto from '@/api/modules/auth/dto/login/auth-yandex-input.dto.ts';
 
-vi.mock("codemirror-editor-vue3", async () => {
+vi.mock('codemirror-editor-vue3', async () => {
   return {
-    default: (await import('@/components/editor/UI/CodeMirrorMock.vue'))
-  }
-})
+    default: await import('@/components/editor/UI/CodeMirrorMock.vue'),
+  };
+});
 
 vi.mock('@/utils/token.util', () => {
   return {

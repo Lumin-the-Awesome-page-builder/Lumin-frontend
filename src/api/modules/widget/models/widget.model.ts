@@ -13,7 +13,9 @@ export class WidgetModel extends ApiModelUtil {
   public async create(
     data: CreateWidgetDto,
   ): Promise<ApiResponseDto<WidgetDto>> {
-    return await this.authorizedRequest(new ApiRequestDto('/lumin/widget', 'POST', data));
+    return await this.authorizedRequest(
+      new ApiRequestDto('/lumin/widget', 'POST', data),
+    );
   }
 
   public async update(
@@ -26,11 +28,15 @@ export class WidgetModel extends ApiModelUtil {
   }
 
   public async delete(id: number): Promise<ApiResponseDto<{ status: any }>> {
-    return await this.authorizedRequest(new ApiRequestDto(`/lumin/widget/${id}`, 'DELETE'));
+    return await this.authorizedRequest(
+      new ApiRequestDto(`/lumin/widget/${id}`, 'DELETE'),
+    );
   }
 
   public async getOne(id: number): Promise<ApiResponseDto<WidgetDto>> {
-    return await this.authorizedRequest(new ApiRequestDto(`/lumin/widget/${id}`, 'GET'));
+    return await this.authorizedRequest(
+      new ApiRequestDto(`/lumin/widget/${id}`, 'GET'),
+    );
   }
 }
 

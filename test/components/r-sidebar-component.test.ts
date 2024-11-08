@@ -7,11 +7,11 @@ import useComponentSetupStore from '@/store/component-setup.store.ts';
 import useEditorStore from '@/store/editor.store.ts';
 import useProjectPreviewModalStore from '@/store/project-preview-modal.store.ts';
 
-vi.mock("codemirror-editor-vue3", async () => {
+vi.mock('codemirror-editor-vue3', async () => {
   return {
-    default: (await import('@/components/editor/UI/CodeMirrorMock.vue'))
-  }
-})
+    default: await import('@/components/editor/UI/CodeMirrorMock.vue'),
+  };
+});
 
 describe('RSidebarComponent test', () => {
   beforeEach(() => {

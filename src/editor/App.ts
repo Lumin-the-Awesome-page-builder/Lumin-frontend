@@ -95,13 +95,13 @@ export class App {
   }
 
   public buildPure(component: Component) {
-    console.log(component.specific)
+    console.log(component.specific);
     const parsed = this.parsePure(component.specific.html);
     component.specific.htmlOnRender = parsed[0];
     if (parsed.length > 1) {
       this.pureStyles[component.key] = parsed[1];
     }
-    component.pure = true
+    component.pure = true;
     this.mountPureStyles();
   }
 
@@ -134,10 +134,10 @@ export class App {
         );
 
         if (component.specific.html && component.pure) {
-          this.buildPure(component)
+          this.buildPure(component);
         }
 
-        console.log(el.specific, component.specific)
+        console.log(el.specific, component.specific);
 
         this.state[component.key] = component;
 
@@ -186,9 +186,9 @@ export class App {
     const attrs = [{ name: this.scopeIdentifier, value: '' }];
 
     if (name == 'pure') {
-      const html = '<div>Pure component</div>'
-      component.specific = { html }
-      this.buildPure(component)
+      const html = '<div>Pure component</div>';
+      component.specific = { html };
+      this.buildPure(component);
     }
 
     component.setAttrs(attrs);
@@ -206,7 +206,7 @@ export class App {
     parent.appendChild(component);
     parent.render();
 
-    return component
+    return component;
   }
 
   public remove(key: string) {
@@ -248,8 +248,8 @@ export class App {
       delete this.pureStyles[component.key];
     }
 
-    this.buildPure(component)
+    this.buildPure(component);
 
-    component.parent.render()
+    component.parent.render();
   }
 }

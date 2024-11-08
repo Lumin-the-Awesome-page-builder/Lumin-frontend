@@ -10,11 +10,15 @@ export class LibraryModel extends ApiModelUtil {
   }
 
   public async getProjects(): Promise<ApiResponseDto<LibraryProjectDto>> {
-    return await this.authorizedRequest(new ApiRequestDto('/lumin/user/library/projects', 'GET'));
+    return await this.authorizedRequest(
+      new ApiRequestDto('/lumin/user/library/projects', 'GET'),
+    );
   }
 
   public async getWidgets(): Promise<ApiResponseDto<LibraryWidgetDto>> {
-    return await this.authorizedRequest(new ApiRequestDto('/lumin/user/library/widgets', 'GET'));
+    return await this.authorizedRequest(
+      new ApiRequestDto('/lumin/user/library/widgets', 'GET'),
+    );
   }
 }
 

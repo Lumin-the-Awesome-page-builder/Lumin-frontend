@@ -4,11 +4,11 @@ import ApiResponseDto from '@/api/dto/api-response.dto.ts';
 import LibraryProjectDto from '@/api/modules/library/dto/library-project.dto.ts';
 import LibraryWidgetDto from '@/api/modules/library/dto/library-widget.dto.ts';
 
-vi.mock("codemirror-editor-vue3", async () => {
+vi.mock('codemirror-editor-vue3', async () => {
   return {
-    default: (await import('@/components/editor/UI/CodeMirrorMock.vue'))
-  }
-})
+    default: await import('@/components/editor/UI/CodeMirrorMock.vue'),
+  };
+});
 
 describe('Base LibraryModel class tests', () => {
   let apiResponseDto: ApiResponseDto<string>;

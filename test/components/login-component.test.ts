@@ -3,15 +3,15 @@ import { it, expect, describe, vi } from 'vitest';
 import LoginComponent from '@/components/LoginComponent.vue';
 import { EyeOff, EyeSharp } from '@vicons/ionicons5';
 
-vi.mock("codemirror-editor-vue3", async () => {
+vi.mock('codemirror-editor-vue3', async () => {
   return {
-    default: (await import('@/components/editor/UI/CodeMirrorMock.vue'))
-  }
-})
+    default: await import('@/components/editor/UI/CodeMirrorMock.vue'),
+  };
+});
 
 describe('Test LoginComponent', () => {
   const wrapper = mount(LoginComponent, {
-    attachTo: document.body
+    attachTo: document.body,
   });
 
   it('displays email and password labels correctly', () => {

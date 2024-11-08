@@ -6,11 +6,11 @@ import UpdateProjectDto from '@/api/modules/project/dto/update-project.dto.ts';
 import ProjectDto from '@/api/modules/project/dto/project.dto.ts';
 import PatchProjectTreeDto from '@/api/modules/project/dto/patch-project-tree.dto.ts';
 
-vi.mock("codemirror-editor-vue3", async () => {
+vi.mock('codemirror-editor-vue3', async () => {
   return {
-    default: (await import('@/components/editor/UI/CodeMirrorMock.vue'))
-  }
-})
+    default: await import('@/components/editor/UI/CodeMirrorMock.vue'),
+  };
+});
 
 describe('ProjectModel class tests', () => {
   let apiResponseDto: ApiResponseDto<string>;

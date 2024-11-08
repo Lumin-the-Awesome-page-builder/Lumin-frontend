@@ -5,11 +5,11 @@ import ApiResponseDto from '@/api/dto/api-response.dto.ts';
 import UpdateWidgetDto from '@/api/modules/widget/dto/update-widget.dto.ts';
 import WidgetDto from '@/api/modules/widget/dto/widget.dto.ts';
 
-vi.mock("codemirror-editor-vue3", async () => {
+vi.mock('codemirror-editor-vue3', async () => {
   return {
-    default: (await import('@/components/editor/UI/CodeMirrorMock.vue'))
-  }
-})
+    default: await import('@/components/editor/UI/CodeMirrorMock.vue'),
+  };
+});
 
 describe('WidgetModel class tests', () => {
   let apiResponseDto: ApiResponseDto<string>;

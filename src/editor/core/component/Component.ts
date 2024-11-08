@@ -183,8 +183,8 @@ export default abstract class Component {
       children = children.reduce((prev, current) =>
         Object.assign(prev, current),
       );
-    console.log(this.specific)
-    console.log(this.pure)
+    console.log(this.specific);
+    console.log(this.pure);
     return {
       name: this.name,
       key: this.key,

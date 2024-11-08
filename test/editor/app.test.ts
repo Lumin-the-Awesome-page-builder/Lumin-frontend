@@ -361,12 +361,12 @@ describe('App.ts unit tests', () => {
         app.pureStyles = {};
         //@ts-ignore
         app.parsePure = vi.fn(() => ['1', '2']);
-        app.buildPure = vi.fn()
+        app.buildPure = vi.fn();
         const pure = '<style>#a{}</style><div></div>';
 
         app.add('pure', pure, 'test');
 
-        expect(app.buildPure).toBeCalled()
+        expect(app.buildPure).toBeCalled();
       });
     });
   });

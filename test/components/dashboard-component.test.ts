@@ -4,12 +4,11 @@ import { mount } from '@vue/test-utils';
 import CardComponent from '@/components/CardComponent.vue';
 import { createPinia, setActivePinia } from 'pinia';
 
-vi.mock("codemirror-editor-vue3", async () => {
+vi.mock('codemirror-editor-vue3', async () => {
   return {
-    default: (await import('@/components/editor/UI/CodeMirrorMock.vue'))
-  }
-})
-
+    default: await import('@/components/editor/UI/CodeMirrorMock.vue'),
+  };
+});
 
 describe('DashboardComponent test', () => {
   beforeEach(() => {

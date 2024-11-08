@@ -6,19 +6,22 @@ export class PureContentProp extends Property {
 
   constructor(value: any[] = [], component: Component) {
     super([component.specific.html], component);
+    console.log(value);
     this.defaultValue = [component.specific.html];
   }
 
   public clear() {
-    this.component.specific.html = ""
+    this.component.specific.html = '';
   }
 
   public apply() {}
 
   public setValue(value: any[], index = 0) {
     this.clear();
-    this.component.specific.html = value[index]
+    this.component.specific.html = value[index];
   }
 
-  public getName() { return PureContentProp.name }
+  public getName() {
+    return PureContentProp.name;
+  }
 }
