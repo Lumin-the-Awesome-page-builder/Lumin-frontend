@@ -24,10 +24,10 @@
       <n-button @click="register" color="#3535FFA6" class="btn">Зарегистрироваться</n-button>
     </div>
   <div class="line"></div>
-  <div class="socialsNetworkBlock">
-    <img alt="VK auth" src="@/assets/svg/VK.svg" class="socialsNetworkImg"/>
-    <img alt="Yandex auth" src="@/assets/svg/Yandex.svg" class="socialsNetworkImg"/>
-  </div>
+    <div class="socialsNetworkBlock">
+      <VkAuthComponent class="socialsNetworkImg"/>
+      <YandexAuthComponent class="socialsNetworkImg" @click="loginWithYandex"/>
+    </div>
   </div>
 </template>
 
@@ -38,9 +38,14 @@ import { EyeOff, EyeSharp } from '@vicons/ionicons5';
 import useAuthStore from '@/store/auth.store.ts';
 import router from '@/router/index.ts'
 import RegistrationInputDto from '@/api/modules/auth/dto/registration-input.dto.ts';
+import VkAuthComponent from '@/components/auth/VkAuthComponent.vue';
+import YandexAuthComponent from '@/components/auth/YandexAuthComponent.vue';
+import yandexConf from '@/api/conf/yandex.conf.ts';
+import appConf from '@/api/conf/app.conf.ts';
 
 export default {
   name: "RegistrationComponent",
+  components: { YandexAuthComponent, VkAuthComponent },
   data() {
     return {
       emailData: "",
@@ -72,7 +77,11 @@ export default {
       } else {
         alert("Bad credentials")
       }
-    }
+    },
+    loginWithYandex() {
+      window.location.href = `https://oauth.yandex.ru/authorize?client_id=${yandexConf.clientId}&response_type=token&redirect_uri=https%3A%2F%2F${appConf.redirectUrl}%2Fauth&widget_kind=button-stub&suggest_hostname=https%3A%2F%2F${appConf.redirectUrl}&et=${Date.now()}`
+      localStorage.setItem('authByYandex', true);
+    },
   }
 
 }
@@ -143,8 +152,7 @@ export default {
 
 .socialsNetworkImg {
   cursor: pointer;
-  opacity: 0.37;
-  transition: opacity 0.3s ease-in-out;
+  opacity: 1;
 }
 
 .socialsNetworkImg:hover {

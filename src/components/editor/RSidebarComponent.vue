@@ -46,9 +46,16 @@
           <span class="custom-header">Параметры блока</span>
         </template>
         
-        <ComponentSetupComponent />
+        <ComponentSetupComponent :key="test" />
+
+      </n-collapse-item>
+      <n-collapse-item name="3">
+        <template #header>
+          <span class="custom-header">Доступные блоки</span>
+        </template>
         
-        <div><n-button color="#7b7bfe"> Сохранить </n-button></div>
+        <AvailableBlocksComponent :blocks="availableBlocks" />
+
       </n-collapse-item>
     </n-collapse>
   </div>
@@ -64,17 +71,20 @@ import { useChooseDomainStore } from '@/store/modals/choose-domen-component.stor
 import ChooseDomainComponent from '@/components/modals/ChooseDomainComponent.vue';
 import ChangeDataComponent from '@/components/modals/ChangeProjectDataComponent.vue';
 import ComponentSetupComponent from '@/components/editor/ComponentSetupComponent.vue';
+import AvailableBlocksComponent from '@/components/editor/AvailableBlocksComponent.vue';
+import useComponentSetupStore from '@/store/component-setup.store.ts';
 
 export default {
   components: {
-    ComponentSetupComponent, ChangeDataComponent, ChooseDomainComponent
+    ComponentSetupComponent, AvailableBlocksComponent, ChangeDataComponent, ChooseDomainComponent
   },
   setup() {
     return {
       editorStore: useEditorStore(),
       projectPreviewModalStore: useProjectPreviewModalStore(),
       changeProjectDataStore: useChangeDataStore(),
-      chooseDomainStore: useChooseDomainStore()
+      chooseDomainStore: useChooseDomainStore(),
+      componentSetupStore: useComponentSetupStore(),
     }
   },
   computed: {
@@ -89,7 +99,25 @@ export default {
     },
     projectTags() {
       return `#${this.project.tags.join(" #")}`
+    },
+    availableBlocks() {
+      return this.editorStore.getAvailableBlocks;
     }
+  },
+  data: () => ({
+    test: 123
+  }),
+  mounted() {
+    this.componentSetupStore.$onAction(({name, after}) => {
+      //Force refresh the ComponentSetup
+      if (name === 'selectComponent') {
+        after(() => {
+          this.$nextTick(() => {
+            this.test += 1
+          })
+        })
+      }
+    })
   },
   methods: {
     async save() {
@@ -98,6 +126,7 @@ export default {
     async exit() {
       await this.save()
       this.projectPreviewModalStore.closeModal()
+      this.editorStore.clearBlockSelection()
       this.$router.push({ path: '/dashboard' })
     },
     editData() {
@@ -112,13 +141,13 @@ export default {
       const app = getEditorInstance()
       app.initState = JSON.parse(this.data.data);
       const packager = new Packager(app)
-      
+
       const blob = packager.blob()
-      
+
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
       link.download = 'index.html';
-      
+
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -140,6 +169,7 @@ export default {
   border-left: 1px solid #e2e2e8;
   gap: 1rem;
   padding: 0.5rem;
+  padding-right: 2rem;
 }
 .custom-header {
   font-size: 20px;

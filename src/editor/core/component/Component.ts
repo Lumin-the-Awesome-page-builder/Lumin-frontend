@@ -9,13 +9,15 @@ export type ComponentObject = {
   attrs: AttributeObject[];
   props: PropertyObject[];
   content: string;
-  children: ComponentObject[];
+  children: Record<string, ComponentObject>;
   specific: any;
   pure: boolean;
 };
 
 export default abstract class Component {
   public abstract name: string;
+  static title: string = 'Component';
+  public abstract getTitle(): string;
   public htmlElement: HTMLElement = document.createElement('div');
   public props: PropertyCollection = PropertyCollection.empty();
   public attributes: AttributeCollection = AttributeCollection.empty();
@@ -46,7 +48,10 @@ export default abstract class Component {
     return parents;
   }
 
-  constructor(public elementName: string) {
+  constructor(
+    public elementName: string,
+    public objectName: string,
+  ) {
     this.htmlElement = document.createElement(this.elementName);
   }
 
@@ -57,7 +62,8 @@ export default abstract class Component {
   setListener(eventName) {
     this.htmlElement.addEventListener(eventName, (ev) => {
       ev.stopPropagation();
-      this.handler(eventName, this.findTop());
+      ev.preventDefault();
+      this.handler(eventName, this.findTop(), ev);
     });
   }
 
@@ -147,12 +153,17 @@ export default abstract class Component {
       );
     else this.htmlElement.innerText = this.content;
 
+    console.log(this.children, this.content, pure);
+
     if (
       !Object.keys(this.children).length &&
       (!this.content || this.content == '') &&
-      !pure
+      !pure &&
+      this.parent == null
     ) {
       this.htmlElement.classList.add('empty-item');
+    } else {
+      this.htmlElement.classList.remove('empty-item');
     }
 
     return this.htmlElement;
@@ -165,7 +176,7 @@ export default abstract class Component {
 
   toJson(): ComponentObject {
     const systemArgs = ['class', this.key, this.scopeIdentifier];
-    let children = Object.keys(this.children).map((key) => {
+    let children: any = Object.keys(this.children).map((key) => {
       const el = this.children[key];
       return { [el.key]: el.toJson() };
     });

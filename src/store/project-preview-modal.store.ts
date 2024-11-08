@@ -1,6 +1,4 @@
 import { defineStore } from 'pinia';
-import ProjectModel from '@/api/modules/project/models/project.model.ts';
-import WidgetModel from '@/api/modules/widget/models/widget.model.ts';
 
 const usePreviewModalStore = defineStore({
   id: 'previewModal',
@@ -25,11 +23,17 @@ const usePreviewModalStore = defineStore({
     async openModal(id: number, itemType: string) {
       // Fetch project \ widget by id
       if (itemType == 'project') {
+        const ProjectModel = (
+          await import('@/api/modules/project/models/project.model.ts')
+        ).default;
         const data = await ProjectModel.getOne(id);
         if (data.success) this.data = data.getData();
       }
 
       if (itemType == 'widget') {
+        const WidgetModel = (
+          await import('@/api/modules/widget/models/widget.model.ts')
+        ).default;
         const data = await WidgetModel.getOne(id);
         if (data.success) this.data = data.getData();
       }

@@ -1,7 +1,7 @@
 <template>
   <div class="sliderContainer">
     <h3 class="subheading">{{ subheading }}</h3>
-    <n-checkbox @update:checked="checked" v-model:value="isChecked" :size="size" :label="label" />
+    <n-checkbox @update:checked="checked" :checked="isChecked" :size="size" :label="label" />
   </div>
 </template>
 
@@ -34,7 +34,7 @@ export default {
     isChecked: 0,
   }),
   mounted() {
-    this.isChecked = this.initValue ? 1 : 0
+    this.isChecked = this.initValue
   },
   methods: {
     checked() {

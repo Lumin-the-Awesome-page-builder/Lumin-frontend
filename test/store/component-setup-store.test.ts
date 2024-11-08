@@ -22,7 +22,7 @@ describe('ComponentSetupStore tests', () => {
 
     await store.selectComponent(['test'], 0);
 
-    expect(store.component).toBe('test');
+    expect(store.component).toEqual(['test']);
   });
 
   it('test selectComponent (current component not null)', async () => {
@@ -37,20 +37,15 @@ describe('ComponentSetupStore tests', () => {
     vi.stubGlobal('localStorage', {
       getItem: getItemMock,
     });
-    const stringifyMock = vi.fn(() => 'comp');
-    vi.stubGlobal('JSON', {
-      stringify: stringifyMock,
-    });
-    const patchProjectDto = new PatchProjectTreeDto(['key'], 'comp');
+    const patchProjectDto = new PatchProjectTreeDto(['key'], 'test');
     const ProjectModel = (
       await import('@/api/modules/project/models/project.model.ts')
     ).default;
 
     await store.selectComponent(['test2'], 0);
 
-    expect(store.component).toBe('test2');
+    expect(store.component).toEqual(['test2']);
     expect(findTopMock).toBeCalled();
-    expect(stringifyMock).toBeCalledWith('test');
     expect(getItemMock).toBeCalledWith('selected-project');
     expect(ProjectModel.patchTree).toBeCalledWith(123, patchProjectDto);
   });

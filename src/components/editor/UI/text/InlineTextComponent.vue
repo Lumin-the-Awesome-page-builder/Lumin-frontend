@@ -17,6 +17,7 @@
         />
       </div>
     </div>
+  <n-divider />
   </template>
   
   <script lang="ts">

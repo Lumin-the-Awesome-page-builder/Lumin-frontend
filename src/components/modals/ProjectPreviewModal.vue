@@ -3,10 +3,10 @@
     <DeleteFormComponent />
     <div class="container">
       <div class="closePart" @click="closeModal">
-        <img src="../../assets/svg/close.svg" class="img"/>
+        <img src="@/assets/svg/close.svg" class="img"/>
       </div>
       <div class="inputsContainer">
-        <img src="../../assets/svg/dami.svg" class="preview">
+        <img src="@/assets/svg/dami.svg" class="preview">
       </div>
       <div class="controlGroup">
         <div class="upPart">
@@ -16,12 +16,12 @@
               <p class="cardDate text">{{formattedDate}}</p>
               <span class="separatorText">|</span>
               <span class="starsCount text">
-                <img src="../../assets/imageCard/star.svg" alt="star" class="starImg"/>
+                <img src="@/assets/imageCard/star.svg" alt="star" class="starImg"/>
                 {{data.stars}}
             </span>
             </div>
           </div>
-          <n-button quaternary color="#FF356BA6" class="btnText" @click="remove"> Удалить
+          <n-button quaternary color="#FF356BA6" class="btnText deleteBtn" @click="remove"> Удалить
             <template #icon>
               <n-icon>
                 <Delete/>
@@ -153,12 +153,10 @@ export default {
   border-radius: 1.5rem;
   justify-content: center;
   align-items: center;
-  width: 90vw;
+  width: 80vw;
   min-width: 500px;
   min-height: 500px;
-  height: 90vh;
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
+  padding-bottom: 3.5rem;
   z-index: 10;
 }
 
@@ -167,28 +165,30 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  align-self: end;
+  justify-self: end;
   position: relative;
-  bottom: 6%;
-  left: 50%;
+  bottom: 1rem;
+  left: 1rem;
   width: 50px;
   min-height: 50px;
   max-height: 50px;
-  height: 100%;
+  height: 3.5rem;
   border-radius: 50%;
   background-color: white;
-}
-
-.img {
   cursor: pointer;
 }
 
 .preview {
-  width: 80vw;
-  height: 70vh;
+  width: 70vw;
+  height: auto;
 }
 
 .controlGroup {
-  width: 80vw;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
 }
 
 .downPart {
@@ -197,14 +197,18 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-left: 2%;
+  width: 77vw;
 }
 
 .btnGroup {
-  width: 25%;
+  width: 35%;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
+  min-width: 100px;
+  max-width: 500px;
 
 }
 
@@ -212,17 +216,19 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
   margin-top: 1rem;
 }
 
 .leftPart {
-  width: 35%;
-  min-width: 300px;
+  width: auto;
+  gap: 3rem;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: baseline;
+  margin-left: 2%;
+  max-width: 500px;
 }
 
 .info {
@@ -230,7 +236,7 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 300px;
+  width: auto;
 }
 
 .text {
@@ -268,4 +274,9 @@ export default {
 .btn {
   font-size: 1.1rem;
 }
+
+.deleteBtn {
+  margin-right: 3%;
+}
+
 </style>
