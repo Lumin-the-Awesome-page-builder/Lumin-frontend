@@ -9,7 +9,6 @@ vi.mock('codemirror-editor-vue3', async () => {
   };
 });
 
-
 vi.mock('@/store/confirmation-form-component.store.ts', () => ({
   useConfirmationStore: () => ({
     showModal: true,
