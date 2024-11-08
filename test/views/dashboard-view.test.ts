@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
 import DashboardView from '@/views/DashboardView.vue';
-import ProjectPreviewModal from '@/components/ProjectPreviewModal.vue';
+import ProjectPreviewModal from '@/components/modals/ProjectPreviewModal.vue';
 import HeaderComponent from '@/components/HeaderComponent.vue';
 import DashboardComponent from '@/components/DashboardComponent.vue';
 import { describe, it, expect, vi } from 'vitest';

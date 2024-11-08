@@ -9,10 +9,18 @@ vi.mock('codemirror-editor-vue3', async () => {
   };
 });
 
+vi.mock('naive-ui', () => {
+  return {
+    useNotification: vi.fn(() => 'notificationStore'),
+  };
+});
+
 describe('Test header component', () => {
   let wrapper;
   let routerMock;
   let vm;
+  let toastIfErrorMock;
+  let getDataMock;
   beforeEach(() => {
     setActivePinia(createPinia());
     routerMock = { push: vi.fn() };
@@ -24,19 +32,36 @@ describe('Test header component', () => {
       },
     });
     wrapper.vm.logout = vi.fn();
+    toastIfErrorMock = vi.fn();
     wrapper.vm.dashboardStore = {
-      loadProjects: vi.fn(),
-      loadWidgets: vi.fn(),
-      removeSelected: vi.fn(),
-      downloadSelected: vi.fn(),
+      loadProjects: vi.fn(() => ({ toastIfError: toastIfErrorMock })),
+      loadWidgets: vi.fn(() => ({ toastIfError: toastIfErrorMock })),
+      removeSelected: vi.fn(() => [
+        { toastIfError: toastIfErrorMock },
+        { toastIfError: toastIfErrorMock },
+        { toastIfError: toastIfErrorMock },
+      ]),
+      downloadSelected: vi.fn(() => [
+        { toastIfError: toastIfErrorMock },
+        { toastIfError: toastIfErrorMock },
+        { toastIfError: toastIfErrorMock },
+      ]),
     };
+    getDataMock = vi.fn(() => ({
+      id: 1,
+    }));
     wrapper.vm.editorStore = {
-      openNew: vi.fn(() => ({ id: 1 })),
+      openNew: vi.fn(() => ({
+        id: 1,
+        success: true,
+        getData: getDataMock,
+        toastIfError: toastIfErrorMock,
+      })),
     };
     vm = wrapper.vm;
   });
 
-  it('contains correct navigation texts', async () => {
+  it('Contains correct navigation texts', async () => {
     const navElements = await wrapper.findAll('.nav-element');
 
     expect(navElements[0].text()).toContain('Библиотека проектов');
@@ -45,7 +70,7 @@ describe('Test header component', () => {
     expect(navElements[3].text()).toContain('Backend');
   });
 
-  it('renders buttons with correct labels', async () => {
+  it('Renders buttons with correct labels', async () => {
     const createButton = await wrapper.findAll('n-button')[0];
     const deleteButton = await wrapper.findAll('n-button')[1];
     const downloadButton = await wrapper.findAll('n-button')[2];
@@ -55,35 +80,42 @@ describe('Test header component', () => {
     expect(downloadButton.text()).toContain('Скачать');
   });
 
-  it('Test load projects', () => {
-    vm.loadProjects();
+  it('Test load projects', async () => {
+    await vm.loadProjects();
 
     expect(vm.dashboardStore.loadProjects).toBeCalled();
+    expect(toastIfErrorMock).toBeCalledWith('notificationStore');
   });
 
-  it('Test load widgets', () => {
-    vm.loadWidgets();
+  it('Test load widgets', async () => {
+    await vm.loadWidgets();
 
     expect(vm.dashboardStore.loadWidgets).toBeCalled();
+    expect(toastIfErrorMock).toBeCalledWith('notificationStore');
   });
 
   it('Test create project', async () => {
     await vm.createProject();
 
     expect(vm.editorStore.openNew).toBeCalled();
+    expect(getDataMock).toBeCalled();
     expect(routerMock.push).toBeCalledWith({ path: `/project/${1}/edit` });
   });
 
-  it('Test remove selected', () => {
-    vm.removeSelected();
+  it('Test remove selected', async () => {
+    await vm.removeSelected();
 
     expect(vm.dashboardStore.removeSelected).toBeCalled();
+    expect(toastIfErrorMock).toBeCalledTimes(3);
+    expect(toastIfErrorMock).toBeCalledWith('notificationStore');
   });
 
-  it('Test download selected', () => {
-    vm.downloadSelected();
+  it('Test download selected', async () => {
+    await vm.downloadSelected();
 
     expect(vm.dashboardStore.downloadSelected).toBeCalled();
+    expect(toastIfErrorMock).toBeCalledTimes(3);
+    expect(toastIfErrorMock).toBeCalledWith('notificationStore');
   });
 
   it('Test logout button', () => {

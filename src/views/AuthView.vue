@@ -1,23 +1,21 @@
 <template>
-  <div class="parentContainer">
-    <div class="mainPartContent">
-      <LoginComponent></LoginComponent>
+  <n-notification-provider>
+    <div class="parentContainer">
+      <div class="mainPartContent">
+        <LoginComponent></LoginComponent>
+      </div>
+      <div class="footer">
+        <n-p class="footerText">LuminTech 2024</n-p>
+      </div>
     </div>
-    <div class="footer">
-      <n-p class="footerText">LuminTech 2024</n-p>
-    </div>
-  </div>
-
-
-<!--  <HelloFormComponent></HelloFormComponent>-->
-<!--  <DeleteFormComponent project-name="test"></DeleteFormComponent>-->
+  </n-notification-provider>
 </template>
 
 <script lang="ts">
 import LoginComponent from "@/components/LoginComponent.vue";
-import ConfirmationFormComponent from '@/components/ConfirmationFormComponent.vue';
-import HelloFormComponent from '@/components/HelloFormComponent.vue';
-import DeleteFormComponent from '@/components/DeleteFormComponent.vue';
+import ConfirmationFormComponent from '@/components/modals/ConfirmationFormComponent.vue';
+import HelloFormComponent from '@/components/modals/HelloFormComponent.vue';
+import DeleteFormComponent from '@/components/modals/DeleteFormComponent.vue';
 
 export default {
   name: "AuthView",

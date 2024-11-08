@@ -11,6 +11,14 @@ vi.mock('codemirror-editor-vue3', async () => {
   };
 });
 
+vi.mock('naive-ui', async (importOriginal) => {
+  const mod = await importOriginal(); // type is inferred
+  return {
+    ...mod,
+    useNotification: vi.fn(() => 'notificationStore'),
+  };
+});
+
 vi.mock('@/store/editor.store.ts', () => {
   const useById = vi.fn();
   const setApp = vi.fn();

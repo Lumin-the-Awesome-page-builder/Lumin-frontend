@@ -10,6 +10,12 @@ vi.mock('codemirror-editor-vue3', async () => {
   };
 });
 
+vi.mock('naive-ui', () => {
+  return {
+    useNotification: vi.fn(() => 'notificationStore'),
+  };
+});
+
 describe('Test Card Grid', () => {
   beforeEach(() => {
     setActivePinia(createPinia());

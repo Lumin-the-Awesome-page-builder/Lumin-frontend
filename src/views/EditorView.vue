@@ -1,22 +1,15 @@
 <template>
   <n-notification-provider>
-    <div class="parentContainer">
-      <div class="mainPartContent">
-        <RegistrationComponent></RegistrationComponent>
-      </div>
-      <div class="footer">
-        <n-p class="footerText">LuminTech 2024</n-p>
-      </div>
-    </div>
+    <EditorComponent></EditorComponent>
   </n-notification-provider>
 </template>
 
 <script lang="ts">
-import RegistrationComponent from '@/components/RegistrationComponent.vue';
+import EditorComponent from "@/components/editor/Editor.vue";
 
 export default {
-  name: "SignupView",
-  components: { RegistrationComponent },
+  name: "EditorView",
+  components: { EditorComponent },
   data() {
     return {
 

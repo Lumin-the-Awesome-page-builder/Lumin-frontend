@@ -3,14 +3,15 @@ import { setActivePinia, createPinia } from 'pinia';
 import useAuthStore from '@/store/auth.store.ts';
 import AuthModel from '@/api/modules/auth/models/auth.model.ts';
 
+const requestAuthorizedDataResult = {
+  success: true,
+  getData: () => 'authorized',
+};
 vi.mock('@/api/modules/auth/models/auth.model.ts', () => {
   return {
     default: {
       auth: vi.fn(() => ({ success: true })),
-      requestAuthorizedData: vi.fn(() => ({
-        success: true,
-        getData: () => 'authorized',
-      })),
+      requestAuthorizedData: vi.fn(() => requestAuthorizedDataResult),
       registration: vi.fn(() => ({ success: true })),
     },
   };
@@ -29,7 +30,7 @@ describe('Auth store tests', () => {
     expect(AuthModel.auth).toBeCalledTimes(1);
     expect(AuthModel.auth).toBeCalledWith('test');
     expect(AuthModel.requestAuthorizedData).toBeCalled();
-    expect(res).toBe(true);
+    expect(res).toEqual({ ...requestAuthorizedDataResult });
   });
 
   it('Test register', async () => {
@@ -40,7 +41,7 @@ describe('Auth store tests', () => {
     expect(AuthModel.registration).toBeCalledTimes(1);
     expect(AuthModel.registration).toBeCalledWith('test');
     expect(AuthModel.requestAuthorizedData).toBeCalled();
-    expect(result).toBe(true);
+    expect(result).toEqual({ ...requestAuthorizedDataResult });
   });
 
   describe('Test getters', () => {

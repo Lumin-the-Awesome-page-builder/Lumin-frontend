@@ -46,6 +46,7 @@ const useDashboardStore = defineStore({
         this.contentType = 'project';
         this.data = loaded.getData();
       }
+      return loaded;
     },
     async loadWidgets() {
       const loaded = await LibraryModel.getWidgets();
@@ -53,45 +54,60 @@ const useDashboardStore = defineStore({
         this.contentType = 'widget';
         this.data = loaded.getData();
       }
+      return loaded;
     },
     async removeById(id) {
       if (this.contentType == 'project') {
-        await ProjectModel.delete(Number(id));
+        return await ProjectModel.delete(Number(id));
       } else if (this.contentType == 'widget') {
-        await WidgetModel.delete(Number(id));
+        return await WidgetModel.delete(Number(id));
       }
     },
     async removeSelected() {
-      await Promise.all(Object.keys(this.selected).map(this.removeById));
+      const result = await Promise.all(
+        Object.keys(this.selected).map(this.removeById),
+      );
+      if (this.contentType == 'widget') {
+        result.push(await this.loadWidgets());
+      } else if (this.contentType == 'project') {
+        result.push(await this.loadProjects());
+      }
+      return result;
     },
     async downloadProject(id) {
       let blob = new Blob();
       let name = '';
+      let result;
       if (this.contentType == 'project') {
-        const data = (await ProjectModel.getOne(Number(id))).getData();
+        result = await ProjectModel.getOne(Number(id));
+        const data = result.getData();
 
         blob = this.createBlob(data.data);
         name = data.name;
       } else if (this.contentType == 'widget') {
-        const data = (await WidgetModel.getOne(Number(id))).getData();
+        result = await WidgetModel.getOne(Number(id));
+        const data = result.getData();
 
         blob = this.createBlob(data.data);
         name = data.name;
       }
       this.createLink(`${name}.html`, blob);
+      return result;
     },
     async downloadSelected() {
       const zip = JSZip();
-
+      let result;
       await Promise.all(
         Object.keys(this.selected).map(async (id) => {
           if (this.contentType == 'project') {
-            const data = (await ProjectModel.getOne(Number(id))).getData();
+            result = await ProjectModel.getOne(Number(id));
+            const data = result.getData();
 
             const blob = this.createBlob(data.data);
             zip.file(`${data.name}${id}.html`, blob);
           } else if (this.contentType == 'widget') {
-            const data = (await WidgetModel.getOne(Number(id))).getData();
+            result = await WidgetModel.getOne(Number(id));
+            const data = result.getData();
 
             const blob = this.createBlob(data.data);
             zip.file(`${data.name}${id}.html`, blob);
@@ -100,6 +116,7 @@ const useDashboardStore = defineStore({
       );
       const zipped = await zip.generateAsync({ type: 'blob' });
       this.createLink('projects.zip', zipped);
+      return result;
     },
     toggleSelected(id) {
       if (this.selected[id]) delete this.selected[id];

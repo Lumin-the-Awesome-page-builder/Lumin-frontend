@@ -1,23 +1,27 @@
 <template>
+  <n-notification-provider>
+    <HelloFormComponent/>
     <ProjectPreviewModal />
-    <HeaderComponent />
+    <HeaderComponent/>
     <div class="dashboard">
-        <DashboardComponent />
-        <div class="footer">
-          <n-p class="footerText">LuminTech 2024</n-p>
-        </div>
+      <DashboardComponent />
+      <div class="footer">
+        <n-p class="footerText">LuminTech 2024</n-p>
+      </div>
     </div>
+  </n-notification-provider>
 </template>
 
 <script lang="ts">
 import HeaderComponent from '@/components/HeaderComponent.vue';
 import DashboardComponent from '@/components/DashboardComponent.vue'
-import ProjectPreviewModal from '@/components/ProjectPreviewModal.vue'
+import ProjectPreviewModal from '@/components/modals/ProjectPreviewModal.vue'
 import { NConfigProvider } from 'naive-ui';
+import HelloFormComponent from '@/components/modals/HelloFormComponent.vue';
 
 export default {
     name: 'DashboardView',
-    components: { ProjectPreviewModal, NConfigProvider, HeaderComponent, DashboardComponent }
+    components: { HelloFormComponent, ProjectPreviewModal, NConfigProvider, HeaderComponent, DashboardComponent }
 };
 </script>
 

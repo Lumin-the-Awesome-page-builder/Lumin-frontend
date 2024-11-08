@@ -7,9 +7,14 @@ import useAuthStore from '@/store/auth.store';
 import router from '@/router';
 import AuthVkInputDto from '@/api/modules/auth/dto/login/auth-vk-input.dto';
 import appConf from '@/api/conf/app.conf';
+import { useNotification } from 'naive-ui';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: "VKIDAuthComponent",
+  setup() {
+    return { notification: useNotification() };
+  },
   mounted() {
     const loadScript = (url) => {
       return new Promise((resolve, reject) => {
@@ -62,10 +67,10 @@ export default {
 
               const login = await authStore.loginViaVk(new AuthVkInputDto(userData.user.user_id, userData.user.email));
 
-              if (login) {
+              login.toastIfError(this.notification);
+
+              if (login.success) {
                 await router.push({ path: "/dashboard" });
-              } else {
-                alert("Bad credentials")
               }
           }
 
@@ -81,7 +86,7 @@ export default {
         console.error('Не удалось загрузить скрипт', error);
       });
   }
-}
+})
 </script>
 
 <style scoped>

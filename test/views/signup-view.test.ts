@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import { test, expect, vi } from 'vitest';
 import SignupView from '@/views/SignupView.vue';
 import RegistrationComponent from '@/components/RegistrationComponent.vue';
@@ -9,9 +9,8 @@ vi.mock('codemirror-editor-vue3', async () => {
   };
 });
 
-const wrapper = mount(SignupView);
-
 test('renders RegistrationComponent', () => {
-  const loginComponent = wrapper.findComponent(RegistrationComponent);
-  expect(loginComponent.exists()).toBe(true); // Проверяем, что RegistrationComponent рендерится
+  const wrapper = shallowMount(SignupView);
+  const registrationComponent = wrapper.findComponent(RegistrationComponent);
+  expect(registrationComponent.exists()).toBe(true); // Проверяем, что RegistrationComponent рендерится
 });

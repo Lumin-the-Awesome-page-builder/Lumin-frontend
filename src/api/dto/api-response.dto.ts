@@ -65,9 +65,9 @@ export default class ApiResponseDto<T> {
     }
   }
 
-  public toastIfError(toast, nextTick) {
+  public toastIfError(notificationStore) {
     if (!this.success) {
-      this.getError().showServerErrorToast(toast, nextTick);
+      this.getError().showServerErrorToast(notificationStore);
     }
   }
 }

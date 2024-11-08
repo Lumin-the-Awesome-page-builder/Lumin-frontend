@@ -42,10 +42,15 @@ import VkAuthComponent from '@/components/auth/VkAuthComponent.vue';
 import YandexAuthComponent from '@/components/auth/YandexAuthComponent.vue';
 import yandexConf from '@/api/conf/yandex.conf.ts';
 import appConf from '@/api/conf/app.conf.ts';
+import { defineComponent } from 'vue';
+import { useNotification } from 'naive-ui';
 
-export default {
+export default defineComponent({
   name: "RegistrationComponent",
   components: { YandexAuthComponent, VkAuthComponent },
+  setup() {
+    return { notification: useNotification() };
+  },
   data() {
     return {
       emailData: "",
@@ -72,10 +77,10 @@ export default {
       
       const registration = await authStore.register(new RegistrationInputDto(this.emailData, this.passwordData));
 
-      if (registration) {
+      registration.toastIfError(this.notification)
+
+      if (registration.success) {
         await router.push({ path: "/dashboard" });
-      } else {
-        alert("Bad credentials")
       }
     },
     loginWithYandex() {
@@ -84,7 +89,7 @@ export default {
     },
   }
 
-}
+})
 </script>
 
 <style scoped>
