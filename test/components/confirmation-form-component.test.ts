@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
-import { describe, beforeEach, test, expect, vi } from 'vitest';
-import ConfirmationFormComponent from '@/components/ConfirmationFormComponent.vue';';
+import { describe, beforeEach, it, expect, vi } from 'vitest';
+import ConfirmationFormComponent from '@/components/modals/ConfirmationFormComponent.vue';
 import { createPinia, setActivePinia } from 'pinia';
 
 vi.mock('codemirror-editor-vue3', async () => {
