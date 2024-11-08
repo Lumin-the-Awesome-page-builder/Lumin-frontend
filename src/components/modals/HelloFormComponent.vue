@@ -11,6 +11,7 @@
         size="medium"
         role="dialog"
         aria-modal="true"
+        @negative-click="cancel"
       >
           <div class="container">
             <div class="logo">
@@ -40,14 +41,15 @@ export default defineComponent({
       helloFormStore
     }
   },
+  data: () => ({
+    visible: false
+  }),
+  mounted() {
+    this.visible = this.helloFormStore.showModal
+  },
   methods: {
     cancel() {
       this.helloFormStore.closeModal()
-    }
-  },
-  computed: {
-    visible() {
-      return this.helloFormStore.showModal
     }
   }
 })
