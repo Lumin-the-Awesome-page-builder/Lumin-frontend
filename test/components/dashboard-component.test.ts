@@ -1,8 +1,15 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import DashboardComponent from '@/components/DashboardComponent.vue';
 import { mount } from '@vue/test-utils';
 import CardComponent from '@/components/CardComponent.vue';
 import { createPinia, setActivePinia } from 'pinia';
+
+vi.mock("codemirror-editor-vue3", async () => {
+  return {
+    default: (await import('@/components/editor/UI/CodeMirrorMock.vue'))
+  }
+})
+
 
 describe('DashboardComponent test', () => {
   beforeEach(() => {

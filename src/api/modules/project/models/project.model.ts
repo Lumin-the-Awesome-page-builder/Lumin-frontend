@@ -8,13 +8,13 @@ import PatchProjectTreeDto from '@/api/modules/project/dto/patch-project-tree.dt
 
 export class ProjectModel extends ApiModelUtil {
   constructor() {
-    super('/lumin/project');
+    super('');
   }
 
   public async create(
     data: CreateProjectDto,
   ): Promise<ApiResponseDto<ProjectDto>> {
-    return await this.authorizedRequest(new ApiRequestDto('', 'POST', data));
+    return await this.authorizedRequest(new ApiRequestDto('/lumin/project', 'POST', data));
   }
 
   public async update(
@@ -22,16 +22,16 @@ export class ProjectModel extends ApiModelUtil {
     data: UpdateProjectDto,
   ): Promise<ApiResponseDto<ProjectDto>> {
     return await this.authorizedRequest(
-      new ApiRequestDto(`/${id}`, 'PATCH', data),
+      new ApiRequestDto(`/lumin/project/${id}`, 'PATCH', data),
     );
   }
 
   public async delete(id: number): Promise<ApiResponseDto<{ status: any }>> {
-    return await this.authorizedRequest(new ApiRequestDto(`/${id}`, 'DELETE'));
+    return await this.authorizedRequest(new ApiRequestDto(`/lumin/project/${id}`, 'DELETE'));
   }
 
   public async getOne(id: number): Promise<ApiResponseDto<ProjectDto>> {
-    return await this.authorizedRequest(new ApiRequestDto(`/${id}`, 'GET'));
+    return await this.authorizedRequest(new ApiRequestDto(`/lumin/project/${id}`, 'GET'));
   }
 
   public async patchTree(
@@ -39,7 +39,7 @@ export class ProjectModel extends ApiModelUtil {
     patchProjectTreeDto: PatchProjectTreeDto,
   ): Promise<ApiResponseDto<ProjectDto>> {
     return await this.authorizedRequest(
-      new ApiRequestDto(`/${id}/tree`, 'PATCH', patchProjectTreeDto),
+      new ApiRequestDto(`/lumin/project/${id}/tree`, 'PATCH', patchProjectTreeDto),
     );
   }
 }

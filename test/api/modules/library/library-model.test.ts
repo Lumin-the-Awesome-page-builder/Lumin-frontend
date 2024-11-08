@@ -4,6 +4,12 @@ import ApiResponseDto from '@/api/dto/api-response.dto.ts';
 import LibraryProjectDto from '@/api/modules/library/dto/library-project.dto.ts';
 import LibraryWidgetDto from '@/api/modules/library/dto/library-widget.dto.ts';
 
+vi.mock("codemirror-editor-vue3", async () => {
+  return {
+    default: (await import('@/components/editor/UI/CodeMirrorMock.vue'))
+  }
+})
+
 describe('Base LibraryModel class tests', () => {
   let apiResponseDto: ApiResponseDto<string>;
   const libraryModel = LibraryModel;
@@ -49,7 +55,7 @@ describe('Base LibraryModel class tests', () => {
     delete libraryModel.authorizedRequest;
 
     expect(libraryModel).toEqual({
-      baseEndpoint: '/lumin/user/library',
+      baseEndpoint: '',
       baseEndpointBuffer: '',
       onRefresh: null,
     });
@@ -60,7 +66,7 @@ describe('Base LibraryModel class tests', () => {
 
     expect(result).toEqual({ ...apiResponseDto });
     expect(libraryModel.authorizedRequest).toBeCalledWith({
-      url: '/projects',
+      url: '/lumin/user/library/projects',
       method: 'GET',
       data: null,
     });
@@ -71,7 +77,7 @@ describe('Base LibraryModel class tests', () => {
 
     expect(result).toEqual({ ...apiResponseDto });
     expect(libraryModel.authorizedRequest).toBeCalledWith({
-      url: '/widgets',
+      url: '/lumin/user/library/widgets',
       method: 'GET',
       data: null,
     });

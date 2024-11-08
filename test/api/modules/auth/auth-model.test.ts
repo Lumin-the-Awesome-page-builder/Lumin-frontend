@@ -8,6 +8,12 @@ import RegistrationInputDto from '@/api/modules/auth/dto/registration-input.dto.
 import AuthVkInputDto from '@/api/modules/auth/dto/login/auth-vk-input.dto.ts';
 import AuthYandexInputDto from '@/api/modules/auth/dto/login/auth-yandex-input.dto.ts';
 
+vi.mock("codemirror-editor-vue3", async () => {
+  return {
+    default: (await import('@/components/editor/UI/CodeMirrorMock.vue'))
+  }
+})
+
 vi.mock('@/utils/token.util', () => {
   return {
     default: {
@@ -45,7 +51,7 @@ describe('Base AuthModel class tests', () => {
     let apiRequestDto: ApiRequestDto;
     beforeEach(() => {
       authInputDto = new AuthInputDto('login', 'password');
-      apiRequestDto = new ApiRequestDto('', 'POST', authInputDto);
+      apiRequestDto = new ApiRequestDto('/auth', 'POST', authInputDto);
     });
     afterEach(() => {
       vi.restoreAllMocks();
@@ -100,7 +106,7 @@ describe('Base AuthModel class tests', () => {
     beforeEach(() => {
       registrationInputDto = new RegistrationInputDto('login', 'password');
       apiRequestDto = new ApiRequestDto(
-        '/signup',
+        '/auth/signup',
         'POST',
         registrationInputDto,
       );
@@ -154,7 +160,7 @@ describe('Base AuthModel class tests', () => {
 
   it('Test requestAuthorizedData', async () => {
     authModel = AuthModel;
-    const apiRequestDto = new ApiRequestDto('/authorized', 'GET');
+    const apiRequestDto = new ApiRequestDto('/auth/authorized', 'GET');
     const apiResponseDto = new ApiResponseDto(true, 'data', null);
 
     authModel.requestAuthorizedData = funcs.requestAuthorizedData;
@@ -176,7 +182,7 @@ describe('Base AuthModel class tests', () => {
     describe('Test auth via Vk', () => {
       it('success auth via Vk', async () => {
         const authVkDto = new AuthVkInputDto(52, 'login');
-        const apiRequestDto = new ApiRequestDto('/vk', 'POST', authVkDto);
+        const apiRequestDto = new ApiRequestDto('/auth/vk', 'POST', authVkDto);
 
         const result = await authModel.authViaVk(authVkDto);
 
@@ -195,7 +201,7 @@ describe('Base AuthModel class tests', () => {
       it('success auth via Yandex', async () => {
         const authYandexInputDto = new AuthYandexInputDto('token');
         const apiRequestDto = new ApiRequestDto(
-          '/yandex',
+          '/auth/yandex',
           'POST',
           authYandexInputDto,
         );

@@ -66,8 +66,6 @@ export class App {
       }
     });
 
-    console.log(props);
-
     return props.map((prop) => {
       const propConstructor = this.propLibrary[prop.name];
 
@@ -88,12 +86,23 @@ export class App {
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlStr, 'text/html');
     const maybeStyle = doc.head.firstChild;
-    console.log(maybeStyle.nodeName);
-    if (maybeStyle.nodeName == 'STYLE') {
+
+    if (maybeStyle && maybeStyle.nodeName == 'STYLE') {
       return [doc.body.firstChild as HTMLElement, maybeStyle as HTMLElement];
     } else {
       return [doc.body.firstChild as HTMLElement];
     }
+  }
+
+  public buildPure(component: Component) {
+    console.log(component.specific)
+    const parsed = this.parsePure(component.specific.html);
+    component.specific.htmlOnRender = parsed[0];
+    if (parsed.length > 1) {
+      this.pureStyles[component.key] = parsed[1];
+    }
+    component.pure = true
+    this.mountPureStyles();
   }
 
   public buildTree(
@@ -107,6 +116,9 @@ export class App {
         if (!constr) throw new DOMException(`Unknown component: ${el.name}`);
 
         const component: Component = new constr();
+        component.pure = !!el.pure;
+        component.specific = { ...el.specific };
+
         const attrs = [...el.attrs];
         attrs.push({ name: this.scopeIdentifier, value: '' });
 
@@ -120,16 +132,12 @@ export class App {
         component.setEventHandler((e, arr, domEvent) =>
           this.handler(e, arr, domEvent),
         );
-        component.pure = !!el.pure;
-        component.specific = { ...el.specific };
 
         if (component.specific.html && component.pure) {
-          const parsed = this.parsePure(component.specific.html);
-          component.specific.htmlOnRender = parsed[0];
-          if (parsed.length > 1) {
-            this.pureStyles[component.key] = parsed[1];
-          }
+          this.buildPure(component)
         }
+
+        console.log(el.specific, component.specific)
 
         this.state[component.key] = component;
 
@@ -176,6 +184,13 @@ export class App {
     if (!constr) throw new DOMException(`Unknown component: ${name}`);
     const component = new constr();
     const attrs = [{ name: this.scopeIdentifier, value: '' }];
+
+    if (name == 'pure') {
+      const html = '<div>Pure component</div>'
+      component.specific = { html }
+      this.buildPure(component)
+    }
+
     component.setAttrs(attrs);
     component.setEventHandler((e, arr, ev) => this.handler(e, arr, ev));
     component.setKeySalt(this.identifiersSalt);
@@ -187,17 +202,11 @@ export class App {
       throw new DOMException('Bad parent provided');
     }
 
-    if (name == 'pure') {
-      const parsed = this.parsePure(pure);
-      component.specific.html = parsed[0];
-      if (parsed.length > 1) {
-        this.pureStyles[component.key] = parsed[1];
-      }
-    }
-
     this.state[component.key] = component;
     parent.appendChild(component);
     parent.render();
+
+    return component
   }
 
   public remove(key: string) {
@@ -231,5 +240,16 @@ export class App {
     } else {
       component.render();
     }
+  }
+
+  public replacePure(component: Component) {
+    if (this.pureStyles[component.key]) {
+      this.pureStyles[component.key].remove();
+      delete this.pureStyles[component.key];
+    }
+
+    this.buildPure(component)
+
+    component.parent.render()
   }
 }

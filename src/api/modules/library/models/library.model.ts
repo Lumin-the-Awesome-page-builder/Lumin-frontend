@@ -6,15 +6,15 @@ import ApiRequestDto from '@/api/dto/api-request.dto.ts';
 
 export class LibraryModel extends ApiModelUtil {
   constructor() {
-    super('/lumin/user/library');
+    super('');
   }
 
   public async getProjects(): Promise<ApiResponseDto<LibraryProjectDto>> {
-    return await this.authorizedRequest(new ApiRequestDto('/projects', 'GET'));
+    return await this.authorizedRequest(new ApiRequestDto('/lumin/user/library/projects', 'GET'));
   }
 
   public async getWidgets(): Promise<ApiResponseDto<LibraryWidgetDto>> {
-    return await this.authorizedRequest(new ApiRequestDto('/widgets', 'GET'));
+    return await this.authorizedRequest(new ApiRequestDto('/lumin/user/library/widgets', 'GET'));
   }
 }
 

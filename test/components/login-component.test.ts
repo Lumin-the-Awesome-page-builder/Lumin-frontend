@@ -1,10 +1,18 @@
 import { mount } from '@vue/test-utils';
-import { it, expect, describe } from 'vitest';
+import { it, expect, describe, vi } from 'vitest';
 import LoginComponent from '@/components/LoginComponent.vue';
 import { EyeOff, EyeSharp } from '@vicons/ionicons5';
 
+vi.mock("codemirror-editor-vue3", async () => {
+  return {
+    default: (await import('@/components/editor/UI/CodeMirrorMock.vue'))
+  }
+})
+
 describe('Test LoginComponent', () => {
-  const wrapper = mount(LoginComponent);
+  const wrapper = mount(LoginComponent, {
+    attachTo: document.body
+  });
 
   it('displays email and password labels correctly', () => {
     const emailLabel = wrapper.find('.block_title.title');
