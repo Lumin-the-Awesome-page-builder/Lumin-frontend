@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import Editor from '@/components/editor/Editor.vue';
 import TokenUtil from '@/utils/token.util.ts';
 
 const routes: Array<RouteRecordRaw> = [
@@ -21,7 +20,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/project/:id/edit',
     name: 'editor',
-    component: Editor,
+    component: () => import('@/views/EditorView.vue'),
   },
 ];
 

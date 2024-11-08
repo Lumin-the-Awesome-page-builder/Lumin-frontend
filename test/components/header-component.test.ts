@@ -14,6 +14,7 @@ describe('Test header component', () => {
   let routerMock;
   let vm;
   let toastIfErrorMock;
+  let getDataMock;
   beforeEach(() => {
     setActivePinia(createPinia());
     routerMock = { push: vi.fn() };
@@ -40,8 +41,11 @@ describe('Test header component', () => {
         { toastIfError: toastIfErrorMock },
       ]),
     };
+    getDataMock = vi.fn(() => ({
+      id: 1,
+    }));
     wrapper.vm.editorStore = {
-      openNew: vi.fn(() => ({ id: 1, toastIfError: toastIfErrorMock })),
+      openNew: vi.fn(() => ({ id: 1, success: true, getData: getDataMock, toastIfError: toastIfErrorMock })),
     };
     vm = wrapper.vm;
   });
@@ -83,6 +87,7 @@ describe('Test header component', () => {
     await vm.createProject();
 
     expect(vm.editorStore.openNew).toBeCalled();
+    expect(getDataMock).toBeCalled();
     expect(routerMock.push).toBeCalledWith({ path: `/project/${1}/edit` });
   });
 

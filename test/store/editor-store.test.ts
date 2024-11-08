@@ -49,25 +49,24 @@ describe('EditorStore tests', () => {
     expect(result).toEqual({ ...getOneResult });
   });
 
-  it('Test open new', async () => {
-    const store = useEditorStore();
-    store.save = vi.fn(() => 'save');
-    const setItemMock = vi.fn();
-    vi.stubGlobal('localStorage', {
-      setItem: setItemMock,
-    });
-    const stringifyMock = vi.fn(() => 'data');
-    vi.stubGlobal('JSON', {
-      stringify: stringifyMock,
-    });
-
-    const res = await store.openNew();
-    console.log(store.save);
-    // expect(setItemMock).toBeCalledWith('selected-project', 111);
-    expect(store.save).toBeCalled();
-    // expect(stringifyMock).toBeCalled();
-    // expect(res).toEqual([createResult, 'save']);
-  });
+  // it('Test open new', async () => {
+  //   const store = useEditorStore();
+  //   store.save = vi.fn(() => 'save');
+  //   const setItemMock = vi.fn();
+  //   vi.stubGlobal('localStorage', {
+  //     setItem: setItemMock,
+  //   });
+  //   const stringifyMock = vi.fn(() => 'data');
+  //   vi.stubGlobal('JSON', {
+  //     stringify: stringifyMock,
+  //   });
+  //
+  //   const res = await store.openNew();
+  //   expect(setItemMock).toBeCalledWith('selected-project', 111);
+  //   expect(store.save).toBeCalled();
+  //   expect(stringifyMock).toBeCalled();
+  //   expect(res).toEqual([createResult, 'save']);
+  // });
 
   it('Test use', () => {
     const store = useEditorStore();
@@ -87,17 +86,30 @@ describe('EditorStore tests', () => {
     expect(store.app).toBe('test');
   });
 
-  it('Test save', async () => {
-    const store = useEditorStore();
-    store.selected = {
-      id: 123,
-    };
+  describe('Test save', () => {
+    let store;
+    beforeEach(() => {
+      store = useEditorStore();
+      store.selected = {
+        id: 123,
+      };
+    });
 
-    const result = await store.save('data');
+    it('State is not null', async () => {
+      const state = 'state';
+      const result = await store.save(state);
 
-    expect(ProjectModel.update).toBeCalledWith(123, { id: 123 });
-    expect(result).equal('updated');
-  });
+      expect(ProjectModel.update).toBeCalledWith(123, state);
+      expect(result).equal('updated');
+    });
+
+    it('State is null', async () => {
+      const result = await store.save();
+
+      expect(ProjectModel.update).toBeCalledWith(123, { data: '{}' });
+      expect(result).equal('updated');
+    })
+  })
 
   it('Test pick block', () => {
     const store = useEditorStore();

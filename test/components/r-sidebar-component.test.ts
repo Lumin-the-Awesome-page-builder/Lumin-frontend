@@ -7,8 +7,10 @@ import useComponentSetupStore from '@/store/component-setup.store.ts';
 import useEditorStore from '@/store/editor.store.ts';
 import useProjectPreviewModalStore from '@/store/project-preview-modal.store.ts';
 
-vi.mock('naive-ui', () => {
+vi.mock('naive-ui', async (importOriginal) => {
+  const mod = await importOriginal();
   return {
+    ...mod,
     useNotification: vi.fn(() => 'notificationStore'),
   };
 });
@@ -38,10 +40,10 @@ describe('RSidebarComponent test', () => {
       save: vi.fn(() => ({ toastIfError: toastIfErrorMock })),
     };
 
-    await wrapper.vm.save();
+    const result = await wrapper.vm.save();
 
+    expect(result).toEqual({ toastIfError: toastIfErrorMock });
     expect(wrapper.vm.editorStore.save).toBeCalled();
-    expect(toastIfErrorMock).toBeCalledWith('notificationStore');
   });
 
   it('Test exit method', async () => {
@@ -68,11 +70,15 @@ describe('RSidebarComponent test', () => {
         },
       },
     });
-    wrapper.vm.save = vi.fn(() => ({ toastIfError: toastIfErrorMock }));
+    wrapper.vm.save = vi.fn(() => ({
+      success: true,
+      toastIfError: toastIfErrorMock,
+    }));
 
     await wrapper.vm.exit();
 
     expect(wrapper.vm.save).toBeCalled();
+    expect(toastIfErrorMock).toBeCalled();
     expect(routerMock).toBeCalledWith({ path: '/dashboard' });
   });
 });

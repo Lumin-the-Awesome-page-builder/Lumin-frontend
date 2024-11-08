@@ -5,6 +5,14 @@ import EditorPlugin from '@/editor/plugin.ts';
 import router from '@/router';
 import { createPinia, setActivePinia } from 'pinia';
 
+vi.mock('naive-ui', async (importOriginal) => {
+  const mod = await importOriginal(); // type is inferred
+  return {
+    ...mod,
+    useNotification: vi.fn(() => 'notificationStore'),
+  };
+});
+
 vi.mock('@/store/editor.store.ts', () => {
   const useById = vi.fn();
   const setApp = vi.fn();

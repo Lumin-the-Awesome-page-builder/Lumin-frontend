@@ -213,6 +213,7 @@ export default defineComponent({
 .signup-block {
   display: flex;
   flex-direction: row;
+  column-gap: .5rem;
   padding-bottom: 7%;
 }
 

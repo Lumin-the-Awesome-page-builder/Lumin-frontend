@@ -93,9 +93,7 @@ const useEditorStore = defineStore({
 
       localStorage.setItem('selected-project', this.selected.id);
 
-      await this.save(this.selected);
-
-      return this.selected;
+      return await this.save(this.selected);
     },
     pickBlock(block: { component: string; icon: HTMLElement }) {
       this.blockOnCreate = block;
