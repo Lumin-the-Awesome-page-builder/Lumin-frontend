@@ -1,18 +1,34 @@
 import { mount } from '@vue/test-utils';
-import { test, expect } from 'vitest';
-import DeleteFormComponent from '@/components/DeleteFormComponent.vue';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import DeleteFormComponent from '@/components/modals/DeleteFormComponent.vue';
+import { createPinia, setActivePinia } from 'pinia';
 
-const wrapper = mount(DeleteFormComponent, {
-  props: {
-    projectName: 'Тестовый проект',
-  },
+vi.mock('@/store/modals/delete-form-component.store.ts', () => {
+  const closeModal = vi.fn();
+  return {
+    default: () => ({
+      projectName: 'Мой проект',
+      showModal: true,
+      closeModal,
+      project: { name: 'name' },
+    }),
+  };
 });
 
-test('accepts projectName prop', () => {
-  const newProjectName = 'Тестовый проект';
-  wrapper.setProps({ projectName: newProjectName });
+describe('DeleteFormComponent tests', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia());
+  });
 
-  expect(wrapper.find('.block_title').text()).toContain(
-    `Вы уверены, что хотите удалить ${newProjectName}?`,
-  );
+  it('renders correctly with project name', () => {
+    const wrapper = mount(DeleteFormComponent);
+    expect(wrapper.text()).toContain(
+      'Подтвержение удаленияВы уверены, что хотите удалить name?Отменить это действие будет невозможно.Удалить',
+    );
+  });
+  it('test close functions', () => {
+    const wrapper = mount(DeleteFormComponent);
+    wrapper.vm.cancelCallback();
+    expect(wrapper.vm.projectStore.closeModal).toBeCalled();
+  });
 });

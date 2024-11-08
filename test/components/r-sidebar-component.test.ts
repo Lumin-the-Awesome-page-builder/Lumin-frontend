@@ -6,6 +6,8 @@ import Container from '@/editor/components/Container.ts';
 import useComponentSetupStore from '@/store/component-setup.store.ts';
 import useEditorStore from '@/store/editor.store.ts';
 import useProjectPreviewModalStore from '@/store/project-preview-modal.store.ts';
+import useChangeDataStore from '@/store/modals/change-data-project-component.store.ts';
+import { useChooseDomainStore } from '@/store/modals/choose-domen-component.store.ts';
 
 vi.mock('naive-ui', async (importOriginal) => {
   const mod = await importOriginal();
@@ -28,8 +30,18 @@ describe('RSidebarComponent test', () => {
     RSidebarComponent.setup = vi.fn(() => {
       const componentStore = useComponentSetupStore();
       componentStore.selectComponent(container);
-
+      RSidebarComponent.computed.projectName = vi.fn(() => {
+        return 'name';
+      });
+      RSidebarComponent.computed.projectCategory = vi.fn(() => {
+        return 123;
+      });
+      RSidebarComponent.computed.projectTags = vi.fn(() => {
+        return '#123';
+      });
       return {
+        chooseDomainStore: useChooseDomainStore(),
+        changeProjectDataStore: useChangeDataStore(),
         editorStore: useEditorStore(),
         projectPreviewModalStore: useProjectPreviewModalStore(),
         componentSetupStore: componentStore,
@@ -53,6 +65,15 @@ describe('RSidebarComponent test', () => {
       const componentStore = useComponentSetupStore();
       componentStore.selectComponent(container);
       const editorStore = useEditorStore();
+      RSidebarComponent.computed.projectName = vi.fn(() => {
+        return 'name';
+      });
+      RSidebarComponent.computed.projectCategory = vi.fn(() => {
+        return 123;
+      });
+      RSidebarComponent.computed.projectTags = vi.fn(() => {
+        return '#123';
+      });
       editorStore.blockOnCreate = { icon: null, component: null };
       return {
         editorStore: useEditorStore(),

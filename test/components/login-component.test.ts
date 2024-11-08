@@ -34,4 +34,10 @@ describe('Test LoginComponent', () => {
     expect(wrapper.vm.typeInput).toBe('password');
     expect(wrapper.vm.icon).toStrictEqual(EyeSharp);
   });
+  it('test findTokenFunc', () => {
+    const expectData = 'test#1234567891234token&not';
+
+    const resultData = wrapper.vm.findToken(expectData);
+    expect(resultData).toEqual('token');
+  });
 });

@@ -15,12 +15,13 @@
               <p class="cardDate text">{{formattedDate}}</p>
               <span class="separatorText">|</span>
               <span class="starsCount text">
-                <img src="../assets/imageCard/star.svg" alt="star" class="starImg"/>
+                <img src="@/assets/imageCard/star.svg" alt="star" class="starImg"/>
                 {{data.stars}}
             </span>
             </div>
           </div>
-          <n-button quaternary color="#FF356BA6" class="btnText deleteBtn"> Удалить
+          <n-button quaternary color="#FF356BA6" @click="deleteProject" class="btnText deleteBtn"> Удалить
+            <DeleteFormComponent/>
             <template #icon>
               <n-icon>
                 <Delete/>
@@ -64,10 +65,15 @@ import usePreviewModalStore from '@/store/project-preview-modal.store.ts';
 import useEditorStore from '@/store/editor.store.ts';
 import Packager from '@/editor/core/Packager.ts';
 import { getEditorInstance } from '@/editor/plugin.ts'
+import DeleteFormComponent from '@/components/modals/DeleteFormComponent.vue';
+import HelloFormComponent from '@/components/modals/HelloFormComponent.vue';
+import useDeleteProjectModalStore from '@/store/modals/delete-form-component.store.ts';
 
 export default {
   name: "ProjectPreviewModal",
   components: {
+    HelloFormComponent,
+    DeleteFormComponent,
     Download,
     Delete,
     Share,
@@ -76,7 +82,8 @@ export default {
   setup() {
     return {
       previewModalStore: usePreviewModalStore(),
-      editorStore: useEditorStore()
+      editorStore: useEditorStore(),
+      deleteModalStore: useDeleteProjectModalStore(),
     }
   },
   computed: {
@@ -117,7 +124,12 @@ export default {
       this.$router.push({ path: `/project/${this.data.id}/edit` })
     },
     share() {
-    
+
+    },
+    deleteProject() {
+      const id = this.data.id
+      const name = this.data.name
+      this.deleteModalStore.openModal({ project: { id: id, name: name } })
     }
   }
 }

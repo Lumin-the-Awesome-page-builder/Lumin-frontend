@@ -99,7 +99,6 @@ export default defineComponent({
     async checkLoginStatus() {
       const token = localStorage.getItem('authByYandex');
       if (token) {
-        console.log('Токен пришёл')
         const authStore = useAuthStore()
 
         const urlParams = window.location.href;

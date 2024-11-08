@@ -13,9 +13,9 @@
 
 <script lang="ts">
 import LoginComponent from "@/components/LoginComponent.vue";
-import ConfirmationFormComponent from '@/components/ConfirmationFormComponent.vue';
-import HelloFormComponent from '@/components/HelloFormComponent.vue';
-import DeleteFormComponent from '@/components/DeleteFormComponent.vue';
+import ConfirmationFormComponent from '@/components/modals/ConfirmationFormComponent.vue';
+import HelloFormComponent from '@/components/modals/HelloFormComponent.vue';
+import DeleteFormComponent from '@/components/modals/DeleteFormComponent.vue';
 
 export default {
   name: "AuthView",
