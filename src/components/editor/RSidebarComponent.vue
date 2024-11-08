@@ -67,7 +67,7 @@ import useProjectPreviewModalStore from '@/store/project-preview-modal.store.ts'
 import { useNotification } from 'naive-ui';
 import { getEditorInstance } from '@/editor/plugin.ts';
 import Packager from '@/editor/core/Packager.ts';
-import { useChangeDataStore } from '@/store/modals/change-data-project-component.store.ts';
+import useChangeDataStore from '@/store/modals/change-data-project-component.store.ts';
 import { useChooseDomainStore } from '@/store/modals/choose-domen-component.store.ts';
 import ChooseDomainComponent from '@/components/modals/ChooseDomainComponent.vue';
 import ChangeDataComponent from '@/components/modals/ChangeProjectDataComponent.vue';

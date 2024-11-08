@@ -15,7 +15,7 @@
               <p class="cardDate text">{{formattedDate}}</p>
               <span class="separatorText">|</span>
               <span class="starsCount text">
-                <img src="../assets/imageCard/star.svg" alt="star" class="starImg"/>
+                <img src="@/assets/imageCard/star.svg" alt="star" class="starImg"/>
                 {{data.stars}}
             </span>
             </div>
