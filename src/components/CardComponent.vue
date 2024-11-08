@@ -106,7 +106,6 @@ export default {
   flex-direction: column;
   background-color: white;
   border-radius: 0.625rem;
-  width: 18.75rem;
   padding: 1rem;
   border: 0.0625rem solid #ddd;
   transition: box-shadow 0.3s ease;
