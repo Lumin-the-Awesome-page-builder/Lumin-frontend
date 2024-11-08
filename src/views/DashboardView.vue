@@ -1,12 +1,14 @@
 <template>
+  <n-notification-provider>
     <ProjectPreviewModal />
     <HeaderComponent />
     <div class="dashboard">
-        <DashboardComponent />
-        <div class="footer">
-          <n-p class="footerText">LuminTech 2024</n-p>
-        </div>
+      <DashboardComponent />
+      <div class="footer">
+        <n-p class="footerText">LuminTech 2024</n-p>
+      </div>
     </div>
+  </n-notification-provider>
 </template>
 
 <script lang="ts">

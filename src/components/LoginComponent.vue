@@ -45,12 +45,14 @@ import AuthYandexInputDto from '@/api/modules/auth/dto/login/auth-yandex-input.d
 import YandexAuthComponent from '@/components/auth/YandexAuthComponent.vue';
 import yandexConf from '@/api/conf/yandex.conf.ts';
 import appConf from '@/api/conf/app.conf.ts';
+import { defineComponent } from 'vue'
+import { useNotification } from 'naive-ui';
 
-export default {
+export default defineComponent({
   name: "LoginComponent",
   components: { YandexAuthComponent, VkAuthComponent },
-  computed: {
-
+  setup() {
+    return { notification: useNotification() };
   },
   data() {
     return {
@@ -81,13 +83,13 @@ export default {
     },
     async login() {
       const authStore = useAuthStore()
-      
+
       const login = await authStore.login(new AuthInputDto(this.emailData, this.passwordData));
-      
-      if (login) {
+
+      login.toastIfError(this.notification)
+
+      if (login.success) {
         await router.push({ path: "/dashboard" });
-      } else {
-        alert("Bad credentials")
       }
     },
     loginWithYandex() {
@@ -104,10 +106,11 @@ export default {
         const accessCode = this.findToken(urlParams);
         const login = await authStore.loginViaYandex(new AuthYandexInputDto(accessCode));
 
-        if (login) {
+        login.toastIfError(this.notification);
+
+        if (login.success) {
           await router.push({ path: "/dashboard" });
         } else {
-          alert("Bad credentials")
           localStorage.removeItem('authByYandex');
         }
       }
@@ -127,8 +130,9 @@ export default {
     }
   }
 
-}
+})
 </script>
+
 <style scoped>
 .container {
   display: flex;
@@ -209,6 +213,7 @@ export default {
 .signup-block {
   display: flex;
   flex-direction: row;
+  column-gap: .5rem;
   padding-bottom: 7%;
 }
 

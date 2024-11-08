@@ -9,6 +9,7 @@ const useComponentSetupStore = defineStore({
   }),
   actions: {
     async selectComponent(component: Component) {
+      let result;
       if (this.component) {
         const updatePath = this.component
           .findTop()
@@ -18,12 +19,13 @@ const useComponentSetupStore = defineStore({
         const projectModel = (
           await import('@/api/modules/project/models/project.model.ts')
         ).default;
-        await projectModel.patchTree(
+        result = await projectModel.patchTree(
           parseInt(localStorage.getItem('selected-project')),
           new PatchProjectTreeDto(updatePath, packed),
         );
       }
       this.component = component;
+      return result;
     },
   },
 });

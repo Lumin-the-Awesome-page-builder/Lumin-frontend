@@ -1,7 +1,9 @@
 import { mount } from '@vue/test-utils';
 import { expect, vi, describe, it } from 'vitest';
-import LoginComponent from '@/components/LoginComponent.vue';
 import { EyeOff, EyeSharp } from '@vicons/ionicons5';
+import RegistrationComponent from '@/components/RegistrationComponent.vue';
+
+const wrapper = mount(RegistrationComponent);
 
 vi.mock('naive-ui', () => {
   return {
@@ -9,10 +11,8 @@ vi.mock('naive-ui', () => {
   };
 });
 
-describe('Test LoginComponent', () => {
-  const wrapper = mount(LoginComponent);
-
-  it('displays email and password labels correctly', () => {
+describe('Test registrationComponent', () => {
+  it('Displays email and password labels correctly', () => {
     const emailLabel = wrapper.find('.block_title.title');
     const passwordLabel = wrapper.findAll('.block_title.title')[1];
 
@@ -20,7 +20,7 @@ describe('Test LoginComponent', () => {
     expect(passwordLabel.text()).toBe('Пароль');
   });
 
-  it('toggles password visibility', () => {
+  it('Toggles password visibility', () => {
     expect(wrapper.vm.typeInput).toBe('password');
     expect(wrapper.vm.icon).toStrictEqual(EyeSharp);
 

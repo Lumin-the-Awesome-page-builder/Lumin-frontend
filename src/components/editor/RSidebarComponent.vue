@@ -33,6 +33,7 @@
 <script lang="ts">
 import useEditorStore from '@/store/editor.store.ts';
 import useProjectPreviewModalStore from '@/store/project-preview-modal.store.ts'
+import { useNotification } from 'naive-ui';
 import ComponentSetupComponent from '@/components/editor/ComponentSetupComponent.vue';
 import AvailableBlocksComponent from '@/components/editor/AvailableBlocksComponent.vue';
 import useComponentSetupStore from '@/store/component-setup.store.ts';
@@ -43,6 +44,7 @@ export default {
   },
   setup() {
     return {
+      notificationStore: useNotification(),
       editorStore: useEditorStore(),
       projectPreviewModalStore: useProjectPreviewModalStore(),
       componentSetupStore: useComponentSetupStore()
@@ -65,13 +67,18 @@ export default {
   },
   methods: {
     async save() {
-      await this.editorStore.save()
+      const result = await this.editorStore.save()
+      result.toastIfError(this.notificationStore)
+      return result;
     },
     async exit() {
-      await this.save()
+      const result = await this.save()
       this.projectPreviewModalStore.closeModal()
-      this.editorStore.clearBlockSelection()
-      this.$router.push({ path: '/dashboard' })
+      result.toastIfError(this.notificationStore)
+      if (result.success) {
+        this.editorStore.clearBlockSelection()
+        this.$router.push({ path: '/dashboard' })
+      }
     }
   },
   computed: {

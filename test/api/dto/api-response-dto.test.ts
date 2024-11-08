@@ -181,13 +181,11 @@ describe('Base apiResponseDto class tests', () => {
   });
 
   describe('Test toastIfError', () => {
-    let toastMock: any;
-    let nextTickMock: any;
     let getErrorMock: any;
     let showServerErrorToastMock: any;
+    let notificationStore: any;
     beforeEach(() => {
-      toastMock = vi.fn();
-      nextTickMock = vi.fn();
+      notificationStore = 'notificationStore';
       showServerErrorToastMock = vi.fn();
       getErrorMock = vi.fn(() => ({
         showServerErrorToast: showServerErrorToastMock,
@@ -197,18 +195,18 @@ describe('Base apiResponseDto class tests', () => {
     it('Success api response', () => {
       apiResponseDtoSuccess.getError = getErrorMock;
 
-      apiResponseDtoSuccess.toastIfError(toastMock, nextTickMock);
+      apiResponseDtoSuccess.toastIfError(notificationStore);
 
       expect(apiResponseDtoSuccess.getError).toBeCalledTimes(0);
     });
     it('Failure api response', () => {
       apiResponseDtoFailure.getError = getErrorMock;
 
-      apiResponseDtoFailure.toastIfError(toastMock, nextTickMock);
+      apiResponseDtoFailure.toastIfError(notificationStore);
 
       expect(apiResponseDtoFailure.getError).toBeCalledTimes(1);
       expect(showServerErrorToastMock).toBeCalledTimes(1);
-      expect(showServerErrorToastMock).toBeCalledWith(toastMock, nextTickMock);
+      expect(showServerErrorToastMock).toBeCalledWith(notificationStore);
     });
   });
 });
