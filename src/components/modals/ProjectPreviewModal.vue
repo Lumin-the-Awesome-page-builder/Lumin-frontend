@@ -123,9 +123,7 @@ export default {
       this.editorStore.use(this.data)
       this.$router.push({ path: `/project/${this.data.id}/edit` })
     },
-    share() {
-
-    },
+    share() {},
     deleteProject() {
       const id = this.data.id
       const name = this.data.name
@@ -156,22 +154,16 @@ export default {
   background-color: white;
   border-radius: 1.5rem;
   justify-content: center;
-  row-gap: 2rem;
   align-items: center;
   width: 80vw;
   min-width: 500px;
-  min-height: 500px;
+  min-height: 700px;
+  height: 80vh;
   max-width: 80vw;
   max-height: 80vh;
-  padding-bottom: 3.5rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
   z-index: 10;
-}
-
-.inputsContainer {
-  width: 90%;
-}
-.inputsContainer img {
-  width: 100%;
 }
 
 .closePart {
@@ -179,18 +171,18 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  align-self: end;
-  justify-self: start;
+  position: fixed;
+  left: 88%;
+  bottom: 93%;
   width: 50px;
-  margin-left: 1rem;
-  position: relative;
-  bottom: 1rem;
-  left: 1rem;
   min-height: 50px;
   max-height: 50px;
-  height: 3.5rem;
+  height: 100%;
   border-radius: 50%;
   background-color: white;
+}
+
+.img {
   cursor: pointer;
 }
 
@@ -200,44 +192,81 @@ export default {
 }
 
 .controlGroup {
-  width: 90%;
-  display: flex;
-  flex-direction: column;
-  row-gap: 1rem;
+  width: 80vw;
 }
 
-.upPart {
-  width: auto;
+.downPart {
+  margin-top: 1rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-left: 2%;
+  width: 77vw;
+}
+
+.btnGroup {
+  width: 35%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  min-width: 100px;
+  max-width: 500px;
+
+}
+
+.upPart {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 1rem;
 }
 
 .leftPart {
+  width: auto;
+  gap: 3rem;
   display: flex;
   flex-direction: row;
-  gap: 1rem;
-}
-
-.titleProj {
-  width: fit-content;
-  max-width: 60%;
-  font-size: 2rem;
+  justify-content: space-around;
+  align-items: baseline;
+  margin-left: 2%;
+  max-width: 500px;
 }
 
 .info {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 0.5rem;
-}
-
-.cardDate {
-  width: fit-content;
+  justify-content: center;
+  width: auto;
 }
 
 .text {
+  font-size: 1.3rem;
+  color: #35354778;
+
+}
+
+.starImg {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.starsCount {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.titleProj {
+  font-size: 2rem;
+}
+
+.separatorText {
+  margin-left: 0.2rem;
+  margin-right: 0.2rem;
   font-size: 1.3rem;
   color: #35354778;
 }
@@ -246,34 +275,12 @@ export default {
   font-size: 1.2rem;
 }
 
-.starsCount {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  column-gap: .2rem
+.btn {
+  font-size: 1.1rem;
 }
 
-.starImg {
-  width: 1.3rem;
-  height: 1.3rem;
+.deleteBtn {
+  margin-right: 3%;
 }
-
-.separatorText {
-  font-size: 1.3rem;
-  color: #35354778;
-}
-
-.downPart {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.btnGroup {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem
-}
-
 
 </style>
