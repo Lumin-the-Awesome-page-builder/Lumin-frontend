@@ -1,5 +1,6 @@
 <template>
   <ContentComponent v-if="contentComponentAvailable" :prop="component.props.get('content')" />
+  <PureContentComponent v-if="pureContentComponentAvailable" :prop="component.props.get('pure-content')" />
   
   <LinkColorComponent v-if="linkColorAvailable" :prop="component.props.get('link-color')" />
   <LinkOpacityComponent v-if="linkOpacityAvailable" :prop="component.props.get('link-opacity')" />
@@ -75,11 +76,14 @@ import FontProp from '@/editor/properties/text/FontProp.ts';
 import LinkUnderlineOpacityProp from '@/editor/properties/link/LinkUnderlineOpacityProp.ts';
 import LinkUnderlineOffsetProp from '@/editor/properties/link/LinkUnderlineOffsetProp.ts';
 import ContentProp from '@/editor/properties/ContentProp.ts';
+import PureContentComponent from '@/components/editor/UI/PureContentComponent.vue';
+import { PureContentProp } from '@/editor/properties/PureContentProp.ts';
 
 
 export default {
   name: 'ComponentSetupComponent',
   components: {
+    PureContentComponent,
     TextDecorationComponent,
     JustifyContentComponent,
     ImgFluidComponent,
@@ -186,6 +190,9 @@ export default {
     },
     contentComponentAvailable() {
       return this.isAvailable(ContentProp.name)
+    },
+    pureContentComponentAvailable() {
+      return this.isAvailable(PureContentProp.name)
     }
   }
 }

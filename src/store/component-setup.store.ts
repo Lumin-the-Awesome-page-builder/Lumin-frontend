@@ -21,7 +21,7 @@ const useComponentSetupStore = defineStore({
         ).default;
         result = await projectModel.patchTree(
           parseInt(localStorage.getItem('selected-project')),
-          new PatchProjectTreeDto(updatePath, packed),
+          new PatchProjectTreeDto(updatePath.reverse(), packed),
         );
       }
       this.component = component;

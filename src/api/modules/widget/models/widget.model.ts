@@ -7,13 +7,15 @@ import ApiRequestDto from '@/api/dto/api-request.dto.ts';
 
 export class WidgetModel extends ApiModelUtil {
   constructor() {
-    super('/lumin/widget');
+    super('');
   }
 
   public async create(
     data: CreateWidgetDto,
   ): Promise<ApiResponseDto<WidgetDto>> {
-    return await this.authorizedRequest(new ApiRequestDto('', 'POST', data));
+    return await this.authorizedRequest(
+      new ApiRequestDto('/lumin/widget', 'POST', data),
+    );
   }
 
   public async update(
@@ -21,16 +23,20 @@ export class WidgetModel extends ApiModelUtil {
     data: UpdateWidgetDto,
   ): Promise<ApiResponseDto<WidgetDto>> {
     return await this.authorizedRequest(
-      new ApiRequestDto(`/${id}`, 'PATCH', data),
+      new ApiRequestDto(`/lumin/widget/${id}`, 'PATCH', data),
     );
   }
 
   public async delete(id: number): Promise<ApiResponseDto<{ status: any }>> {
-    return await this.authorizedRequest(new ApiRequestDto(`/${id}`, 'DELETE'));
+    return await this.authorizedRequest(
+      new ApiRequestDto(`/lumin/widget/${id}`, 'DELETE'),
+    );
   }
 
   public async getOne(id: number): Promise<ApiResponseDto<WidgetDto>> {
-    return await this.authorizedRequest(new ApiRequestDto(`/${id}`, 'GET'));
+    return await this.authorizedRequest(
+      new ApiRequestDto(`/lumin/widget/${id}`, 'GET'),
+    );
   }
 }
 

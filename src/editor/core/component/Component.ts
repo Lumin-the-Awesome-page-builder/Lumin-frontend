@@ -158,8 +158,7 @@ export default abstract class Component {
     if (
       !Object.keys(this.children).length &&
       (!this.content || this.content == '') &&
-      !pure &&
-      this.parent == null
+      !pure
     ) {
       this.htmlElement.classList.add('empty-item');
     } else {
@@ -184,6 +183,8 @@ export default abstract class Component {
       children = children.reduce((prev, current) =>
         Object.assign(prev, current),
       );
+    console.log(this.specific);
+    console.log(this.pure);
     return {
       name: this.name,
       key: this.key,

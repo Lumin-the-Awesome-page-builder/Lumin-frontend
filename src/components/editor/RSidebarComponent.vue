@@ -149,12 +149,11 @@ export default {
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
       link.download = 'index.html';
-
+      
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     },
-
     editData() {
       this.changeProjectDataStore.openModal({
         ...this.editorStore.getProject

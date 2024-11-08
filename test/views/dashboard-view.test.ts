@@ -3,7 +3,13 @@ import DashboardView from '@/views/DashboardView.vue';
 import ProjectPreviewModal from '@/components/modals/ProjectPreviewModal.vue';
 import HeaderComponent from '@/components/HeaderComponent.vue';
 import DashboardComponent from '@/components/DashboardComponent.vue';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+
+vi.mock('codemirror-editor-vue3', async () => {
+  return {
+    default: await import('@/components/editor/UI/CodeMirrorMock.vue'),
+  };
+});
 
 describe('DashboardView', () => {
   it('renders all child components', () => {

@@ -3,6 +3,12 @@ import { vi, it, expect, describe, beforeEach } from 'vitest';
 import HeaderComponent from '@/components/HeaderComponent.vue';
 import { createPinia, setActivePinia } from 'pinia';
 
+vi.mock('codemirror-editor-vue3', async () => {
+  return {
+    default: await import('@/components/editor/UI/CodeMirrorMock.vue'),
+  };
+});
+
 vi.mock('naive-ui', () => {
   return {
     useNotification: vi.fn(() => 'notificationStore'),
