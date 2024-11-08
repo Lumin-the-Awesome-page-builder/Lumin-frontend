@@ -1,17 +1,17 @@
 import { setActivePinia, createPinia } from 'pinia';
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useProjectStore } from '@/store/modals/delete-form-component.store.ts';
+import useDeleteProjectModalStore from '@/store/modals/delete-form-component.store.ts';
 
 describe('useProjectStore', () => {
   let projectStore;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     setActivePinia(createPinia());
-    projectStore = useProjectStore();
+    projectStore = await useDeleteProjectModalStore();
   });
 
   it('initializes with default state', () => {
-    expect(projectStore.projectName).toBe('Название проекта');
+    expect(projectStore.project.name).toBe('Название проекта');
     expect(projectStore.showModal).toBe(false);
   });
 
@@ -22,7 +22,7 @@ describe('useProjectStore', () => {
   it('opens modal and sets project name', () => {
     projectStore.openModal('Новый проект');
     expect(projectStore.showModal).toBe(true);
-    expect(projectStore.projectName).toBe('Новый проект');
+    expect(projectStore.project).toBe('Новый проект');
   });
 
   it('closes modal', () => {

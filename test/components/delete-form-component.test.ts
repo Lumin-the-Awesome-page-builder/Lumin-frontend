@@ -3,13 +3,17 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import DeleteFormComponent from '@/components/modals/DeleteFormComponent.vue';
 import { createPinia, setActivePinia } from 'pinia';
 
-vi.mock('@/store/delete-form-component.store.ts', () => ({
-  useProjectStore: () => ({
-    projectName: 'Мой проект',
-    showModal: true,
-    closeModal: vi.fn(),
-  }),
-}));
+vi.mock('@/store/modals/delete-form-component.store.ts', () => {
+  const closeModal = vi.fn();
+  return {
+    default: () => ({
+      projectName: 'Мой проект',
+      showModal: true,
+      closeModal,
+      project: { name: 'name' },
+    }),
+  };
+});
 
 describe('DeleteFormComponent tests', () => {
   beforeEach(() => {
@@ -19,7 +23,12 @@ describe('DeleteFormComponent tests', () => {
   it('renders correctly with project name', () => {
     const wrapper = mount(DeleteFormComponent);
     expect(wrapper.text()).toContain(
-      'Вы уверены, что хотите удалить Мой проект?',
+      'Подтвержение удаленияВы уверены, что хотите удалить name?Отменить это действие будет невозможно.Удалить',
     );
+  });
+  it('test close functions', () => {
+    const wrapper = mount(DeleteFormComponent);
+    wrapper.vm.cancelCallback();
+    expect(wrapper.vm.projectStore.closeModal).toBeCalled();
   });
 });

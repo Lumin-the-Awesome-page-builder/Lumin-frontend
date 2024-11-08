@@ -1,7 +1,7 @@
 <template>
   <n-message-provider>
     <n-modal
-      v-model:show="visible"
+      v-model:show="changeDataStore.showModal"
       transform-origin="center"
       style="width: 600px"
       preset="card"
@@ -41,6 +41,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useChangeDataStore } from '@/store/modals/change-data-project-component.store.ts';
+import useEditorStore from '@/store/editor.store.ts';
 
 export default defineComponent({
   name: "changeDataComponent",
@@ -53,19 +54,22 @@ export default defineComponent({
   },
   setup() {
     const changeDataStore = useChangeDataStore()
-
+    const editorStore = useEditorStore()
     return {
-      changeDataStore
+      changeDataStore,
+      editorStore
     }
   },
   methods: {
     saveForm() {
+      let tags = this.tags.slice(1).split(' #')
       this.changeDataStore.setProjectName(this.projectName)
       this.changeDataStore.setCategory(this.category)
-      this.changeDataStore.setTags(this.tags)
+      this.changeDataStore.setTags(tags)
+
       this.changeDataStore.update()
     },
-    cancel() {
+    cancelCallback() {
       this.changeDataStore.closeModal()
     }
   },

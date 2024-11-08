@@ -7,10 +7,6 @@
       <n-p class="footerText">LuminTech 2024</n-p>
     </div>
   </div>
-
-
-<!--  <HelloFormComponent></HelloFormComponent>-->
-<!--  <DeleteFormComponent project-name="test"></DeleteFormComponent>-->
 </template>
 
 <script lang="ts">

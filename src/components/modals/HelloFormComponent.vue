@@ -29,13 +29,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useHelloFormStore } from '@/store/modals/hello-form-component.store.ts';
+import  useHelloFormStore  from '@/store/modals/hello-form-component.store.ts';
 
 export default defineComponent({
   name: "HelloFormComponent",
   setup() {
+    const helloFormStore = useHelloFormStore()
+    helloFormStore.openModal()
     return {
-      helloFormStore: useHelloFormStore(),
+      helloFormStore
     }
   },
   methods: {

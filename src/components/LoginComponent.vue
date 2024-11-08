@@ -97,7 +97,6 @@ export default {
     async checkLoginStatus() {
       const token = localStorage.getItem('authByYandex');
       if (token) {
-        console.log('Токен пришёл')
         const authStore = useAuthStore()
 
         const urlParams = window.location.href;
@@ -108,7 +107,6 @@ export default {
           await router.push({ path: "/dashboard" });
         } else {
           alert("Bad credentials")
-          localStorage.removeItem('authByYandex');
         }
       }
     },

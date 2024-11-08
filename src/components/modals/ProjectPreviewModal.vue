@@ -1,6 +1,5 @@
 <template>
   <div v-if="checkStatus" class="backgroundContainer">
-    <DeleteFormComponent />
     <div class="container">
       <div class="closePart" @click="closeModal">
         <img src="@/assets/svg/close.svg" class="img"/>
@@ -16,12 +15,13 @@
               <p class="cardDate text">{{formattedDate}}</p>
               <span class="separatorText">|</span>
               <span class="starsCount text">
-                <img src="@/assets/imageCard/star.svg" alt="star" class="starImg"/>
+                <img src="../assets/imageCard/star.svg" alt="star" class="starImg"/>
                 {{data.stars}}
             </span>
             </div>
           </div>
-          <n-button quaternary color="#FF356BA6" class="btnText deleteBtn" @click="remove"> Удалить
+          <n-button quaternary color="#FF356BA6" @click="deleteProject" class="btnText deleteBtn"> Удалить
+            <DeleteFormComponent/>
             <template #icon>
               <n-icon>
                 <Delete/>
@@ -65,12 +65,14 @@ import usePreviewModalStore from '@/store/project-preview-modal.store.ts';
 import useEditorStore from '@/store/editor.store.ts';
 import Packager from '@/editor/core/Packager.ts';
 import { getEditorInstance } from '@/editor/plugin.ts'
-import { useDeleteProjectModalStore } from '@/store/modals/delete-form-component.store.ts';
 import DeleteFormComponent from '@/components/modals/DeleteFormComponent.vue';
+import HelloFormComponent from '@/components/modals/HelloFormComponent.vue';
+import useDeleteProjectModalStore from '@/store/modals/delete-form-component.store.ts';
 
 export default {
   name: "ProjectPreviewModal",
   components: {
+    HelloFormComponent,
     DeleteFormComponent,
     Download,
     Delete,
@@ -81,7 +83,7 @@ export default {
     return {
       previewModalStore: usePreviewModalStore(),
       editorStore: useEditorStore(),
-      deleteProjectStore: useDeleteProjectModalStore()
+      deleteModalStore: useDeleteProjectModalStore(),
     }
   },
   computed: {
@@ -100,9 +102,6 @@ export default {
   methods: {
     closeModal() {
       this.previewModalStore.closeModal()
-    },
-    remove() {
-      this.deleteProjectStore.openModal({ ...this.data })
     },
     download() {
       const app = getEditorInstance()
@@ -125,7 +124,12 @@ export default {
       this.$router.push({ path: `/project/${this.data.id}/edit` })
     },
     share() {
-    
+
+    },
+    deleteProject() {
+      const id = this.data.id
+      const name = this.data.name
+      this.deleteModalStore.openModal({ project: { id: id, name: name } })
     }
   }
 }
@@ -155,8 +159,12 @@ export default {
   align-items: center;
   width: 80vw;
   min-width: 500px;
-  min-height: 500px;
-  padding-bottom: 3.5rem;
+  min-height: 700px;
+  height: 80vh;
+  max-width: 80vw;
+  max-height: 80vh;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
   z-index: 10;
 }
 
@@ -165,17 +173,18 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  align-self: end;
-  justify-self: end;
-  position: relative;
-  bottom: 1rem;
-  left: 1rem;
+  position: fixed;
+  left: 88%;
+  bottom: 93%;
   width: 50px;
   min-height: 50px;
   max-height: 50px;
-  height: 3.5rem;
+  height: 100%;
   border-radius: 50%;
   background-color: white;
+}
+
+.img {
   cursor: pointer;
 }
 
@@ -185,10 +194,7 @@ export default {
 }
 
 .controlGroup {
-  width: 90%;
-  display: flex;
-  flex-direction: column;
-  row-gap: 1rem;
+  width: 80vw;
 }
 
 .downPart {

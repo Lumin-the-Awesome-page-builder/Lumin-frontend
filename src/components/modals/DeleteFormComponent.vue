@@ -29,7 +29,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import { useDeleteProjectModalStore } from '@/store/modals/delete-form-component.store.ts';
+import useDeleteProjectModalStore from '@/store/modals/delete-form-component.store.ts';
 
 export default defineComponent({
   name: "DeleteFormComponent",
@@ -40,6 +40,7 @@ export default defineComponent({
   },
   methods: {
     deleteProject() {
+      this.projectStore.deleteProject();
       this.projectStore.closeModal();
     },
     cancelCallback() {

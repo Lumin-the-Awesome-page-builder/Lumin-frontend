@@ -3,12 +3,16 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import HelloFormComponent from '@/components/modals/HelloFormComponent.vue';
 import { createPinia, setActivePinia } from 'pinia';
 
-vi.mock('@/store/hello-form-component.store.ts', () => ({
-  useHelloFormStore: () => ({
-    showModal: true,
-    closeModal: vi.fn(),
-  }),
-}));
+vi.mock('@/store/modals/hello-form-component.store.ts', () => {
+  const closeModal = vi.fn();
+  const openModal = vi.fn();
+  return {
+    default: () => ({
+      closeModal,
+      openModal,
+    }),
+  };
+});
 
 describe('HelloFormComponent tests', () => {
   beforeEach(() => {
@@ -18,5 +22,10 @@ describe('HelloFormComponent tests', () => {
   it('renders correctly with welcome message', () => {
     const wrapper = mount(HelloFormComponent);
     expect(wrapper.text()).toContain('Добро пожаловать!');
+  });
+  it('test close functions', () => {
+    const wrapper = mount(HelloFormComponent);
+    wrapper.vm.cancel();
+    expect(wrapper.vm.helloFormStore.closeModal).toBeCalled();
   });
 });

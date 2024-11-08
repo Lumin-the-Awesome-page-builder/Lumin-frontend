@@ -18,12 +18,22 @@ describe('useChangeDataStore', () => {
   });
 
   it('opens modal', () => {
-    changeDataStore.openModal();
+    changeDataStore.openModal({
+      id: 1,
+      name: 'test',
+      category: 'category',
+      tags: 'tags',
+    });
     expect(changeDataStore.showModal).toBe(true);
   });
 
   it('closes modal', () => {
-    changeDataStore.openModal();
+    changeDataStore.openModal({
+      id: 1,
+      name: 'test',
+      category: 'category',
+      tags: 'tags',
+    });
     changeDataStore.closeModal();
     expect(changeDataStore.showModal).toBe(false);
   });

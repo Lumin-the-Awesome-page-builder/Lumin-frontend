@@ -1,10 +1,10 @@
 import { mount } from '@vue/test-utils';
 import { it, expect, describe } from 'vitest';
-import LoginComponent from '@/components/LoginComponent.vue';
+import RegistrationComponent from '@/components/RegistrationComponent.vue';
 import { EyeOff, EyeSharp } from '@vicons/ionicons5';
 
 describe('Test LoginComponent', () => {
-  const wrapper = mount(LoginComponent);
+  const wrapper = mount(RegistrationComponent);
 
   it('displays email and password labels correctly', () => {
     const emailLabel = wrapper.find('.block_title.title');
@@ -27,11 +27,5 @@ describe('Test LoginComponent', () => {
 
     expect(wrapper.vm.typeInput).toBe('password');
     expect(wrapper.vm.icon).toStrictEqual(EyeSharp);
-  });
-  it('test findTokenFunc', () => {
-    const expectData = 'test#1234567891234token&not';
-
-    const resultData = wrapper.vm.findToken(expectData);
-    expect(resultData).toEqual('token');
   });
 });

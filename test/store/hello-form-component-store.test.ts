@@ -1,6 +1,6 @@
 import { setActivePinia, createPinia } from 'pinia';
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useHelloFormStore } from '@/store/modals/hello-form-component.store.ts';
+import useHelloFormStore from '@/store/modals/hello-form-component.store.ts';
 
 describe('useHelloFormStore', () => {
   let helloFormStore;

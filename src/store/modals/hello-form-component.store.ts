@@ -1,15 +1,21 @@
 import { defineStore } from 'pinia';
 
-export const useHelloFormStore = defineStore('helloFormComponent', {
+const useHelloFormStore = defineStore('helloFormComponent', {
   state: () => ({
     showModal: false,
   }),
   actions: {
     openModal() {
-      this.showModal = true;
+      if (!localStorage.getItem('seeHello')) {
+        localStorage.setItem('seeHello', true);
+        this.showModal = true;
+      } else {
+        this.showModal = false;
+      }
     },
     closeModal() {
       this.showModal = false;
     },
   },
 });
+export default useHelloFormStore;

@@ -1,6 +1,7 @@
 <template>
+    <HelloFormComponent/>
     <ProjectPreviewModal />
-    <HeaderComponent />
+    <HeaderComponent/>
     <div class="dashboard">
         <DashboardComponent />
         <div class="footer">
@@ -14,10 +15,11 @@ import HeaderComponent from '@/components/HeaderComponent.vue';
 import DashboardComponent from '@/components/DashboardComponent.vue'
 import ProjectPreviewModal from '@/components/modals/ProjectPreviewModal.vue'
 import { NConfigProvider } from 'naive-ui';
+import HelloFormComponent from '@/components/modals/HelloFormComponent.vue';
 
 export default {
     name: 'DashboardView',
-    components: { ProjectPreviewModal, NConfigProvider, HeaderComponent, DashboardComponent }
+    components: { HelloFormComponent, ProjectPreviewModal, NConfigProvider, HeaderComponent, DashboardComponent }
 };
 </script>
 
