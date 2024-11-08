@@ -143,9 +143,9 @@ export default {
       const app = getEditorInstance()
       app.initState = JSON.parse(this.data.data);
       const packager = new Packager(app)
-      
+
       const blob = packager.blob()
-      
+
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
       link.download = 'index.html';
@@ -154,6 +154,16 @@ export default {
       link.click();
       document.body.removeChild(link);
     },
+    editData() {
+      this.changeProjectDataStore.openModal({
+        ...this.editorStore.getProject
+      })
+    },
+  },
+  computed: {
+    availableBlocks() {
+      return this.editorStore.getAvailableBlocks;
+    }
   }
 };
 </script>
