@@ -6,6 +6,12 @@ import UpdateProjectDto from '@/api/modules/project/dto/update-project.dto.ts';
 import ProjectDto from '@/api/modules/project/dto/project.dto.ts';
 import PatchProjectTreeDto from '@/api/modules/project/dto/patch-project-tree.dto.ts';
 
+vi.mock('codemirror-editor-vue3', async () => {
+  return {
+    default: await import('@/components/editor/UI/CodeMirrorMock.vue'),
+  };
+});
+
 describe('ProjectModel class tests', () => {
   let apiResponseDto: ApiResponseDto<string>;
   const projectModel = ProjectModel;
@@ -92,7 +98,7 @@ describe('ProjectModel class tests', () => {
     delete projectModel.authorizedRequest;
 
     expect(projectModel).toEqual({
-      baseEndpoint: '/lumin/project',
+      baseEndpoint: '',
       baseEndpointBuffer: '',
       onRefresh: null,
     });
@@ -107,7 +113,7 @@ describe('ProjectModel class tests', () => {
       ...apiResponseDto,
     });
     expect(projectModel.authorizedRequest).toBeCalledWith({
-      url: '',
+      url: '/lumin/project',
       method: 'POST',
       data: createdProjectDto,
     });
@@ -123,7 +129,7 @@ describe('ProjectModel class tests', () => {
       ...apiResponseDto,
     });
     expect(projectModel.authorizedRequest).toBeCalledWith({
-      url: `/${id}`,
+      url: `/lumin/project/${id}`,
       method: 'PATCH',
       data: updateProjectDto,
     });
@@ -138,7 +144,7 @@ describe('ProjectModel class tests', () => {
       ...apiResponseDto,
     });
     expect(projectModel.authorizedRequest).toBeCalledWith({
-      url: `/${id}`,
+      url: `/lumin/project/${id}`,
       method: 'DELETE',
       data: null,
     });
@@ -153,7 +159,7 @@ describe('ProjectModel class tests', () => {
       ...apiResponseDto,
     });
     expect(projectModel.authorizedRequest).toBeCalledWith({
-      url: `/${id}`,
+      url: `/lumin/project/${id}`,
       method: 'GET',
       data: null,
     });
@@ -170,7 +176,7 @@ describe('ProjectModel class tests', () => {
       ...apiResponseDto,
     });
     expect(projectModel.authorizedRequest).toBeCalledWith({
-      url: `/${id}/tree`,
+      url: `/lumin/project/${id}/tree`,
       method: 'PATCH',
       data,
     });

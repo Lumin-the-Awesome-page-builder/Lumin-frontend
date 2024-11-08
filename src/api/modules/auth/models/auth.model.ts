@@ -11,14 +11,14 @@ import AuthVkInputDto from '@/api/modules/auth/dto/login/auth-vk-input.dto.ts';
 
 export class AuthModel extends ApiModelUtil {
   constructor() {
-    super('/auth');
+    super('');
   }
 
   public async auth(
     authInputDto: AuthInputDto,
   ): Promise<ApiResponseDto<TokenPairDto>> {
     const tokenPair = await this.unauthorizedRequest<TokenPairDto>(
-      new ApiRequestDto('', 'POST', authInputDto),
+      new ApiRequestDto('/auth', 'POST', authInputDto),
     );
     if (tokenPair.success) {
       TokenUtil.login(tokenPair.getData());
@@ -32,7 +32,7 @@ export class AuthModel extends ApiModelUtil {
     authVkInputDto: AuthVkInputDto,
   ): Promise<ApiResponseDto<TokenPairDto>> {
     const tokenPair = await this.unauthorizedRequest<TokenPairDto>(
-      new ApiRequestDto('/vk', 'POST', authVkInputDto),
+      new ApiRequestDto('/auth/vk', 'POST', authVkInputDto),
     );
     if (tokenPair.success) {
       TokenUtil.login(tokenPair.getData());
@@ -46,7 +46,7 @@ export class AuthModel extends ApiModelUtil {
     authYandexInputDto: AuthYandexInputDto,
   ): Promise<ApiResponseDto<TokenPairDto>> {
     const tokenPair = await this.unauthorizedRequest<TokenPairDto>(
-      new ApiRequestDto('/yandex', 'POST', authYandexInputDto),
+      new ApiRequestDto('/auth/yandex', 'POST', authYandexInputDto),
     );
     if (tokenPair.success) {
       TokenUtil.login(tokenPair.getData());
@@ -60,13 +60,13 @@ export class AuthModel extends ApiModelUtil {
     ApiResponseDto<AuthorizedUserDto>
   > {
     return await this.authorizedRequest(
-      new ApiRequestDto('/authorized', 'GET'),
+      new ApiRequestDto('/auth/authorized', 'GET'),
     );
   }
 
   public async registration(registrationInputDto: RegistrationInputDto) {
     const tokenPair = await this.unauthorizedRequest<TokenPairDto>(
-      new ApiRequestDto('/signup', 'POST', registrationInputDto),
+      new ApiRequestDto('/auth/signup', 'POST', registrationInputDto),
     );
 
     if (tokenPair.success) {

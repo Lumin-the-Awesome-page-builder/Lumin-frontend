@@ -51,7 +51,8 @@ export default defineComponent({
         const pickedBlockClosure = ((picked: { component: string, icon: HTMLElement }) => (selected: Component) => {
           picked.icon.remove()
           this.editorStore.clearBlockSelection()
-          app.add(picked.component, "", selected.key)
+          const added = app.add(picked.component, "", selected.key)
+          this.componentSetupStore.selectComponent(added)
         })(this.editorStore.blockOnCreate)
         
         this.editorStore.openContext(topPath, { x: ev.clientX, y: ev.clientY }, pickedBlockClosure)

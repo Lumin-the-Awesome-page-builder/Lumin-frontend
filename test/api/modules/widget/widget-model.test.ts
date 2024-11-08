@@ -5,6 +5,12 @@ import ApiResponseDto from '@/api/dto/api-response.dto.ts';
 import UpdateWidgetDto from '@/api/modules/widget/dto/update-widget.dto.ts';
 import WidgetDto from '@/api/modules/widget/dto/widget.dto.ts';
 
+vi.mock('codemirror-editor-vue3', async () => {
+  return {
+    default: await import('@/components/editor/UI/CodeMirrorMock.vue'),
+  };
+});
+
 describe('WidgetModel class tests', () => {
   let apiResponseDto: ApiResponseDto<string>;
   const widgetModel = WidgetModel;
@@ -81,7 +87,7 @@ describe('WidgetModel class tests', () => {
     delete widgetModel.authorizedRequest;
 
     expect(widgetModel).toEqual({
-      baseEndpoint: '/lumin/widget',
+      baseEndpoint: '',
       baseEndpointBuffer: '',
       onRefresh: null,
     });
@@ -96,7 +102,7 @@ describe('WidgetModel class tests', () => {
       ...apiResponseDto,
     });
     expect(widgetModel.authorizedRequest).toBeCalledWith({
-      url: '',
+      url: '/lumin/widget',
       method: 'POST',
       data: createdWidgetDto,
     });
@@ -112,7 +118,7 @@ describe('WidgetModel class tests', () => {
       ...apiResponseDto,
     });
     expect(widgetModel.authorizedRequest).toBeCalledWith({
-      url: `/${id}`,
+      url: `/lumin/widget/${id}`,
       method: 'PATCH',
       data: updateWidgetDto,
     });
@@ -127,7 +133,7 @@ describe('WidgetModel class tests', () => {
       ...apiResponseDto,
     });
     expect(widgetModel.authorizedRequest).toBeCalledWith({
-      url: `/${id}`,
+      url: `/lumin/widget/${id}`,
       method: 'DELETE',
       data: null,
     });
@@ -142,7 +148,7 @@ describe('WidgetModel class tests', () => {
       ...apiResponseDto,
     });
     expect(widgetModel.authorizedRequest).toBeCalledWith({
-      url: `/${id}`,
+      url: `/lumin/widget/${id}`,
       method: 'GET',
       data: null,
     });

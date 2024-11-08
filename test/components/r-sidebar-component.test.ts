@@ -17,6 +17,12 @@ vi.mock('naive-ui', async (importOriginal) => {
   };
 });
 
+vi.mock('codemirror-editor-vue3', async () => {
+  return {
+    default: await import('@/components/editor/UI/CodeMirrorMock.vue'),
+  };
+});
+
 describe('RSidebarComponent test', () => {
   let toastIfErrorMock;
   beforeEach(() => {

@@ -5,6 +5,12 @@ import EditorPlugin from '@/editor/plugin.ts';
 import router from '@/router';
 import { createPinia, setActivePinia } from 'pinia';
 
+vi.mock('codemirror-editor-vue3', async () => {
+  return {
+    default: await import('@/components/editor/UI/CodeMirrorMock.vue'),
+  };
+});
+
 vi.mock('naive-ui', async (importOriginal) => {
   const mod = await importOriginal(); // type is inferred
   return {
