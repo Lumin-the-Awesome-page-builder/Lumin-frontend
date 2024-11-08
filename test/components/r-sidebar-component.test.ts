@@ -6,7 +6,7 @@ import Container from '@/editor/components/Container.ts';
 import useComponentSetupStore from '@/store/component-setup.store.ts';
 import useEditorStore from '@/store/editor.store.ts';
 import useProjectPreviewModalStore from '@/store/project-preview-modal.store.ts';
-import { useChangeDataStore } from '@/store/modals/change-data-project-component.store.ts';
+import useChangeDataStore from '@/store/modals/change-data-project-component.store.ts';
 import { useChooseDomainStore } from '@/store/modals/choose-domen-component.store.ts';
 
 vi.mock('naive-ui', async (importOriginal) => {

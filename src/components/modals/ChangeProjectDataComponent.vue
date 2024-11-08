@@ -40,7 +40,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useChangeDataStore } from '@/store/modals/change-data-project-component.store.ts';
+import useChangeDataStore from '@/store/modals/change-data-project-component.store.ts';
 import useEditorStore from '@/store/editor.store.ts';
 
 export default defineComponent({

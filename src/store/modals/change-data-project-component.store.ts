@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-export const useChangeDataStore = defineStore('changeDataComponent', {
+const useChangeDataStore = defineStore('changeDataComponent', {
   state: () => ({
     showModal: false,
     projectId: 0,
@@ -53,3 +53,4 @@ export const useChangeDataStore = defineStore('changeDataComponent', {
     },
   },
 });
+export default useChangeDataStore;

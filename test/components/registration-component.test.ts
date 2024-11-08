@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { it, expect, describe } from 'vitest';
+import { it, expect, describe, vi } from 'vitest';
 import RegistrationComponent from '@/components/RegistrationComponent.vue';
 import { EyeOff, EyeSharp } from '@vicons/ionicons5';
 

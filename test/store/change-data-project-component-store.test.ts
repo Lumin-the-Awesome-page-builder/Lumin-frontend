@@ -1,6 +1,6 @@
 import { setActivePinia, createPinia } from 'pinia';
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useChangeDataStore } from '@/store/modals/change-data-project-component.store.ts';
+import useChangeDataStore from '@/store/modals/change-data-project-component.store.ts';
 
 describe('useChangeDataStore', () => {
   let changeDataStore;
