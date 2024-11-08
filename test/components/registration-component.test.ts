@@ -3,9 +3,14 @@ import { it, expect, describe } from 'vitest';
 import RegistrationComponent from '@/components/RegistrationComponent.vue';
 import { EyeOff, EyeSharp } from '@vicons/ionicons5';
 
+vi.mock('naive-ui', () => {
+  return {
+    useNotification: vi.fn(() => 'notificationStore'),
+  };
+});
+
 describe('Test LoginComponent', () => {
   const wrapper = mount(RegistrationComponent);
-
   it('displays email and password labels correctly', () => {
     const emailLabel = wrapper.find('.block_title.title');
     const passwordLabel = wrapper.findAll('.block_title.title')[1];

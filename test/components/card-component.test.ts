@@ -3,6 +3,12 @@ import { describe, it, vi, expect, beforeEach } from 'vitest';
 import CardComponent from '@/components/CardComponent.vue';
 import { createPinia, setActivePinia } from 'pinia';
 
+vi.mock('naive-ui', () => {
+  return {
+    useNotification: vi.fn(() => 'notificationStore'),
+  };
+});
+
 describe('CardComponent tests', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
@@ -40,7 +46,7 @@ describe('CardComponent tests', () => {
     expect(wrapper.vm.formattedDate).toBe('29.10.2023');
   });
 
-  it('calls editTitle method', async () => {
+  it('calls editProject method', async () => {
     const consoleLogSpy = vi.spyOn(console, 'log');
     const routerMock = {
       push: vi.fn(),
@@ -56,16 +62,12 @@ describe('CardComponent tests', () => {
         },
       },
     });
-    wrapper.vm.editorStore = {
-      useById: vi.fn(() => {}),
-    };
 
     await wrapper.vm.editProject();
 
     expect(routerMock.push).toHaveBeenCalledWith({
       path: `/project/${customId}/edit`,
     });
-
     consoleLogSpy.mockRestore();
   });
 

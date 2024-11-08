@@ -1,12 +1,14 @@
 <template>
-  <div class="parentContainer">
-    <div class="mainPartContent">
-      <LoginComponent></LoginComponent>
+  <n-notification-provider>
+    <div class="parentContainer">
+      <div class="mainPartContent">
+        <LoginComponent></LoginComponent>
+      </div>
+      <div class="footer">
+        <n-p class="footerText">LuminTech 2024</n-p>
+      </div>
     </div>
-    <div class="footer">
-      <n-p class="footerText">LuminTech 2024</n-p>
-    </div>
-  </div>
+  </n-notification-provider>
 </template>
 
 <script lang="ts">

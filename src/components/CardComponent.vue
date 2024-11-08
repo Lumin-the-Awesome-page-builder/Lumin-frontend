@@ -38,6 +38,7 @@
 import useDashboardStore from '@/store/dashboard.store.ts';
 import useEditorStore from '@/store/editor.store.ts';
 import usePreviewModalStore from '@/store/project-preview-modal.store.ts';
+import { useNotification } from 'naive-ui';
 
 export default {
   name: "CardComponent",
@@ -69,6 +70,7 @@ export default {
   },
   setup() {
     return {
+      notificationStore: useNotification(),
       previewModalStore: usePreviewModalStore(),
       dashboardStore: useDashboardStore(),
       editorStore: useEditorStore(),
@@ -87,14 +89,16 @@ export default {
     shareProject() {
       console.log(this.title);
     },
-    downloadProject() {
-      this.dashboardStore.downloadProject(this.id);
+    async downloadProject() {
+      const result = await this.dashboardStore.downloadProject(this.id);
+      result.toastIfError(this.notificationStore);
     },
     checked(id) {
       this.dashboardStore.toggleSelected(id);
     },
-    openModal() {
-      this.previewModalStore.openModal(this.id, this.itemType)
+    async openModal() {
+      const result = await this.previewModalStore.openModal(this.id, this.itemType)
+      result.toastIfError(this.notificationStore);
     }
   },
 };
@@ -106,7 +110,6 @@ export default {
   flex-direction: column;
   background-color: white;
   border-radius: 0.625rem;
-  width: 18.75rem;
   padding: 1rem;
   border: 0.0625rem solid #ddd;
   transition: box-shadow 0.3s ease;

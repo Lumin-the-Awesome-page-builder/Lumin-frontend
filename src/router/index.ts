@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import Editor from '@/components/editor/Editor.vue';
 import TokenUtil from '@/utils/token.util.ts';
 
 const routes: Array<RouteRecordRaw> = [
@@ -21,7 +20,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/project/:id/edit',
     name: 'editor',
-    component: Editor,
+    component: () => import('@/views/EditorView.vue'),
   },
 ];
 
@@ -32,12 +31,12 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (TokenUtil.isAuthorized()) {
-    if (to.path === '/auth' || to.path === '/signup') {
+    if (to.path === '/' || to.path === '/auth' || to.path === '/signup') {
       next({ path: '/dashboard' });
       return;
     }
   } else if (!TokenUtil.isAuthorized()) {
-    if (to.path !== '/auth' && to.path !== '/signup') {
+    if (to.path === '/' || (to.path !== '/auth' && to.path !== '/signup')) {
       next({ path: '/auth' });
       return;
     }

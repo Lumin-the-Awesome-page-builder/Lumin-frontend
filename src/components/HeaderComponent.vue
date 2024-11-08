@@ -22,7 +22,7 @@
     </div>
 
     <n-divider style="height: 100%;" vertical />
-    
+
     <div class="buttons-group">
       <n-button @click="createProject" color="#7b7bfe" ghost>
         <template #icon>
@@ -79,6 +79,7 @@ import useDashboardStore from '@/store/dashboard.store.ts'
 import useEditorStore from '@/store/editor.store.ts'
 import TokenUtil  from '@/utils/token.util.ts';
 import router from '@/router';
+import { useNotification } from 'naive-ui';
 
 export default {
   components: {
@@ -93,35 +94,40 @@ export default {
   },
   setup() {
     return {
+      notificationStore: useNotification(),
       dashboardStore: useDashboardStore(),
       editorStore: useEditorStore(),
     }
   },
-  mounted() {
-    console.log(1234)
-    this.dashboardStore.loadProjects()
+  async mounted() {
+    await this.loadProjects()
   },
   methods: {
     logout() {
       TokenUtil.logout();
       router.push({ name: 'auth' });
     },
-    loadProjects() {
-      this.dashboardStore.loadProjects()
+    async loadProjects() {
+      const result = await this.dashboardStore.loadProjects()
+      result.toastIfError(this.notificationStore);
     },
-    loadWidgets() {
-      this.dashboardStore.loadWidgets()
+    async loadWidgets() {
+      const result = await this.dashboardStore.loadWidgets()
+      result.toastIfError(this.notificationStore);
     },
     async createProject() {
       const project = await this.editorStore.openNew()
-      
-      this.$router.push({ path: `/project/${project.id}/edit` })
+      project.toastIfError(this.notificationStore);
+      if (project.success)
+        this.$router.push({ path: `/project/${project.getData().id}/edit` })
     },
-    removeSelected() {
-      this.dashboardStore.removeSelected()
+    async removeSelected() {
+      const results = await this.dashboardStore.removeSelected()
+      results.forEach((result) => result.toastIfError(this.notificationStore));
     },
-    downloadSelected() {
-      this.dashboardStore.downloadSelected()
+    async downloadSelected() {
+      const results = await this.dashboardStore.downloadSelected()
+      results.forEach((result) => result.toastIfError(this.notificationStore));
     }
   },
   computed: {

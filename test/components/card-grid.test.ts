@@ -1,8 +1,14 @@
 import { mount } from '@vue/test-utils';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import CardGrid from '@/components/CardGrid.vue';
 import CardComponent from '@/components/CardComponent.vue';
 import { createPinia, setActivePinia } from 'pinia';
+
+vi.mock('naive-ui', () => {
+  return {
+    useNotification: vi.fn(() => 'notificationStore'),
+  };
+});
 
 describe('Test Card Grid', () => {
   beforeEach(() => {

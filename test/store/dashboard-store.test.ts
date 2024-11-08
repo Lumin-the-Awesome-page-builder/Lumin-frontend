@@ -39,7 +39,7 @@ const data = {
 vi.mock('@/api/modules/project/models/project.model.ts', () => {
   return {
     default: {
-      delete: vi.fn(),
+      delete: vi.fn(() => 'projectResult'),
       getOne: vi.fn(() => data),
     },
   };
@@ -48,23 +48,25 @@ vi.mock('@/api/modules/project/models/project.model.ts', () => {
 vi.mock('@/api/modules/widget/models/widget.model.ts', () => {
   return {
     default: {
-      delete: vi.fn(),
+      delete: vi.fn(() => 'widgetResult'),
       getOne: vi.fn(() => data),
     },
   };
 });
 
 vi.mock('@/api/modules/library/models/library.model.ts', () => {
+  const getProjectsResult = {
+    success: true,
+    getData: vi.fn(() => 'projects'),
+  };
+  const getWidgetsResult = {
+    success: true,
+    getData: vi.fn(() => 'widgets'),
+  };
   return {
     default: {
-      getProjects: vi.fn(() => ({
-        success: true,
-        getData: vi.fn(() => 'projects'),
-      })),
-      getWidgets: vi.fn(() => ({
-        success: true,
-        getData: vi.fn(() => 'widgets'),
-      })),
+      getProjects: vi.fn(() => getProjectsResult),
+      getWidgets: vi.fn(() => getWidgetsResult),
     },
   };
 });
@@ -125,19 +127,21 @@ describe('Dashboard store tests', () => {
   });
 
   it('Test load projects', async () => {
-    await store.loadProjects();
+    const result = await store.loadProjects();
 
     expect(LibraryModel.getProjects).toBeCalled();
     expect(store.data).toBe('projects');
     expect(store.contentType).toBe('project');
+    expect(result).toEqual({ ...(await LibraryModel.getProjects()) });
   });
 
   it('Test load widgets', async () => {
-    await store.loadWidgets();
+    const result = await store.loadWidgets();
 
     expect(LibraryModel.getWidgets).toBeCalled();
     expect(store.data).toBe('widgets');
     expect(store.contentType).toBe('widget');
+    expect(result).toEqual({ ...(await LibraryModel.getWidgets()) });
   });
 
   describe('Test toggle selected', () => {
@@ -198,32 +202,57 @@ describe('Dashboard store tests', () => {
     it('ContentType is "project"', async () => {
       const id = '1';
       store.contentType = 'project';
-      await store.removeById(id);
+      const result = await store.removeById(id);
 
       expect(ProjectModel.delete).toBeCalledWith(Number(id));
       expect(WidgetModel.delete).toBeCalledTimes(0);
+      expect(result).equal('projectResult');
     });
 
     it('ContentType is "widget"', async () => {
       const id = '1';
       store.contentType = 'widget';
-      await store.removeById(id);
+      const result = await store.removeById(id);
 
       expect(WidgetModel.delete).toBeCalledWith(Number(id));
       expect(ProjectModel.delete).toBeCalledTimes(0);
+      expect(result).equal('widgetResult');
     });
   });
 
-  it('Test removeSelected', async () => {
-    store.removeById = vi.fn();
-    store.selected = { '1': true, '2': true, '3': true };
-    await store.removeSelected();
+  describe('Test removeSelected', async () => {
+    beforeEach(() => {
+      store.loadProjects = vi.fn(() => 'loadProjectsResult');
+      store.loadWidgets = vi.fn(() => 'loadWidgetsResult');
+      store.removeById = vi.fn(() => 'id');
+      store.selected = { '1': true, '2': true, '3': true };
+    });
+    it('ContentType is "project"', async () => {
+      store.contentType = 'project';
+      const result = await store.removeSelected();
 
-    const count = Object.keys(store.selected).length;
-    expect(store.removeById).toBeCalledTimes(count);
-    expect(store.removeById).toBeCalledWith('1', 0, ['1', '2', '3']);
-    expect(store.removeById).toBeCalledWith('2', 1, ['1', '2', '3']);
-    expect(store.removeById).toBeCalledWith('3', 2, ['1', '2', '3']);
+      const count = Object.keys(store.selected).length;
+      expect(store.removeById).toBeCalledTimes(count);
+      expect(store.removeById).toBeCalledWith('1', 0, ['1', '2', '3']);
+      expect(store.removeById).toBeCalledWith('2', 1, ['1', '2', '3']);
+      expect(store.removeById).toBeCalledWith('3', 2, ['1', '2', '3']);
+      expect(store.loadProjects).toBeCalledTimes(1);
+      expect(store.loadWidgets).toBeCalledTimes(0);
+      expect(result).toEqual(['id', 'id', 'id', 'loadProjectsResult']);
+    });
+    it('ContentType is "widget"', async () => {
+      store.contentType = 'widget';
+      const result = await store.removeSelected();
+
+      const count = Object.keys(store.selected).length;
+      expect(store.removeById).toBeCalledTimes(count);
+      expect(store.removeById).toBeCalledWith('1', 0, ['1', '2', '3']);
+      expect(store.removeById).toBeCalledWith('2', 1, ['1', '2', '3']);
+      expect(store.removeById).toBeCalledWith('3', 2, ['1', '2', '3']);
+      expect(store.loadProjects).toBeCalledTimes(0);
+      expect(store.loadWidgets).toBeCalledTimes(1);
+      expect(result).toEqual(['id', 'id', 'id', 'loadWidgetsResult']);
+    });
   });
 
   describe('Test downloadProject', () => {
@@ -239,7 +268,7 @@ describe('Dashboard store tests', () => {
     it('ContentType is "project"', async () => {
       const id = '1';
 
-      await store.downloadProject(id);
+      const result = await store.downloadProject(id);
 
       expect(ProjectModel.getOne).toBeCalledWith(Number(id));
       expect(data.getData).toBeCalledTimes(1);
@@ -249,13 +278,14 @@ describe('Dashboard store tests', () => {
         `${data.getData().name}.html`,
         blob,
       );
+      expect(result).toEqual({ ...data });
     });
 
     it('ContentType is "widget"', async () => {
       const id = '1';
       store.contentType = 'widget';
 
-      await store.downloadProject(id);
+      const result = await store.downloadProject(id);
 
       expect(WidgetModel.getOne).toBeCalledWith(Number(id));
       expect(data.getData).toBeCalledTimes(1);
@@ -265,6 +295,7 @@ describe('Dashboard store tests', () => {
         `${data.getData().name}.html`,
         blob,
       );
+      expect(result).toEqual({ ...data });
     });
   });
 
@@ -282,7 +313,7 @@ describe('Dashboard store tests', () => {
     it('ContentType is "project"', async () => {
       const count = Object.keys(store.selected).length;
 
-      await store.downloadSelected();
+      const result = await store.downloadSelected();
 
       expect(ProjectModel.getOne).toBeCalledWith(1);
       expect(ProjectModel.getOne).toBeCalledWith(2);
@@ -295,13 +326,14 @@ describe('Dashboard store tests', () => {
       expect(fileMock).toBeCalledTimes(count);
       expect(generateAsyncMock).toBeCalledWith({ type: 'blob' });
       expect(createLinkMock).toBeCalledWith('projects.zip', 'zipped');
+      expect(result).toEqual({ ...data });
     });
 
     it('ContentType is "widget"', async () => {
       const count = Object.keys(store.selected).length;
       store.contentType = 'widget';
 
-      await store.downloadSelected();
+      const result = await store.downloadSelected();
 
       expect(WidgetModel.getOne).toBeCalledWith(1);
       expect(WidgetModel.getOne).toBeCalledWith(2);
@@ -313,6 +345,7 @@ describe('Dashboard store tests', () => {
       expect(fileMock).toBeCalledTimes(count);
       expect(generateAsyncMock).toBeCalledWith({ type: 'blob' });
       expect(createLinkMock).toBeCalledWith('projects.zip', 'zipped');
+      expect(result).toEqual({ ...data });
     });
   });
 });

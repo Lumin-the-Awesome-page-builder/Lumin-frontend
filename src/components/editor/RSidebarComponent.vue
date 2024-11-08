@@ -64,6 +64,7 @@
 <script lang="ts">
 import useEditorStore from '@/store/editor.store.ts';
 import useProjectPreviewModalStore from '@/store/project-preview-modal.store.ts'
+import { useNotification } from 'naive-ui';
 import { getEditorInstance } from '@/editor/plugin.ts';
 import Packager from '@/editor/core/Packager.ts';
 import { useChangeDataStore } from '@/store/modals/change-data-project-component.store.ts';
@@ -80,6 +81,7 @@ export default {
   },
   setup() {
     return {
+      notificationStore: useNotification(),
       editorStore: useEditorStore(),
       projectPreviewModalStore: useProjectPreviewModalStore(),
       changeProjectDataStore: useChangeDataStore(),
@@ -121,36 +123,41 @@ export default {
   },
   methods: {
     async save() {
-      await this.editorStore.save()
+      const result = await this.editorStore.save()
+      result.toastIfError(this.notificationStore)
+      return result;
     },
     async exit() {
-      await this.save()
+      const result = await this.save()
       this.projectPreviewModalStore.closeModal()
-      this.editorStore.clearBlockSelection()
-      this.$router.push({ path: '/dashboard' })
-    },
-    editData() {
-      this.changeProjectDataStore.openModal({
-        ...this.editorStore.getProject
-      })
-    },
-    publish() {
-      this.chooseDomainStore.openModal()
-    },
-    download() {
-      const app = getEditorInstance()
-      app.initState = JSON.parse(this.data.data);
-      const packager = new Packager(app)
+      result.toastIfError(this.notificationStore)
+      if (result.success) {
+        this.editorStore.clearBlockSelection()
+        this.$router.push({ path: '/dashboard' })
+      }
+    }
+  },
+  publish() {
+    this.chooseDomainStore.openModal()
+  },
+  download() {
+    const app = getEditorInstance()
+    app.initState = JSON.parse(this.data.data);
+    const packager = new Packager(app)
 
-      const blob = packager.blob()
+    const blob = packager.blob()
 
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'index.html';
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'index.html';
 
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  },
+  computed: {
+    availableBlocks() {
+      return this.editorStore.getAvailableBlocks;
     }
   }
 };
@@ -189,9 +196,6 @@ export default {
 .options-details {
   font-size: 18px;
   color: #6f6c99;
-}
-.options-details-subheading {
-  font-weight: bold;
 }
 .btn-row {
   display: flex;
