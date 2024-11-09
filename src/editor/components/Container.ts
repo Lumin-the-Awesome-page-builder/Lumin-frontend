@@ -7,6 +7,7 @@ import FlexProp from '@/editor/properties/FlexProp.ts';
 import FlexWrapProp from '@/editor/properties/FlexWrapProp.ts';
 import GutterProp from '@/editor/properties/GutterProp.ts';
 import JustifyContentProp from '@/editor/properties/JustifyContentProp.ts';
+import ComponentNameProp from '@/editor/properties/ComponentNameProp.ts';
 
 export default class Container extends Component {
   constructor(_: string = '') {
@@ -15,6 +16,7 @@ export default class Container extends Component {
   }
 
   availableProps: string[] = [
+    ComponentNameProp.name,
     AlignItemsProp.name,
     AlignContentProp.name,
     ColWidthProp.name,

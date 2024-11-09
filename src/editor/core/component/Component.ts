@@ -16,6 +16,7 @@ export type ComponentObject = {
 
 export default abstract class Component {
   public abstract name: string;
+  public userName: string;
   static title: string = 'Component';
   public abstract getTitle(): string;
   public htmlElement: HTMLElement = document.createElement('div');

@@ -1,5 +1,6 @@
 import Component from '@/editor/core/component/Component.ts';
 import BorderRadiusProp from '@/editor/properties/BorderRadiusProp.ts';
+import ComponentNameProp from '@/editor/properties/ComponentNameProp.ts';
 
 export default class Image extends Component {
   constructor(_: string) {
@@ -10,7 +11,10 @@ export default class Image extends Component {
   name: string = 'image';
   static title: string = 'Картинка';
 
-  availableProps: string[] = [BorderRadiusProp.name];
+  availableProps: string[] = [
+    ComponentNameProp.name,
+    BorderRadiusProp.name
+  ];
   getTitle() {
     return Image.title;
   }

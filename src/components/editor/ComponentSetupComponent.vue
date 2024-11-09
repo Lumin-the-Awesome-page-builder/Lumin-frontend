@@ -1,4 +1,9 @@
 <template>
+  <ComponentName :prop="component.props.get('component-name')" />
+  <n-button @click="saveWidget" color="#7b7bfe" ghost>Сохранить как виджет</n-button>
+  
+  <n-divider />
+  
   <ContentComponent v-if="contentComponentAvailable" :prop="component.props.get('content')" />
   <PureContentComponent v-if="pureContentComponentAvailable" :prop="component.props.get('pure-content')" />
   
@@ -29,6 +34,8 @@
 </template>
 
 <script lang="ts">
+import html2canvas from 'html2canvas';
+import Packager from '@/editor/core/Packager.ts'
 import InlineTextComponent from '@/components/editor/UI/text/InlineTextComponent.vue';
 import LeadParagraphComponent from '@/components/editor/UI/text/LeadParagraphComponent.vue';
 import LineHeightComponent from '@/components/editor/UI/text/LineHeightComponent.vue';
@@ -78,11 +85,14 @@ import LinkUnderlineOffsetProp from '@/editor/properties/link/LinkUnderlineOffse
 import ContentProp from '@/editor/properties/ContentProp.ts';
 import PureContentComponent from '@/components/editor/UI/PureContentComponent.vue';
 import { PureContentProp } from '@/editor/properties/PureContentProp.ts';
+import ComponentName from '@/components/editor/UI/ComponentName.vue';
+import useEditorStore from '@/store/editor.store.ts';
 
 
 export default {
   name: 'ComponentSetupComponent',
   components: {
+    ComponentName,
     PureContentComponent,
     TextDecorationComponent,
     JustifyContentComponent,
@@ -111,9 +121,28 @@ export default {
   setup() {
     const componentSetupStore = useComponentSetupStore()
 
-    return { componentSetupStore }
+    return {
+      componentSetupStore,
+      editorStore: useEditorStore()
+    }
   },
   methods: {
+    async saveWidget() {
+      let htmlComponent = this.component.pure ?
+        this.component.specific.htmlOnRender :
+        this.component.htmlElement
+      html2canvas(htmlComponent).then(canvas => {
+        document.getElementById('app-builder').appendChild(canvas)
+
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL("image/png");
+        link.download = 'component.png';
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })
+    },
     isAvailable(name) {
       return this.component.availableProps.includes(name)
     }
