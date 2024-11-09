@@ -27,7 +27,6 @@ export default abstract class MultipleProperty extends Property {
   override apply() {
     this.values.forEach((el, index) => {
       if (el != null) {
-        console.log(el);
         el.forEach((el) => {
           this.component.htmlElement.classList.add(
             this.availableValues[index][el],

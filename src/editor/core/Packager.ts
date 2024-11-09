@@ -4,13 +4,16 @@ import { ComponentObject } from '@/editor/core/component/Component.ts';
 export default class Packager {
   constructor(public app: App) {}
 
-  public createDemoPage(bodyContent: HTMLElement[], stylesOnMount: HTMLElement[]): HTMLElement {
+  public createDemoPage(
+    bodyContent: HTMLElement[],
+    stylesOnMount: HTMLElement[],
+  ): HTMLElement {
     const htmlPage = document.createElement('html');
 
     const body = document.createElement('body');
     bodyContent.forEach((item) => {
-      body.appendChild(item)
-    })
+      body.appendChild(item);
+    });
 
     const head = document.createElement('head');
     const stylesLink = document.createElement('link');
@@ -19,9 +22,7 @@ export default class Packager {
       'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css';
     head.appendChild(stylesLink);
 
-    stylesOnMount.forEach(
-      (el) => (head.innerHTML += el.outerHTML),
-    );
+    stylesOnMount.forEach((el) => (head.innerHTML += el.outerHTML));
 
     htmlPage.appendChild(head);
     htmlPage.appendChild(body);
@@ -29,8 +30,8 @@ export default class Packager {
     return htmlPage;
   }
 
-  public blob(state: ComponentObject[] | null = null): Blob {
-    let bodyContent = []
+  public blob(state: Record<string, ComponentObject> | null = null): Blob {
+    let bodyContent = [];
 
     if (state == null) {
       const tree = this.app.buildTree(this.app.initState);
@@ -40,7 +41,13 @@ export default class Packager {
       bodyContent = Object.keys(tree).map((key) => tree[key].render(true));
     }
 
-    return new Blob([this.createDemoPage(bodyContent, Object.values(this.app.pureStyles)).outerHTML], { type: 'text/html' });
+    return new Blob(
+      [
+        this.createDemoPage(bodyContent, Object.values(this.app.pureStyles))
+          .outerHTML,
+      ],
+      { type: 'text/html' },
+    );
   }
 
   public json() {
@@ -48,10 +55,13 @@ export default class Packager {
       [el]: this.app.root[el].toJson(),
     }));
 
-    return tree.length
-      ? JSON.stringify(
-          tree.reduce((prev, current) => Object.assign(prev, current)),
-        )
-      : '{}';
+    let data = { setup: { rootOrdering: [] } };
+
+    if (tree.length) {
+      data = tree.reduce((prev, current) => Object.assign(prev, current));
+      data.setup = { rootOrdering: [...this.app.rootOrdering] };
+    }
+
+    return JSON.stringify(data);
   }
 }

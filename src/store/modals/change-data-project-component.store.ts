@@ -32,7 +32,6 @@ const useChangeDataStore = defineStore('changeDataComponent', {
       if (this.tags != '') {
         updateData.tags = this.tags;
       }
-      console.log(updateData.tags);
       const ProjectModel = await import(
         '@/api/modules/project/models/project.model.ts'
       );

@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-content">
       <div class="image-container">
-        <img alt="project" class="image-card-project" :src="imageSrc" />
+        <img alt="project" class="image-card-project" :src="preview" />
         <div @click="openModal" class="overlay">
           <img class="overlay-eye" src="@/assets/imageCard/eye.svg" alt="Просмотреть">
         </div>
@@ -47,6 +47,9 @@ export default {
       type: Number,
       default: 0,
     },
+    preview: {
+      type: String,
+    },
     title: {
       type: String,
       default: 'название проекта',
@@ -58,10 +61,6 @@ export default {
     stars: {
       type: Number,
       default: 0,
-    },
-    imageSrc: {
-      type: String,
-      default: '',
     },
     itemType: {
       type: String,
@@ -126,7 +125,6 @@ export default {
 
 .image-card-project {
   width: 100%;
-  height: 11.375rem;
   object-fit: cover;
   border-radius: 0.5rem;
   cursor: pointer;

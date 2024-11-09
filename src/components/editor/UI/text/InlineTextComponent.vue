@@ -30,6 +30,7 @@
     components: {
       CheckboxComponent, OptionHeadingComponent
     },
+    emits: ['changed'],
     props: {
       prop: {
         type: InlineTextProp
@@ -49,6 +50,8 @@
           this.prop.setValue('checked', index)
         else
           this.prop.setValue(null, index)
+        
+        this.$emit('changed')
       }
     }
   }

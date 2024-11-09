@@ -38,7 +38,7 @@ describe('Test Card Grid', () => {
         name: 'Проект 1',
         date: '2023-10-29',
         stars: 5,
-        imageSrc: 'path/to/image1.jpg',
+        preview: 'path/to/image1.jpg',
       },
     ];
 
@@ -54,6 +54,6 @@ describe('Test Card Grid', () => {
     expect(firstCard.props().title).toBe(mockData[0].name);
     expect(firstCard.props().date).toEqual(new Date(mockData[0].date));
     expect(firstCard.props().stars).toBe(mockData[0].stars);
-    expect(firstCard.props().imageSrc).toBe(mockData[0].imageSrc);
+    expect(firstCard.props().preview).toBe(mockData[0].preview);
   });
 });

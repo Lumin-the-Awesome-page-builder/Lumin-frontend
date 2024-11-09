@@ -7,6 +7,7 @@ import MonoSpaceProp from '@/editor/properties/text/MonoSpaceProp.ts';
 import TextAlignProp from '@/editor/properties/text/TextAlignProp.ts';
 import TextTransformProp from '@/editor/properties/text/TextTransformProp.ts';
 import ContentProp from '@/editor/properties/ContentProp.ts';
+import ComponentNameProp from '@/editor/properties/ComponentNameProp.ts';
 
 describe('Test header component', () => {
   it('Test component creation', () => {
@@ -20,6 +21,7 @@ describe('Test header component', () => {
   it('Test available component props', () => {
     const header = new Header(1);
     expect(header.availableProps).toStrictEqual([
+      ComponentNameProp.name,
       FontProp.name,
       InlineTextProp.name,
       LeadParagraphProp.name,

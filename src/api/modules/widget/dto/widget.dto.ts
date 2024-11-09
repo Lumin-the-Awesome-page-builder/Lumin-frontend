@@ -8,6 +8,6 @@ export default class WidgetDto {
     public data: string,
     public tags: string[],
     public category_id: number,
-    public imageSrc: string = '../src/assets/imageCard/screenshot.png',
+    public preview: string,
   ) {}
 }

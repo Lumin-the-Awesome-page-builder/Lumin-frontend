@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import appConf from '@/api/conf/app.conf.ts';
 
 const usePreviewModalStore = defineStore({
   id: 'previewModal',
@@ -13,7 +14,15 @@ const usePreviewModalStore = defineStore({
   }),
   getters: {
     getStatus: (state) => state.isOpen,
-    getData: (state) => state.data,
+    getData: (state) => {
+      const previewName = state.data.preview
+        ? state.data.preview
+        : 'no-preview.png';
+      return {
+        ...state.data,
+        preview: `${appConf.proto}://${appConf.endpoint}/lumin/file/${previewName}`,
+      };
+    },
   },
   actions: {
     closeModal() {
@@ -38,7 +47,7 @@ const usePreviewModalStore = defineStore({
       }
 
       if (data.success) this.data = data.getData();
-
+      console.log(data);
       this.isOpen = true;
       return data;
     },

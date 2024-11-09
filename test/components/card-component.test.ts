@@ -33,14 +33,14 @@ describe('CardComponent tests', () => {
         title: customTitle,
         date: customDate,
         stars: customStars,
-        imageSrc: customImageSrc,
+        preview: customImageSrc,
       },
     });
 
     expect(wrapper.props().title).toBe(customTitle);
     expect(wrapper.props().date).toEqual(customDate);
     expect(wrapper.props().stars).toBe(customStars);
-    expect(wrapper.props().imageSrc).toBe(customImageSrc);
+    expect(wrapper.props().preview).toBe(customImageSrc);
   });
 
   it('formats date correctly', () => {

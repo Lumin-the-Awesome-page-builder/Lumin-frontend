@@ -11,10 +11,7 @@ export default class Image extends Component {
   name: string = 'image';
   static title: string = 'Картинка';
 
-  availableProps: string[] = [
-    ComponentNameProp.name,
-    BorderRadiusProp.name
-  ];
+  availableProps: string[] = [ComponentNameProp.name, BorderRadiusProp.name];
   getTitle() {
     return Image.title;
   }

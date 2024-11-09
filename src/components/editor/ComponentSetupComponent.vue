@@ -1,41 +1,42 @@
 <template>
-  <ComponentName :prop="component.props.get('component-name')" />
-  <n-button @click="saveWidget" color="#7b7bfe" ghost>Сохранить как виджет</n-button>
+  <template v-if="componentNameAvailable">
+    <ComponentName @changed='propUpdated' :prop="component.props.get('component-name')" />
+    <n-button @click="saveWidget" color="#7b7bfe" ghost>Сохранить как виджет</n-button>
+    
+    <n-divider />
+  </template>
   
-  <n-divider />
+  <ContentComponent @changed='propUpdated' v-if="contentComponentAvailable" :prop="component.props.get('content')" />
+  <PureContentComponent @changed='propUpdated' v-if="pureContentComponentAvailable" :prop="component.props.get('pure-content')" />
   
-  <ContentComponent v-if="contentComponentAvailable" :prop="component.props.get('content')" />
-  <PureContentComponent v-if="pureContentComponentAvailable" :prop="component.props.get('pure-content')" />
+  <LinkColorComponent @changed='propUpdated' v-if="linkColorAvailable" :prop="component.props.get('link-color')" />
+  <LinkOpacityComponent @changed='propUpdated' v-if="linkOpacityAvailable" :prop="component.props.get('link-opacity')" />
+  <LinkUnderlineOffsetComponent @changed='propUpdated' v-if="linkUnderlineOffsetAvailable" :prop="component.props.get('link-offset')" />
+  <LinkUnderlineOpacityComponent @changed='propUpdated' v-if="linkUnderlineOpacityAvailable" :prop="component.props.get('link-underline-opacity')" />
   
-  <LinkColorComponent v-if="linkColorAvailable" :prop="component.props.get('link-color')" />
-  <LinkOpacityComponent v-if="linkOpacityAvailable" :prop="component.props.get('link-opacity')" />
-  <LinkUnderlineOffsetComponent v-if="linkUnderlineOffsetAvailable" :prop="component.props.get('link-offset')" />
-  <LinkUnderlineOpacityComponent v-if="linkUnderlineOpacityAvailable" :prop="component.props.get('link-underline-opacity')" />
+  <FontComponent @changed='propUpdated' v-if="fontAvailable" :prop="component.props.get('font')" />
+  <InlineTextComponent @changed='propUpdated' v-if="inlineTextAvailable" :prop="component.props.get('inline-text')" />
+  <LeadParagraphComponent @changed='propUpdated' v-if="leadParagraphAvailable" :prop="component.props.get('lead-paragraph')" />
+  <LineHeightComponent @changed='propUpdated' v-if="lineHeightAvailable" :prop="component.props.get('line-height')" />
+  <ListInlineComponent @changed='propUpdated' v-if="listInlineAvailable" :prop="component.props.get('list-inline')" />
+  <ListUnstyledComponent @changed='propUpdated' v-if="listUnstyledAvailable" :prop="component.props.get('list-unstyled')" />
+  <MonospaceComponent @changed='propUpdated' v-if="monospaceAvailable" :prop="component.props.get('font-monospace')" />
+  <TextAlignComponent @changed='propUpdated' v-if="textAlignAvailable" :prop="component.props.get('text-align')" />
+  <TextTransformComponent @changed='propUpdated' v-if="textTransformAvailable" :prop="component.props.get('text-transform')" />
+  <TextDecorationComponent @changed='propUpdated' v-if="textDecorationAvailable" :prop="component.props.get('text-decoration')" />
   
-  <FontComponent v-if="fontAvailable" :prop="component.props.get('font')" />
-  <InlineTextComponent v-if="inlineTextAvailable" :prop="component.props.get('inline-text')" />
-  <LeadParagraphComponent v-if="leadParagraphAvailable" :prop="component.props.get('lead-paragraph')" />
-  <LineHeightComponent v-if="lineHeightAvailable" :prop="component.props.get('line-height')" />
-  <ListInlineComponent v-if="listInlineAvailable" :prop="component.props.get('list-inline')" />
-  <ListUnstyledComponent v-if="listUnstyledAvailable" :prop="component.props.get('list-unstyled')" />
-  <MonospaceComponent v-if="monospaceAvailable" :prop="component.props.get('font-monospace')" />
-  <TextAlignComponent v-if="textAlignAvailable" :prop="component.props.get('text-align')" />
-  <TextTransformComponent v-if="textTransformAvailable" :prop="component.props.get('text-transform')" />
-  <TextDecorationComponent v-if="textDecorationAvailable" :prop="component.props.get('text-decoration')" />
-  
-  <AlignContentComponent v-if="alignContentAvailable" :prop="component.props.get('align-content')" />
-  <AlignItemsComponent v-if="alignItemsAvailable" :prop="component.props.get('align-items')" />
-  <BorderRadiusComponent v-if="borderRadiusAvailable" :prop="component.props.get('border-radius')" />
-  <ColWidthComponent v-if="colWidthAvailable" :prop="component.props.get('col')" />
-  <FlexDirectionComponent v-if="flexDirectionAvailable" :prop="component.props.get('flex-direction')" />
-  <GutterComponent v-if="gutterAvailable" :prop="component.props.get('gap')" />
-  <ImgFluidComponent v-if="imgFluidAvailable" :prop="component.props.get('img-fluid')" />
-  <JustifyContentComponent v-if="justifyContentAvailable" :prop="component.props.get('justify-content')" />
+  <AlignContentComponent @changed='propUpdated' v-if="alignContentAvailable" :prop="component.props.get('align-content')" />
+  <AlignItemsComponent @changed='propUpdated' v-if="alignItemsAvailable" :prop="component.props.get('align-items')" />
+  <BorderRadiusComponent @changed='propUpdated' v-if="borderRadiusAvailable" :prop="component.props.get('border-radius')" />
+  <ColWidthComponent @changed='propUpdated' v-if="colWidthAvailable" :prop="component.props.get('col')" />
+  <FlexDirectionComponent @changed='propUpdated' v-if="flexDirectionAvailable" :prop="component.props.get('flex-direction')" />
+  <GutterComponent @changed='propUpdated' v-if="gutterAvailable" :prop="component.props.get('gap')" />
+  <ImgFluidComponent @changed='propUpdated' v-if="imgFluidAvailable" :prop="component.props.get('img-fluid')" />
+  <JustifyContentComponent @changed='propUpdated' v-if="justifyContentAvailable" :prop="component.props.get('justify-content')" />
 </template>
 
 <script lang="ts">
 import html2canvas from 'html2canvas';
-import Packager from '@/editor/core/Packager.ts'
 import InlineTextComponent from '@/components/editor/UI/text/InlineTextComponent.vue';
 import LeadParagraphComponent from '@/components/editor/UI/text/LeadParagraphComponent.vue';
 import LineHeightComponent from '@/components/editor/UI/text/LineHeightComponent.vue';
@@ -87,6 +88,7 @@ import PureContentComponent from '@/components/editor/UI/PureContentComponent.vu
 import { PureContentProp } from '@/editor/properties/PureContentProp.ts';
 import ComponentName from '@/components/editor/UI/ComponentName.vue';
 import useEditorStore from '@/store/editor.store.ts';
+import ComponentNameProp from '@/editor/properties/ComponentNameProp.ts';
 
 
 export default {
@@ -128,20 +130,12 @@ export default {
   },
   methods: {
     async saveWidget() {
-      let htmlComponent = this.component.pure ?
-        this.component.specific.htmlOnRender :
-        this.component.htmlElement
-      html2canvas(htmlComponent).then(canvas => {
-        document.getElementById('app-builder').appendChild(canvas)
-
-        const link = document.createElement('a');
-        link.href = canvas.toDataURL("image/png");
-        link.download = 'component.png';
-
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      })
+      const result = await this.componentSetupStore.saveWidget();
+      if (result)
+        result.toastIfError(this.notificationStore);
+    },
+    propUpdated() {
+      this.componentSetupStore.patchTree(this.component)
     },
     isAvailable(name) {
       return this.component.availableProps.includes(name)
@@ -222,6 +216,9 @@ export default {
     },
     pureContentComponentAvailable() {
       return this.isAvailable(PureContentProp.name)
+    },
+    componentNameAvailable() {
+      return this.isAvailable(ComponentNameProp.name)
     }
   }
 }

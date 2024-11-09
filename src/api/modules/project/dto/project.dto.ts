@@ -4,10 +4,10 @@ export default class ProjectDto {
     public name: string,
     public isPublic: boolean,
     public date: number,
+    public preview: string,
     public stars: number,
     public data: string,
     public tags: string[],
     public category_id: number,
-    public imageSrc: string = '../src/assets/imageCard/screenshot.png',
   ) {}
 }

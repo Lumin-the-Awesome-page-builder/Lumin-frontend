@@ -5,7 +5,7 @@
         <img src="@/assets/svg/close.svg" class="img"/>
       </div>
       <div class="inputsContainer">
-        <img src="@/assets/svg/dami.svg" class="preview">
+        <img :src="preview" class="preview">
       </div>
       <div class="controlGroup">
         <div class="upPart">
@@ -90,12 +90,14 @@ export default {
     data(){
       return this.previewModalStore.getData
     },
+    preview() {
+      return this.data.preview
+    },
     checkStatus(){
       return this.previewModalStore.getStatus
     },
     formattedDate() {
       const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-      console.log(this.data)
       return (new Date(this.data.created_at)).toLocaleDateString('ru-RU', options).replace(/\//g, '.');
     },
   },
@@ -119,7 +121,6 @@ export default {
       document.body.removeChild(link);
     },
     goToEditor() {
-      console.log(this.data)
       this.editorStore.use(this.data)
       this.$router.push({ path: `/project/${this.data.id}/edit` })
     },
@@ -158,8 +159,7 @@ export default {
   justify-content: center;
   row-gap: 2rem;
   align-items: center;
-  min-width: 500px;
-  min-height: 500px;
+  min-width: 1300px;
   max-width: 80vw;
   max-height: 80vh;
   padding-bottom: 3.5rem;
@@ -217,11 +217,11 @@ export default {
   display: flex;
   flex-direction: row;
   gap: 1rem;
+  max-width: 60%;
 }
 
 .titleProj {
   width: fit-content;
-  max-width: 60%;
   font-size: 2rem;
 }
 

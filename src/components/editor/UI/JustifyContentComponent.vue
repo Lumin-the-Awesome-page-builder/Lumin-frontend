@@ -36,6 +36,7 @@ import JustifyContentProp from '@/editor/properties/JustifyContentProp.ts';
 export default {
   name: 'JustifyContentComponent',
   components: { OptionHeadingComponent, "n-button": NButton },
+  emits: ['changed'],
   props: {
     prop: {
       type: JustifyContentProp,
@@ -79,6 +80,7 @@ export default {
       const onSet = (this.activeButton == index) ? null : button.value
       this.activeButton = (this.activeButton == index) ? null : index
       this.prop.setValue(onSet)
+      this.$emit('changed')
     },
   },
   computed: {

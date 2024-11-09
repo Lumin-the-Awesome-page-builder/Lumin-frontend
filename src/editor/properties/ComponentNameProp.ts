@@ -11,18 +11,17 @@ export default class ComponentNameProp extends Property {
     public value: any[] = [],
     public component: Component,
   ) {
-    if (!value.length)
-      value.push(component.getTitle())
-    super(value, component)
-    this.defaultValue = [component.getTitle()]
+    if (!value.length) value.push(component.getTitle());
+    super(value, component);
+    this.defaultValue = [component.getTitle()];
   }
 
   public clear() {
-    this.component.userName = this.component.getTitle()
+    this.component.userName = this.component.getTitle();
   }
 
   public apply() {
-    this.component.userName = this.value[0]
+    this.component.userName = this.value[0];
   }
 
   public setValue(value: any[], index = 0) {

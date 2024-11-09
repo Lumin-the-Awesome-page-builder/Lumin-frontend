@@ -36,6 +36,7 @@
   export default {
     name: 'TextDecorationComponent',
     components: { OptionHeadingComponent, 'n-button': NButton },
+    emits: ['changed'],
     props: {
       prop: {
         type: TextDecorationProp
@@ -67,6 +68,7 @@
         const onSet = (this.activeButton == index) ? null : button.value
         this.activeButton = (this.activeButton == index) ? null : index
         this.prop.setValue(onSet)
+        this.$emit('changed')
       },
     },
     computed: {

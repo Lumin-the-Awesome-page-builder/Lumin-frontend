@@ -5,6 +5,7 @@ import WidgetModel from '@/api/modules/widget/models/widget.model.ts';
 import Packager from '@/editor/core/Packager.ts';
 import { getEditorInstance } from '@/editor/plugin.ts';
 import JSZip from 'jszip';
+import appConf from '@/api/conf/app.conf.ts';
 
 const useDashboardStore = defineStore({
   id: 'dashboard',
@@ -16,9 +17,10 @@ const useDashboardStore = defineStore({
   getters: {
     getData: (state) =>
       state.data.map((el) => {
+        const previewName = el.preview ? el.preview : 'no-preview.png';
         return {
           ...el,
-          imageSrc: '../src/assets/imageCard/screenshot.png',
+          preview: `${appConf.proto}://${appConf.endpoint}/lumin/file/${previewName}`,
           date: new Date(el.created_at),
         };
       }),
@@ -72,6 +74,7 @@ const useDashboardStore = defineStore({
       } else if (this.contentType == 'project') {
         result.push(await this.loadProjects());
       }
+      this.selected = {};
       return result;
     },
     async downloadProject(id) {

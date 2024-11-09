@@ -11,6 +11,7 @@ import FlexDirectionProp from '@/editor/properties/FlexDirectionProp.ts';
 import FlexWrapProp from '@/editor/properties/FlexWrapProp.ts';
 import GutterProp from '@/editor/properties/GutterProp.ts';
 import JustifyContentProp from '@/editor/properties/JustifyContentProp.ts';
+import ComponentNameProp from '@/editor/properties/ComponentNameProp.ts';
 
 describe('Base property class tests', () => {
   const targetMock = {
@@ -76,6 +77,7 @@ describe('Base property class tests', () => {
     app.useProp(FlexWrapProp);
     app.useProp(GutterProp);
     app.useProp(JustifyContentProp);
+    app.useProp(ComponentNameProp);
     app.init(mountPoint, '123', [...state]);
     app.mount();
 

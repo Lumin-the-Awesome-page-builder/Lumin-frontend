@@ -36,6 +36,7 @@ import AlignItemsProp from '@/editor/properties/AlignItemsProp.ts';
 export default {
   name: 'alignItemsComponent',
   components: { OptionHeadingComponent, "n-button": NButton },
+  emits: ['changed'],
   props: {
     prop: {
       type: AlignItemsProp
@@ -75,6 +76,7 @@ export default {
       const onSet = (this.activeButton == index) ? null : button.value
       this.activeButton = (this.activeButton == index) ? null : index
       this.prop.setValue(onSet)
+      this.$emit('changed')
     },
   },
   computed: {

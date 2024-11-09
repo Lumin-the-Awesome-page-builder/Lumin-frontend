@@ -96,6 +96,7 @@ describe('usePreviewModalStore', () => {
       id: 1,
       name: 'Test project',
       date: expect.any(Number),
+      preview: 'http://localhost:8080/lumin/file/no-preview.png',
       stars: 14,
     });
   });

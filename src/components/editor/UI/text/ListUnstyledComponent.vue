@@ -29,6 +29,7 @@
     components: {
       CheckboxComponent, OptionHeadingComponent
     },
+    emits: ['changed'],
     props: {
       prop: {
         type: ListUnstyledProp
@@ -52,6 +53,8 @@
           this.prop.setValue('checked', index)
         else
           this.prop.setValue(null, index)
+        
+        this.$emit('changed')
       }
     }
   }

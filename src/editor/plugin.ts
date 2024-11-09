@@ -79,7 +79,6 @@ export function getEditorInstance() {
   editor.useProp(ContentProp);
   editor.useProp(PureContentProp);
 
-
   editor.useProp(ComponentNameProp);
 
   return editor;

@@ -6,7 +6,7 @@
     
     <div class="options-preview">
       <div class="column">
-        <img src="@/assets/img.png" alt="component-icon" />
+        <img :src="img" alt="component-icon" />
         <n-button ghost color="#7b7bfe" @click="create">Создать</n-button>
       </div>
     </div>
@@ -19,23 +19,39 @@
 <script lang="ts">
 
 import useEditorStore from '@/store/editor.store.ts';
+import useWidgetLibraryStore from '@/store/widget-library.store.ts';
+import { useNotification } from 'naive-ui';
 
 export default {
   name: 'BlockComponent',
   props: {
     title: String,
     component: String,
+    img: {
+      type: String,
+      default: '/img.png'
+    },
+    //It could be 'provided' or 'widget'
+    componentType: {
+      type: String,
+      default: 'provided'
+    }
   },
   setup() {
-    return { editorStore: useEditorStore() }
+    return {
+      notificationStore: useNotification(),
+      editorStore: useEditorStore(),
+      widgetLibraryStore: useWidgetLibraryStore()
+    }
   },
   methods: {
-    create() {
+    async create() {
       const div = document.createElement('div');
       div.id = "picked"
       div.classList.add('picked-up-block')
       const overlay = document.createElement('div');
       overlay.classList.add('overlay')
+      overlay.style = `background-image: url("${this.img}");`
       const span = document.createElement('span');
       span.innerText = this.title
       div.appendChild(overlay)
@@ -45,7 +61,14 @@ export default {
       document.addEventListener("mousemove", (ev) => {
         picked.style = `top: 0; left: 0; transform: translate(${ev.clientX + 40}px, ${ev.clientY + 40}px)`
       })
-      this.editorStore.pickBlock({ component: this.component, icon: picked });
+      let pickedComponent = this.component
+      if (this.componentType === 'widget') {
+        const loaded = await this.widgetLibraryStore.loadWidgetData(Number(this.component))
+        loaded.toastIfError(this.notificationStore);
+        if (loaded.success)
+          pickedComponent = loaded.getData().data
+      }
+      this.editorStore.pickBlock({ component: pickedComponent, icon: picked, widget: this.componentType == 'widget' });
     }
   }
 };

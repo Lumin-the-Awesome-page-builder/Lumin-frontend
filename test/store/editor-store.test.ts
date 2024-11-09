@@ -106,7 +106,9 @@ describe('EditorStore tests', () => {
     it('State is null', async () => {
       const result = await store.save();
 
-      expect(ProjectModel.update).toBeCalledWith(123, { data: '{}' });
+      expect(ProjectModel.update).toBeCalledWith(123, {
+        data: JSON.stringify({ setup: { rootOrdering: [] } }),
+      });
       expect(result).equal('updated');
     });
   });
@@ -133,7 +135,11 @@ describe('EditorStore tests', () => {
     store.clearBlockSelection();
 
     expect(removeMock).toBeCalled();
-    expect(store.blockOnCreate).toEqual({ component: null, icon: null });
+    expect(store.blockOnCreate).toEqual({
+      component: null,
+      icon: null,
+      widget: false,
+    });
   });
 
   it('place block', () => {
@@ -150,7 +156,7 @@ describe('EditorStore tests', () => {
 
     store.placeBlock('parent');
 
-    expect(addMock).toBeCalledWith('test', '', 'parent');
+    expect(addMock).toBeCalledWith('test', 'parent');
     expect(store.clearBlockSelection).toBeCalled();
   });
 });

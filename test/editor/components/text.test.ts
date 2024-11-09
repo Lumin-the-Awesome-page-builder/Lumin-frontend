@@ -7,6 +7,7 @@ import MonoSpaceProp from '@/editor/properties/text/MonoSpaceProp.ts';
 import TextAlignProp from '@/editor/properties/text/TextAlignProp.ts';
 import TextTransformProp from '@/editor/properties/text/TextTransformProp.ts';
 import ContentProp from '@/editor/properties/ContentProp.ts';
+import ComponentNameProp from '@/editor/properties/ComponentNameProp.ts';
 
 describe('Test text component', () => {
   it('Test component creation', () => {
@@ -18,6 +19,7 @@ describe('Test text component', () => {
   it('Test available component props', () => {
     const text = new Text('');
     expect(text.availableProps).toStrictEqual([
+      ComponentNameProp.name,
       FontProp.name,
       InlineTextProp.name,
       LeadParagraphProp.name,

@@ -26,6 +26,7 @@
   export default {
     name: 'GutterComponent',
     components: { OptionHeadingComponent, SliderComponent },
+    emits: ['changed'],
     props: {
       prop: {
         type: GutterProp
@@ -34,6 +35,7 @@
     methods: {
       update(index, data) {
         this.prop.setValue(data, index)
+        this.$emit('changed')
       }
     },
     computed: {

@@ -28,6 +28,7 @@
   export default {
     name: 'LinkColorComponent',
     components: { OptionHeadingComponent, "n-button": NButton },
+    emits: ['changed'],
     props: {
       prop: {
         type: LinkColorProp
@@ -55,6 +56,7 @@
         const onSet = (this.activeButton == index) ? null : value
         this.activeButton = (this.activeButton == index) ? null : index
         this.prop.setValue(onSet)
+        this.$emit('changed')
       },
     },
     computed: {

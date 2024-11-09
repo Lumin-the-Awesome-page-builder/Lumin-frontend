@@ -37,6 +37,7 @@
   export default {
     name: 'TextTransformComponent',
     components: { OptionHeadingComponent, "n-button": NButton },
+    emits: ['changed'],
     props: {
       prop: {
         type: TextTransformProp
@@ -68,6 +69,7 @@
         const onSet = (this.activeButton == index) ? null : button.value
         this.activeButton = (this.activeButton == index) ? null : index
         this.prop.setValue(onSet)
+        this.$emit('changed')
       },
     },
     computed: {

@@ -36,6 +36,7 @@
   export default {
     name: 'TextAlignComponent',
     components: { OptionHeadingComponent, "n-button": NButton },
+    emits: ['changed'],
     props: {
       prop: {
         type: TextAlignProp
@@ -67,6 +68,7 @@
         const onSet = (this.activeButton == index) ? null : button.value
         this.activeButton = (this.activeButton == index) ? null : index
         this.prop.setValue(onSet)
+        this.$emit('changed')
       },
     },
     computed: {

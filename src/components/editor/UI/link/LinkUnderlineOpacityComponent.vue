@@ -25,6 +25,7 @@
   export default {
     name: 'LinkUnderlineOpacityComponent',
     components: { OptionHeadingComponent, SliderComponent },
+    emits: ['changed'],
     props: {
       prop: {
         type: LinkUnderlineOpacityProp
@@ -33,6 +34,7 @@
     methods: {
       update(index, data) {
         this.prop.setValue(data, index)
+        this.$emit('changed')
       }
     },
     computed: {
