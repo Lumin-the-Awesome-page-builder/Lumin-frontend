@@ -2,15 +2,22 @@
   <div class="sidebar-wrapper">
     <ChooseDomainComponent />
     <ChangeDataComponent />
-    <n-collapse>
+    <n-collapse :default-expanded-names="['1']">
       <n-collapse-item name="1">
         <template #header>
           <span class="custom-header">Параметры проекта</span>
         </template>
-        <div class="btn-row">
-          <n-button color="#7b7bfe" @click="save"> Сохранить </n-button>
-          <n-button color="#7b7bfe" @click="exit"> Выйти </n-button>
+        <div class="heading-row">
+          <h3 class="options-heading">Управление</h3>
+          <p class="options-details">
+            При выходе все изменения в проекте автоматически сохраняются.
+          </p>
+          <div class="btn-row">
+            <n-button color="#7b7bfe" @click="save"> Сохранить </n-button>
+            <n-button color="#7b7bfe" @click="exit"> Выйти </n-button>
+          </div>
         </div>
+        <n-divider />
         <div class="heading-row">
           <h3 class="options-heading">Публикация</h3>
           <p class="options-details">
@@ -57,6 +64,15 @@
         <AvailableBlocksComponent :blocks="availableBlocks" />
 
       </n-collapse-item>
+      
+      <n-collapse-item name="4">
+        <template #header>
+          <span class="custom-header">Доступные виджеты</span>
+        </template>
+        
+        <AvailableWidgetsComponent />
+      
+      </n-collapse-item>
     </n-collapse>
   </div>
 </template>
@@ -68,21 +84,24 @@ import { useNotification } from 'naive-ui';
 import { getEditorInstance } from '@/editor/plugin.ts';
 import Packager from '@/editor/core/Packager.ts';
 import useChangeDataStore from '@/store/modals/change-data-project-component.store.ts';
+import useDashboardStore from '@/store/dashboard.store.ts';
 import { useChooseDomainStore } from '@/store/modals/choose-domen-component.store.ts';
 import ChooseDomainComponent from '@/components/modals/ChooseDomainComponent.vue';
 import ChangeDataComponent from '@/components/modals/ChangeProjectDataComponent.vue';
 import ComponentSetupComponent from '@/components/editor/ComponentSetupComponent.vue';
 import AvailableBlocksComponent from '@/components/editor/AvailableBlocksComponent.vue';
+import AvailableWidgetsComponent from '@/components/editor/AvailableWidgetsComponent.vue';
 import useComponentSetupStore from '@/store/component-setup.store.ts';
 
 export default {
   components: {
-    ComponentSetupComponent, AvailableBlocksComponent, ChangeDataComponent, ChooseDomainComponent
+    ComponentSetupComponent, AvailableBlocksComponent, ChangeDataComponent, ChooseDomainComponent, AvailableWidgetsComponent
   },
   setup() {
     return {
       notificationStore: useNotification(),
       editorStore: useEditorStore(),
+      dashboardStore: useDashboardStore(),
       projectPreviewModalStore: useProjectPreviewModalStore(),
       changeProjectDataStore: useChangeDataStore(),
       chooseDomainStore: useChooseDomainStore(),
@@ -128,11 +147,15 @@ export default {
       return result;
     },
     async exit() {
-      const result = await this.save()
+      let result = await this.save()
       this.projectPreviewModalStore.closeModal()
       result.toastIfError(this.notificationStore)
       if (result.success) {
         this.editorStore.clearBlockSelection()
+        result = await this.editorStore.updatePreview()
+        result.toastIfError(this.notificationStore)
+        result = await this.dashboardStore.loadProjects()
+        result.toastIfError(this.notificationStore)
         this.$router.push({ path: '/dashboard' })
       }
     },
@@ -140,10 +163,11 @@ export default {
       this.chooseDomainStore.openModal()
     },
     download() {
+      const packager = new Packager(this.editorStore.app)
       const app = getEditorInstance()
-      app.initState = JSON.parse(this.data.data);
-      const packager = new Packager(app)
-
+      app.initState = JSON.parse(packager.json())
+      packager.app = app
+      
       const blob = packager.blob()
 
       const link = document.createElement('a');
@@ -190,7 +214,7 @@ export default {
 }
 .heading-row {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 0.5rem;
 }
 .options-heading {
@@ -202,10 +226,14 @@ export default {
   font-size: 18px;
   color: #6f6c99;
 }
+.heading-row button {
+  width: fit-content;
+}
 .btn-row {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: start;
+  column-gap: 2rem;
   width: 100%;
 }
 </style>

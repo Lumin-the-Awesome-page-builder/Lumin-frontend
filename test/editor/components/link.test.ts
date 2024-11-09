@@ -11,6 +11,7 @@ import LinkColorProp from '@/editor/properties/link/LinkColorProp.ts';
 import LinkUnderlineOpacityProp from '@/editor/properties/link/LinkUnderlineOpacityProp.ts';
 import LinkUnderlineOffsetProp from '@/editor/properties/link/LinkUnderlineOffsetProp.ts';
 import ContentProp from '@/editor/properties/ContentProp.ts';
+import ComponentNameProp from '@/editor/properties/ComponentNameProp.ts';
 
 describe('Test link component', () => {
   it('Test component creation', () => {
@@ -22,6 +23,7 @@ describe('Test link component', () => {
   it('Test available component props', () => {
     const link = new Link('');
     expect(link.availableProps).toStrictEqual([
+      ComponentNameProp.name,
       LinkOpacityProp.name,
       LinkColorProp.name,
       LinkUnderlineOpacityProp.name,

@@ -4,5 +4,6 @@ export default class CreateWidgetDto {
     public data: string,
     public tags: string[],
     public category: number,
+    public preview: string,
   ) {}
 }

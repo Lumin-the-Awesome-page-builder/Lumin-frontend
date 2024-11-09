@@ -177,6 +177,7 @@ describe('App.ts unit tests', () => {
             },
           ],
           content: 'test content',
+          childrenOrdering: [],
           children: {},
           pure: true,
           specific: { html: '<style>#a{}</style><div></div>' },
@@ -201,7 +202,7 @@ describe('App.ts unit tests', () => {
           value: 'test-value-1',
         },
       ]);
-      expect(spies.appendChildren).toHaveBeenCalledWith({});
+      expect(spies.appendChildren).toHaveBeenCalledWith({}, []);
       expect(spies.setContent).toHaveBeenCalledWith('test content');
 
       expect(spies.setKeySalt).toHaveBeenCalledWith('salt');
@@ -306,7 +307,7 @@ describe('App.ts unit tests', () => {
     it('Test unknown component', () => {
       app.componentLibrary = {};
 
-      assert.throws(() => app.add('test', '', 'test'));
+      assert.throws(() => app.add('test', 'test'));
     });
     describe('', () => {
       let mock;
@@ -336,7 +337,7 @@ describe('App.ts unit tests', () => {
         app.scopeIdentifier = 'test';
         app.componentLibrary['test'] = Mock;
 
-        assert.throws(() => app.add('test', '', 'test'));
+        assert.throws(() => app.add('test', 'test'));
       });
 
       it('Test success addition', () => {
@@ -344,7 +345,7 @@ describe('App.ts unit tests', () => {
         app.componentLibrary['test'] = Mock;
         app.state['test'] = new Mock();
 
-        app.add('test', '', 'test');
+        app.add('test', 'test');
 
         expect(mock.setAttrs).toBeCalledTimes(1);
         expect(mock.setEventHandler).toBeCalledTimes(1);
@@ -362,9 +363,8 @@ describe('App.ts unit tests', () => {
         //@ts-ignore
         app.parsePure = vi.fn(() => ['1', '2']);
         app.buildPure = vi.fn();
-        const pure = '<style>#a{}</style><div></div>';
 
-        app.add('pure', pure, 'test');
+        app.add('pure', 'test');
 
         expect(app.buildPure).toBeCalled();
       });
@@ -446,4 +446,70 @@ describe('App.ts unit tests', () => {
 
     expect(parsed.length).toBe(2);
   });
+
+  describe('Test attach to parent', () => {
+    describe('attach to root', () => {
+      it('pure component', () => {
+        const componentMock = {
+          key: 'key',
+          pure: true,
+          specific: {
+            htmlOnRender: 'html',
+          },
+        };
+        const appendChildMock = vi.fn();
+        app.rootHTML = {
+          appendChild: appendChildMock,
+        };
+        app.rootOrdering = [];
+        app.root = {};
+
+        app.attachToParent(componentMock, null);
+
+        expect(appendChildMock).toBeCalledWith('html');
+        expect(app.root).toEqual({ key: componentMock });
+        expect(app.rootOrdering).toEqual(['key']);
+      });
+
+      it('common component', () => {
+        const renderMock = vi.fn(() => 'rendered');
+        const componentMock = {
+          key: 'key',
+          pure: false,
+          render: renderMock,
+        };
+        const appendChildMock = vi.fn();
+        app.rootHTML = {
+          appendChild: appendChildMock,
+        };
+        app.rootOrdering = [];
+        app.root = {};
+
+        app.attachToParent(componentMock, null);
+
+        expect(appendChildMock).toBeCalledWith('rendered');
+        expect(renderMock).toBeCalled();
+        expect(app.root).toEqual({ key: componentMock });
+        expect(app.rootOrdering).toEqual(['key']);
+      });
+    });
+  });
+  //
+  // it('test add widget', () => {
+  //   const parseMock = vi.fn(() => ({key: 123, }))
+  //   vi.stubGlobal('JSON', {
+  //     parse: parseMock,
+  //     stringify: vi.fn()
+  //   })
+  //   app.buildTree = vi.fn(() => ({'key': 'value'}))
+  //   app.attachToParent = vi.fn()
+  //
+  //   const result = app.addWidget('json', 'parent')
+  //
+  //   expect(parseMock).toBeCalledWith('json')
+  //   expect(app.buildTree).toBeCalledWith({ 123: {key:123} }, true)
+  //   expect(app.attachToParent).toBeCalledWith('value', 'parent')
+  //   expect(result).toEqual('value')
+  //
+  // })
 });

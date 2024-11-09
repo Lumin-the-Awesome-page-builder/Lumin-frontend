@@ -6,6 +6,7 @@ import Property, { PropertyObject } from '@/editor/core/property/Property.ts';
 export class App {
   public rootHTML: HTMLElement = document.createElement('div');
   public root: Record<string, Component> = {};
+  public rootOrdering: string[] = [];
   public state: Record<string, Component> = {};
   public componentLibrary: Record<string, any> = {};
   public propLibrary: Record<string, any> = {};
@@ -14,6 +15,7 @@ export class App {
   public scopeIdentifier: string = '';
   public initState: Record<string, ComponentObject> = {};
   public pureStyles: Record<string, HTMLElement> = {};
+  public wasBuilt = false;
 
   // "event": [([parents] => {},)]
   public subs = {
@@ -95,7 +97,6 @@ export class App {
   }
 
   public buildPure(component: Component) {
-    console.log(component.specific);
     const parsed = this.parsePure(component.specific.html);
     component.specific.htmlOnRender = parsed[0];
     if (parsed.length > 1) {
@@ -107,9 +108,17 @@ export class App {
 
   public buildTree(
     state: Record<string, ComponentObject>,
+    refreshKeys: boolean = false,
   ): Record<string, Component> {
     if (state) {
-      const tree = Object.keys(state).map((key) => {
+      let items = Object.keys(state);
+      if (items.includes('setup')) {
+        this.rootOrdering = state.setup.rootOrdering;
+        delete state['setup'];
+        items = Object.keys(state);
+      }
+
+      const tree = items.map((key) => {
         const el = state[key];
         const constr = this.componentLibrary[el.name];
 
@@ -125,10 +134,14 @@ export class App {
         component.scopeIdentifier = this.scopeIdentifier;
         component.setAttrs(attrs);
         component.setProps(this.buildProps(component, el.props));
-        component.appendChildren(this.buildTree(el.children));
+        component.appendChildren(
+          this.buildTree(el.children),
+          el.childrenOrdering,
+        );
         component.setContent(el.content);
         component.setKeySalt(this.identifiersSalt);
-        component.setKey(el.key);
+        if (refreshKeys) component.generateKey();
+        else component.setKey(el.key);
         component.setEventHandler((e, arr, domEvent) =>
           this.handler(e, arr, domEvent),
         );
@@ -136,8 +149,6 @@ export class App {
         if (component.specific.html && component.pure) {
           this.buildPure(component);
         }
-
-        console.log(el.specific, component.specific);
 
         this.state[component.key] = component;
 
@@ -156,6 +167,8 @@ export class App {
 
   public mount() {
     this.root = this.buildTree(this.initState);
+
+    this.wasBuilt = true;
 
     this.rootHTML.innerHTML = '';
     Object.keys(this.root).forEach((key) => {
@@ -179,7 +192,27 @@ export class App {
     }
   }
 
-  public add(name: string, pure: string, parentKey: string) {
+  public attachToParent(component: Component, parentKey: string) {
+    if (parentKey) {
+      const parent = this.state[parentKey];
+      if (!parent) {
+        throw new DOMException('Bad parent provided');
+      }
+
+      parent.appendChild(component);
+      parent.render();
+    } else {
+      this.rootOrdering.push(component.key);
+      this.root[component.key] = component;
+      if (component.pure) {
+        this.rootHTML.appendChild(component.specific.htmlOnRender);
+      } else {
+        this.rootHTML.appendChild(component.render());
+      }
+    }
+  }
+
+  public add(name: string, parentKey: string) {
     const constr = this.componentLibrary[name];
     if (!constr) throw new DOMException(`Unknown component: ${name}`);
     const component = new constr();
@@ -197,16 +230,21 @@ export class App {
     component.generateKey();
     component.setProps(this.buildProps(component, []));
 
-    const parent = this.state[parentKey];
-    if (!parent) {
-      throw new DOMException('Bad parent provided');
-    }
+    this.attachToParent(component, parentKey);
 
     this.state[component.key] = component;
-    parent.appendChild(component);
-    parent.render();
 
     return component;
+  }
+
+  public addWidget(widgetJson: string, parentKey: string) {
+    const parsed = JSON.parse(widgetJson);
+    const widgetTree = this.buildTree({ [parsed.key]: parsed }, true);
+    const widget = widgetTree[Object.keys(widgetTree)[0]];
+
+    this.attachToParent(widget, parentKey);
+
+    return widget;
   }
 
   public remove(key: string) {
@@ -225,8 +263,10 @@ export class App {
       component.parent.removeChild(key);
 
       component.parent.render();
+      return component.parent;
     } else {
       document.querySelector(`[${component.key}]`).remove();
+      return null;
     }
   }
 
@@ -251,5 +291,72 @@ export class App {
     this.buildPure(component);
 
     component.parent.render();
+  }
+
+  public moveInArr(arr: string[], key: string, left: boolean) {
+    const curIndex = arr.indexOf(key);
+
+    if ((left && curIndex == 0) || (!left && curIndex + 1 == arr.length))
+      return null;
+
+    const first = arr.slice(0, curIndex - Number(left));
+    const last = arr.slice(
+      curIndex + Number(left) + Number(!left) * 2,
+      arr.length,
+    );
+    const resultArr = left
+      ? [...first, key, arr[curIndex - 1], ...last]
+      : [...first, arr[curIndex + 1], key, ...last];
+
+    return [resultArr, left ? arr[curIndex - 1] : arr[curIndex + 1]];
+  }
+
+  public move(component: Component, left: boolean) {
+    if (!this.state[component.key])
+      throw new DOMException(`Unknown component: ${component.key}`);
+
+    const parent = component.parent;
+    const html = component.pure
+      ? component.specific.htmlOnRender
+      : component.htmlElement;
+
+    if (!parent) {
+      const move = this.moveInArr(this.rootOrdering, component.key, left);
+
+      if (!move) return;
+
+      const insertBeforeElement = this.state[move[1]];
+
+      if (!insertBeforeElement) return;
+
+      if (left) {
+        html.remove();
+        this.rootHTML.insertBefore(html, insertBeforeElement.htmlElement);
+      } else {
+        insertBeforeElement.htmlElement.remove();
+        this.rootHTML.insertBefore(insertBeforeElement.htmlElement, html);
+      }
+      this.rootOrdering = [...move[0]];
+    } else {
+      const move = this.moveInArr(parent.childrenOrdering, component.key, left);
+
+      if (!move) return;
+
+      const insertBeforeElement = this.state[move[1]];
+
+      if (!insertBeforeElement) return;
+
+      parent.childrenOrdering = [...move[0]];
+
+      if (left) {
+        html.remove();
+        parent.htmlElement.insertBefore(html, insertBeforeElement.htmlElement);
+      } else {
+        insertBeforeElement.htmlElement.remove();
+        parent.htmlElement.insertBefore(insertBeforeElement.htmlElement, html);
+      }
+    }
+
+    return parent;
   }
 }

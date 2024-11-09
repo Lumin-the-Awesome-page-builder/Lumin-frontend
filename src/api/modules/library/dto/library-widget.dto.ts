@@ -5,6 +5,6 @@ export default class LibraryWidgetDto {
     public isPublic: boolean,
     public date: number,
     public stars: number,
-    public imageSrc: string = '../src/assets/imageCard/screenshot.png',
+    public preview: string,
   ) {}
 }

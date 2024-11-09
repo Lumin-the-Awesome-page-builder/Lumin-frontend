@@ -6,11 +6,17 @@ export default class ApiErrorDto {
   ) {}
 
   public showServerErrorToast(notificationStore) {
-    notificationStore.error({
-      content: 'Что-то пошло не так.',
-      meta: 'Ошибка сервера. Попробуйте ещё раз.',
-      duration: 2500,
-      keepAliveOnHover: true,
-    });
+    if (
+      notificationStore &&
+      notificationStore.error &&
+      typeof notificationStore.error === 'function'
+    ) {
+      notificationStore.error({
+        content: 'Что-то пошло не так.',
+        meta: 'Ошибка сервера. Попробуйте ещё раз.',
+        duration: 2500,
+        keepAliveOnHover: true,
+      });
+    }
   }
 }

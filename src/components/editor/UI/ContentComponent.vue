@@ -23,6 +23,7 @@ import OptionHeadingComponent from '@/components/editor/OptionHeadingComponent.v
 export default {
   name: 'ContentComponent',
   components: { OptionHeadingComponent },
+  emits: ['changed'],
   props: {
     prop: {
       type: ContentProp
@@ -35,11 +36,11 @@ export default {
     this.value = this.prop.value[0] ? this.prop.value[0] : this.prop.defaultValue[0];
   },
   created() {
-    console.log("created")
   },
   methods: {
     update() {
       this.prop.setValue([this.value])
+      this.$emit('changed')
     }
   }
 }

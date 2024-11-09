@@ -25,6 +25,7 @@
   export default {
     name: 'LineHeightComponent',
     components: { OptionHeadingComponent, SliderComponent },
+    emits: ['changed'],
     props: {
       prop: {
         type: LineHeightProp
@@ -32,8 +33,8 @@
     },
     methods: {
       update(index, data) {
-        console.log(index, data)
         this.prop.setValue(data, index)
+        this.$emit('changed')
       }
     },
     data: () => ({

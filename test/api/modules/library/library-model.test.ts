@@ -25,7 +25,14 @@ describe('Base LibraryModel class tests', () => {
 
   describe('Test related dto', () => {
     it('Test LibraryProjectDto', () => {
-      const libraryProjectDto = new LibraryProjectDto(1, 'name', true, 1, 1);
+      const libraryProjectDto = new LibraryProjectDto(
+        1,
+        'name',
+        true,
+        1,
+        1,
+        '',
+      );
 
       expect(libraryProjectDto).toEqual({
         id: 1,
@@ -33,12 +40,12 @@ describe('Base LibraryModel class tests', () => {
         isPublic: true,
         date: 1,
         stars: 1,
-        imageSrc: '../src/assets/imageCard/screenshot.png',
+        preview: '',
       });
     });
 
     it('Test LibraryWidgetDto', () => {
-      const libraryWidgetDto = new LibraryWidgetDto(1, 'name', true, 1, 1);
+      const libraryWidgetDto = new LibraryWidgetDto(1, 'name', true, 1, 1, '');
 
       expect(libraryWidgetDto).toEqual({
         id: 1,
@@ -46,7 +53,7 @@ describe('Base LibraryModel class tests', () => {
         isPublic: true,
         date: 1,
         stars: 1,
-        imageSrc: '../src/assets/imageCard/screenshot.png',
+        preview: '',
       });
     });
   });

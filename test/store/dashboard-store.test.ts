@@ -5,6 +5,7 @@ import LibraryModel from '@/api/modules/library/models/library.model.ts';
 import ProjectModel from '@/api/modules/project/models/project.model.ts';
 import WidgetModel from '@/api/modules/widget/models/widget.model.ts';
 import { getEditorInstance } from '@/editor/plugin.ts';
+import appConf from '@/api/conf/app.conf.ts';
 
 vi.mock('@/editor/plugin.ts', () => ({
   getEditorInstance: vi.fn(() => ({
@@ -163,7 +164,7 @@ describe('Dashboard store tests', () => {
   });
 
   describe('Test getters', () => {
-    const item = { created_at: 123 };
+    const item = { preview: 'prev.png', created_at: 123 };
     const contentType = 'project';
     const selected = { 123: true };
 
@@ -176,7 +177,7 @@ describe('Dashboard store tests', () => {
         {
           ...item,
           date: new Date(item.created_at),
-          imageSrc: '../src/assets/imageCard/screenshot.png',
+          preview: `${appConf.proto}://${appConf.endpoint}/lumin/file/${item.preview}`,
         },
       ]);
     });
@@ -231,21 +232,20 @@ describe('Dashboard store tests', () => {
       store.contentType = 'project';
       const result = await store.removeSelected();
 
-      const count = Object.keys(store.selected).length;
-      expect(store.removeById).toBeCalledTimes(count);
+      expect(store.removeById).toBeCalledTimes(3);
       expect(store.removeById).toBeCalledWith('1', 0, ['1', '2', '3']);
       expect(store.removeById).toBeCalledWith('2', 1, ['1', '2', '3']);
       expect(store.removeById).toBeCalledWith('3', 2, ['1', '2', '3']);
       expect(store.loadProjects).toBeCalledTimes(1);
       expect(store.loadWidgets).toBeCalledTimes(0);
+      expect(store.selected).toEqual({});
       expect(result).toEqual(['id', 'id', 'id', 'loadProjectsResult']);
     });
     it('ContentType is "widget"', async () => {
       store.contentType = 'widget';
       const result = await store.removeSelected();
 
-      const count = Object.keys(store.selected).length;
-      expect(store.removeById).toBeCalledTimes(count);
+      expect(store.removeById).toBeCalledTimes(3);
       expect(store.removeById).toBeCalledWith('1', 0, ['1', '2', '3']);
       expect(store.removeById).toBeCalledWith('2', 1, ['1', '2', '3']);
       expect(store.removeById).toBeCalledWith('3', 2, ['1', '2', '3']);

@@ -67,6 +67,7 @@ describe('WidgetModel class tests', () => {
         'data',
         ['tag'],
         1,
+        '',
       );
 
       expect(widgetDto).toEqual({
@@ -78,7 +79,7 @@ describe('WidgetModel class tests', () => {
         data: 'data',
         tags: ['tag'],
         category_id: 1,
-        imageSrc: '../src/assets/imageCard/screenshot.png',
+        preview: '',
       });
     });
   });

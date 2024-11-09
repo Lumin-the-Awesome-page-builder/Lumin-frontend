@@ -38,6 +38,7 @@ import useEditorStore from '@/store/editor.store.ts';
 export default {
   name: 'PureContentComponent',
   components: { Codemirror },
+  emits: ['changed'],
   props: {
     prop: PureContentProp
   },
@@ -61,7 +62,7 @@ export default {
       this.prop.setValue([this.code, "", ""]);
       const app = this.editorStore.app;
       app.replacePure(this.prop.component)
-      this.editorStore.save()
+      this.$emit('changed')
     },
     changeAndExit() {
       this.change()

@@ -10,6 +10,7 @@ import MonoSpaceProp from '@/editor/properties/text/MonoSpaceProp.ts';
 import TextAlignProp from '@/editor/properties/text/TextAlignProp.ts';
 import TextTransformProp from '@/editor/properties/text/TextTransformProp.ts';
 import ContentProp from '@/editor/properties/ContentProp.ts';
+import ComponentNameProp from '@/editor/properties/ComponentNameProp.ts';
 
 export default class Link extends Component {
   constructor(_: string) {
@@ -21,6 +22,7 @@ export default class Link extends Component {
   static title: string = 'Ссылка';
 
   availableProps: string[] = [
+    ComponentNameProp.name,
     LinkOpacityProp.name,
     LinkColorProp.name,
     LinkUnderlineOpacityProp.name,

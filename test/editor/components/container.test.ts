@@ -8,6 +8,7 @@ import FlexProp from '@/editor/properties/FlexProp.ts';
 import FlexWrapProp from '@/editor/properties/FlexWrapProp.ts';
 import GutterProp from '@/editor/properties/GutterProp.ts';
 import JustifyContentProp from '@/editor/properties/JustifyContentProp.ts';
+import ComponentNameProp from '@/editor/properties/ComponentNameProp.ts';
 
 describe('Test container component', () => {
   it('Test component creation', () => {
@@ -19,6 +20,7 @@ describe('Test container component', () => {
   it('Test available component props', () => {
     const container = new Container('div');
     expect(container.availableProps).toStrictEqual([
+      ComponentNameProp.name,
       AlignItemsProp.name,
       AlignContentProp.name,
       ColWidthProp.name,

@@ -64,6 +64,7 @@ const renderMark = (weight: string, style: string) => {
 export default {
   name: 'FontComponent',
   components: { OptionHeadingComponent, SliderComponent, "n-button": NButton },
+  emits: ['changed'],
   props: {
     prop: {
       type: FontProp
@@ -96,6 +97,7 @@ export default {
   methods: {
     update(index, data) {
       this.prop.setValue(data, index)
+      this.$emit('changed')
     },
     setActiveButton(index: number, button) {
       const onSet = (this.activeButton == index) ? null : button.value

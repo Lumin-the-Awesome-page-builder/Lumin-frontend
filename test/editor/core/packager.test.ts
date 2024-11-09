@@ -10,6 +10,7 @@ import FlexProp from '@/editor/properties/FlexProp.ts';
 import FlexWrapProp from '@/editor/properties/FlexWrapProp.ts';
 import GutterProp from '@/editor/properties/GutterProp.ts';
 import JustifyContentProp from '@/editor/properties/JustifyContentProp.ts';
+import ComponentNameProp from '@/editor/properties/ComponentNameProp.ts';
 
 describe('Package class tests', () => {
   let app: App;
@@ -20,12 +21,14 @@ describe('Package class tests', () => {
       key: 'data-123-div-1729624518542',
       attrs: [],
       props: [{ name: 'flex', value: ['flex'] }],
+      childrenOrdering: [],
       children: {
         'data-123-div-1729624518123': {
           name: 'container',
           key: 'data-123-div-1729624518123',
           attrs: [],
           props: [{ name: 'flex', value: ['flex'] }],
+          childrenOrdering: [],
           children: [],
           content: 'Test content',
           specific: {},
@@ -36,6 +39,7 @@ describe('Package class tests', () => {
           key: 'data-123-div-1729624518545',
           attrs: [],
           props: [{ name: 'flex', value: ['flex'] }],
+          childrenOrdering: [],
           children: [],
           content: 'Test content',
           specific: {},
@@ -46,6 +50,7 @@ describe('Package class tests', () => {
           key: 'data-123-div-1729624518547',
           attrs: [],
           props: [{ name: 'flex', value: ['flex'] }],
+          childrenOrdering: [],
           children: [],
           content: '',
           specific: {},
@@ -55,6 +60,9 @@ describe('Package class tests', () => {
       content: null,
       specific: {},
       pure: false,
+    },
+    setup: {
+      rootOrdering: [],
     },
   };
   const mountPoint = 'mountPoint';
@@ -73,6 +81,7 @@ describe('Package class tests', () => {
     app.useProp(FlexWrapProp);
     app.useProp(GutterProp);
     app.useProp(JustifyContentProp);
+    app.useProp(ComponentNameProp);
     app.init(mountPoint, '123', { ...tree });
     app.mount();
     packager = new Packager(app);

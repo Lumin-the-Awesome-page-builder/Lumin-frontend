@@ -4,3 +4,8 @@
     min-height: 50px;
     min-width: 100%;
 }
+
+#app-builder {
+    background-color: #f4f4f4;
+    height: 100%;
+}

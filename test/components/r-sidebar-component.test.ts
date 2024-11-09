@@ -8,6 +8,7 @@ import useEditorStore from '@/store/editor.store.ts';
 import useProjectPreviewModalStore from '@/store/project-preview-modal.store.ts';
 import useChangeDataStore from '@/store/modals/change-data-project-component.store.ts';
 import { useChooseDomainStore } from '@/store/modals/choose-domen-component.store.ts';
+import useDashboardStore from '@/store/dashboard.store.ts';
 
 vi.mock('naive-ui', async (importOriginal) => {
   const mod = await importOriginal();
@@ -67,10 +68,13 @@ describe('RSidebarComponent test', () => {
   it('Test exit method', async () => {
     const container = new Container('div');
     container.availableProps = [];
+    const updatePreviewMock = vi.fn(() => ({ toastIfError: () => {} }));
+    const loadProjectsMock = vi.fn(() => ({ toastIfError: () => {} }));
     RSidebarComponent.setup = vi.fn(() => {
       const componentStore = useComponentSetupStore();
       componentStore.selectComponent(container);
       const editorStore = useEditorStore();
+      const dashboardStore = useDashboardStore();
       RSidebarComponent.computed.projectName = vi.fn(() => {
         return 'name';
       });
@@ -81,10 +85,13 @@ describe('RSidebarComponent test', () => {
         return '#123';
       });
       editorStore.blockOnCreate = { icon: null, component: null };
+      editorStore.updatePreview = updatePreviewMock;
+      dashboardStore.loadProjects = loadProjectsMock;
       return {
-        editorStore: useEditorStore(),
+        editorStore,
         projectPreviewModalStore: useProjectPreviewModalStore(),
         componentSetupStore: componentStore,
+        dashboardStore,
       };
     });
     const routerMock = vi.fn();
@@ -106,6 +113,8 @@ describe('RSidebarComponent test', () => {
 
     expect(wrapper.vm.save).toBeCalled();
     expect(toastIfErrorMock).toBeCalled();
+    expect(updatePreviewMock).toBeCalled();
+    expect(loadProjectsMock).toBeCalled();
     expect(routerMock).toBeCalledWith({ path: '/dashboard' });
   });
 });

@@ -29,6 +29,7 @@ import ImgFluidProp from '@/editor/properties/ImgFluidProp.ts';
 import BorderRadiusProp from '@/editor/properties/BorderRadiusProp.ts';
 import ContentProp from '@/editor/properties/ContentProp.ts';
 import { PureContentProp } from '@/editor/properties/PureContentProp.ts';
+import ComponentNameProp from '@/editor/properties/ComponentNameProp.ts';
 
 export function getEditorInstance() {
   const editor = new App();
@@ -77,6 +78,8 @@ export function getEditorInstance() {
   // Content
   editor.useProp(ContentProp);
   editor.useProp(PureContentProp);
+
+  editor.useProp(ComponentNameProp);
 
   return editor;
 }

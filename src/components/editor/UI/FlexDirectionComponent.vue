@@ -36,6 +36,7 @@ import FlexDirectionProp from '@/editor/properties/FlexDirectionProp.ts';
 export default {
   name: 'FlexDirectionComponent',
   components: { OptionHeadingComponent, "n-button": NButton },
+  emits: ['changed'],
   props: {
     prop: FlexDirectionProp,
   },
@@ -59,6 +60,7 @@ export default {
       const onSet = (this.activeButton == index) ? null : button.value
       this.activeButton = (this.activeButton == index) ? null : index
       this.prop.setValue(onSet)
+      this.$emit('changed')
     },
   },
   computed: {

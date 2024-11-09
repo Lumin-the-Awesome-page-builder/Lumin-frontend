@@ -6,13 +6,14 @@
       <div class="card-grid">
         <component
           v-for="data in data"
-          :is="cardComponents[type]" 
+          :is="cardComponents[contentType]"
           :key="data.id"
           :id="data.id"
           :title="data.name"
+          :preview="data.preview"
           :date="new Date(data.date)"
           :stars="data.stars"
-          :imageSrc="data.imageSrc || ''"
+          :item-type="contentType"
         />
       </div>
     </n-scrollbar>
@@ -29,9 +30,9 @@
         type: Array,
         required: true
       },
-      type: {
+      contentType: {
         type: String,
-        default: 'default'
+        default: 'project'
       }
     },
     setup() {
@@ -45,7 +46,8 @@
     computed: {
       cardComponents() {
         return {
-          default: CardComponent,
+          'project': CardComponent,
+          'widget': CardComponent,
         };
       }
     }

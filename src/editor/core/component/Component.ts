@@ -10,18 +10,21 @@ export type ComponentObject = {
   props: PropertyObject[];
   content: string;
   children: Record<string, ComponentObject>;
+  childrenOrdering: string[];
   specific: any;
   pure: boolean;
 };
 
 export default abstract class Component {
   public abstract name: string;
+  public userName: string;
   static title: string = 'Component';
   public abstract getTitle(): string;
   public htmlElement: HTMLElement = document.createElement('div');
   public props: PropertyCollection = PropertyCollection.empty();
   public attributes: AttributeCollection = AttributeCollection.empty();
   public children: Record<string, Component> = {};
+  public childrenOrdering: string[] = [];
   public content: string = '';
   public key: string = '';
   public keySalt: string = '';
@@ -104,6 +107,9 @@ export default abstract class Component {
   }
 
   removeChild(key: string) {
+    this.childrenOrdering = this.childrenOrdering.filter(
+      (child) => child !== key,
+    );
     delete this.children[key];
   }
 
@@ -111,9 +117,14 @@ export default abstract class Component {
     this.children[onReplace.key] = onReplace;
   }
 
-  appendChildren(children: Record<string, Component>) {
-    Object.keys(children).forEach((key) => {
+  appendChildren(
+    children: Record<string, Component>,
+    ordering: string[] | null = null,
+  ) {
+    const order = ordering ? ordering : Object.keys(children);
+    order.forEach((key) => {
       children[key].setParent(this);
+      this.childrenOrdering.push(key);
     });
     Object.assign(this.children, children);
   }
@@ -143,17 +154,16 @@ export default abstract class Component {
     this.applyProps();
     this.applyAttributes();
     this.setListener('click');
+    this.setListener('contextmenu');
 
     this.htmlElement.innerHTML = '';
     this.htmlElement.innerText = '';
 
     if (this.children && Object.keys(this.children).length)
-      Object.keys(this.children).forEach((key) =>
+      this.childrenOrdering.forEach((key) =>
         this.htmlElement.appendChild(this.children[key].render(pure)),
       );
     else this.htmlElement.innerText = this.content;
-
-    console.log(this.children, this.content, pure);
 
     if (
       !Object.keys(this.children).length &&
@@ -183,8 +193,7 @@ export default abstract class Component {
       children = children.reduce((prev, current) =>
         Object.assign(prev, current),
       );
-    console.log(this.specific);
-    console.log(this.pure);
+
     return {
       name: this.name,
       key: this.key,
@@ -200,6 +209,7 @@ export default abstract class Component {
         value: prop.value,
       })),
       children,
+      childrenOrdering: this.childrenOrdering,
       content: this.content,
       specific: this.specific,
       pure: this.pure,

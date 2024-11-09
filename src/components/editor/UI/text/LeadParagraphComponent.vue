@@ -30,6 +30,7 @@ export default {
     CheckboxComponent,
     OptionHeadingComponent,
   },
+  emits: ['changed'],
   props: {
     prop: {
       type: LeadParagraphProp
@@ -53,6 +54,8 @@ export default {
         this.prop.setValue('checked', index)
       else
         this.prop.setValue(null, index)
+      
+      this.$emit('changed')
     }
   }
 };

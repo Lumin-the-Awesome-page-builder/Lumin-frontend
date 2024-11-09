@@ -11,7 +11,7 @@
       </template>
     </n-input>
     
-    <CardGrid :data="data" type="default" />
+    <CardGrid :data="data" :contentType="contentType" />
   </div>
 </template>
 
@@ -39,6 +39,9 @@ export default {
     },
     header() {
       return (this.dashboardStore.getType == "project") ? 'проекты' : 'виджеты';
+    },
+    contentType() {
+      return this.dashboardStore.getType
     },
     projectLabel() {
       const count = this.projectCount;

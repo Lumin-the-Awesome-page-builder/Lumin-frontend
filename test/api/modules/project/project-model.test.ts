@@ -64,6 +64,7 @@ describe('ProjectModel class tests', () => {
         'name',
         true,
         1,
+        '',
         1,
         'data',
         ['tag'],
@@ -75,11 +76,11 @@ describe('ProjectModel class tests', () => {
         name: 'name',
         isPublic: true,
         date: 1,
+        preview: '',
         stars: 1,
         data: 'data',
         tags: ['tag'],
         category_id: 1,
-        imageSrc: '../src/assets/imageCard/screenshot.png',
       });
     });
 

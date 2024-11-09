@@ -208,10 +208,12 @@ describe('Base component class tests', () => {
     it('Test render with children', () => {
       const renderResult = 'render-result';
       const childMock = {
+        key: 123,
         render: vi.fn(() => renderResult),
       };
       //@ts-ignore
-      component.children = [childMock];
+      component.children = { 123: childMock };
+      component.childrenOrdering = [123];
       component.content = 'test-content';
 
       component.render();

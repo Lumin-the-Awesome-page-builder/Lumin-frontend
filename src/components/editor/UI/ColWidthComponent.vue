@@ -26,6 +26,7 @@ import ColWidthProp from '@/editor/properties/ColWidthProp.ts';
 export default {
   name: 'ColWidthComponent',
   components: { OptionHeadingComponent, SliderComponent },
+  emits: ['changed'],
   props: {
     prop: ColWidthProp,
   },
@@ -49,6 +50,7 @@ export default {
   methods: {
     update(index, data) {
       this.prop.setValue(data, index)
+      this.$emit('changed')
     }
   },
   computed: {

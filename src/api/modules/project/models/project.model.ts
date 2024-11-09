@@ -52,6 +52,17 @@ export class ProjectModel extends ApiModelUtil {
       ),
     );
   }
+
+  public async patchPreview(
+    id: number,
+    encodedPreview: string,
+  ): Promise<ApiResponseDto<any>> {
+    return await this.authorizedRequest(
+      new ApiRequestDto(`/lumin/project/${id}/preview`, 'PATCH', {
+        preview: encodedPreview,
+      }),
+    );
+  }
 }
 
 export default new ProjectModel();
