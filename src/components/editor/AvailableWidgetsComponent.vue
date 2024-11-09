@@ -11,8 +11,6 @@
 
 <script lang="ts">
 import BlockComponent from '@/components/editor/BlockComponent.vue';
-import Component from '@/editor/core/component/Component.ts'
-import useDashboardStore from '@/store/dashboard.store.ts';
 import useWidgetLibraryStore from '@/store/widget-library.store.ts';
 
 export default {

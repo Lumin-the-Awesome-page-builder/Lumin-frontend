@@ -17,12 +17,12 @@
 </template>
 
 <script lang="ts">
-
+import { defineComponent } from 'vue'
 import useEditorStore from '@/store/editor.store.ts';
 import useWidgetLibraryStore from '@/store/widget-library.store.ts';
 import { useNotification } from 'naive-ui';
 
-export default {
+export default defineComponent({
   name: 'BlockComponent',
   props: {
     title: String,
@@ -71,7 +71,7 @@ export default {
       this.editorStore.pickBlock({ component: pickedComponent, icon: picked, widget: this.componentType == 'widget' });
     }
   }
-};
+});
 </script>
 
 <style scoped>
