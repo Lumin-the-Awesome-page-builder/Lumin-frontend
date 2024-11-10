@@ -46,21 +46,6 @@ export default defineComponent({
   },
   methods: {
     async create() {
-      const div = document.createElement('div');
-      div.id = "picked"
-      div.classList.add('picked-up-block')
-      const overlay = document.createElement('div');
-      overlay.classList.add('overlay')
-      overlay.style = `background-image: url("${this.img}");`
-      const span = document.createElement('span');
-      span.innerText = this.title
-      div.appendChild(overlay)
-      div.appendChild(span)
-      document.body.appendChild(div)
-      const picked = document.getElementById("picked")
-      document.addEventListener("mousemove", (ev) => {
-        picked.style = `top: 0; left: 0; transform: translate(${ev.clientX + 40}px, ${ev.clientY + 40}px)`
-      })
       let pickedComponent = this.component
       if (this.componentType === 'widget') {
         const loaded = await this.widgetLibraryStore.loadWidgetData(Number(this.component))
@@ -68,7 +53,7 @@ export default defineComponent({
         if (loaded.success)
           pickedComponent = loaded.getData().data
       }
-      this.editorStore.pickBlock({ component: pickedComponent, icon: picked, widget: this.componentType == 'widget' });
+      this.editorStore.pickBlock({ component: pickedComponent, icon: this.img, widget: this.componentType == 'widget' });
     }
   }
 });

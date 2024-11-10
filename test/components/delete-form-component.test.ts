@@ -29,6 +29,6 @@ describe('DeleteFormComponent tests', () => {
   it('test close functions', () => {
     const wrapper = mount(DeleteFormComponent);
     wrapper.vm.cancelCallback();
-    expect(wrapper.vm.projectStore.closeModal).toBeCalled();
+    expect(wrapper.vm.deleteModalStore.closeModal).toBeCalled();
   });
 });

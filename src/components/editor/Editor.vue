@@ -55,8 +55,10 @@ export default defineComponent({
         (await this.editorStore.save())
       if (result)
         result.toastIfError(this.notificationStore);
+      
+      return comp
     },
-    async moveComponent(left: boolean) {
+    async moveComponentInParent(left: boolean) {
       const updated = this.app.move(this.editorStore.blockOnSetup, left)
       const result = (updated) ?
         (await this.componentSetupStore.patchTree(updated)) :
@@ -64,8 +66,18 @@ export default defineComponent({
       if (result)
         result.toastIfError(this.notificationStore);
     },
-    async saveAsWidget() {
-      let result = await this.componentSetupStore.saveWidget();
+    async moveComponent(component: Component) {
+      const previewImage = await this.componentSetupStore.generatePreview(component)
+      const siblings = component.parent ? component.parent.childrenOrdering : this.app.rootOrdering;
+      const nextSibling = siblings.indexOf(component.key) + 1
+      
+      this.editorStore.onMoveFrom = nextSibling < siblings.length ? siblings[nextSibling] : 'last'
+      
+      await this.removeComponent(component)
+      this.editorStore.pickBlock({ component: JSON.stringify(component.toJson()), icon: previewImage, widget: true })
+    },
+    async saveAsWidget(component: Component) {
+      let result = await this.componentSetupStore.saveWidget(component);
       if (result)
         result.toastIfError(this.notificationStore);
       result = await this.widgetLibraryStore.loadWidgets()
@@ -74,6 +86,7 @@ export default defineComponent({
     },
     async placeBlock(picked, parent) {
       if (this.editorStore.anyBlockPicked) {
+        console.log(picked, parent)
         picked.icon.remove()
         const added = this.editorStore.placeBlock(parent)
         const result = (parent) ? (await this.componentSetupStore.patchTree(added.parent)) : (await this.editorStore.save())
@@ -98,9 +111,6 @@ export default defineComponent({
         ev.preventDefault()
         this.editorStore.contextMenu.autoClose = true
         this.editorStore.closeContext()
-        if (this.editorStore.blockOnCreate.icon) {
-          this.editorStore.blockOnCreate.icon.remove()
-        }
         this.editorStore.clearBlockSelection()
       }
     })
@@ -126,24 +136,30 @@ export default defineComponent({
     
     app.subscribe('contextmenu', (topPath: Component[], ev) => {
       console.log("open context")
-      this.editorStore.openContext(topPath, { x: ev.clientX, y: ev.clientY }, async (selected) => {
+      this.editorStore.openContext(topPath, { x: ev.clientX, y: ev.clientY }, async (selected: Component) => {
         this.editorStore.openSetupContext(selected, async (value) => {
-          this.editorStore.contextMenu.autoClose = true
           switch (value.val) {
             case 'edit':
+              this.editorStore.contextMenu.autoClose = true
               await this.selectComponent(selected)
               break;
             case 'remove':
+              this.editorStore.contextMenu.autoClose = true
               await this.removeComponent(selected)
               break;
+            case 'move':
+              this.editorStore.contextMenu.autoClose = true
+              await this.moveComponent(selected)
+              break;
             case 'save-widget':
-              await this.saveAsWidget()
+              this.editorStore.contextMenu.autoClose = true
+              await this.saveAsWidget(selected)
               break;
             case 'move-left':
-              await this.moveComponent(true)
+              await this.moveComponentInParent(true)
               break;
             case 'move-right':
-              await this.moveComponent(false)
+              await this.moveComponentInParent(false)
               break;
           }
         })

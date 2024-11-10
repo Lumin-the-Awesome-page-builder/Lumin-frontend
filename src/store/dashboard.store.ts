@@ -13,6 +13,7 @@ const useDashboardStore = defineStore({
     data: [],
     contentType: 'project',
     selected: {},
+    search: '',
   }),
   getters: {
     getData: (state) =>
@@ -43,6 +44,7 @@ const useDashboardStore = defineStore({
       document.body.removeChild(link);
     },
     async loadProjects() {
+      this.search = '';
       const loaded = await LibraryModel.getProjects();
       if (loaded.success) {
         this.contentType = 'project';
@@ -51,6 +53,7 @@ const useDashboardStore = defineStore({
       return loaded;
     },
     async loadWidgets() {
+      this.search = '';
       const loaded = await LibraryModel.getWidgets();
       if (loaded.success) {
         this.contentType = 'widget';

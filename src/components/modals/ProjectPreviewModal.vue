@@ -30,7 +30,7 @@
           </n-button>
         </div>
         <div class="downPart">
-          <n-button color="#3535FFA6" class="btn" @click="goToEditor">Редактировать
+          <n-button color="#3535FFA6" class="btn" :disabled="!isProject" :class="{'disabled': !isProject}" @click="goToEditor">Редактировать
             <template #icon>
               <n-icon>
                 <Pencil/>
@@ -38,14 +38,14 @@
             </template>
           </n-button>
           <div class="btnGroup">
-            <n-button color="#3535FFA6" class="btn" @click="share">Поделиться
+            <n-button color="#3535FFA6" class="btn" :disabled="!isProject" :class="{'disabled': !isProject}" @click="share">Поделиться
               <template #icon>
                 <n-icon>
                   <Share />
                 </n-icon>
               </template>
             </n-button>
-            <n-button color="#3535FFA6" class="btn" @click="download">Скачать
+            <n-button color="#3535FFA6" class="btn" :disabled="!isProject" :class="{'disabled': !isProject}" @click="download">Скачать
               <template #icon>
                 <n-icon>
                   <Download />
@@ -67,7 +67,7 @@ import Packager from '@/editor/core/Packager.ts';
 import { getEditorInstance } from '@/editor/plugin.ts'
 import DeleteFormComponent from '@/components/modals/DeleteFormComponent.vue';
 import HelloFormComponent from '@/components/modals/HelloFormComponent.vue';
-import useDeleteProjectModalStore from '@/store/modals/delete-form-component.store.ts';
+import useDeleteModalStore from '@/store/modals/delete-form-component.store.ts';
 
 export default {
   name: "ProjectPreviewModal",
@@ -83,7 +83,7 @@ export default {
     return {
       previewModalStore: usePreviewModalStore(),
       editorStore: useEditorStore(),
-      deleteModalStore: useDeleteProjectModalStore(),
+      deleteModalStore: useDeleteModalStore(),
     }
   },
   computed: {
@@ -100,6 +100,10 @@ export default {
       const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
       return (new Date(this.data.created_at)).toLocaleDateString('ru-RU', options).replace(/\//g, '.');
     },
+    isProject() {
+      console.log(this.data.itemType)
+      return this.data.itemType == 'project'
+    }
   },
   methods: {
     closeModal() {
@@ -130,7 +134,7 @@ export default {
     deleteProject() {
       const id = this.data.id
       const name = this.data.name
-      this.deleteModalStore.openModal({ id: id, name: name })
+      this.deleteModalStore.openModal({ id: id, name: name, itemType: this.data.itemType })
     }
   }
 }
@@ -164,6 +168,11 @@ export default {
   max-height: 80vh;
   padding-bottom: 3.5rem;
   z-index: 10;
+}
+
+.disabled {
+  color: #9d9cc5;
+  cursor: default;
 }
 
 .inputsContainer {

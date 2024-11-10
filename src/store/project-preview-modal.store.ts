@@ -47,7 +47,8 @@ const usePreviewModalStore = defineStore({
       }
 
       if (data.success) this.data = data.getData();
-      console.log(data);
+
+      this.data.itemType = itemType;
       this.isOpen = true;
       return data;
     },

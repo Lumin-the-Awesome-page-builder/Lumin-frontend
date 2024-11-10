@@ -1,13 +1,13 @@
 import { setActivePinia, createPinia } from 'pinia';
 import { describe, it, expect, beforeEach } from 'vitest';
-import useDeleteProjectModalStore from '@/store/modals/delete-form-component.store.ts';
+import useDeleteModalStore from '@/store/modals/delete-form-component.store.ts';
 
 describe('useProjectStore', () => {
   let projectStore;
 
   beforeEach(async () => {
     setActivePinia(createPinia());
-    projectStore = await useDeleteProjectModalStore();
+    projectStore = await useDeleteModalStore();
   });
 
   it('initializes with default state', () => {

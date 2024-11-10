@@ -62,7 +62,7 @@ describe('Package class tests', () => {
       pure: false,
     },
     setup: {
-      rootOrdering: [],
+      rootOrdering: ['data-123-div-1729624518542'],
     },
   };
   const mountPoint = 'mountPoint';

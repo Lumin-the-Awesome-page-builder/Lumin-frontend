@@ -453,9 +453,7 @@ describe('App.ts unit tests', () => {
         const componentMock = {
           key: 'key',
           pure: true,
-          specific: {
-            htmlOnRender: 'html',
-          },
+          render: vi.fn(() => 'html'),
         };
         const appendChildMock = vi.fn();
         app.rootHTML = {
@@ -467,6 +465,7 @@ describe('App.ts unit tests', () => {
         app.attachToParent(componentMock, null);
 
         expect(appendChildMock).toBeCalledWith('html');
+        expect(componentMock.render).toBeCalled();
         expect(app.root).toEqual({ key: componentMock });
         expect(app.rootOrdering).toEqual(['key']);
       });

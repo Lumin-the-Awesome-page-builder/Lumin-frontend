@@ -117,9 +117,23 @@ describe('EditorStore tests', () => {
     const store = useEditorStore();
     store.blockOnCreate = null;
 
+    const div = document.createElement('div');
+    div.id = 'picked';
+    div.classList.add('picked-up-block');
+
+    const overlay = document.createElement('div');
+    overlay.classList.add('overlay');
+    overlay.style = `background-image: url("${'obj'}");`;
+
+    const span = document.createElement('span');
+    span.innerText = this.title;
+
+    div.appendChild(overlay);
+    div.appendChild(span);
+
     store.pickBlock({ component: '123', icon: 'obj' });
 
-    expect(store.blockOnCreate).toEqual({ component: '123', icon: 'obj' });
+    expect(store.blockOnCreate).toEqual({ component: '123', icon: div });
   });
 
   it('test clear block selection', () => {
@@ -156,7 +170,7 @@ describe('EditorStore tests', () => {
 
     store.placeBlock('parent');
 
-    expect(addMock).toBeCalledWith('test', 'parent');
+    expect(addMock).toBeCalledWith('test', 'parent', null);
     expect(store.clearBlockSelection).toBeCalled();
   });
 });

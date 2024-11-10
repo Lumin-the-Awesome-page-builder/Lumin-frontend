@@ -19,6 +19,7 @@ const useEditorStore = defineStore({
       icon: null,
       component: null,
     },
+    onMoveFrom: null,
     blockOnSetup: null,
     contextMenu: {
       active: false,
@@ -64,6 +65,7 @@ const useEditorStore = defineStore({
       const ProjectModel = await import(
         '@/api/modules/project/models/project.model.ts'
       );
+      console.log(this.app.root);
       const packager = new Packager(this.app);
       const data = state
         ? state
@@ -132,28 +134,63 @@ const useEditorStore = defineStore({
 
       return await this.save(this.selected);
     },
-    pickBlock(block: {
-      component: string;
-      icon: HTMLElement;
-      widget: boolean;
-    }) {
-      this.blockOnCreate = block;
+    pickBlock(block: { component: string; icon: string; widget: boolean }) {
+      const div = document.createElement('div');
+      div.id = 'picked';
+      div.classList.add('picked-up-block');
+
+      const overlay = document.createElement('div');
+      overlay.classList.add('overlay');
+      overlay.style = `background-image: url("${block.icon}");`;
+
+      const span = document.createElement('span');
+      span.innerText = this.title;
+
+      div.appendChild(overlay);
+      div.appendChild(span);
+      document.body.appendChild(div);
+
+      const picked = document.getElementById('picked');
+      document.addEventListener('mousemove', (ev) => {
+        picked.style = `top: 0; left: 0; transform: translate(${ev.clientX + 40}px, ${ev.clientY + 40}px)`;
+      });
+
+      this.blockOnCreate = { ...block, icon: picked };
     },
     clearBlockSelection() {
       if (this.blockOnCreate.icon) this.blockOnCreate.icon.remove();
+
+      console.log(this.onMoveFrom);
+
+      if (this.onMoveFrom) {
+        const oldParent =
+          this.onMoveFrom != 'last'
+            ? this.app.state[this.onMoveFrom].parent
+            : null;
+        this.placeBlock(oldParent ? oldParent.key : null, this.onMoveFrom);
+        this.onMoveFrom = null;
+      }
+
       this.blockOnCreate = {
         widget: false,
         icon: null,
         component: null,
       };
     },
-    placeBlock(parent: string) {
+    placeBlock(parent: string, placeBefore: string | null = null) {
       if (!this.anyBlockPicked) return;
+
+      if (this.onMoveFrom) this.onMoveFrom = null;
 
       let added;
       if (this.blockOnCreate.widget)
-        added = this.app.addWidget(this.blockOnCreate.component, parent);
-      else added = this.app.add(this.blockOnCreate.component, parent);
+        added = this.app.addWidget(
+          this.blockOnCreate.component,
+          parent,
+          placeBefore,
+        );
+      else
+        added = this.app.add(this.blockOnCreate.component, parent, placeBefore);
       this.clearBlockSelection();
 
       return added;
@@ -170,11 +207,16 @@ const useEditorStore = defineStore({
           },
           {
             key: 2,
+            userName: 'Переместить',
+            val: 'move',
+          },
+          {
+            key: 3,
             userName: 'Редактировать',
             val: 'edit',
           },
           {
-            key: 3,
+            key: 4,
             userName: 'Сохранить виджет',
             val: 'save-widget',
           },

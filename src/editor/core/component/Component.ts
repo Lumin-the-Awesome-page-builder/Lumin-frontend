@@ -30,6 +30,9 @@ export default abstract class Component {
   public keySalt: string = '';
   public scopeIdentifier: string = '';
 
+  //We need to store old keys when start buildTree with refreshKeys arg to correctly render refreshed children
+  public oldKey: string | null = null;
+
   public availableProps: string[];
 
   public parent: Component | null = null;
@@ -85,8 +88,10 @@ export default abstract class Component {
     this.attributes.add(new Attribute(this.key));
   }
 
-  generateKey() {
-    this.setKey(`data-${this.keySalt}-${this.elementName}-${Date.now()}`);
+  generateKey(append: string = '') {
+    this.setKey(
+      `data-${this.keySalt}-${this.elementName}-${Date.now()}${append}`,
+    );
   }
 
   setProps(props: Property[]) {
@@ -102,8 +107,45 @@ export default abstract class Component {
     return this;
   }
 
-  appendChild(child: Component) {
-    this.appendChildren({ [child.key]: child.setParent(this) });
+  appendChild(child: Component, placeBefore: string = 'last') {
+    if (placeBefore == 'last' || !placeBefore)
+      this.appendChildren({ [child.key]: child.setParent(this) });
+    else {
+      const index = this.childrenOrdering.indexOf(placeBefore);
+      this.childrenOrdering = this.childrenOrdering.splice(index, 0, child.key);
+      child.setParent(this);
+    }
+  }
+
+  appendChildren(
+    children: Record<string, Component>,
+    ordering: string[] | null = null,
+  ) {
+    if (Object.keys(children).length <= 0) return;
+
+    const virtualKeys = Object.keys(children)
+      .map((key) => {
+        const child = children[key];
+        if (child.oldKey) {
+          return { [child.oldKey]: child.key };
+        } else {
+          return { [child.key]: child.key };
+        }
+      })
+      .reduce((prev, cur) => Object.assign(prev, cur));
+
+    console.log(virtualKeys);
+    console.log(ordering);
+    console.log(children);
+
+    const order = ordering ? ordering : Object.keys(children);
+
+    order.forEach((key) => {
+      const virtualKey = virtualKeys[key];
+      children[virtualKey].setParent(this);
+      this.childrenOrdering.push(virtualKey);
+    });
+    Object.assign(this.children, children);
   }
 
   removeChild(key: string) {
@@ -115,18 +157,6 @@ export default abstract class Component {
 
   replaceChild(onReplace: Component) {
     this.children[onReplace.key] = onReplace;
-  }
-
-  appendChildren(
-    children: Record<string, Component>,
-    ordering: string[] | null = null,
-  ) {
-    const order = ordering ? ordering : Object.keys(children);
-    order.forEach((key) => {
-      children[key].setParent(this);
-      this.childrenOrdering.push(key);
-    });
-    Object.assign(this.children, children);
   }
 
   setContent(content: string) {

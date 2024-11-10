@@ -83,19 +83,23 @@ export default {
   },
   methods: {
     async editProject() {
-      this.$router.push({ path: `/project/${this.id}/edit` })
+      if (this.itemType == 'project')
+        this.$router.push({ path: `/project/${this.id}/edit` })
     },
     shareProject() {
       console.log(this.title);
     },
     async downloadProject() {
-      const result = await this.dashboardStore.downloadProject(this.id);
-      result.toastIfError(this.notificationStore);
+      if (this.itemType == 'project') {
+        const result = await this.dashboardStore.downloadProject(this.id);
+        result.toastIfError(this.notificationStore);
+      }
     },
     checked(id) {
       this.dashboardStore.toggleSelected(id);
     },
     async openModal() {
+      console.log(this.itemType)
       const result = await this.previewModalStore.openModal(this.id, this.itemType)
       result.toastIfError(this.notificationStore);
     }
