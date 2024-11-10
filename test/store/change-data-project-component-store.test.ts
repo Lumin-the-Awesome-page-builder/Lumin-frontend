@@ -13,7 +13,7 @@ describe('useChangeDataStore', () => {
   it('initializes with default state', () => {
     expect(changeDataStore.showModal).toBe(false);
     expect(changeDataStore.projectName).toBe('');
-    expect(changeDataStore.category).toBe('');
+    expect(changeDataStore.category).toBe(0);
     expect(changeDataStore.tags).toBe('');
   });
 
