@@ -5,17 +5,18 @@
       <span class="prj-count">{{ projectCount }} {{ projectLabel }}</span>
     </div>
     
-    <n-input class="search-input" placeholder="Введите фразу для поиска...">
+    <n-input class="search-input" placeholder="Введите фразу для поиска..." v-model:value="dashboardStore.search">
       <template #prefix>
         <n-icon :component="Search" color="#6F6C99" />
       </template>
     </n-input>
     
-    <CardGrid :data="data" :contentType="contentType" />
+    <CardGrid :cards="data" :contentType="contentType" />
   </div>
 </template>
 
 <script lang="ts">
+import { shallowRef } from 'vue'
 import CardGrid from '@/components/CardGrid.vue';
 import { Search } from '@vicons/ionicons5';
 import useDashboardStore from '@/store/dashboard.store.ts'
@@ -28,7 +29,7 @@ export default {
     }
   },
   data: () => ({
-    Search,
+    Search: shallowRef(Search),
   }),
   computed: {
     data() {

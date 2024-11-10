@@ -1,7 +1,7 @@
 <template>
   <n-message-provider>
     <n-modal
-      v-model:show="projectStore.showModal"
+      v-model:show="deleteModalStore.showModal"
       transform-origin="center"
       preset="card"
       style="width: 600px"
@@ -29,27 +29,31 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import useDeleteProjectModalStore from '@/store/modals/delete-form-component.store.ts';
+import useDeleteModalStore from '@/store/modals/delete-form-component.store.ts';
 
 export default defineComponent({
   name: "DeleteFormComponent",
   setup() {
     return {
-      projectStore: useDeleteProjectModalStore(),
+      deleteModalStore: useDeleteModalStore(),
     };
   },
   methods: {
     deleteProject() {
-      this.projectStore.deleteProject();
-      this.projectStore.closeModal();
+      if (this.deleteModalStore.project.itemType == 'project') {
+        this.deleteModalStore.deleteProject();
+      } else {
+        this.deleteModalStore.deleteWidget();
+      }
+      this.deleteModalStore.closeModal();
     },
     cancelCallback() {
-      this.projectStore.closeModal();
+      this.deleteModalStore.closeModal();
     }
   },
   computed: {
     projectName() {
-      return this.projectStore.project.name
+      return this.deleteModalStore.project.name
     }
   }
 });

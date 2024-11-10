@@ -44,7 +44,7 @@ describe('Test Card Grid', () => {
 
     const wrapper = mount(CardGrid, {
       props: {
-        data: mockData,
+        cards: mockData,
       },
     });
 

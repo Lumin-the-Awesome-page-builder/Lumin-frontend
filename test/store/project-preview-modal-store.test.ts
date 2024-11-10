@@ -3,6 +3,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import usePreviewModalStore from '@/store/project-preview-modal.store.ts';
 import ProjectModel from '@/api/modules/project/models/project.model.ts';
 import WidgetModel from '@/api/modules/widget/models/widget.model.ts';
+import appConf from '@/api/conf/app.conf.ts';
 
 vi.mock('@/api/modules/project/models/project.model.ts', () => ({
   default: {
@@ -54,6 +55,7 @@ describe('usePreviewModalStore', () => {
       name: 'Test project',
       date: expect.any(Number),
       stars: 14,
+      itemType: 'project',
     });
   });
 
@@ -69,6 +71,7 @@ describe('usePreviewModalStore', () => {
       name: 'Test project',
       date: expect.any(Number),
       stars: 14,
+      itemType: 'widget',
     });
   });
 
@@ -96,7 +99,7 @@ describe('usePreviewModalStore', () => {
       id: 1,
       name: 'Test project',
       date: expect.any(Number),
-      preview: 'http://localhost:8080/lumin/file/no-preview.png',
+      preview: `${appConf.proto}://${appConf.endpoint}/lumin/file/no-preview.png`,
       stars: 14,
     });
   });

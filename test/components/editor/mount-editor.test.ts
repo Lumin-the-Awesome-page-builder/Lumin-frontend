@@ -25,6 +25,7 @@ vi.mock('@/store/editor.store.ts', () => {
   const useById = vi.fn();
   const setApp = vi.fn();
   const placeBlock = vi.fn(() => ({ parent: 'parent' }));
+  const generatePreview = vi.fn(() => 'preview');
   const save = vi.fn(() => ({ toastIfError: () => {} }));
   return {
     default: () => ({
@@ -35,6 +36,7 @@ vi.mock('@/store/editor.store.ts', () => {
       anyBlockPicked: true,
       blockOnSetup: 'setup',
       placeBlock,
+      generatePreview,
     }),
   };
 });
@@ -132,14 +134,14 @@ describe('Editor component', async () => {
     });
   });
 
-  describe('move component test', () => {
+  describe('move component in parent test', () => {
     it('dont have parent', async () => {
       const editorStore = useEditorStore();
       wrapper.vm.app = {
         move: vi.fn(() => false),
       };
 
-      await wrapper.vm.moveComponent(true);
+      await wrapper.vm.moveComponentInParent(true);
 
       expect(editorStore.save).toBeCalled();
       expect(wrapper.vm.app.move).toBeCalledWith('setup', true);
@@ -151,7 +153,7 @@ describe('Editor component', async () => {
         move: vi.fn(() => true),
       };
 
-      await wrapper.vm.moveComponent(true);
+      await wrapper.vm.moveComponentInParent(true);
 
       expect(componentSetupStore.patchTree).toBeCalledWith(true);
       expect(wrapper.vm.app.move).toBeCalledWith('setup', true);

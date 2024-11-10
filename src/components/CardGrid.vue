@@ -5,7 +5,7 @@
     >
       <div class="card-grid">
         <component
-          v-for="data in data"
+          v-for="data in dataOnRender"
           :is="cardComponents[contentType]"
           :key="data.id"
           :id="data.id"
@@ -22,11 +22,12 @@
   <script lang="ts">
   import CardComponent from '@/components/CardComponent.vue';
   import usePreviewModalStore from '@/store/project-preview-modal.store.ts';
+  import useDashboardStore from '@/store/dashboard.store.ts';
   
   export default {
     name: 'CardGrid',
     props: {
-      data: {
+      cards: {
         type: Array,
         required: true
       },
@@ -38,12 +39,18 @@
     setup() {
       return {
         previewModalStore: usePreviewModalStore(),
+        dashboardStore: useDashboardStore(),
       }
     },
     components: {
       CardComponent,
     },
     computed: {
+      dataOnRender() {
+        if (this.dashboardStore.search.length > 0) {
+          return this.cards.filter(el => el.name.toLowerCase().includes(this.dashboardStore.search))
+        } else return this.cards
+      },
       cardComponents() {
         return {
           'project': CardComponent,

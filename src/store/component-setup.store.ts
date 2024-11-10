@@ -24,6 +24,19 @@ const useComponentSetupStore = defineStore({
         new PatchProjectTreeDto(updatePath.reverse(), packed),
       );
     },
+    async generatePreview(component: Component) {
+      const htmlComponent = component.pure
+        ? component.specific.htmlOnRender
+        : component.htmlElement;
+
+      return await html2canvas(htmlComponent, {
+        windowWidth: 500,
+        windowHeight: 300,
+        scale: 1,
+      }).then((canvas) => {
+        return canvas.toDataURL('image/png');
+      });
+    },
     async selectComponent(component: Component) {
       let result;
       if (this.component) {
@@ -32,20 +45,16 @@ const useComponentSetupStore = defineStore({
       this.component = component;
       return result;
     },
-    async saveWidget() {
-      const htmlComponent = this.component.pure
-        ? this.component.specific.htmlOnRender
-        : this.component.htmlElement;
-
-      const dataUrl = (
-        await html2canvas(htmlComponent, {
-          windowWidth: 500,
-          windowHeight: 300,
-          scale: 1,
-        }).then((canvas) => {
-          return canvas.toDataURL('image/png');
-        })
-      ).split('base64,')[1];
+    async saveWidget(component: Component | null = null) {
+      const componentName = component
+        ? component.userName
+        : this.component.userName;
+      const componentJson = component
+        ? component.toJson()
+        : this.component.toJson();
+      const dataUrl = component
+        ? (await this.generatePreview(component)).split('base64,')[1]
+        : (await this.generatePreview(this.component)).split('base64,')[1];
 
       const widgetModel = (
         await import('@/api/modules/widget/models/widget.model.ts')
@@ -53,8 +62,8 @@ const useComponentSetupStore = defineStore({
 
       return await widgetModel.create(
         new CreateWidgetDto(
-          this.component.userName,
-          JSON.stringify(this.component.toJson()),
+          componentName,
+          JSON.stringify(componentJson),
           [],
           1,
           dataUrl,

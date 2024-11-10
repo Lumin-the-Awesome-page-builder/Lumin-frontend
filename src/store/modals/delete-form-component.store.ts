@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 
-const useDeleteProjectModalStore = defineStore('deleteProjectModal', {
+const useDeleteModalStore = defineStore('deleteProjectModal', {
   state: () => ({
-    project: { id: 0, name: 'Название проекта' },
+    project: { id: 0, name: 'Название проекта', itemType: 'project' },
     showModal: false,
   }),
   getters: {
@@ -18,7 +18,16 @@ const useDeleteProjectModalStore = defineStore('deleteProjectModal', {
       const ProjectModel = await import(
         '@/api/modules/project/models/project.model.ts'
       );
-      ProjectModel.default.delete(this.project.project.id).then(() => {
+      ProjectModel.default.delete(this.project.id).then(() => {
+        window.location.reload();
+      });
+    },
+    async deleteWidget() {
+      this.closeModal();
+      const WidgetModel = await import(
+        '@/api/modules/widget/models/widget.model.ts'
+      );
+      WidgetModel.default.delete(this.project.id).then(() => {
         window.location.reload();
       });
     },
@@ -27,4 +36,4 @@ const useDeleteProjectModalStore = defineStore('deleteProjectModal', {
     },
   },
 });
-export default useDeleteProjectModalStore;
+export default useDeleteModalStore;
