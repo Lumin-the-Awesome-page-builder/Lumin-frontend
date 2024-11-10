@@ -16,15 +16,15 @@
         <div class="container">
           <div class="inputs_container">
             <h2 class="container_title title">Изменение данных</h2>
-            <span class="user_title title">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
-            <span class="user_title title">Fusce placerat, magna vel gravida pulvinar</span>
+            <span class="user_title title">В данном разделе возможна смена параметров проекта</span>
+            <span class="user_title title">Если поле не запролнить, но значение останется прежним</span>
             <div class="inputBlock">
               <h3 class="title inputBlockText">Название</h3>
               <n-input placeholder="Проект 1" v-model:value="projectName" type="text" class="input"></n-input>
             </div>
             <div class="inputBlock">
               <h3 class="title inputBlockText">Категория</h3>
-              <n-dropdown type="divider" trigger="hover" :options="options" class="input" @select="handleSelect">
+              <n-dropdown type="divider" trigger="click" :menu-props="menuProps" :options="options" class="input" @select="handleSelect">
                 <n-button class="btn" id="hover-btn">Выберите категорию</n-button>
               </n-dropdown>
             </div>
@@ -53,7 +53,14 @@ export default defineComponent({
     return {
       projectName: "",
       category: "",
-      tags: ""
+      tags: "",
+      menuProps: () => ({
+        style: {
+          width: '15rem',
+          textAlign: 'center',
+        },
+        placement: 'bottom-end'
+      })
     }
   },
   setup() {
@@ -66,7 +73,9 @@ export default defineComponent({
       showDropdown: showDropdownRef,
       categories: [],
       handleSelect(key: string | number) {
-        document.getElementById('hover-btn').innerText = key
+        const el = document.getElementById('hover-btn')
+        el.innerText = key
+        el.setAttribute('style', 'border: 1px solid rgb(225, 225, 227);')
       },
       options: [
         {
@@ -92,7 +101,6 @@ export default defineComponent({
       })
       this.changeDataStore.setCategory(newCategory)
       this.changeDataStore.setTags(tags)
-
       this.changeDataStore.update()
     },
     cancelCallback() {
@@ -169,8 +177,6 @@ export default defineComponent({
   width: 15rem;
   margin: 1.5rem;
   color: #3535478C;
-  border-color: #6F6C99 !important;
-  transition: border-color 0.3s ease !important;
 }
 
 .inputBlock {
