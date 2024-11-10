@@ -5,7 +5,7 @@ const useChangeDataStore = defineStore('changeDataComponent', {
     showModal: false,
     projectId: 0,
     projectName: '',
-    category: '',
+    category: 0,
     tags: '',
   }),
   actions: {
@@ -26,8 +26,8 @@ const useChangeDataStore = defineStore('changeDataComponent', {
       if (this.projectName != '') {
         updateData.name = this.projectName;
       }
-      if (this.category != '') {
-        updateData.category = this.category;
+      if (this.category != 0) {
+        updateData.category_id = this.category;
       }
       if (this.tags != '') {
         updateData.tags = this.tags;

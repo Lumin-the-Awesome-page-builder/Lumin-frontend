@@ -34,7 +34,11 @@ describe('ChangeDataComponent tests', () => {
   });
 
   it('test on saveForm function', () => {
+    const mockElement = { innerText: 'mocked text' };
+
+    vi.spyOn(document, 'getElementById').mockReturnValue(mockElement);
     const wrapper = mount(ChangeDataComponent);
+
     wrapper.vm.saveForm();
 
     expect(wrapper.vm.changeDataStore.setProjectName).toBeCalled();
