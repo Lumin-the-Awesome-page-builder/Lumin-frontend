@@ -116,7 +116,7 @@ export default {
       return this.project.name
     },
     projectCategory() {
-      return this.project.category_id;
+      return this.project.category_name;
     },
     projectTags() {
       return `#${this.project.tags.join(" #")}`
@@ -184,11 +184,6 @@ export default {
       })
     },
   },
-  computed: {
-    availableBlocks() {
-      return this.editorStore.getAvailableBlocks;
-    }
-  }
 };
 </script>
 
