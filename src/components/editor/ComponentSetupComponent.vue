@@ -25,14 +25,15 @@
   <TextTransformComponent @changed='propUpdated' v-if="textTransformAvailable" :prop="component.props.get('text-transform')" />
   <TextDecorationComponent @changed='propUpdated' v-if="textDecorationAvailable" :prop="component.props.get('text-decoration')" />
   
+  <FlexDirectionComponent @changed='propUpdated' v-if="flexDirectionAvailable" :prop="component.props.get('flex-direction')" />
   <AlignContentComponent @changed='propUpdated' v-if="alignContentAvailable" :prop="component.props.get('align-content')" />
   <AlignItemsComponent @changed='propUpdated' v-if="alignItemsAvailable" :prop="component.props.get('align-items')" />
-  <BorderRadiusComponent @changed='propUpdated' v-if="borderRadiusAvailable" :prop="component.props.get('border-radius')" />
-  <ColWidthComponent @changed='propUpdated' v-if="colWidthAvailable" :prop="component.props.get('col')" />
-  <FlexDirectionComponent @changed='propUpdated' v-if="flexDirectionAvailable" :prop="component.props.get('flex-direction')" />
-  <GutterComponent @changed='propUpdated' v-if="gutterAvailable" :prop="component.props.get('gap')" />
-  <ImgFluidComponent @changed='propUpdated' v-if="imgFluidAvailable" :prop="component.props.get('img-fluid')" />
   <JustifyContentComponent @changed='propUpdated' v-if="justifyContentAvailable" :prop="component.props.get('justify-content')" />
+  <GutterComponent @changed='propUpdated' v-if="gutterAvailable" :prop="component.props.get('gap')" />
+  <ColWidthComponent @changed='propUpdated' v-if="colWidthAvailable" :prop="component.props.get('col')" />
+  
+  <BorderRadiusComponent @changed='propUpdated' v-if="borderRadiusAvailable" :prop="component.props.get('border-radius')" />
+  <ImgFluidComponent @changed='propUpdated' v-if="imgFluidAvailable" :prop="component.props.get('img-fluid')" />
 </template>
 
 <script lang="ts">

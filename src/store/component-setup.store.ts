@@ -25,11 +25,7 @@ const useComponentSetupStore = defineStore({
       );
     },
     async generatePreview(component: Component) {
-      const htmlComponent = component.pure
-        ? component.specific.htmlOnRender
-        : component.htmlElement;
-
-      return await html2canvas(htmlComponent, {
+      return await html2canvas(component.getHTML(), {
         windowWidth: 500,
         windowHeight: 300,
         scale: 1,
@@ -40,9 +36,11 @@ const useComponentSetupStore = defineStore({
     async selectComponent(component: Component) {
       let result;
       if (this.component) {
-        result = this.patchTree(this.component);
+        this.component.removeSelected();
+        result = await this.patchTree(this.component);
       }
       this.component = component;
+      this.component.setSelected();
       return result;
     },
     async saveWidget(component: Component | null = null) {

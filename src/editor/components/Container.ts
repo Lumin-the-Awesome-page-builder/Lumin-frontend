@@ -27,6 +27,15 @@ export default class Container extends Component {
     JustifyContentProp.name,
   ];
 
+  render(pure: boolean = false): HTMLElement {
+    const rendered = super.render(pure);
+
+    if (!pure) rendered.classList.add('editor-container-item');
+    else rendered.classList.remove('editor-container-item');
+
+    return rendered;
+  }
+
   name: string = 'container';
   static title: string = 'Контейнер';
   getTitle() {

@@ -39,6 +39,7 @@ export default abstract class Component {
   //Pure means that component is pure html+css+js code wrote by user
   public pure: boolean = false;
   public specific: any = null;
+  public selected: boolean = false;
 
   public handler = (ev, handler) => {
     console.log(ev, handler);
@@ -126,7 +127,7 @@ export default abstract class Component {
     const virtualKeys = Object.keys(children)
       .map((key) => {
         const child = children[key];
-        if (child.oldKey) {
+        if (child.oldKey && ordering) {
           return { [child.oldKey]: child.key };
         } else {
           return { [child.key]: child.key };
@@ -205,12 +206,39 @@ export default abstract class Component {
       this.htmlElement.classList.remove('empty-item');
     }
 
+    if (this.selected) this.setSelected();
+
+    if (!pure) this.htmlElement.classList.add('editor-item');
+    else {
+      this.htmlElement.classList.remove('editor-item');
+      this.removeSelected();
+    }
+
     return this.htmlElement;
   }
 
   update() {
     if (this.parent) this.parent.render();
     else this.render();
+  }
+
+  setSelected() {
+    this.selected = true;
+    if (!this.pure) {
+      this.htmlElement.classList.add('selected');
+    }
+  }
+
+  removeSelected() {
+    this.selected = false;
+    if (!this.pure) {
+      this.htmlElement.classList.remove('selected');
+    }
+  }
+
+  getHTML() {
+    if (!this.pure) return this.htmlElement;
+    else return this.specific.htmlOnRender;
   }
 
   toJson(): ComponentObject {

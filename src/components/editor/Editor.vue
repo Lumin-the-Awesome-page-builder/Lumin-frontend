@@ -74,7 +74,7 @@ export default defineComponent({
       this.editorStore.onMoveFrom = nextSibling < siblings.length ? siblings[nextSibling] : 'last'
       
       await this.removeComponent(component)
-      this.editorStore.pickBlock({ component: JSON.stringify(component.toJson()), icon: previewImage, widget: true })
+      this.editorStore.pickBlock({ component: JSON.stringify(component.toJson()), icon: previewImage, widget: true }, component.getTitle())
     },
     async saveAsWidget(component: Component) {
       let result = await this.componentSetupStore.saveWidget(component);
@@ -95,8 +95,11 @@ export default defineComponent({
       }
     }
   },
+  async created() {
+  },
   async mounted() {
     await this.editorStore.useById(Number(this.$route.params.id))
+    console.log(this.editorStore.selected)
     const app: App = this.$mount_editor('app-builder', `${this.$route.params.id}${TokenUtil.getAuthorized().id}`, this.editorStore.getTree);
     await this.selectComponent(app.root[Object.keys(app.root)[0]])
     this.app = app
@@ -128,9 +131,14 @@ export default defineComponent({
         this.editorStore.openContext(topPath, { x: ev.clientX, y: ev.clientY }, pickedBlockClosure)
       }
       else {
-        this.editorStore.openContext(topPath, { x: ev.clientX, y: ev.clientY }, async (selected) => {
-          await this.selectComponent(selected)
-        })
+        console.log(topPath)
+        if (topPath.length == 1) {
+          await this.selectComponent(topPath[0])
+        } else {
+          this.editorStore.openContext(topPath, { x: ev.clientX, y: ev.clientY }, async (selected) => {
+            await this.selectComponent(selected)
+          })
+        }
       }
     })
     

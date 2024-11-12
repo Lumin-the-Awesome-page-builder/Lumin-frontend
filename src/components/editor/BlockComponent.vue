@@ -53,7 +53,7 @@ export default defineComponent({
         if (loaded.success)
           pickedComponent = loaded.getData().data
       }
-      this.editorStore.pickBlock({ component: pickedComponent, icon: this.img, widget: this.componentType == 'widget' });
+      this.editorStore.pickBlock({ component: pickedComponent, icon: this.img, widget: this.componentType == 'widget' }, this.title);
     }
   }
 });

@@ -134,17 +134,23 @@ const useEditorStore = defineStore({
 
       return await this.save(this.selected);
     },
-    pickBlock(block: { component: string; icon: string; widget: boolean }) {
+    pickBlock(
+      block: { component: string; icon: string; widget: boolean },
+      title: string,
+    ) {
       const div = document.createElement('div');
       div.id = 'picked';
       div.classList.add('picked-up-block');
 
       const overlay = document.createElement('div');
       overlay.classList.add('overlay');
-      overlay.style = `background-image: url("${block.icon}");`;
+      const preview = document.createElement('img');
+      preview.classList.add('overlay-img');
+      preview.src = block.icon;
+      overlay.appendChild(preview);
 
       const span = document.createElement('span');
-      span.innerText = this.title;
+      span.innerText = title;
 
       div.appendChild(overlay);
       div.appendChild(span);

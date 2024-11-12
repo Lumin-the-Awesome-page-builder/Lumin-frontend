@@ -339,9 +339,7 @@ export class App {
 
     const parent = component.parent;
     console.log(parent);
-    const html = component.pure
-      ? component.specific.htmlOnRender
-      : component.htmlElement;
+    const html = component.getHTML();
 
     if (!parent) {
       const move = this.moveInArr(this.rootOrdering, component.key, left);
@@ -352,12 +350,14 @@ export class App {
 
       if (!insertBeforeElement) return;
 
+      const insertBeforeHtml = insertBeforeElement.getHTML();
+
       if (left) {
         html.remove();
-        this.rootHTML.insertBefore(html, insertBeforeElement.htmlElement);
+        this.rootHTML.insertBefore(html, insertBeforeHtml);
       } else {
-        insertBeforeElement.htmlElement.remove();
-        this.rootHTML.insertBefore(insertBeforeElement.htmlElement, html);
+        insertBeforeHtml.remove();
+        this.rootHTML.insertBefore(insertBeforeHtml, html);
       }
       this.rootOrdering = [...move[0]];
     } else {

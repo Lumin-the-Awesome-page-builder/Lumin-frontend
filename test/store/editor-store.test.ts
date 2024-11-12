@@ -123,7 +123,11 @@ describe('EditorStore tests', () => {
 
     const overlay = document.createElement('div');
     overlay.classList.add('overlay');
-    overlay.style = `background-image: url("${'obj'}");`;
+
+    const preview = document.createElement('img');
+    preview.classList.add('overlay-img');
+    preview.src = 'obj';
+    overlay.appendChild(preview);
 
     const span = document.createElement('span');
     span.innerText = this.title;

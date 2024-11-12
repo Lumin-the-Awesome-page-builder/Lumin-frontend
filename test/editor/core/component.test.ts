@@ -202,7 +202,7 @@ describe('Base component class tests', () => {
       component.render();
 
       expect(component.htmlElement.innerText).toBe(component.content);
-      expect(component.htmlElement.classList.add).toBeCalledTimes(0);
+      expect(component.htmlElement.classList.add).toBeCalledTimes(1);
     });
 
     it('Test render with children', () => {
@@ -221,7 +221,7 @@ describe('Base component class tests', () => {
       expect(component.htmlElement.appendChild).toBeCalledTimes(1);
       expect(component.htmlElement.appendChild).toBeCalledWith(renderResult);
       expect(component.htmlElement.innerHTML).toBe('');
-      expect(component.htmlElement.classList.add).toBeCalledTimes(0);
+      expect(component.htmlElement.classList.add).toBeCalledTimes(1);
     });
 
     it('Test render empty child list and content', () => {
@@ -232,7 +232,7 @@ describe('Base component class tests', () => {
       component.render();
 
       expect(component.htmlElement.classList.add).toBeCalledWith('empty-item');
-      expect(component.htmlElement.classList.add).toBeCalledTimes(1);
+      expect(component.htmlElement.classList.add).toBeCalledTimes(2);
       expect(component.htmlElement.innerHTML).toBe('');
       expect(component.htmlElement.innerText).toBe('');
     });
