@@ -161,9 +161,8 @@ export default {
   background-color: white;
   border-radius: 1.5rem;
   justify-content: center;
-  row-gap: 2rem;
   align-items: center;
-  min-width: 1300px;
+  min-width: 40vw;
   max-width: 80vw;
   max-height: 80vh;
   padding-bottom: 3.5rem;

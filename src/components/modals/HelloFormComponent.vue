@@ -19,7 +19,7 @@
             </div>
             <div class="inputs_container">
               <h2 class="container_title title">Добро пожаловать!</h2>
-              <span class="block_title title">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce placerat, magna vel gravida pulvinar, purus nisl tempus mi, sed scelerisque lorem urna et lectus. Donec ac hendrerit odio, sed ullamcorper dui. In eget risus ligula. Morbi nec lacus varius, cursus ipsum ac, vestibulum nunc. Nulla bibendum semper diam, vel fringilla risus faucibus a. Vestibulum rhoncus nisl ac consequat bibendum. Suspendisse et convallis tellus. Etiam sit amet dictum neque.</span>
+              <span class="block_title title">Мы рады Вас приветствовать на нашей платформе!</span>
               <n-button color="#3535FFA6" class="btn" @click="cancel">Продолжить</n-button>
             </div>
           </div>
