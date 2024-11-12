@@ -19,19 +19,24 @@ describe('ComponentSetupStore tests', () => {
   it('test selectComponent (current component is null)', async () => {
     const store = useComponentSetupStore();
     store.component = null;
+    const setSelectedMock = vi.fn();
 
-    await store.selectComponent(['test'], 0);
+    await store.selectComponent({ setSelected: setSelectedMock });
 
-    expect(store.component).toEqual(['test']);
+    expect(store.component).toEqual({ setSelected: setSelectedMock });
+    expect(setSelectedMock).toBeCalled();
   });
 
   it('test selectComponent (current component not null)', async () => {
     const store = useComponentSetupStore();
     const toJsonMock = vi.fn(() => 'test');
     const findTopMock = vi.fn(() => [{ key: 'key' }]);
+    const removeSelectedMock = vi.fn();
+    const setSelectedMock = vi.fn();
     store.component = {
       toJson: toJsonMock,
       findTop: findTopMock,
+      removeSelected: removeSelectedMock,
     };
     const getItemMock = vi.fn(() => 123);
     vi.stubGlobal('localStorage', {
@@ -42,11 +47,13 @@ describe('ComponentSetupStore tests', () => {
       await import('@/api/modules/project/models/project.model.ts')
     ).default;
 
-    await store.selectComponent(['test2'], 0);
+    await store.selectComponent({ setSelected: setSelectedMock });
 
-    expect(store.component).toEqual(['test2']);
+    expect(store.component).toEqual({ setSelected: setSelectedMock });
     expect(findTopMock).toBeCalled();
     expect(getItemMock).toBeCalledWith('selected-project');
+    expect(removeSelectedMock).toBeCalled();
+    expect(setSelectedMock).toBeCalled();
     expect(ProjectModel.patchTree).toBeCalledWith(123, patchProjectDto);
   });
 });

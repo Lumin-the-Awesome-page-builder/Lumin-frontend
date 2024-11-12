@@ -1,8 +1,29 @@
 .empty-item {
-    background: rgba(230,230,230,0.46);
-    box-shadow: inset 6px 6px 10px rgba(0, 0, 0, 0.2), inset -6px -6px 10px rgba(255, 255, 255, 0.5);
     min-height: 50px;
     min-width: 100%;
+}
+
+.editor-item {
+    transition: all .2s;
+}
+
+.editor-container-item:has(.editor-container-item) {
+    padding: .5rem;
+}
+
+.editor-container-item {
+    border-radius: .5rem;
+    border: 2px dashed #7b7bfe;
+    padding: .5rem;
+}
+
+.editor-container-item.selected {
+    border: 2px dashed #373772FF;
+}
+
+.editor-item:not(.editor-container-item).selected {
+    border-radius: .5rem;
+    box-shadow: 0 0 5px #373772FF;
 }
 
 #app-builder {

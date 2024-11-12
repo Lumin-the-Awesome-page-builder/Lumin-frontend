@@ -42,7 +42,7 @@ export default {
       if (name == "openContext") {
         after((_) => {
           const ctx = document.getElementById('context-menu')
-          ctx.style = `display: flex; opacity: 1; transform: translateX(${args[1].x}px) translateY(${args[1].y}px);`;
+          ctx.style = `display: flex; opacity: 1; transform: translateX(${args[1].x + 40}px) translateY(${args[1].y + 40}px);`;
         })
       }
       if (name == "closeContext") {

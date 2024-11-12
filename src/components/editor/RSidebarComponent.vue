@@ -113,16 +113,26 @@ export default {
       return this.editorStore.getProject;
     },
     projectName() {
-      return this.project.name
+      if (this.project)
+        return this.project.name
+      else
+        return ""
     },
     projectCategory() {
-      return this.project.category_name;
+      if (this.project)
+        return this.project.category_name;
+      else
+        return ""
     },
     projectTags() {
-      return `#${this.project.tags.join(" #")}`
+      if (this.project)
+        return `#${this.project.tags.join(" #")}`
+      else
+        return ""
     },
     availableBlocks() {
-      return this.editorStore.getAvailableBlocks;
+      if (this.project)
+        return this.editorStore.getAvailableBlocks;
     }
   },
   data: () => ({

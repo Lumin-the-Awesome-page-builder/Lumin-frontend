@@ -16,8 +16,8 @@
     border-radius: 0.5rem;
     display: flex;
     flex-direction: row;
-    justify-content: start;
-    align-items: end;
+    justify-content: center;
+    align-items: center;
     background-size: auto;
     background-position: center;
     background-repeat: no-repeat;
@@ -25,6 +25,11 @@
     background-color: rgba(255,255,255, 0.3);
     backdrop-filter: blur(5px);
 }
+
+.overlay-img {
+    width: 100%;
+}
+
 .picked-up-block > span {
     padding-left: 0.5rem;
     font-size: 20px;
@@ -49,14 +54,11 @@
     opacity: 0;
     transition: opacity 0.1s ease;
     gap: .6rem;
-    background-color: #f8f8ff
+    background-color: #f8f8ff;
+    z-index: 1000;
 }
 
 .context-menu > button{
     display: flex;
     width: 100%;
-}
-
-.selected {
-    box-shadow: 0 0 10px rgb(111, 108, 153);
 }
