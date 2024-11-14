@@ -61,7 +61,8 @@ export default defineComponent({
             });
 
           // Обработчик успеха
-          async function vkidOnSuccess(data) {
+          const vkidOnSuccess = async (data) => {
+              console.log(this.notification)
               const userData = await VKID.Auth.userInfo(data.access_token);
               const authStore = useAuthStore()
 
