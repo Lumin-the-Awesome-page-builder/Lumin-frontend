@@ -31,6 +31,19 @@
     <VkAuthComponent class="socialsNetworkIcon"/>
     <YandexAuthComponent class="socialsNetworkIcon" @click="loginWithYandex"/>
   </div>
+    <div class="line">
+      <ExampleComponent/>
+    </div>
+<!--    <div class="line">-->
+<!--      <div class="exceptions">-->
+<!--        <n-button @click="throwValidationException">Throw Validation Exception</n-button>-->
+<!--        <n-button @click="throwNetworkException">Throw Network Exception</n-button>-->
+<!--      </div>-->
+<!--      <div class="global">-->
+<!--        <n-button @click="rejectPromise">Reject Promise</n-button>-->
+<!--        <n-button @click="error">Throw Error</n-button>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -47,10 +60,13 @@ import yandexConf from '@/api/conf/yandex.conf.ts';
 import appConf from '@/api/conf/app.conf.ts';
 import { defineComponent } from 'vue'
 import { useNotification } from 'naive-ui';
+import ValidationException from "@/utils/exceptions/validation-exception.ts";
+import NetworkException from "@/utils/exceptions/network-exception.ts";
+import ExampleComponent from "@/components/ExampleComponent.vue";
 
 export default defineComponent({
   name: "LoginComponent",
-  components: { YandexAuthComponent, VkAuthComponent },
+  components: {ExampleComponent, YandexAuthComponent, VkAuthComponent },
   setup() {
     return { notification: useNotification() };
   },
@@ -126,6 +142,26 @@ export default defineComponent({
         }
       }
       return token
+    },
+    throwValidationException() {
+      throw new ValidationException(
+          `Failed to validate data`,
+          `422`
+      )
+    },
+    throwNetworkException() {
+      throw new NetworkException(
+          `Failed to fetch data from some url`,
+          `404`
+      );
+    },
+    rejectPromise() {
+      new Promise((resolve, reject) => {
+        reject("Something went wrong. Its rejected promise");
+      });
+    },
+    error() {
+      throw new DOMException('Some error in dom')
     }
   }
 
@@ -133,6 +169,19 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
+.exceptions{
+  display: flex;
+  flex-direction: row;
+  padding-top: 55px;
+  column-gap: 0.5rem;
+}
+.global {
+  display: flex;
+  flex-direction: row;
+  padding-top: 15px;
+  column-gap: 11rem;
+}
 .container {
   display: flex;
   flex-direction: column;
