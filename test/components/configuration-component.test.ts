@@ -60,11 +60,13 @@ describe('ConfigurationComponent', () => {
     expect(configOptions.length).toBe(2);
   });
 
-  /*it('проверяет обновление выбранной конфигурации при изменении чекбокса', async () => {
+  it('проверяет обновление выбранной конфигурации при изменении чекбокса', async () => {
     const wrapper = mount(ConfigurationComponent);
 
-    const checkbox = wrapper.find(
-      'input[type="checkbox"][value="NodeJS + PostgreSQL"]',
+    const checkboxes = wrapper.findAll('input[type="checkbox"]');
+
+    const checkbox = checkboxes.find(
+      (c) => (c.element as HTMLInputElement).value === 'NodeJS + PostgreSQL',
     );
 
     await checkbox.setValue(true);
@@ -74,5 +76,5 @@ describe('ConfigurationComponent', () => {
     await checkbox.setValue(false);
 
     expect(wrapper.vm.selectedConfig).not.toContain('NodeJS + PostgreSQL');
-  });*/
+  });
 });

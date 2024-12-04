@@ -10,7 +10,7 @@ describe('SearchComponent', () => {
     });
 
     const input = wrapper.find('.search-input');
-    expect(input.element.value).toBe(initialSearchValue);
+    expect((input.element as HTMLInputElement).value).toBe(initialSearchValue);
   });
 
   it('обновляет searchQuery при изменении searchValue извне', async () => {
@@ -23,7 +23,7 @@ describe('SearchComponent', () => {
 
     // Убедимся, что значение в поле input обновилось
     const input = wrapper.find('.search-input');
-    expect(input.element.value).toBe('Новый текст');
+    expect((input.element as HTMLInputElement).value).toBe('Новый текст');
   });
 
   it('эмитирует событие "update:searchValue" при вводе текста', async () => {
