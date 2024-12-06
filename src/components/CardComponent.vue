@@ -28,7 +28,6 @@ export default {
   methods: {
     editTitle() {
       console.log(this.title);
-    },
     shareProject() {
       console.log(this.title);
     },
@@ -71,7 +70,6 @@ export default {
     </div>
   </div>
 </template>
-
 
 <style scoped>
 .card {
@@ -206,5 +204,4 @@ export default {
   font-size: 1.125rem;
   background: none;
 }
-
 </style>

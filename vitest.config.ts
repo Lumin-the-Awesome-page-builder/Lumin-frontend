@@ -5,6 +5,11 @@ import vue from '@vitejs/plugin-vue';
 export default defineConfig({
     plugins: [vue()],
     test: {
+      server: {
+        deps: {
+          inline: ['codemirror', 'codemirror-editor-vue3']
+        }
+      },
       environment: 'jsdom',
       coverage: {
         provider: "v8",
@@ -14,6 +19,7 @@ export default defineConfig({
     },
     resolve: {
       alias: {
+        //@ts-ignore
         '@': fileURLToPath(new URL('./src', import.meta.url)),
       },
     },
