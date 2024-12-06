@@ -28,6 +28,7 @@ export default {
   methods: {
     editTitle() {
       console.log(this.title);
+    },
     shareProject() {
       console.log(this.title);
     },
