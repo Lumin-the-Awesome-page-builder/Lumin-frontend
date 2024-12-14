@@ -1,6 +1,7 @@
 import { LogLevel } from '@/utils/logger/log-level.ts';
 
 const appConf = {
+  host: 'lumin.dudosyka.ru',
   proto: 'https',
   endpoint: 'api.lumin.dudosyka.ru',
   // proto: 'http',

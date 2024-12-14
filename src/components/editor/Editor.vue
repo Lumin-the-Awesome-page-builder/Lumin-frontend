@@ -24,6 +24,7 @@ import { App } from '@/editor/App.ts';
 import { useNotification } from 'naive-ui';
 import { defineComponent } from 'vue';
 import useWidgetLibraryStore from '@/store/widget-library.store.ts';
+import useChangeProjectSharingSettingsStore from '@/store/modals/change-project-share-settings-component.store.ts';
 
 export default defineComponent({
   components: {
@@ -36,7 +37,8 @@ export default defineComponent({
       notificationStore: useNotification(),
       editorStore: useEditorStore(),
       componentSetupStore: useComponentSetupStore(),
-      widgetLibraryStore: useWidgetLibraryStore()
+      widgetLibraryStore: useWidgetLibraryStore(),
+      changeProjectSharingSettingStore: useChangeProjectSharingSettingsStore(),
     }
   },
   data: () => ({
@@ -95,11 +97,15 @@ export default defineComponent({
       }
     }
   },
-  async created() {
-  },
   async mounted() {
     await this.editorStore.useById(Number(this.$route.params.id))
-    console.log(this.editorStore.selected)
+    
+    this.changeProjectSharingSettingStore.loadData({
+      id: this.editorStore.getProject.id,
+      shared: this.editorStore.getProject.shared,
+      shared_marketplace: this.editorStore.getProject.shared_marketplace,
+    });
+    
     const app: App = this.$mount_editor('app-builder', `${this.$route.params.id}${TokenUtil.getAuthorized().id}`, this.editorStore.getTree);
     await this.selectComponent(app.root[Object.keys(app.root)[0]])
     this.app = app
