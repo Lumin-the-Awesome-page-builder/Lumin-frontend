@@ -5,6 +5,8 @@ import ProjectDto from '@/api/modules/project/dto/project.dto.ts';
 import UpdateProjectDto from '@/api/modules/project/dto/update-project.dto.ts';
 import ApiModelUtil from '@/utils/api-model.util.ts';
 import PatchProjectTreeDto from '@/api/modules/project/dto/patch-project-tree.dto.ts';
+import PatchProjectShareSettingsDto from '@/api/modules/project/dto/patch-project-share-settings.dto.ts';
+import CollaborationTokenDto from '@/api/modules/project/dto/collaboration-token.dto.ts';
 
 export class ProjectModel extends ApiModelUtil {
   constructor() {
@@ -61,6 +63,25 @@ export class ProjectModel extends ApiModelUtil {
       new ApiRequestDto(`/lumin/project/${id}/preview`, 'PATCH', {
         preview: encodedPreview,
       }),
+    );
+  }
+
+  public async patchShare(
+    id: number,
+    patchProjectShareSettingsDto: PatchProjectShareSettingsDto,
+  ) {
+    return await this.authorizedRequest<{ status: boolean }>(
+      new ApiRequestDto(
+        `/lumin/project/${id}/share`,
+        'PATCH',
+        patchProjectShareSettingsDto,
+      ),
+    );
+  }
+
+  public async getCollaborationToken(id: number) {
+    return await this.authorizedRequest<CollaborationTokenDto>(
+      new ApiRequestDto(`/lumin/project/${id}/collaboration`, 'GET'),
     );
   }
 }

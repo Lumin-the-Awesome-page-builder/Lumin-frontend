@@ -2,6 +2,7 @@
   <div class="sidebar-wrapper">
     <ChooseDomainComponent />
     <ChangeDataComponent />
+    <ChangeProjectSharingSettings />
     <n-collapse :default-expanded-names="['1']">
       <n-collapse-item name="1">
         <template #header>
@@ -47,6 +48,17 @@
           </p>
           <n-button color="#7b7bfe" @click="editData">Изменить данные</n-button>
         </div>
+        <n-divider />
+        <div class="heading-row">
+          <h3 class="options-heading">Управление доступом</h3>
+          <p class="options-details">
+            <span class="options-details-subheading">Совместное редактирование: </span> {{ collaborationText }}
+          </p>
+          <p class="options-details">
+            <span class="options-details-subheading">Доступен на маркетплейсе: </span> {{ marketplaceText }}
+          </p>
+          <n-button color="#7b7bfe" @click="editShareSettings">Изменить параметры доступа</n-button>
+        </div>
       </n-collapse-item>
       <n-collapse-item name="2">
         <template #header>
@@ -91,11 +103,13 @@ import ChangeDataComponent from '@/components/modals/ChangeProjectDataComponent.
 import ComponentSetupComponent from '@/components/editor/ComponentSetupComponent.vue';
 import AvailableBlocksComponent from '@/components/editor/AvailableBlocksComponent.vue';
 import AvailableWidgetsComponent from '@/components/editor/AvailableWidgetsComponent.vue';
+import ChangeProjectSharingSettings from '@/components/modals/ShareProjectModal.vue';
 import useComponentSetupStore from '@/store/component-setup.store.ts';
+import useChangeProjectSharingSettingsStore from '@/store/modals/change-project-share-settings-component.store.ts';
 
 export default {
   components: {
-    ComponentSetupComponent, AvailableBlocksComponent, ChangeDataComponent, ChooseDomainComponent, AvailableWidgetsComponent
+    ChangeProjectSharingSettings, ComponentSetupComponent, AvailableBlocksComponent, ChangeDataComponent, ChooseDomainComponent, AvailableWidgetsComponent
   },
   setup() {
     return {
@@ -104,6 +118,7 @@ export default {
       dashboardStore: useDashboardStore(),
       projectPreviewModalStore: useProjectPreviewModalStore(),
       changeProjectDataStore: useChangeDataStore(),
+      changeProjectSharingSettingStore: useChangeProjectSharingSettingsStore(),
       chooseDomainStore: useChooseDomainStore(),
       componentSetupStore: useComponentSetupStore(),
     }
@@ -133,6 +148,14 @@ export default {
     availableBlocks() {
       if (this.project)
         return this.editorStore.getAvailableBlocks;
+    },
+    collaborationText() {
+      if (this.project)
+        return this.changeProjectSharingSettingStore.collaboration ? "Включено" : "Отключено";
+    },
+    marketplaceText() {
+      if (this.project)
+        return this.changeProjectSharingSettingStore.marketplace ? "Да" : "Нет";
     }
   },
   data: () => ({
@@ -193,6 +216,13 @@ export default {
         ...this.editorStore.getProject
       })
     },
+    editShareSettings() {
+      this.changeProjectSharingSettingStore.openModal({
+        id: this.project.id,
+        shared: this.project.shared,
+        shared_marketplace: this.project.shared_marketplace,
+      })
+    }
   },
 };
 </script>

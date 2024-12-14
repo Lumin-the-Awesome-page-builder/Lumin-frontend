@@ -37,6 +37,11 @@ vi.mock('@/store/editor.store.ts', () => {
       blockOnSetup: 'setup',
       placeBlock,
       generatePreview,
+      getProject: {
+        id: 1,
+        shared: true,
+        shared_marketplace: false
+      }
     }),
   };
 });

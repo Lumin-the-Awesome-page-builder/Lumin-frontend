@@ -9,5 +9,7 @@ export default class ProjectDto {
     public data: string,
     public tags: string[],
     public category_id: number,
+    public shared: boolean,
+    public shared_marketplace: boolean,
   ) {}
 }
