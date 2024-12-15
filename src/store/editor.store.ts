@@ -51,18 +51,17 @@ const useEditorStore = defineStore({
       const ProjectModel = await import(
         '@/api/modules/project/models/project.model.ts'
       );
-      const startEditDto = (await ProjectModel.default.startEditing(id));
-      
-      if (!startEditDto.success) 
-        return startEditDto;
-      
-      const project = startEditDto.getData().project
+      const startEditDto = await ProjectModel.default.startEditing(id);
+
+      if (!startEditDto.success) return startEditDto;
+
+      const project = startEditDto.getData().project;
       project.data = startEditDto.getData().tree;
 
       localStorage.setItem('selected-project', String(project.id));
       this.use(project);
-      
-      return startEditDto
+
+      return startEditDto;
     },
     use(projectDto: any) {
       this.selected = projectDto;

@@ -6,13 +6,13 @@ import ProjectWsModel from '@/api/modules/project/models/project-ws.model';
 
 const useComponentSetupStore = defineStore({
   id: 'component-setup-store',
-  state: (): { component: Component | null, ws: ProjectWsModel } => ({
+  state: (): { component: Component | null; ws: ProjectWsModel } => ({
     component: null,
-    ws: new ProjectWsModel(0, "")
+    ws: new ProjectWsModel(0, ''),
   }),
   actions: {
     setWs(ws: ProjectWsModel) {
-      this.ws = ws
+      this.ws = ws;
     },
     async patchTree(component: Component) {
       // console.log()
@@ -25,7 +25,6 @@ const useComponentSetupStore = defineStore({
       return await this.ws.patchElementOrdering(path, ordering);
     },
     async patchProp(name: string, value: any, component: Component) {
-      console.log(name, value);
       return await this.ws.replaceProp(component, name, value);
     },
     async generatePreview(component: Component) {

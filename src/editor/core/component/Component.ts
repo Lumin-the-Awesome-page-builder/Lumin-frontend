@@ -72,8 +72,7 @@ export default abstract class Component {
     this.htmlElement.addEventListener(eventName, (ev) => {
       ev.stopPropagation();
       ev.preventDefault();
-      if (!this.locked)
-        this.handler(eventName, this.findTop(true), ev);
+      if (!this.locked) this.handler(eventName, this.findTop(true), ev);
     });
   }
 
@@ -137,10 +136,6 @@ export default abstract class Component {
         }
       })
       .reduce((prev, cur) => Object.assign(prev, cur));
-
-    console.log(virtualKeys);
-    console.log(ordering);
-    console.log(children);
 
     const order = ordering ? ordering : Object.keys(children);
 

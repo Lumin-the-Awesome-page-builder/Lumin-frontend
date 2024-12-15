@@ -1,7 +1,6 @@
 import appConf from '@/api/conf/app.conf';
 import TokenUtil from './token.util';
 import ApiModelUtil from './api-model.util';
-import { Authorize } from '@vkontakte/superappkit';
 import ApiResponseDto from '../api/dto/api-response.dto';
 
 export default class WsModelUtil {
@@ -31,24 +30,25 @@ export default class WsModelUtil {
     this.ws.onmessage = (msg) => this.onMessage(msg);
 
     this.initialized = true;
-    
-    return await (new Promise((resolve) => {
+
+    return await new Promise((resolve) => {
       this.ws.onopen = () => {
         resolve(true);
-        this.onOpen()
+        this.onOpen();
       };
-    }))
+    });
   }
 
   protected onOpen() {
-    if (this.actions[this.ON_OPEN_ACTION])
-      this.actions[this.ON_OPEN_ACTION]();
+    if (this.actions[this.ON_OPEN_ACTION]) this.actions[this.ON_OPEN_ACTION]();
   }
 
   close() {
     try {
       this.ws.close();
-    } catch (e) {console.log(e)}
+    } catch (e) {
+      console.log(e);
+    }
     this.initialized = false;
   }
 
@@ -102,24 +102,24 @@ export default class WsModelUtil {
 
     const awaited = await new Promise((resolve) => {
       this.register(awaited_type, (msg) => {
-        resolve(new ApiResponseDto(true, msg, null))
-      })
+        resolve(new ApiResponseDto(true, msg, null));
+      });
       this.ws.send(
         JSON.stringify({
           ...this.lastSent,
           headers: {
             Authorization: authData,
             awaited: true,
-            awaited_type
-          }
-        })
-      )
+            awaited_type,
+          },
+        }),
+      );
       setTimeout(() => {
-        resolve(new ApiResponseDto(false, null, null))
-      }, 1000)
-    })
+        resolve(new ApiResponseDto(false, null, null));
+      }, 1000);
+    });
 
-    delete this.actions[awaited_type]
+    delete this.actions[awaited_type];
 
     return awaited;
   }
