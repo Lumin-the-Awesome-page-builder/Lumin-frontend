@@ -29,6 +29,7 @@ export default abstract class Component {
   public key: string = '';
   public keySalt: string = '';
   public scopeIdentifier: string = '';
+  public locked: boolean = false;
 
   //We need to store old keys when start buildTree with refreshKeys arg to correctly render refreshed children
   public oldKey: string | null = null;
@@ -45,11 +46,12 @@ export default abstract class Component {
     console.log(ev, handler);
   };
 
-  public findTop(): Component[] {
+  public findTop(hideLocked: boolean = false): Component[] {
     const parents: Component[] = [];
     let currentComponent: Component = this;
     while (currentComponent != null) {
-      parents.push(currentComponent);
+      if (!currentComponent.locked || !hideLocked)
+        parents.push(currentComponent);
       currentComponent = currentComponent.parent;
     }
     return parents;
@@ -70,7 +72,8 @@ export default abstract class Component {
     this.htmlElement.addEventListener(eventName, (ev) => {
       ev.stopPropagation();
       ev.preventDefault();
-      this.handler(eventName, this.findTop(), ev);
+      if (!this.locked)
+        this.handler(eventName, this.findTop(true), ev);
     });
   }
 

@@ -35,6 +35,7 @@ export default abstract class Property {
   }
 
   public setValue(value: any[], index = 0) {
+    console.log("SET: ", value, index)
     this.clear();
     this.value[index] = value;
     this.apply();

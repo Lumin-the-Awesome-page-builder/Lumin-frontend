@@ -1,6 +1,8 @@
 import appConf from '@/api/conf/app.conf';
 import TokenUtil from './token.util';
 import ApiModelUtil from './api-model.util';
+import { Authorize } from '@vkontakte/superappkit';
+import ApiResponseDto from '../api/dto/api-response.dto';
 
 export default class WsModelUtil {
   protected actions: Record<string, Function> = {};
@@ -18,26 +20,35 @@ export default class WsModelUtil {
     public autoRestart: boolean,
   ) {}
 
-  init() {
+  async init() {
     if (this.initialized) return;
     this.ws = new WebSocket(
       `${appConf.proto}://${appConf.endpoint}/${this.url}`,
     );
 
-    this.ws.onopen = this.onOpen;
-    this.ws.onerror = this.onError;
-    this.ws.onclose = this.onClose;
-    this.ws.onmessage = this.onMessage;
+    this.ws.onerror = (err) => this.onError(err);
+    this.ws.onclose = (data) => this.onClose(data);
+    this.ws.onmessage = (msg) => this.onMessage(msg);
 
     this.initialized = true;
+    
+    return await (new Promise((resolve) => {
+      this.ws.onopen = () => {
+        resolve(true);
+        this.onOpen()
+      };
+    }))
   }
 
   protected onOpen() {
-    this.actions[this.ON_OPEN_ACTION]();
+    if (this.actions[this.ON_OPEN_ACTION])
+      this.actions[this.ON_OPEN_ACTION]();
   }
 
   close() {
-    if (!this.ws.CLOSED) this.ws.close();
+    try {
+      this.ws.close();
+    } catch (e) {console.log(e)}
     this.initialized = false;
   }
 
@@ -82,15 +93,46 @@ export default class WsModelUtil {
     );
   }
 
+  async sendAwaited(awaited_type: string, route: string, message: any) {
+    const authData = TokenUtil.getAccess();
+    this.lastSent = {
+      route,
+      data: message,
+    };
+
+    const awaited = await new Promise((resolve) => {
+      this.register(awaited_type, (msg) => {
+        resolve(new ApiResponseDto(true, msg, null))
+      })
+      this.ws.send(
+        JSON.stringify({
+          ...this.lastSent,
+          headers: {
+            Authorization: authData,
+            awaited: true,
+            awaited_type
+          }
+        })
+      )
+      setTimeout(() => {
+        resolve(new ApiResponseDto(false, null, null))
+      }, 1000)
+    })
+
+    delete this.actions[awaited_type]
+
+    return awaited;
+  }
+
   private async refreshAndExecuteLast() {
     const apiModel = new ApiModelUtil('');
     await apiModel.refresh();
     this.send(this.lastSent.route, this.lastSent.data);
   }
 
-  protected onClose() {
+  protected onClose(data) {
     if (this.actions[this.ON_CLOSE_ACTION])
-      this.actions[this.ON_CLOSE_ACTION]();
+      this.actions[this.ON_CLOSE_ACTION](data);
 
     if (this.autoRestart) this.restart();
   }
@@ -104,7 +146,12 @@ export default class WsModelUtil {
   }
 
   protected onMessage(message) {
-    const data = JSON.parse(message);
+    const data = JSON.parse(message.data);
+    if (data.awaited_type) {
+      this.actions[data.awaited_type](data);
+      return;
+    }
+
     if (data.type) {
       if (this.actions[data.type]) this.actions[data.type](data);
     } else {

@@ -2,6 +2,7 @@ import Component, {
   ComponentObject,
 } from '@/editor/core/component/Component.ts';
 import Property, { PropertyObject } from '@/editor/core/property/Property.ts';
+import { onLoad } from '@sentry/vue';
 
 export class App {
   public rootHTML: HTMLElement = document.createElement('div');
@@ -304,6 +305,37 @@ export class App {
     }
   }
 
+  public addOrReplace(json: string, parentKey: string, key: string) {
+    const parsed = JSON.parse(json);
+    const tree = this.buildTree({ [parsed.key]: parsed }, true);
+    const onReplace = tree[Object.keys(tree)[0]];
+
+    const old = this.state[key];
+    if (old) {
+      if (old.parent) {
+        onReplace.parent = old.parent;
+        onReplace.parent.children[old.key] = onReplace
+        onReplace.parent.render();
+      } else {
+        let placeBefore = null;
+        let last = null
+        this.rootOrdering.forEach(el => {
+          if (el == key) {
+            placeBefore = last;
+          } else {
+            last = el
+          }
+        })
+        const beforeElement = this.root[placeBefore].htmlElement;
+        this.root[old.key] = onReplace;
+        this.rootHTML.insertBefore(onReplace.render(), beforeElement);
+      }
+    } else {
+      this.state[onReplace.key] = onReplace;
+      this.attachToParent(onReplace, parentKey == "root" ? null : parentKey)
+    }
+  }
+
   public replacePure(component: Component) {
     if (this.pureStyles[component.key]) {
       this.pureStyles[component.key].remove();
@@ -382,5 +414,22 @@ export class App {
     }
 
     return parent;
+  }
+
+  public applyByPath(path: string[], func, step = null, current = null) {
+    if (current == null || step == null) {
+      path = path.reverse()
+      return this.applyByPath(path.slice(0, -1), func, path.pop(), this.root);
+    }
+    Object.keys(current).map(key => {
+      if (key == step) {
+        if (path.length) {
+          this.applyByPath(path.slice(0, -1), func, path.pop(), current[key].children)
+        } else {
+          func(current[key])
+        }
+      }
+    })
+    return;
   }
 }

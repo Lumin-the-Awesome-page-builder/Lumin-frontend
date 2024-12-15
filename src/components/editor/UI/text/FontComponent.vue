@@ -103,6 +103,7 @@ export default {
       const onSet = (this.activeButton == index) ? null : button.value
       this.activeButton = (this.activeButton == index) ? null : index
       this.prop.setValue(onSet, 1)
+      this.$emit('changed')
     },
   },
   computed: {

@@ -93,7 +93,7 @@ import AvailableBlocksComponent from '@/components/editor/AvailableBlocksCompone
 import AvailableWidgetsComponent from '@/components/editor/AvailableWidgetsComponent.vue';
 import useComponentSetupStore from '@/store/component-setup.store.ts';
 
-export default {
+export default <any> {
   components: {
     ComponentSetupComponent, AvailableBlocksComponent, ChangeDataComponent, ChooseDomainComponent, AvailableWidgetsComponent
   },
@@ -158,6 +158,7 @@ export default {
     },
     async exit() {
       let result = await this.save()
+      this.editorStore.ws.closeEditing();
       this.projectPreviewModalStore.closeModal()
       result.toastIfError(this.notificationStore)
       if (result.success) {
