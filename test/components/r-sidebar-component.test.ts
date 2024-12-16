@@ -34,8 +34,10 @@ describe('RSidebarComponent test', () => {
   it('Test save method', async () => {
     const container = new Container('div');
     container.availableProps = [];
+    const blockComponent = vi.fn();
     RSidebarComponent.setup = vi.fn(() => {
       const componentStore = useComponentSetupStore();
+      componentStore.ws = { blockComponent };
       componentStore.selectComponent(container);
       RSidebarComponent.computed.projectName = vi.fn(() => {
         return 'name';
@@ -61,6 +63,7 @@ describe('RSidebarComponent test', () => {
 
     const result = await wrapper.vm.save();
 
+    expect(blockComponent).toBeCalledWith(container);
     expect(result).toEqual({ toastIfError: toastIfErrorMock });
     expect(wrapper.vm.editorStore.save).toBeCalled();
   });
@@ -70,8 +73,11 @@ describe('RSidebarComponent test', () => {
     container.availableProps = [];
     const updatePreviewMock = vi.fn(() => ({ toastIfError: () => {} }));
     const loadProjectsMock = vi.fn(() => ({ toastIfError: () => {} }));
+    const closeEditingMock = vi.fn();
+    const blockComponent = vi.fn();
     RSidebarComponent.setup = vi.fn(() => {
       const componentStore = useComponentSetupStore();
+      componentStore.ws = { blockComponent };
       componentStore.selectComponent(container);
       const editorStore = useEditorStore();
       const dashboardStore = useDashboardStore();
@@ -87,6 +93,9 @@ describe('RSidebarComponent test', () => {
       editorStore.blockOnCreate = { icon: null, component: null };
       editorStore.updatePreview = updatePreviewMock;
       dashboardStore.loadProjects = loadProjectsMock;
+      editorStore.ws = {
+        closeEditing: closeEditingMock,
+      };
       return {
         editorStore,
         projectPreviewModalStore: useProjectPreviewModalStore(),
@@ -94,6 +103,7 @@ describe('RSidebarComponent test', () => {
         dashboardStore,
       };
     });
+
     const routerMock = vi.fn();
     const wrapper = mount(RSidebarComponent, {
       global: {
@@ -111,7 +121,9 @@ describe('RSidebarComponent test', () => {
 
     await wrapper.vm.exit();
 
+    expect(blockComponent).toBeCalledWith(container);
     expect(wrapper.vm.save).toBeCalled();
+    expect(closeEditingMock).toBeCalled();
     expect(toastIfErrorMock).toBeCalled();
     expect(updatePreviewMock).toBeCalled();
     expect(loadProjectsMock).toBeCalled();

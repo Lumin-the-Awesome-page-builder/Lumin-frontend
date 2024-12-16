@@ -1,28 +1,31 @@
 import { defineStore } from 'pinia';
 import Component from '@/editor/core/component/Component.ts';
-import PatchProjectTreeDto from '@/api/modules/project/dto/patch-project-tree.dto.ts';
 import html2canvas from 'html2canvas';
 import CreateWidgetDto from '@/api/modules/widget/dto/create-widget.dto.ts';
+import ProjectWsModel from '@/api/modules/project/models/project-ws.model';
 
 const useComponentSetupStore = defineStore({
   id: 'component-setup-store',
-  state: (): { component: Component | null } => ({
+  state: (): { component: Component | null; ws: ProjectWsModel } => ({
     component: null,
+    ws: new ProjectWsModel(0, ''),
   }),
   actions: {
+    setWs(ws: ProjectWsModel) {
+      this.ws = ws;
+    },
     async patchTree(component: Component) {
-      const updatePath = component
-        .findTop()
-        .map((item) => item.key)
-        .filter((el) => el != component.key);
-      const packed = component.toJson();
-      const projectModel = (
-        await import('@/api/modules/project/models/project.model.ts')
-      ).default;
-      return await projectModel.patchTree(
-        parseInt(localStorage.getItem('selected-project')),
-        new PatchProjectTreeDto(updatePath.reverse(), packed),
-      );
+      // console.log()
+      return await this.ws.patchElement(component);
+    },
+    async removeComponent(path: string[]) {
+      return await this.ws.removeElement(path);
+    },
+    async patchOrdering(path: string[], ordering: string[]) {
+      return await this.ws.patchElementOrdering(path, ordering);
+    },
+    async patchProp(name: string, value: any, component: Component) {
+      return await this.ws.replaceProp(component, name, value);
     },
     async generatePreview(component: Component) {
       return await html2canvas(component.getHTML(), {
@@ -38,8 +41,10 @@ const useComponentSetupStore = defineStore({
       if (this.component) {
         this.component.removeSelected();
         result = await this.patchTree(this.component);
+        this.ws.releaseComponent(this.component);
       }
       this.component = component;
+      this.ws.blockComponent(component);
       this.component.setSelected();
       return result;
     },
