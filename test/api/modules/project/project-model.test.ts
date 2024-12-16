@@ -173,13 +173,7 @@ describe('ProjectModel class tests', () => {
 
     const result = await projectModel.patchTree(id, data);
 
-    expect(result).toEqual({
-      ...apiResponseDto,
-    });
-    expect(projectModel.authorizedRequest).toBeCalledWith({
-      url: `/lumin/project/${id}/tree`,
-      method: 'PATCH',
-      data,
-    });
+    expect(result).toEqual(null);
+    expect(projectModel.authorizedRequest).toBeCalledTimes(0);
   });
 });

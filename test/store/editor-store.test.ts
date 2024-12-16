@@ -1,5 +1,4 @@
 import { describe, vi, it, beforeEach, expect } from 'vitest';
-import ProjectModel from '@/api/modules/project/models/project.model.ts';
 import { createPinia, setActivePinia } from 'pinia';
 import useEditorStore from '@/store/editor.store.ts';
 
@@ -16,6 +15,16 @@ vi.mock('@/api/modules/project/models/project.model.ts', () => {
       getOne: vi.fn(() => getOneResult),
       update: vi.fn(() => 'updated'),
       create: vi.fn(() => createResult),
+      startEditing: vi.fn(() => ({
+        success: true,
+        getData: () => ({
+          project: {
+            id: 123,
+            data: null,
+          },
+          tree: 'tree',
+        }),
+      })),
     },
   };
 });
@@ -33,40 +42,27 @@ describe('EditorStore tests', () => {
     setActivePinia(createPinia());
   });
 
-  it('Test use by id', async () => {
+  it('Test init', async () => {
     const store = useEditorStore();
     store.use = vi.fn();
     const setItemMock = vi.fn();
     vi.stubGlobal('localStorage', {
       setItem: setItemMock,
     });
+    const ProjectModel = (
+      await import('@/api/modules/project/models/project.model.ts')
+    ).default;
+    const mockedProject = await ProjectModel.startEditing(123);
 
-    const result = await store.init(123);
+    await store.init(123);
 
-    expect(ProjectModel.getOne).toBeCalledWith(123);
-    expect(store.use).toBeCalledWith('project');
+    expect(ProjectModel.startEditing).toBeCalledWith(123);
+    expect(store.use).toBeCalledWith({
+      ...mockedProject.getData().project,
+      data: mockedProject.getData().tree,
+    });
     expect(setItemMock).toBeCalledWith('selected-project', '123');
-    expect(result).toEqual({ ...getOneResult });
   });
-
-  // it('Test open new', async () => {
-  //   const store = useEditorStore();
-  //   store.save = vi.fn(() => 'save');
-  //   const setItemMock = vi.fn();
-  //   vi.stubGlobal('localStorage', {
-  //     setItem: setItemMock,
-  //   });
-  //   const stringifyMock = vi.fn(() => 'data');
-  //   vi.stubGlobal('JSON', {
-  //     stringify: stringifyMock,
-  //   });
-  //
-  //   const res = await store.openNew();
-  //   expect(setItemMock).toBeCalledWith('selected-project', 111);
-  //   expect(store.save).toBeCalled();
-  //   expect(stringifyMock).toBeCalled();
-  //   expect(res).toEqual([createResult, 'save']);
-  // });
 
   it('Test use', () => {
     const store = useEditorStore();
@@ -86,31 +82,24 @@ describe('EditorStore tests', () => {
     expect(store.app).toBe('test');
   });
 
-  describe('Test save', () => {
-    let store;
-    beforeEach(() => {
-      store = useEditorStore();
-      store.selected = {
-        id: 123,
-      };
-    });
+  it('Test set ws', () => {
+    const store = useEditorStore();
+    store.ws = '';
 
-    it('State is not null', async () => {
-      const state = 'state';
-      const result = await store.save(state);
+    store.setWs('test');
 
-      expect(ProjectModel.update).toBeCalledWith(123, state);
-      expect(result).equal('updated');
-    });
+    expect(store.ws).toBe('test');
+  });
 
-    it('State is null', async () => {
-      const result = await store.save();
+  it('Test save', async () => {
+    const store = useEditorStore();
+    store.ws = {
+      save: vi.fn(() => 'res'),
+    };
+    const result = await store.save();
 
-      expect(ProjectModel.update).toBeCalledWith(123, {
-        data: JSON.stringify({ setup: { rootOrdering: [] } }),
-      });
-      expect(result).equal('updated');
-    });
+    expect(store.ws.save).toBeCalledTimes(1);
+    expect(result).equal('res');
   });
 
   it('Test pick block', () => {

@@ -117,6 +117,21 @@ const useEditorStore = defineStore({
         return result;
       }
 
+      const project = await ProjectModel.default.startEditing(
+        result.getData().id,
+      );
+
+      if (!project.success) {
+        return project;
+      }
+
+      this.ws = new ProjectWsModel(
+        project.getData().project.id,
+        project.getData().access,
+      );
+      this.ws.auth();
+      this.ws.init();
+
       this.selected = result.getData();
 
       const initComponent = new Container();
@@ -133,7 +148,10 @@ const useEditorStore = defineStore({
 
       localStorage.setItem('selected-project', this.selected.id);
 
-      return await this.save(this.selected);
+      const saveRes = await this.save(this.selected);
+      this.ws.close();
+
+      return saveRes;
     },
     pickBlock(
       block: { component: string; icon: string; widget: boolean },

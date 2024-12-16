@@ -53,7 +53,7 @@ export default defineComponent<any>({
     },
     async removeComponent(comp: Component) {
       const path = comp.findTop().map(el => el.key).reverse();
-      // this.app.remove(comp.key)
+      this.app.remove(comp.key)
       const result = await this.componentSetupStore.removeComponent(path)
       if (result)
         result.toastIfError(this.notificationStore);
@@ -113,7 +113,7 @@ export default defineComponent<any>({
       shared: project.shared,
       shared_marketplace: project.shared_marketplace,
     });
-    
+
     const ws: ProjectWsModel = new ProjectWsModel(project.id, initRes.getData().access);
 
     ws.register("patch", (data) => {

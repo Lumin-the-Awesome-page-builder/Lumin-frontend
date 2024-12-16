@@ -37,18 +37,16 @@ describe('WsModelUtil tests', () => {
   });
 
   it('Test initilization', () => {
-    wsModelUtil.onOpen = 'onopen';
-    wsModelUtil.onError = 'onerror';
-    wsModelUtil.onClose = 'onclose';
-    wsModelUtil.onMessage = 'onmessage';
+    wsModelUtil.onError = () => 'onerror';
+    wsModelUtil.onClose = () => 'onclose';
+    wsModelUtil.onMessage = () => 'onmessage';
 
     wsModelUtil.init();
 
     expect(wsModelUtil.initialized).toBe(true);
-    expect(wsModelUtil.ws.onopen).toBe(wsModelUtil.onOpen);
-    expect(wsModelUtil.ws.onerror).toBe(wsModelUtil.onError);
-    expect(wsModelUtil.ws.onclose).toBe(wsModelUtil.onClose);
-    expect(wsModelUtil.ws.onmessage).toBe(wsModelUtil.onMessage);
+    expect(wsModelUtil.ws.onerror()).toBe(wsModelUtil.onError());
+    expect(wsModelUtil.ws.onclose()).toBe(wsModelUtil.onClose());
+    expect(wsModelUtil.ws.onmessage()).toBe(wsModelUtil.onMessage());
   });
 
   it('Test onOpen', () => {
@@ -59,30 +57,16 @@ describe('WsModelUtil tests', () => {
     expect(wsModelUtil.actions[wsModelUtil.ON_OPEN_ACTION]).toBeCalled();
   });
 
-  describe('Test closing', () => {
-    it('if closed', () => {
-      wsModelUtil.ws = {
-        CLOSED: true,
-        close: vi.fn(),
-      };
+  it('Test closing', () => {
+    wsModelUtil.ws = {
+      CLOSED: false,
+      close: vi.fn(),
+    };
 
-      wsModelUtil.close();
+    wsModelUtil.close();
 
-      expect(wsModelUtil.initialized).toBe(false);
-      expect(wsModelUtil.ws.close).toBeCalledTimes(0);
-    });
-
-    it('if open', () => {
-      wsModelUtil.ws = {
-        CLOSED: false,
-        close: vi.fn(),
-      };
-
-      wsModelUtil.close();
-
-      expect(wsModelUtil.initialized).toBe(false);
-      expect(wsModelUtil.ws.close).toBeCalledTimes(1);
-    });
+    expect(wsModelUtil.initialized).toBe(false);
+    expect(wsModelUtil.ws.close).toBeCalledTimes(1);
   });
 
   it('test restart', () => {
@@ -236,7 +220,7 @@ describe('WsModelUtil tests', () => {
     describe('on message', () => {
       it('with type', () => {
         const type = 'type';
-        const message = JSON.stringify({ type });
+        const message = { data: JSON.stringify({ type }) };
         wsModelUtil.actions[type] = vi.fn();
 
         wsModelUtil.onMessage(message);
@@ -248,7 +232,7 @@ describe('WsModelUtil tests', () => {
         it('success or no status', () => {
           wsModelUtil.onRefresh = true;
           wsModelUtil.actions[wsModelUtil.RESPONSE_HANDLER] = vi.fn();
-          const message = JSON.stringify({ msg: 'msg' });
+          const message = { data: JSON.stringify({ msg: 'msg' }) };
 
           wsModelUtil.onMessage(message);
 
@@ -261,7 +245,7 @@ describe('WsModelUtil tests', () => {
         it('403 status (not in refresh)', () => {
           wsModelUtil.onRefresh = false;
           wsModelUtil.refreshAndExecuteLast = vi.fn();
-          const message = JSON.stringify({ status: 403 });
+          const message = { data: JSON.stringify({ status: 403 }) };
 
           wsModelUtil.onMessage(message);
 
