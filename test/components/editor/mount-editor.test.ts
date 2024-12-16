@@ -40,8 +40,8 @@ vi.mock('@/store/editor.store.ts', () => {
       getProject: {
         id: 1,
         shared: true,
-        shared_marketplace: false
-      }
+        shared_marketplace: false,
+      },
     }),
   };
 });
