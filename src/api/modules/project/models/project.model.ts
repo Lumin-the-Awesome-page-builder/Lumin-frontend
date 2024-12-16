@@ -7,6 +7,8 @@ import ApiModelUtil from '@/utils/api-model.util.ts';
 import PatchProjectTreeDto from '@/api/modules/project/dto/patch-project-tree.dto.ts';
 import PatchProjectShareSettingsDto from '@/api/modules/project/dto/patch-project-share-settings.dto.ts';
 import CollaborationTokenDto from '@/api/modules/project/dto/collaboration-token.dto.ts';
+import StartEditDto from '../dto/start-edit.dto';
+import LoggerUtil from '@/utils/logger/logger.util';
 
 export class ProjectModel extends ApiModelUtil {
   constructor() {
@@ -42,17 +44,21 @@ export class ProjectModel extends ApiModelUtil {
     );
   }
 
-  public async patchTree(
-    id: number,
-    patchProjectTreeDto: PatchProjectTreeDto,
-  ): Promise<ApiResponseDto<ProjectDto>> {
+  public async startEditing(
+    idOrAccess: any,
+  ): Promise<ApiResponseDto<StartEditDto>> {
     return await this.authorizedRequest(
-      new ApiRequestDto(
-        `/lumin/project/${id}/tree`,
-        'PATCH',
-        patchProjectTreeDto,
-      ),
+      new ApiRequestDto(`/lumin/project/${idOrAccess}/start-edit`, 'GET'),
     );
+  }
+
+  public async patchTree(id: number, patchProjectTreeDto: PatchProjectTreeDto) {
+    LoggerUtil.debug(
+      'DANGER! HTTP PATCH TREE METHOD WAS CALLED!!!',
+      id,
+      patchProjectTreeDto,
+    );
+    return null;
   }
 
   public async patchPreview(

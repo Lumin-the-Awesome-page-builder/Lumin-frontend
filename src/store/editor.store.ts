@@ -4,13 +4,14 @@ import CreateProjectDto from '@/api/modules/project/dto/create-project.dto.ts';
 import { generateSlug } from 'random-word-slugs';
 import Container from '@/editor/components/Container.ts';
 import TokenUtil from '@/utils/token.util.ts';
-import Packager from '@/editor/core/Packager.ts';
 import Component from '@/editor/core/component/Component.ts';
 import html2canvas from 'html2canvas';
+import ProjectWsModel from '@/api/modules/project/models/project-ws.model';
 
 const useEditorStore = defineStore({
   id: 'editor-store',
   state: () => ({
+    ws: new ProjectWsModel(0, ''),
     //@ts-ignore
     selected: null,
     app: new App(),
@@ -46,14 +47,21 @@ const useEditorStore = defineStore({
     getContextMenuItems: (state) => state.contextMenu.items,
   },
   actions: {
-    async useById(id: number) {
+    async init(id: number) {
       const ProjectModel = await import(
         '@/api/modules/project/models/project.model.ts'
       );
-      const project = await ProjectModel.default.getOne(id);
-      localStorage.setItem('selected-project', String(id));
-      this.use(project.getData());
-      return project;
+      const startEditDto = await ProjectModel.default.startEditing(id);
+
+      if (!startEditDto.success) return startEditDto;
+
+      const project = startEditDto.getData().project;
+      project.data = startEditDto.getData().tree;
+
+      localStorage.setItem('selected-project', String(project.id));
+      this.use(project);
+
+      return startEditDto;
     },
     use(projectDto: any) {
       this.selected = projectDto;
@@ -61,18 +69,11 @@ const useEditorStore = defineStore({
     setApp(app: any) {
       this.app = app;
     },
-    async save(state = null) {
-      const ProjectModel = await import(
-        '@/api/modules/project/models/project.model.ts'
-      );
-      console.log(this.app.root);
-      const packager = new Packager(this.app);
-      const data = state
-        ? state
-        : {
-            data: packager.json(),
-          };
-      return await ProjectModel.default.update(this.selected.id, data);
+    setWs(ws: ProjectWsModel) {
+      this.ws = ws;
+    },
+    async save() {
+      return await this.ws.save();
     },
     async updatePreview() {
       this.app.rootHTML.innerHTML = '';
@@ -165,8 +166,6 @@ const useEditorStore = defineStore({
     },
     clearBlockSelection() {
       if (this.blockOnCreate.icon) this.blockOnCreate.icon.remove();
-
-      console.log(this.onMoveFrom);
 
       if (this.onMoveFrom) {
         const oldParent =

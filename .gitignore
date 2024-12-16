@@ -7,3 +7,5 @@ coverage-report.txt
 components.d.ts
 auto-imports.d.ts
 /test/coverage
+# Sentry Config File
+.env.sentry-build-plugin

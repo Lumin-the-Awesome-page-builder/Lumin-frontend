@@ -22,14 +22,14 @@ vi.mock('naive-ui', async (importOriginal) => {
 });
 
 vi.mock('@/store/editor.store.ts', () => {
-  const useById = vi.fn();
+  const init = vi.fn();
   const setApp = vi.fn();
   const placeBlock = vi.fn(() => ({ parent: 'parent' }));
   const generatePreview = vi.fn(() => 'preview');
   const save = vi.fn(() => ({ toastIfError: () => {} }));
   return {
     default: () => ({
-      useById,
+      init,
       getTree: '{}',
       setApp,
       save,
@@ -99,7 +99,7 @@ describe('Editor component', async () => {
   it('Test mounting base tree', async () => {
     await wrapper.vm.$nextTick();
 
-    expect(wrapper.vm.editorStore.useById).toBeCalledWith(123);
+    expect(wrapper.vm.editorStore.init).toBeCalledWith(123);
   });
 
   it('select component test', async () => {

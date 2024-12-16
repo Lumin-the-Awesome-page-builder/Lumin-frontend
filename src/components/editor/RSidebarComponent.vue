@@ -107,7 +107,7 @@ import ChangeProjectSharingSettings from '@/components/modals/ShareProjectModal.
 import useComponentSetupStore from '@/store/component-setup.store.ts';
 import useChangeProjectSharingSettingsStore from '@/store/modals/change-project-share-settings-component.store.ts';
 
-export default {
+export default <any> {
   components: {
     ChangeProjectSharingSettings, ComponentSetupComponent, AvailableBlocksComponent, ChangeDataComponent, ChooseDomainComponent, AvailableWidgetsComponent
   },
@@ -181,6 +181,7 @@ export default {
     },
     async exit() {
       let result = await this.save()
+      this.editorStore.ws.closeEditing();
       this.projectPreviewModalStore.closeModal()
       result.toastIfError(this.notificationStore)
       if (result.success) {

@@ -41,7 +41,7 @@ describe('EditorStore tests', () => {
       setItem: setItemMock,
     });
 
-    const result = await store.useById(123);
+    const result = await store.init(123);
 
     expect(ProjectModel.getOne).toBeCalledWith(123);
     expect(store.use).toBeCalledWith('project');
