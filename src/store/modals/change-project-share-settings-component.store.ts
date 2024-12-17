@@ -26,7 +26,7 @@ const useChangeProjectSharingSettingsStore = defineStore(
         const sharedToken =
           await ProjectModel.default.getCollaborationToken(id);
         if (sharedToken.success) {
-          this.collaborationLink = `${appConf.proto}://${appConf.host}/collab/${sharedToken.getData().access_token}`;
+          this.collaborationLink = `${appConf.proto}://${appConf.host}/project/${sharedToken.getData().access_token}/edit`;
         } else {
           this.collaborationLink = '';
         }

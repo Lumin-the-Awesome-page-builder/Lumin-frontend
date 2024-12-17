@@ -9,11 +9,15 @@ export default class ProjectWsModel extends WsModelUtil {
     super('lumin/collab/ws', false);
   }
 
-  auth() {
-    this.send('auth', {
-      project_id: this.projectId,
-      access: this.access,
-    });
+  async auth() {
+    return await this.sendAwaited(
+      `auth-client-awaited-${this.access}`,
+      'auth',
+      {
+        project_id: this.projectId,
+        access: this.access,
+      },
+    );
   }
 
   blockComponent(component: Component) {

@@ -140,6 +140,7 @@ export class App {
           this.buildTree(el.children, refreshKeys, stackSize++),
           el.childrenOrdering,
         );
+        console.log(component, refreshKeys);
         component.setContent(el.content);
         component.setKeySalt(this.identifiersSalt);
         if (refreshKeys) {
@@ -306,11 +307,13 @@ export class App {
 
   public addOrReplace(json: string, parentKey: string, key: string) {
     const parsed = JSON.parse(json);
-    const tree = this.buildTree({ [parsed.key]: parsed }, true);
-    const onReplace = tree[Object.keys(tree)[0]];
-
     const old = this.state[key];
+    const tree = this.buildTree({ [parsed.key]: parsed }, false);
+    const onReplace = tree[Object.keys(tree)[0]];
+    console.log(parentKey, key);
+    console.log(old);
     if (old) {
+      console.log('old exists');
       if (old.parent) {
         onReplace.parent = old.parent;
         onReplace.parent.children[old.key] = onReplace;
@@ -325,13 +328,33 @@ export class App {
             last = el;
           }
         });
-        const beforeElement = this.root[placeBefore].htmlElement;
+        old.htmlElement.remove();
         this.root[old.key] = onReplace;
-        this.rootHTML.insertBefore(onReplace.render(), beforeElement);
+        const beforeElement = this.root[placeBefore];
+        if (beforeElement) {
+          this.rootHTML.insertBefore(
+            onReplace.render(),
+            beforeElement.htmlElement,
+          );
+        } else {
+          this.rootHTML.prepend(onReplace.render());
+        }
       }
     } else {
       this.state[onReplace.key] = onReplace;
-      this.attachToParent(onReplace, parentKey == 'root' ? null : parentKey);
+      if (parentKey == 'root') {
+        this.rootOrdering.push(onReplace.key);
+        this.root[onReplace.key] = onReplace;
+        console.log(this.root, this.rootOrdering);
+        this.rootHTML.appendChild(onReplace.render());
+      } else {
+        console.log('We are here!', onReplace);
+        const parent = this.state[parentKey];
+        parent.children[onReplace.key] = onReplace;
+        parent.childrenOrdering.push(onReplace.key);
+        onReplace.parent = parent;
+        parent.htmlElement.appendChild(onReplace.render());
+      }
     }
   }
 

@@ -7,6 +7,7 @@ import TokenUtil from '@/utils/token.util.ts';
 import Component from '@/editor/core/component/Component.ts';
 import html2canvas from 'html2canvas';
 import ProjectWsModel from '@/api/modules/project/models/project-ws.model';
+import { getEditorInstance } from '@/editor/plugin';
 
 const useEditorStore = defineStore({
   id: 'editor-store',
@@ -117,24 +118,12 @@ const useEditorStore = defineStore({
         return result;
       }
 
-      const project = await ProjectModel.default.startEditing(
-        result.getData().id,
-      );
-
-      if (!project.success) {
-        return project;
-      }
-
-      this.ws = new ProjectWsModel(
-        project.getData().project.id,
-        project.getData().access,
-      );
-      this.ws.auth();
-      this.ws.init();
-
       this.selected = result.getData();
 
       const initComponent = new Container();
+      const editor = getEditorInstance();
+      const props = editor.buildProps(initComponent, []);
+      initComponent.setProps(props);
       initComponent.setKeySalt(
         `${this.selected.id}${String(TokenUtil.getAuthorized().id)}`,
       );
@@ -148,8 +137,12 @@ const useEditorStore = defineStore({
 
       localStorage.setItem('selected-project', this.selected.id);
 
-      const saveRes = await this.save(this.selected);
-      this.ws.close();
+      const saveRes = await ProjectModel.default.update(this.selected.id, {
+        name: newProject.name,
+        data: this.selected.data,
+        tags: [],
+        category: newProject.category_id,
+      });
 
       return saveRes;
     },
