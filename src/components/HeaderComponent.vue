@@ -23,7 +23,7 @@
 
     <n-divider style="height: 100%;" vertical />
 
-    <div class="buttons-group">
+    <div class="buttons-group" v-if="showProjectControls">
       <n-button @click="createProject" color="#7b7bfe" ghost>
         <template #icon>
           <n-icon>
@@ -58,7 +58,7 @@
           <Store />
         </n-icon>
         Маркетплейс</div>
-      <div class="nav-element disabled">
+      <div @click="goToBackend" class="nav-element">
         <n-icon>
           <Backend />
         </n-icon>
@@ -99,6 +99,12 @@ export default {
       editorStore: useEditorStore(),
     }
   },
+  props: {
+    showProjectControls: {
+      type: Boolean,
+      default: true
+    }
+  },
   async mounted() {
     await this.loadProjects()
   },
@@ -128,6 +134,9 @@ export default {
     async downloadSelected() {
       const results = await this.dashboardStore.downloadSelected()
       results.forEach((result) => result.toastIfError(this.notificationStore));
+    },
+    goToBackend() {
+      this.$router.push({path: `/envs/create`})
     }
   },
   computed: {
