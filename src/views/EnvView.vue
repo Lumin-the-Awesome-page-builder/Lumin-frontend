@@ -2,7 +2,7 @@
   <EnvDashboardComponent>
     <template v-slot:header>
       <div class="page-header">
-        <n-icon :component="ArrowBack"></n-icon>
+        <n-icon @click="goToEnvList" :component="ArrowBack"></n-icon>
         <h2 class="page-heading">Список контейнеров</h2>
       </div>
     </template>
@@ -12,11 +12,10 @@
         <p class="head-block-container-text">Статус</p>
         <p class="head-block-container-text">Операции</p>
       </div>
-      <EnvContainerListItemComponent name="test" status="ok"></EnvContainerListItemComponent>
-      <EnvContainerListItemComponent name="test" status="ok"></EnvContainerListItemComponent>
-      <EnvContainerListItemComponent name="test" status="ok"></EnvContainerListItemComponent>
-      <EnvContainerListItemComponent name="test" status="ok"></EnvContainerListItemComponent>
-      <EnvContainerListItemComponent name="test" status="ok"></EnvContainerListItemComponent>
+      <EnvContainerListItemComponent v-for="container in containers" 
+        @click="goToContainer(container.id)" 
+        :name="container.name" 
+        :status="container.status" />
     </template>
   </EnvDashboardComponent>
 </template>
@@ -28,12 +27,29 @@ import EnvContainerListItemComponent from '@/components/env/EnvContainerListItem
 
 export default {
   name: 'EnvView',
+  components: { EnvContainerListItemComponent, EnvDashboardComponent },
   computed: {
     ArrowBack() {
       return ArrowBack;
     },
+    containers() {
+      return [
+        { id: 1, name: "test", status: "ok" },
+        { id: 2, name: "test", status: "ok" },
+        { id: 3, name: "test", status: "ok" },
+        { id: 4, name: "test", status: "ok" },
+      ]
+    }
   },
-  components: { EnvContainerListItemComponent, EnvDashboardComponent },
+  methods: {
+    goToEnvList() {
+      this.$router.push({path: "/envs"});
+    },
+    goToContainer(containerId) {
+      const envId = this.$route.params.envId;
+      this.$router.push({path: `/envs/${envId}/container/${containerId}`});
+    }
+  }
 };
 </script>
 

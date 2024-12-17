@@ -1,10 +1,8 @@
 <template>
-  <EnvDashboardComponent
-    title=""
-  > 
+  <EnvDashboardComponent> 
     <template v-slot:header>
       <div class="page-header">
-          <n-icon :component="ArrowBack"></n-icon>
+          <n-icon class="prev-arrow" @click="goToEnvList" :component="ArrowBack"></n-icon>
           <h2 class="page-heading">Создание окружения</h2>
       </div>
     </template>
@@ -15,6 +13,34 @@
           <n-icon :component="Pencil" color="#6F6C99" />
         </template>
       </n-input>
+
+      <div class="btns">
+        <div class="switch-type-btns">
+          <!-- killed -->
+          <n-button v-if="conf" @click="switchToConf" color="#7b7bfe">
+            Использовать готовую конфигурацию
+          </n-button>
+          <n-button v-else @click="switchToConf" color="#7b7bfe" ghost>
+            Использовать готовую конфигурацию
+          </n-button>
+          <n-button v-if="!conf" @click="switchToPure" color="#7b7bfe">
+            Создать новую конфигурацию
+          </n-button>
+          <n-button v-else @click="switchToPure" color="#7b7bfe" ghost>
+            Создать новую конфигурацию
+          </n-button>
+        </div>
+
+        <div class="save-btn">
+          <n-button @click="saveEnv" color="#7b7bfe">
+            Сохранить окружение
+          </n-button>
+        </div>
+      </div>
+
+      <CreateEnvFromConfiguration v-if="conf" />
+      <CreatePureEnv v-else />
+
     </template>
 
   </EnvDashboardComponent>
@@ -22,24 +48,49 @@
 
 
 <script lang="ts">
+import CreateEnvFromConfiguration from '@/components/env/CreateEnvFromConfiguration.vue';
+import CreatePureEnv from '@/components/env/CreatePureEnv.vue';
 import EnvDashboardComponent from '@/components/env/EnvDashboardComponent.vue';
 import { Pencil, ArrowBack } from '@vicons/ionicons5';
 
 export default {
     name: "CreateEnvView",
     components: {
-      EnvDashboardComponent
+      EnvDashboardComponent,
+      CreateEnvFromConfiguration,
+      CreatePureEnv
     }, 
     data: () => ({
       Pencil: shallowRef(Pencil),
       ArrowBack: shallowRef(ArrowBack),
-      name: ""
-    })
+      name: "",
+      conf: true
+    }),
+    methods: {
+      goToEnvList() {
+        this.$router.push({ path: "/envs" })
+      },
+      saveEnv() {
+        console.log(name);
+      },
+      switchToConf() {
+        this.conf = true;
+        console.log("conf")
+      },
+      switchToPure() {
+        this.conf = false;
+        console.log("pure")
+      }
+    }
 }
 
 </script>
 
 <style>
+.prev-arrow {
+  font-size: 20px;
+  cursor: pointer;
+}
 
 .content-wrapper {
   width: 100%;
@@ -50,6 +101,7 @@ export default {
 }
 
 .search-input {
+  padding: .3rem;
   border-radius: 10px;
 }
 
@@ -58,7 +110,7 @@ export default {
   flex-direction: row;
   color: black;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
   margin: 1rem;
 }
 
@@ -97,6 +149,24 @@ export default {
 
 .footerText {
   margin-left: 1.5rem;
+}
+
+.btns {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.switch-type-btns {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: space-around;
+  width: auto;
+}
+
+.save-btn {
+  display: flex;
 }
 
 </style>

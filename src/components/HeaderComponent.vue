@@ -136,7 +136,7 @@ export default {
       results.forEach((result) => result.toastIfError(this.notificationStore));
     },
     goToBackend() {
-      this.$router.push({path: `/envs/create`})
+      this.$router.push({path: `/envs`})
     }
   },
   computed: {

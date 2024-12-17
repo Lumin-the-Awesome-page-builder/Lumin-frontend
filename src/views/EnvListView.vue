@@ -2,18 +2,17 @@
   <EnvDashboardComponent>
     <template v-slot:header>
       <div class="page-header">
-        <n-icon :component="ArrowBack"></n-icon>
+        <n-icon @click="goToDashboard" :component="ArrowBack"></n-icon>
         <h2 class="page-heading">Список окружений</h2>
       </div>
     </template>
     <template v-slot:content>
-      <EnvListItemComponent name="test"></EnvListItemComponent>
-      <EnvListItemComponent></EnvListItemComponent>
-      <EnvListItemComponent></EnvListItemComponent>
-      <EnvListItemComponent></EnvListItemComponent>
-      <EnvListItemComponent></EnvListItemComponent>
+      <EnvListItemComponent v-for="env in envs" 
+        :name="env.name"
+        @click="goToEnv(env.id)"
+         />
       <div class="plus">
-        <n-icon :component="AddOutline"></n-icon>
+        <n-icon :component="AddOutline" @click="goToCreate"></n-icon>
       </div>
     </template>
   </EnvDashboardComponent>
@@ -26,19 +25,37 @@ import { AddOutline, ArrowBack } from '@vicons/ionicons5';
 import EnvListItemComponent from '@/components/env/EnvListItemComponent.vue';
 export default {
   name: "EnvListViewComponent",
+  components: {
+    EnvListItemComponent,
+    EnvDashboardComponent,
+  },
   computed: {
     AddOutline() {
       return AddOutline
     },
     ArrowBack() {
       return ArrowBack
+    },
+    envs() {
+      return [
+        { id: 1, name: 'test' },
+        { id: 2, name: 'test' },
+        { id: 3, name: 'test' },
+        { id: 4, name: 'test' },
+      ]
     }
   },
-  components: {
-    EnvListItemComponent,
-    EnvDashboardComponent,
-
-  }
+  methods: {
+    goToDashboard() {
+      this.$router.push({path: "/dashboard"})
+    },
+    goToEnv(envId) {
+      this.$router.push({path: `/envs/${envId}`})
+    },
+    goToCreate() {
+      this.$router.push({path: `/envs/create`})
+    }
+  },
 }
 </script>
 

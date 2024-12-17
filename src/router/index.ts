@@ -40,7 +40,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/envs/:envId/container/:containerId',
     name: 'ContainerView',
-    component: () => import('@/views/EnvView.vue'),
+    component: () => import('@/views/ContainerView.vue'),
   }
 ];
 

@@ -17,6 +17,8 @@
     "e2e-test": "cypress run"
   },
   "dependencies": {
+    "@codemirror/lang-yaml": "^6.1.2",
+    "@codemirror/theme-one-dark": "^6.1.2",
     "@css-render/vue3-ssr": "^0.15.14",
     "@esbuild/linux-x64": "0.20.2",
     "@rollup/rollup-linux-x64-gnu": "4.24.0",
