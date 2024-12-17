@@ -21,11 +21,13 @@ import Component from '@/editor/core/component/Component.ts';
 import RSidebarComponent from '@/components/editor/RSidebarComponent.vue';
 import ContextMenuComponent from '@/components/editor/ContextMenuComponent.vue';
 import { App } from '@/editor/App.ts';
-import { useNotification } from 'naive-ui';
+import { selectDark, useNotification } from 'naive-ui';
 import { defineComponent } from 'vue';
 import useWidgetLibraryStore from '@/store/widget-library.store.ts';
 import useChangeProjectSharingSettingsStore from '@/store/modals/change-project-share-settings-component.store.ts';
 import ProjectWsModel from '@/api/modules/project/models/project-ws.model';
+import ContentProp from '@/editor/properties/ContentProp';
+import ComponentNameProp from '@/editor/properties/ComponentNameProp';
 
 export default defineComponent<any>({
   components: {
@@ -47,6 +49,11 @@ export default defineComponent<any>({
   }),
   methods: {
     async selectComponent(comp: Component) {
+      try {
+        throw new Error()
+      } catch (e) {
+        console.log(e)
+      }
       const result = await this.componentSetupStore.selectComponent(comp)
       if (result)
         result.toastIfError(this.notificationStore);
@@ -117,23 +124,25 @@ export default defineComponent<any>({
     const ws: ProjectWsModel = new ProjectWsModel(project.id, initRes.getData().access);
 
     ws.register("patch", (data) => {
+      console.log("new patch event", data)
       const json = data.data.json
       const key = data.data.key
       const parentKey = data.data.parent_key
       this.app.addOrReplace(json, parentKey, key)
-      console.log("new patch event", data)
     })
     ws.register("remove-element", (data) => {
+      console.log("remove")
       this.app.remove(data.data);
     })
     ws.register("block", (data) => {
       console.log("block")
-      const path = data.data;
-      this.app.applyByPath(path, (component) => { component.locked = true });
+      const key = data.data;
+      this.app.state[key].locked = true;
     })
     ws.register("release", (data) => {
-      const path = data.data;
-      this.app.applyByPath(path, (component) => { component.locked = false });
+      console.log("release")
+      const key = data.data;
+      this.app.state[key].locked = false;
     })
     // ws.register("patch-prop-add", (data) => {
     //   console.log("new patch prop add event", data)
@@ -142,14 +151,21 @@ export default defineComponent<any>({
     //   console.log("new patch prop remove event", data)
     // })
     ws.register("patch-prop-replace", (data) => {
+      console.log("patch-prop-replace")
       const propName = data.prop_name
       const propValue = data.prop_value
       const key = data.key;
+      if (propName == ContentProp.name || propName == ComponentNameProp.name) {
+        this.app.state[key].props.get(propName).setValue(propValue, 0)
+        return
+      }
       propValue.forEach((val, index) => {
         this.app.state[key].props.get(propName).setValue(val, index)
       })
+      console.log(this.app.state[key].props.get(propName))
     })
     ws.register("patch-item-ordering", (data) => {
+      console.log("patch-item-ordering")
       this.app.state[data.path].childrenOrdering = data.ordering;
       this.app.state[data.path].render();
     })
@@ -161,16 +177,22 @@ export default defineComponent<any>({
       console.log("ws close: ", err.reason)
     })
 
+    const app: App = this.$mount_editor('app-builder', `${project.id}${TokenUtil.getAuthorized().id}`, this.editorStore.getTree);
+    // await this.selectComponent(app.root[Object.keys(app.root)[0]])
+    this.app = app
+    
     await ws.init();
-    ws.auth();
+    const authRes = await ws.auth();
+    if (authRes.success) {
+      authRes.getData().blocked.map(item => {
+        if (this.app.state[item]) 
+          this.app.state[item].locked = true;
+      })
+    } 
 
     this.editorStore.setWs(ws)
     this.componentSetupStore.setWs(ws)
 
-    const app: App = this.$mount_editor('app-builder', `${project.id}${TokenUtil.getAuthorized().id}`, this.editorStore.getTree);
-    await this.selectComponent(app.root[Object.keys(app.root)[0]])
-    this.app = app
-    
     document.body.addEventListener('click', () => {
       this.editorStore.contextMenu.autoClose = true
       this.editorStore.closeContext()
@@ -198,7 +220,6 @@ export default defineComponent<any>({
         this.editorStore.openContext(topPath, { x: ev.clientX, y: ev.clientY }, pickedBlockClosure)
       }
       else {
-        console.log(topPath)
         if (topPath.length == 1) {
           await this.selectComponent(topPath[0])
         } else {

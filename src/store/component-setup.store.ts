@@ -37,16 +37,15 @@ const useComponentSetupStore = defineStore({
       });
     },
     async selectComponent(component: Component) {
-      let result;
       if (this.component) {
         this.component.removeSelected();
-        result = await this.patchTree(this.component);
         this.ws.releaseComponent(this.component);
       }
       this.component = component;
       this.ws.blockComponent(component);
+      console.log(this.component);
       this.component.setSelected();
-      return result;
+      return null;
     },
     async saveWidget(component: Component | null = null) {
       const componentName = component
