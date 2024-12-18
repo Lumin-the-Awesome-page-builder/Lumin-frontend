@@ -5,6 +5,7 @@
       transform-origin="center"
       preset="card"
       style="width: 600px"
+      @negative-click="cancel"
     >
       <n-card
         :bordered="false"
