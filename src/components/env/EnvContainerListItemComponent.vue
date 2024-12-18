@@ -21,6 +21,7 @@
 
 <script lang="ts">
 import { Play, Stop } from '@vicons/ionicons5';
+import { useEnvContainerListStore } from '@/store/envContainerListStore.ts';
 
 export default {
   name: 'EnvContainerListItemComponent',
@@ -31,7 +32,16 @@ export default {
   data: () => ({
     Play: shallowRef(Play),
     Stop: shallowRef(Stop),
+    envContainerListStore: useEnvContainerListStore(),
   }),
+  methods: {
+    startContainer() {
+      this.envContainerListStore.startContainer(this.$route.params.envId, this.$route.params.containerId)
+    },
+    stopContainer() {
+      this.envContainerListStore.stopContainer(this.$route.params.envId, this.$route.params.containerId)
+    }
+  }
 };
 </script>
 

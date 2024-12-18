@@ -24,6 +24,7 @@
 import EnvDashboardComponent from '@/components/env/EnvDashboardComponent.vue';
 import { ArrowBack } from '@vicons/ionicons5';
 import EnvContainerListItemComponent from '@/components/env/EnvContainerListItemComponent.vue';
+import { useEnvContainerListStore } from '@/store/envContainerListStore.ts';
 
 export default {
   name: 'EnvView',
@@ -33,13 +34,16 @@ export default {
       return ArrowBack;
     },
     containers() {
-      return [
-        { id: 1, name: "test", status: "ok" },
-        { id: 2, name: "test", status: "ok" },
-        { id: 3, name: "test", status: "ok" },
-        { id: 4, name: "test", status: "ok" },
-      ]
+      return this.envContainerListStore.getAllContainers;
     }
+  },
+  data() {
+    return {
+      envContainerListStore: useEnvContainerListStore(),
+    };
+  },
+  mounted() {
+    this.envContainerListStore.loadContainers(this.$route.params.envId);
   },
   methods: {
     goToEnvList() {

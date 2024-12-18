@@ -7,53 +7,59 @@
       </div>
     </template>
     <template v-slot:content>
-      <EnvListItemComponent v-for="env in envs" 
+      <EnvListItemComponent
+        v-for="env in envs"
+        :key="env.id"
         :name="env.name"
         @click="goToEnv(env.id)"
-         />
+      />
       <div class="plus">
         <n-icon :component="AddOutline" @click="goToCreate"></n-icon>
       </div>
     </template>
   </EnvDashboardComponent>
-
 </template>
 
 <script lang="ts">
 import EnvDashboardComponent from '@/components/env/EnvDashboardComponent.vue';
 import { AddOutline, ArrowBack } from '@vicons/ionicons5';
 import EnvListItemComponent from '@/components/env/EnvListItemComponent.vue';
+import { useEnvListStore } from '@/store/envListStore';
+
 export default {
   name: "EnvListViewComponent",
   components: {
     EnvListItemComponent,
     EnvDashboardComponent,
   },
+  data() {
+    return {
+      envListStore: useEnvListStore(),
+    };
+  },
   computed: {
     AddOutline() {
-      return AddOutline
+      return AddOutline;
     },
     ArrowBack() {
-      return ArrowBack
+      return ArrowBack;
     },
     envs() {
-      return [
-        { id: 1, name: 'test' },
-        { id: 2, name: 'test' },
-        { id: 3, name: 'test' },
-        { id: 4, name: 'test' },
-      ]
+      return this.envListStore.getAllEnvironments;
     }
+  },
+  mounted() {
+    this.envListStore.load();
   },
   methods: {
     goToDashboard() {
-      this.$router.push({path: "/dashboard"})
+      this.$router.push({ path: "/dashboard" });
     },
     goToEnv(envId) {
-      this.$router.push({path: `/envs/${envId}`})
+      this.$router.push({ path: `/envs/${envId}` });
     },
     goToCreate() {
-      this.$router.push({path: `/envs/create`})
+      this.$router.push({ path: `/envs/create` });
     }
   },
 }
