@@ -6,11 +6,11 @@ describe('Тестирование CardComponent', () => {
     cy.get('.btn').contains('Продолжить').click();
   });
 
-  it('Должен отображать компонент карточки', () => {
+  /*it('Должен отображать компонент карточки', () => {
     cy.get('.card', { timeout: 10000 }).should('exist');
   });
 
-  /*it('Должен отображать изображение проекта', () => {
+  it('Должен отображать изображение проекта', () => {
     cy.get('.image-card-project')
       .should('have.attr', 'src')
       .and('include', 'https://example.com/preview.jpg');
