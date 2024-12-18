@@ -13,7 +13,9 @@
         <p class="head-block-container-text">Операции</p>
       </div>
       <EnvContainerListItemComponent v-for="container in containers" 
+        :key="`${container.id}${container.status}`"
         @click="goToContainer(container.id)" 
+        :id="container.id"
         :name="container.name" 
         :status="container.status" />
     </template>
@@ -42,8 +44,8 @@ export default {
       envContainerListStore: useEnvContainerListStore(),
     };
   },
-  mounted() {
-    this.envContainerListStore.loadContainers(this.$route.params.envId);
+  async mounted() {
+    await this.envContainerListStore.loadContainers(this.$route.params.envId);
   },
   methods: {
     goToEnvList() {

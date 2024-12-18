@@ -39,7 +39,7 @@ export default class DockerModel extends ApiModelUtil {
 
   public async startEnv(envId: number) {
     return await this.authorizedRequest<ApiResponseDto<CommandResultDto>>(
-      new ApiRequestDto(`/lumin/docker/${envId}/start/all`, 'GET'),
+      new ApiRequestDto(`/lumin/docker/${envId}/start/all`, 'POST'),
     );
   }
 
@@ -50,7 +50,7 @@ export default class DockerModel extends ApiModelUtil {
   }
 
   public async startContainer(envId: number, containerId: number) {
-    return await this.authorizedRequest<ApiResponseDto<CommandResultDto>>(
+    return await this.authorizedRequest<CommandResultDto>(
       new ApiRequestDto(
         `/lumin/docker/${envId}/container/${containerId}/start`,
         'POST',
@@ -59,7 +59,7 @@ export default class DockerModel extends ApiModelUtil {
   }
 
   public async stopContainer(envId: number, containerId: number) {
-    return await this.authorizedRequest<ApiResponseDto<CommandResultDto>>(
+    return await this.authorizedRequest<CommandResultDto>(
       new ApiRequestDto(
         `/lumin/docker/${envId}/container/${containerId}/stop`,
         'POST',

@@ -26,6 +26,7 @@ import { useEnvContainerListStore } from '@/store/envContainerListStore.ts';
 export default {
   name: 'EnvContainerListItemComponent',
   props: {
+    id: 0,
     name: '',
     status: '',
   },
@@ -35,11 +36,13 @@ export default {
     envContainerListStore: useEnvContainerListStore(),
   }),
   methods: {
-    startContainer() {
-      this.envContainerListStore.startContainer(this.$route.params.envId, this.$route.params.containerId)
+    startContainer(ev) {
+      ev.stopPropagation()
+      this.envContainerListStore.startContainer(this.$route.params.envId, this.id)
     },
-    stopContainer() {
-      this.envContainerListStore.stopContainer(this.$route.params.envId, this.$route.params.containerId)
+    stopContainer(ev) {
+      ev.stopPropagation()
+      this.envContainerListStore.stopContainer(this.$route.params.envId, this.id)
     }
   }
 };
