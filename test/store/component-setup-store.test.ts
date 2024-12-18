@@ -26,7 +26,6 @@ describe('ComponentSetupStore tests', () => {
     const store = useComponentSetupStore();
     const removeSelectedMock = vi.fn();
     const setSelectedMock = vi.fn();
-    const patchTreeMock = vi.fn();
     const component = {
       removeSelected: removeSelectedMock,
     };
@@ -35,13 +34,11 @@ describe('ComponentSetupStore tests', () => {
       blockComponent: vi.fn(),
       releaseComponent: vi.fn(),
     };
-    store.patchTree = patchTreeMock;
     const componentOnSelect = { setSelected: setSelectedMock };
 
     await store.selectComponent(componentOnSelect);
 
     expect(removeSelectedMock).toBeCalled();
-    expect(patchTreeMock).toBeCalledWith(component);
     expect(store.ws.releaseComponent).toBeCalledWith(component);
     expect(store.component).toEqual({ setSelected: setSelectedMock });
     expect(store.ws.blockComponent).toBeCalledWith(componentOnSelect);

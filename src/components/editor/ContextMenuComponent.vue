@@ -89,11 +89,13 @@ export default {
   },
   data: () => ({
     hovered: null,
+    clicked: false,
   }),
   mounted() {
     this.editorStore.$onAction(({ name, args, after }) => {
       if (name == 'openContext') {
         after((_) => {
+          this.clicked = false;
           const ctx = document.getElementById('context-menu');
           ctx.style = `display: flex; opacity: 1; transform: translateX(${args[1].x + 40}px) translateY(${args[1].y + 40}px);`;
         });
@@ -101,7 +103,8 @@ export default {
       if (name == 'closeContext') {
         after((close) => {
           if (close) {
-            if (this.hovered) this.hovered.classList.remove('selected');
+            if (this.hovered && !this.clicked)
+              this.hovered.classList.remove('selected');
             const ctx = document.getElementById('context-menu');
             ctx.style = `opacity: 0;`;
             setTimeout(() => {
@@ -115,8 +118,9 @@ export default {
   methods: {
     handler(item, ev) {
       ev.stopPropagation();
-      this.editorStore.triggerContextItem(item);
+      this.clicked = true;
       if (item.htmlElement) item.htmlElement.classList.remove('selected');
+      this.editorStore.triggerContextItem(item);
     },
     hover(item) {
       if (item.htmlElement) {

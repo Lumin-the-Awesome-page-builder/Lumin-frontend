@@ -3,7 +3,7 @@ describe('Тестирование DashboardComponent', () => {
     cy.login();
     cy.url().should('include', '/dashboard');
 
-    cy.get('.btn').contains('Продолжить').click();
+    cy.get('.btn', {timeout: 1000}).contains('Продолжить').click();
   });
 
   it('Должен корректно отображать заголовок и количество проектов с правильным склонением', () => {

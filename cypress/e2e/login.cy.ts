@@ -2,7 +2,7 @@ describe('Тестирование LoginComponent', () => {
   beforeEach(() => {
     cy.clearCookies();
     cy.clearLocalStorage();
-    cy.visit('/login');
+    cy.visit('/auth');
   });
 
   Cypress.on('uncaught:exception', (err) => {

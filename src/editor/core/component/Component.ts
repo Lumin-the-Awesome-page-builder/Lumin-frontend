@@ -208,6 +208,7 @@ export default abstract class Component {
 
     if (!pure) this.htmlElement.classList.add('editor-item');
     else {
+      console.log('removed!');
       this.htmlElement.classList.remove('editor-item');
       this.removeSelected();
     }
@@ -249,6 +250,9 @@ export default abstract class Component {
       children = children.reduce((prev, current) =>
         Object.assign(prev, current),
       );
+    else children = {};
+
+    console.log('PROPS', this.props);
 
     return {
       name: this.name,
