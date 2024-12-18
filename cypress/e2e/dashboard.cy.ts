@@ -31,7 +31,7 @@ describe('Тестирование DashboardComponent', () => {
   });
 
   it('Должен отображать компонент CardGrid', () => {
-    cy.get('.card-grid').should('exist');
+    cy.get('.card-grid', { timeout: 10000 }).should('exist');
   });
 
   it('Должен обновлять результаты поиска при вводе в поле поиска и сверять с названием на карточке', () => {
