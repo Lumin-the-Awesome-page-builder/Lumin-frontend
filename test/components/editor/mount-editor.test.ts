@@ -33,7 +33,9 @@ vi.mock('@/api/modules/project/models/project-ws.model', () => {
       static registerOnErrorMock = vi.fn();
       static registerOnCloseMock = vi.fn();
       static initMock = vi.fn();
-      static authMock = vi.fn();
+      static authMock = vi.fn(() => ({
+        success: false,
+      }));
       register = ProjectWsModelMock.registerMock;
       registerOnError = ProjectWsModelMock.registerOnErrorMock;
       registerOnClose = ProjectWsModelMock.registerOnCloseMock;

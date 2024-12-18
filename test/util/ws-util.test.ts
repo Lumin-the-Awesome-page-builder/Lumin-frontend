@@ -146,7 +146,7 @@ describe('WsModelUtil tests', () => {
       JSON.stringify({
         ...lastSent,
         headers: {
-          Authorization: 'token',
+          Authorization: 'Bearer token',
         },
       }),
     );

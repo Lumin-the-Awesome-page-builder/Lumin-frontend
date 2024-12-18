@@ -87,7 +87,7 @@ export default class WsModelUtil {
       JSON.stringify({
         ...this.lastSent,
         headers: {
-          Authorization: authData,
+          Authorization: `Bearer ${authData}`,
         },
       }),
     );
@@ -100,7 +100,7 @@ export default class WsModelUtil {
       data: message,
     };
 
-    const awaited = await new Promise((resolve) => {
+    const awaited = await new Promise<ApiResponseDto<any>>((resolve) => {
       this.register(awaited_type, (msg) => {
         resolve(new ApiResponseDto(true, msg, null));
       });
@@ -108,7 +108,7 @@ export default class WsModelUtil {
         JSON.stringify({
           ...this.lastSent,
           headers: {
-            Authorization: authData,
+            Authorization: `Bearer ${authData}`,
             awaited: true,
             awaited_type,
           },
