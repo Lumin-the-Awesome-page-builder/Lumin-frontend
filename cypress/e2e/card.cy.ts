@@ -1,9 +1,8 @@
 describe('Тестирование CardComponent', () => {
   beforeEach(() => {
     cy.login();
-    cy.url({ timeout: 10000 }).should('include', '/dashboard');
+    cy.url().should('include', '/dashboard');
 
-    cy.get('.btn', { timeout: 10000 }).contains('Продолжить').should('exist');
     cy.get('.btn').contains('Продолжить').click();
   });
 
