@@ -8,7 +8,7 @@
     </template>
 
     <template v-slot:content>
-      <n-input class="search-input" placeholder="Введите название окружения" v-model:value="name">
+      <n-input class="search-input" placeholder="Введите название окружения" v-model:value="createEnvStore.name">
         <template #prefix>
           <n-icon :component="Pencil" color="#6F6C99" />
         </template>
@@ -51,6 +51,7 @@
 import CreateEnvFromConfiguration from '@/components/env/CreateEnvFromConfiguration.vue';
 import CreatePureEnv from '@/components/env/CreatePureEnv.vue';
 import EnvDashboardComponent from '@/components/env/EnvDashboardComponent.vue';
+import useCreateEnvStore from '@/store/create-env.store';
 import { Pencil, ArrowBack } from '@vicons/ionicons5';
 
 export default {
@@ -59,19 +60,31 @@ export default {
       EnvDashboardComponent,
       CreateEnvFromConfiguration,
       CreatePureEnv
-    }, 
+    },
+    setup() {
+      return {
+        createEnvStore: useCreateEnvStore()
+      }
+    },
     data: () => ({
       Pencil: shallowRef(Pencil),
       ArrowBack: shallowRef(ArrowBack),
       name: "",
       conf: true
     }),
+    async created() {
+      const loaded = await this.createEnvStore.loadConfigurations()
+      if (!loaded.success) {
+        console.log("LAOD FAILED");
+      }
+    },
     methods: {
       goToEnvList() {
         this.$router.push({ path: "/envs" })
       },
-      saveEnv() {
-        console.log(name);
+      async saveEnv() {
+        const created = await this.createEnvStore.createFromConf();
+        console.log(created)
       },
       switchToConf() {
         this.conf = true;

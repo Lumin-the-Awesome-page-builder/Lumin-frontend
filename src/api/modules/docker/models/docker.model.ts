@@ -3,6 +3,8 @@ import ApiResponseDto from '@/api/dto/api-response.dto';
 import ApiModelUtil from '@/utils/api-model.util';
 import CommandResultDto from '@/api/modules/docker/dto/command-result.dto';
 import EnvironmentDto from '@/api/modules/docker/dto/environment.dto';
+import CreateFromConfigurationDto from '@/api/modules/docker/dto/create-from-configuration.dto';
+import ConfigurationDto from '../dto/configuration.dto';
 
 export default class DockerModel extends ApiModelUtil {
   constructor() {
@@ -85,7 +87,21 @@ export default class DockerModel extends ApiModelUtil {
 
   public async getCompose(envId: number) {
     return await this.authorizedRequest<ApiResponseDto<any>>(
-      new ApiRequestDto(`/lumin/docker/${envId}/compose`, 'POST', { data }),
+      new ApiRequestDto(`/lumin/docker/${envId}/compose`, 'GET'),
     );
+  }
+
+  public async getConfigurations() {
+    return await this.authorizedRequest<ApiResponseDto<ConfigurationDto>>(
+        new ApiRequestDto(`/lumin/docker/configurations`, 'GET')
+    )
+  }
+
+  public async createFromConfiguration(createDto: CreateFromConfigurationDto) {
+    return await this.authorizedRequest<ApiResponseDto<EnvironmentDto>>(
+        new ApiRequestDto(`/lumin/docker/configuration`, "POST", {
+            ...createDto
+        })
+    )
   }
 }

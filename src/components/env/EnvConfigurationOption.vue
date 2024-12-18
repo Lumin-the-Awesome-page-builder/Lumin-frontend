@@ -11,19 +11,30 @@
   </div>
 </template>
 <script lang="ts">
+import useCreateEnvStore from '@/store/create-env.store';
+
 export default {
   name: "EnvConfigurationOption",
   props: {
+    id: Number,
     name: String,
   },
+  setup() {
+    return {
+      createEnvStore: useCreateEnvStore()
+    }
+  },
   data: () => ({
-    selected: false
+
   }),
-  emits: ["selected"],
+  computed: {
+    selected() {
+      return this.createEnvStore.selectedConf == this.id
+    }
+  },
   methods: {
     changeSelected() {
-      this.selected = !this.selected;
-      console.log(this.selected);
+      this.createEnvStore.selectedConf = this.id
     }
   }
 }
