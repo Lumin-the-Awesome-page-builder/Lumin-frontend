@@ -1,8 +1,13 @@
 <template>
     <div class="file-item" v-for="file in files">
+      <p>Загруженные файлы:</p>
+      <div class="description-row">
+        <span class="description">Название</span>
+        <span class="description">Описание</span>
+      </div>
         <div class="description-row">
             <span class="title">{{ file.title }}</span>
-            <span class="description">{{ file.description }}</span>
+            <span class="title">{{ file.description }}</span>
         </div>
 
         <div class="upload">
@@ -56,3 +61,24 @@ export default {
     }
 }
 </script>
+
+<style>
+.description-row {
+  display: flex;
+  flex-direction: row;
+  width: 95%;
+  justify-content: space-between;
+  align-items: center;
+  height: 2rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+
+}
+.title {
+  color: black;
+}
+
+.description {
+  color: #6F6C99;
+}
+</style>

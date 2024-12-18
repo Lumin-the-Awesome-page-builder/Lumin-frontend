@@ -5,6 +5,8 @@ import CommandResultDto from '@/api/modules/docker/dto/command-result.dto';
 import EnvironmentDto from '@/api/modules/docker/dto/environment.dto';
 import CreateFromConfigurationDto from '@/api/modules/docker/dto/create-from-configuration.dto';
 import ConfigurationDto from '../dto/configuration.dto';
+import CreateConfigurationDto from '@/api/modules/docker/dto/create-configuration.dto.ts';
+import UploadConfigurationsFilesDto from '@/api/modules/docker/dto/upload-configurations-files.dto.ts';
 
 export default class DockerModel extends ApiModelUtil {
   constructor() {
@@ -103,5 +105,31 @@ export default class DockerModel extends ApiModelUtil {
             ...createDto
         })
     )
+  }
+
+  public async createEnvironment(
+    configurationId: number,
+    createDto: CreateConfigurationDto,
+  ) {
+    const url = `/lumin/docker/configurations/${configurationId}/environment`;
+
+    return await this.authorizedRequest<ApiResponseDto<EnvironmentDto>>(
+      new ApiRequestDto(url, 'POST', {
+        ...createDto,
+      }),
+    );
+  }
+
+  public async uploadFiles(
+    environmentId: number,
+    uploadDto: UploadConfigurationsFilesDto,
+  ) {
+    const url = `/lumin/docker/${environmentId}/upload`;
+
+    return await this.authorizedRequest<ApiResponseDto<EnvironmentDto>>(
+      new ApiRequestDto(url, 'POST', {
+        ...uploadDto,
+      }),
+    );
   }
 }
