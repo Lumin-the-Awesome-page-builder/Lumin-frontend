@@ -33,7 +33,7 @@
 
         <div class="save-btn">
           <n-button @click="saveEnv" color="#7b7bfe">
-            Сохранить окружение
+            Создать окружение
           </n-button>
         </div>
       </div>
@@ -83,8 +83,11 @@ export default {
         this.$router.push({ path: "/envs" })
       },
       async saveEnv() {
-        const created = await this.createEnvStore.createFromConf();
-        console.log(created)
+        console.log(this.$route.params, '123')
+        const created = await this.createEnvStore.createConfiguration();
+        if (created[1].success) {
+          this.$router.push({ path: `/envs` });
+        }
       },
       switchToConf() {
         this.conf = true;
