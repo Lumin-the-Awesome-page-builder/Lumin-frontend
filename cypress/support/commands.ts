@@ -37,9 +37,9 @@
 // }
 
 Cypress.Commands.add('login', () => {
-  cy.visit('/login'); // Переход на страницу логина
+  cy.visit('/auth');
 
-  cy.url().should('include', '/login');
+  cy.url().should('include', '/auth');
 
   // Вводим логин (username)
   cy.get('input[placeholder="mail@example.ru"]').type(
