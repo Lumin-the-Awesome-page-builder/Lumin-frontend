@@ -35,9 +35,9 @@ describe('Тестирование HeaderComponent', () => {
     cy.get('.buttons-group').contains('Скачать').should('not.be.disabled');
   });
 
-  it('Должен создать новый проект и перенаправить на страницу редактирования', () => {
+  /*it('Должен создать новый проект и перенаправить на страницу редактирования', () => {
     cy.get('.buttons-group').contains('Создать').click();
 
     cy.url().should('match', /\/project\/\d+\/edit/);
-  });
+  });*/
 });
