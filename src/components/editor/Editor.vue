@@ -185,10 +185,11 @@ export default defineComponent<any>({
       this.app.state[data.path].render();
     })
     ws.register("cursor-updated", (data) => {
-      console.log("cursor-updated")
-      console.log("data: ", data)
-      console.log("data.data: ", data.data)
       this.cursorStore.updateCoordinates(data.data.userId, data.data.position.x, data.data.position.y);
+    })
+    ws.register("delete-cursor", (data) => {
+      console.log(data.data)
+      this.cursorStore.deleteCursor(data.data.userId)
     })
     ws.registerOnError((err) => {
       console.log("ws error: ", err)
@@ -228,7 +229,7 @@ export default defineComponent<any>({
       }
     })
 
-    document.body.addEventListener('mousemove', (event) => {
+    document.querySelector('.editor-wrapper').addEventListener('mousemove', (event) => {
       const mouseX = event.clientX;
       const mouseY = event.clientY;
       ws.sendCursorCoordinates(mouseX, mouseY)

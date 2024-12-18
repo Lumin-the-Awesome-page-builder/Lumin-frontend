@@ -135,6 +135,13 @@ export default class ProjectWsModel extends WsModelUtil {
     });
   }
 
+  removeCursor() {
+    return this.send('delete-cursor', {
+      project_id: this.projectId,
+      access: this.access,
+    });
+  }
+
   closeEditing() {
     this.send('close', {
       project_id: this.projectId,

@@ -12,6 +12,9 @@ const useCursorStore = defineStore({
     updateCoordinates(userId: number, x: number, y: number) {
       this.cursors[userId] = { x: x, y: y };
     },
+    deleteCursor(userId: number) {
+      delete this.cursors[userId];
+    },
   },
 });
 

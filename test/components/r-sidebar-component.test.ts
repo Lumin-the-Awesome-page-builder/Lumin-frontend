@@ -73,6 +73,7 @@ describe('RSidebarComponent test', () => {
     container.availableProps = [];
     const updatePreviewMock = vi.fn(() => ({ toastIfError: () => {} }));
     const loadProjectsMock = vi.fn(() => ({ toastIfError: () => {} }));
+    const removeCursorMock = vi.fn();
     const closeEditingMock = vi.fn();
     const blockComponent = vi.fn();
     RSidebarComponent.setup = vi.fn(() => {
@@ -95,6 +96,7 @@ describe('RSidebarComponent test', () => {
       dashboardStore.loadProjects = loadProjectsMock;
       editorStore.ws = {
         closeEditing: closeEditingMock,
+        removeCursor: removeCursorMock,
       };
       return {
         editorStore,

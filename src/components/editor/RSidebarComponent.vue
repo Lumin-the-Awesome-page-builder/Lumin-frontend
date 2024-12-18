@@ -181,6 +181,7 @@ export default <any> {
     },
     async exit() {
       let result = await this.save()
+      this.editorStore.ws.removeCursor()
       this.editorStore.ws.closeEditing();
       this.projectPreviewModalStore.closeModal()
       result.toastIfError(this.notificationStore)
