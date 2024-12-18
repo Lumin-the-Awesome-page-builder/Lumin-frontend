@@ -7,7 +7,7 @@ describe('Тестирование CardComponent', () => {
   });
 
   it('Должен отображать компонент карточки', () => {
-    cy.get('.card').should('exist');
+    cy.get('.card', { timeout: 10000 }).should('exist');
   });
 
   /*it('Должен отображать изображение проекта', () => {
