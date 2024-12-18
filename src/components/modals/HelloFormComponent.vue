@@ -5,7 +5,6 @@
       transform-origin="center"
       preset="card"
       style="width: 600px"
-      @negative-click="cancel"
     >
       <n-card
         :bordered="false"
@@ -59,37 +58,3 @@ export default defineComponent({
   },
 });
 </script>
-
-
-<style scoped>
-.container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-
-
-.inputs_container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 90%;
-}
-
-.title {
-  color: black;
-  cursor: default;
-}
-
-.btn {
-  width: 15rem;
-  margin: 1.5rem;
-}
-
-.logo_svg {
-  width: 8rem;
-}
-</style>
