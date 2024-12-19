@@ -175,7 +175,10 @@ export default <any> {
   },
   methods: {
     async save() {
-      await this.editorStore.saveForms();
+      const forms = await this.editorStore.saveForms();
+      await Promise.all(forms.map(async el => {
+        await this.componentSetupStore.patchTree(el.component);
+      }));
       const result = await this.editorStore.save()
       result.toastIfError(this.notificationStore)
       return result;
@@ -197,7 +200,11 @@ export default <any> {
     publish() {
       this.chooseDomainStore.openModal()
     },
-    download() {
+    async download() {
+      const forms = await this.editorStore.saveForms();
+      await Promise.all(forms.map(async el => {
+        await this.componentSetupStore.patchTree(el.component);
+      }));
       const packager = new Packager(this.editorStore.app)
       const app = getEditorInstance()
       app.initState = JSON.parse(packager.json())

@@ -27,6 +27,45 @@ export default class Packager {
     htmlPage.appendChild(head);
     htmlPage.appendChild(body);
 
+    body.innerHTML += `<script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const listeners = {}
+                const forms = document.querySelectorAll("form[data-form]");
+                forms.forEach((el) => {
+                    const formId = el.attributes['data-form'].value
+                    const sendUrl = el.attributes['data-form-url'].value
+                    listeners[formId] = {
+                        fieldsData: {},
+                        fieldsList: []
+                    }
+                    const fields = el.children;
+                    for (let i = 0; i < fields.length; i++) {
+                        const el = fields[i];
+                        if (el.type == 'button') {
+                            console.log(el);
+                            el.addEventListener("click", () => {
+                                const data = {}
+                                listeners[formId].fieldsList.forEach(field => {
+                                    data[field.name] = field.html.value;
+                                })
+                                fetch(sendUrl, {
+                                    method: 'POST', 
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        data: JSON.stringify(data)
+                                    })
+                                })
+                            })
+                        } else {
+                            listeners[formId].fieldsList.push({name: el.name, html: el})
+                        }
+                    }
+                })
+            })
+        </script>`;
+
     return htmlPage;
   }
 

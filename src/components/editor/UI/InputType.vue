@@ -9,6 +9,16 @@
       <n-button class="btn" id="hover-btn">{{ valueLabel }}</n-button>
     </n-dropdown>
   </div>
+  <template v-if='value == "button"'>
+    <div class="wrapContainer">
+    <OptionHeadingComponent
+      title="Input Name"
+      popoverTitle="Текст кнопки"
+      popoverText="Вы можете задать отображаемый на кнопке текст"
+    />
+    <n-input class="change-btn" v-model:value="valueTitle" type="text" @change="change"></n-input>
+  </div>
+  </template>
 </template>
 
 <script lang="ts">
@@ -27,6 +37,7 @@ export default {
   data: () => ({
     value: "",
     valueLabel: "",
+    valueTitle: "",
     menuProps: () => ({
       style: {
         width: '15rem',
@@ -37,12 +48,17 @@ export default {
     optionsKeyToLabel: {
       text: 'Текстовое поле',
       email: 'Электронная почта',
-      date: 'Поле ввода даты'
+      date: 'Поле ввода даты',
+      button: 'Кнопка'
     },
     options: [
         {
           label: 'Текстовое поле',
           key: 'text',
+        },
+        {
+          label: 'Кнопка',
+          key: 'button',
         },
         {
           label: 'Электронная почта',
@@ -56,13 +72,18 @@ export default {
   }),
   mounted() {
     this.value = this.prop.value[0];
+    this.valueTitle = this.prop.value[1];
     this.valueLabel = this.optionsKeyToLabel[this.value];
   },
   methods: {
     handleSelect(key) {
       this.valueLabel = this.optionsKeyToLabel[key];
       this.value = key
-      this.prop.setValue([this.value])
+      this.prop.setValue(this.value, 0)
+      this.$emit('changed')
+    },
+    change() {
+      this.prop.setValue(this.valueTitle, 1)
       this.$emit('changed')
     }
   },
