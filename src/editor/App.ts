@@ -2,6 +2,7 @@ import Component, {
   ComponentObject,
 } from '@/editor/core/component/Component.ts';
 import Property, { PropertyObject } from '@/editor/core/property/Property.ts';
+import Form from './components/Form';
 
 export class App {
   public rootHTML: HTMLElement = document.createElement('div');
@@ -458,5 +459,35 @@ export class App {
       }
     });
     return;
+  }
+
+  public getFormFields(form: Component) {
+    const formObject: any = { ...form.specific, component: form }
+    console.log("Found form", form)
+    if (formObject.handler[0] == 'service') {
+      formObject.get_url = null;
+      formObject.save_url = null;
+    }
+    formObject.inputs = []
+    Object.keys(form.children).forEach(key => {
+      const input = form.children[key];
+      formObject.inputs.push({
+        ...input.specific
+      })
+    })
+    formObject.inputs = JSON.stringify(formObject.inputs);
+    return formObject
+  }
+
+  public scanForForms(el: Record<string, Component>, result) {
+    Object.keys(el).forEach((key) => {
+      console.log(el, key)
+      if (!el[key].children) return; 
+      if (el[key].name == Form._name) {
+        result.push(this.getFormFields(el[key]));
+      } else {
+        this.scanForForms(el[key].children, result)
+      }
+    })
   }
 }
