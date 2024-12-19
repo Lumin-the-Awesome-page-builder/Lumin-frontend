@@ -138,7 +138,7 @@ describe('Editor component', async () => {
     await wrapper.vm.$nextTick();
 
     expect(wrapper.vm.editorStore.init).toBeCalledWith(123);
-    expect(ProjectWsModel.registerMock).toBeCalledTimes(6);
+    expect(ProjectWsModel.registerMock).toBeCalledTimes(8);
     expect(ProjectWsModel.registerOnErrorMock).toBeCalled();
     expect(ProjectWsModel.registerOnCloseMock).toBeCalled();
     expect(ProjectWsModel.initMock).toBeCalled();

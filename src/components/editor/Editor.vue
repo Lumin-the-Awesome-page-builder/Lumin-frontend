@@ -8,6 +8,13 @@
       <div class="editor-controls">
         <RSidebarComponent />
       </div>
+      <div class="app">
+        <CursorComponent
+          v-for="(userId) in this.currentUsers"
+          :key="userId"
+          :userId=userId
+        />
+      </div>
     </div>
   </n-notification-provider>
 </template>
@@ -28,6 +35,8 @@ import useChangeProjectSharingSettingsStore from '@/store/modals/change-project-
 import ProjectWsModel from '@/api/modules/project/models/project-ws.model';
 import ContentProp from '@/editor/properties/ContentProp';
 import ComponentNameProp from '@/editor/properties/ComponentNameProp';
+import useCursorStore from '@/store/cursor.store.ts';
+import CursorComponent from "@/components/editor/CursorComponent.vue";
 import Input from '@/editor/components/Input';
 import Form from '@/editor/components/Form';
 import { useChooseDomainStore } from '@/store/modals/choose-domen-component.store';
@@ -35,7 +44,7 @@ import { useChooseDomainStore } from '@/store/modals/choose-domen-component.stor
 export default defineComponent<any>({
   components: {
     ContextMenuComponent,
-    Workspace, RSidebarComponent
+    Workspace, RSidebarComponent, CursorComponent
   },
   name: "Editor",
   setup() {
@@ -47,6 +56,12 @@ export default defineComponent<any>({
       componentSetupStore: useComponentSetupStore(),
       widgetLibraryStore: useWidgetLibraryStore(),
       changeProjectSharingSettingStore: useChangeProjectSharingSettingsStore(),
+      cursorStore: useCursorStore(),
+    }
+  },
+  computed: {
+    currentUsers() {
+      return Object.keys(this.cursorStore.getCursors).map(Number)
     }
   },
   data: () => ({
@@ -177,6 +192,13 @@ export default defineComponent<any>({
       this.app.state[data.path].childrenOrdering = data.ordering;
       this.app.state[data.path].render();
     })
+    ws.register("cursor-updated", (data) => {
+      this.cursorStore.updateCoordinates(data.data.userId, data.data.position.x, data.data.position.y);
+    })
+    ws.register("delete-cursor", (data) => {
+      console.log(data.data)
+      this.cursorStore.deleteCursor(data.data.userId)
+    })
     ws.registerOnError((err) => {
       console.log("ws error: ", err)
     })
@@ -214,6 +236,12 @@ export default defineComponent<any>({
         this.editorStore.clearBlockSelection()
       }
     })
+
+    document.querySelector('.editor-wrapper').addEventListener('mousemove', (event) => {
+      const mouseX = event.clientX;
+      const mouseY = event.clientY;
+      ws.sendCursorCoordinates(mouseX, mouseY)
+    });
     
     document.getElementById(app.mountPoint).addEventListener('click', () => {
       if (this.editorStore.blockOnCreate.component != Input._name)

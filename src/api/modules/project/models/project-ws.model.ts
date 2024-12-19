@@ -126,6 +126,22 @@ export default class ProjectWsModel extends WsModelUtil {
     });
   }
 
+  sendCursorCoordinates(x: number, y: number) {
+    return this.send('cursor-updated', {
+      x: x,
+      y: y,
+      project_id: this.projectId,
+      access: this.access,
+    });
+  }
+
+  removeCursor() {
+    return this.send('delete-cursor', {
+      project_id: this.projectId,
+      access: this.access,
+    });
+  }
+
   closeEditing() {
     this.send('close', {
       project_id: this.projectId,
