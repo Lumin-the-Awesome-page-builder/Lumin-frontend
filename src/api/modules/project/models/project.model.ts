@@ -90,6 +90,14 @@ export class ProjectModel extends ApiModelUtil {
       new ApiRequestDto(`/lumin/project/${id}/collaboration`, 'GET'),
     );
   }
+
+  public async setDomain(projectId: number, domainName: string) {
+    return await this.authorizedRequest<any>(
+      new ApiRequestDto(`/lumin/nginx/${projectId}`, 'POST', {
+        name: domainName
+      }),
+    )
+  }
 }
 
 export default new ProjectModel();

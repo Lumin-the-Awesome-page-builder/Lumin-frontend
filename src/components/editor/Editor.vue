@@ -30,6 +30,7 @@ import ContentProp from '@/editor/properties/ContentProp';
 import ComponentNameProp from '@/editor/properties/ComponentNameProp';
 import Input from '@/editor/components/Input';
 import Form from '@/editor/components/Form';
+import { useChooseDomainStore } from '@/store/modals/choose-domen-component.store';
 
 export default defineComponent<any>({
   components: {
@@ -38,7 +39,9 @@ export default defineComponent<any>({
   },
   name: "Editor",
   setup() {
+    const chooseDomainStore = useChooseDomainStore()
     return {
+      chooseDomainStore,
       notificationStore: useNotification(),
       editorStore: useEditorStore(),
       componentSetupStore: useComponentSetupStore(),
@@ -116,6 +119,9 @@ export default defineComponent<any>({
     }
 
     const project = initRes.getData().project;
+    
+    if (project.domain_name)
+      this.chooseDomainStore.setDomain(project.domain_name);
 
     this.changeProjectSharingSettingStore.loadData({
       id: project.id,
