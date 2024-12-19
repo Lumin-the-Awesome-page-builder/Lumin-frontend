@@ -14,7 +14,16 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import './commands';
+
+Cypress.on('uncaught:exception', (err) => {
+  // Игнорируем ошибки, связанные с сетью или внешними библиотеками
+  if (err.message.includes('Failed to fetch')) {
+    return false;
+  }
+  // Пропускаем только определённые ошибки
+  return true;
+});
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
