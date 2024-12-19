@@ -35,3 +35,31 @@
 //     }
 //   }
 // }
+
+Cypress.Commands.add('login', () => {
+  cy.visit('/auth');
+
+  cy.url().should('include', '/auth');
+
+  // Вводим логин (username)
+  cy.get('input[placeholder="mail@example.ru"]').type(
+    'alinochkabelova28@gmail.com',
+  );
+  cy.get('input[placeholder="password"]').type('tresh123');
+
+  cy.get('.btn').contains('Войти').click();
+
+  cy.url().should('include', '/dashboard');
+});
+
+Cypress.Commands.add('setDashboardStoreData', (data) => {
+  cy.window().then((win) => {
+    const store = win.$pinia ? win.$pinia.useStore('dashboardStore') : null;
+
+    if (store) {
+      store.setData(data);
+    } else {
+      throw new Error('Pinia store не найден');
+    }
+  });
+});
