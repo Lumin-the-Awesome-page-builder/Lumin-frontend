@@ -7,6 +7,11 @@
       <n-divider />
     </template>
     
+    <InputName @changed='propUpdated("input-name")' v-if="inputNameComponentAvailable" :prop="component.props.get('input-name')" />
+    <FormName @changed='propUpdated("form-name")' v-if="formNameComponentAvailable" :prop="component.props.get('form-name')" />
+    <InputType @changed='propUpdated("input-type")' v-if="inputTypeComponentAvailable" :prop="component.props.get('input-type')" />
+    <FormManagementType @changed='propUpdated("form-management-type")' v-if="formManagementTypeComponentAvailable" :prop="component.props.get('form-management-type')" />
+
     <ContentComponent @changed='propUpdated("content")' v-if="contentComponentAvailable" :prop="component.props.get('content')" />
     <PureContentComponent @changed='propUpdated("pure")' v-if="pureContentComponentAvailable" :prop="component.props.get('pure-content')" />
     
@@ -94,11 +99,23 @@ import { PureContentProp } from '@/editor/properties/PureContentProp.ts';
 import ComponentName from '@/components/editor/UI/ComponentName.vue';
 import useEditorStore from '@/store/editor.store.ts';
 import ComponentNameProp from '@/editor/properties/ComponentNameProp.ts';
+import InputName from './UI/InputName.vue';
+import FormName from './UI/FormName.vue';
+import InputType from './UI/InputType.vue';
+import FormManagementType from './UI/FormManagementType.vue';
+import FormManagementTypeProp from '@/editor/properties/FormManagementTypeProp';
+import InputTypeProp from '@/editor/properties/InputTypeProp';
+import FormNameProp from '@/editor/properties/FormNameProp';
+import InputNameProp from '@/editor/properties/InputNameProp';
 
 
 export default <any> {
   name: 'ComponentSetupComponent',
   components: {
+    InputName,
+    FormName,
+    InputType,
+    FormManagementType,
     ComponentName,
     PureContentComponent,
     TextDecorationComponent,
@@ -154,6 +171,18 @@ export default <any> {
     componentSelected() {
       console.log(this.component)
       return this.component != null;
+    },
+    inputNameComponentAvailable() {
+      return this.isAvailable(InputNameProp.name)
+    },
+    formNameComponentAvailable() {
+      return this.isAvailable(FormNameProp.name)
+    },
+    inputTypeComponentAvailable() {
+      return this.isAvailable(InputTypeProp.name);
+    },
+    formManagementTypeComponentAvailable() {
+      return this.isAvailable(FormManagementTypeProp.name);
     },
     linkColorAvailable() {
       return this.isAvailable(LinkColorProp.name);

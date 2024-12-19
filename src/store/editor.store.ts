@@ -8,6 +8,7 @@ import Component from '@/editor/core/component/Component.ts';
 import html2canvas from 'html2canvas';
 import ProjectWsModel from '@/api/modules/project/models/project-ws.model';
 import { getEditorInstance } from '@/editor/plugin';
+import FormsModel from '@/api/modules/forms/forms.model';
 
 const useEditorStore = defineStore({
   id: 'editor-store',
@@ -75,6 +76,20 @@ const useEditorStore = defineStore({
     },
     async save() {
       return await this.ws.save();
+    },
+    async saveForms() {
+      const forms = []
+      this.app.scanForForms(this.app.root, forms)
+      console.log(forms);
+      const formsModel = new FormsModel();
+      await Promise.all(forms.map(async (el) => {
+        if (el.id) {
+          await formsModel.updateForm(this.selected.id, el);
+        } else {
+          const res = await formsModel.saveForm(this.selected.id, el);
+          el.component.specific.id = res.getData().id;
+        }
+      }))
     },
     async updatePreview() {
       this.app.rootHTML.innerHTML = '';

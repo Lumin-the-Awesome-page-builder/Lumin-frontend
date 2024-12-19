@@ -175,6 +175,7 @@ export default <any> {
   },
   methods: {
     async save() {
+      await this.editorStore.saveForms();
       const result = await this.editorStore.save()
       result.toastIfError(this.notificationStore)
       return result;

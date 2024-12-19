@@ -28,6 +28,8 @@ import useChangeProjectSharingSettingsStore from '@/store/modals/change-project-
 import ProjectWsModel from '@/api/modules/project/models/project-ws.model';
 import ContentProp from '@/editor/properties/ContentProp';
 import ComponentNameProp from '@/editor/properties/ComponentNameProp';
+import Input from '@/editor/components/Input';
+import Form from '@/editor/components/Form';
 
 export default defineComponent<any>({
   components: {
@@ -208,12 +210,20 @@ export default defineComponent<any>({
     })
     
     document.getElementById(app.mountPoint).addEventListener('click', () => {
-      this.placeBlock(this.editorStore.blockOnCreate, null)
+      if (this.editorStore.blockOnCreate.component != Input._name)
+        this.placeBlock(this.editorStore.blockOnCreate, null)
     })
     
     app.subscribe('click', async (topPath: Component[], ev: { clientX: any; clientY: any; }) => {
       if (this.editorStore.anyBlockPicked) {
+        
         const pickedBlockClosure = ((picked: { component: string, icon: HTMLElement }) => async (selected: Component) => {
+          if (this.editorStore.blockOnCreate.component == Input._name) {
+            if (selected.name != Form._name) return;
+          }
+          if (selected.name == Form._name) {
+            if (this.editorStore.blockOnCreate.component != Input._name) return;
+          }
           await this.placeBlock(picked, selected.key)
         })(this.editorStore.blockOnCreate)
         
