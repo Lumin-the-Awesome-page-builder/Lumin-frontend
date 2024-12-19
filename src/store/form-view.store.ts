@@ -7,7 +7,6 @@ interface Item {
 
 interface FormViewState {
   items: Item[];
-
 }
 
 export const useFormViewStore = defineStore('formView', {

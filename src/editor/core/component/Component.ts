@@ -41,7 +41,7 @@ export default abstract class Component {
   public pure: boolean = false;
   public specific: any = null;
   public selected: boolean = false;
-  public availableForPasting = "*";
+  public availableForPasting = '*';
 
   public handler = (ev, handler) => {
     console.log(ev, handler);

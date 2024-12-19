@@ -462,32 +462,32 @@ export class App {
   }
 
   public getFormFields(form: Component) {
-    const formObject: any = { ...form.specific, component: form }
-    console.log("Found form", form)
+    const formObject: any = { ...form.specific, component: form };
+    console.log('Found form', form);
     if (formObject.handler[0] == 'service') {
       formObject.get_url = null;
       formObject.save_url = null;
     }
-    formObject.inputs = []
-    Object.keys(form.children).forEach(key => {
+    formObject.inputs = [];
+    Object.keys(form.children).forEach((key) => {
       const input = form.children[key];
       formObject.inputs.push({
-        ...input.specific
-      })
-    })
+        ...input.specific,
+      });
+    });
     formObject.inputs = JSON.stringify(formObject.inputs);
-    return formObject
+    return formObject;
   }
 
   public scanForForms(el: Record<string, Component>, result) {
     Object.keys(el).forEach((key) => {
-      console.log(el, key)
-      if (!el[key].children) return; 
+      console.log(el, key);
+      if (!el[key].children) return;
       if (el[key].name == Form._name) {
         result.push(this.getFormFields(el[key]));
       } else {
-        this.scanForForms(el[key].children, result)
+        this.scanForForms(el[key].children, result);
       }
-    })
+    });
   }
 }

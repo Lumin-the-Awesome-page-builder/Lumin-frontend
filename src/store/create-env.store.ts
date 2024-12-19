@@ -1,5 +1,4 @@
 import DockerModel from '@/api/modules/docker/models/docker.model';
-import CreateEnvFromConfiguration from '@/api/modules/docker/dto/create-from-configuration.dto';
 import { defineStore } from 'pinia';
 import CreateConfigurationDto from '@/api/modules/docker/dto/create-configuration.dto.ts';
 import UploadConfigurationsFilesDto from '@/api/modules/docker/dto/upload-configurations-files.dto.ts';
