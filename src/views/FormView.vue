@@ -2,7 +2,11 @@
   <EnvDashboardComponent>
     <template v-slot:header>
       <div class="page-header">
-        <n-icon class="prev-arrow" @click="goToBack" :component="ArrowBack"></n-icon>
+        <n-icon
+          class="prev-arrow"
+          @click="goToBack"
+          :component="ArrowBack"
+        ></n-icon>
         <h2 class="page-heading">Формы</h2>
       </div>
     </template>
@@ -12,6 +16,7 @@
         :key="item.id"
         :item="item"
         :name="item.name"
+        @click="goToFormData(item.id)"
       ></form-item-component>
     </template>
   </EnvDashboardComponent>
@@ -35,10 +40,28 @@ export default {
     }
   },
   components: { FormItemComponent, EnvDashboardComponent },
+  created() {
+    this.FormViewStore.loadForms(parseInt(this.$route.params.id));
+  },
   methods: {
     goToBack() {
-      const projId = this.$route.params.projId;
+      const projId = this.$route.params.id;
       this.$router.push({ path: `/project/${projId}/edit` });
+    },
+    goToFormData(id) {
+      const projId = this.$route.params.id;
+      this.$router.push({ path: `/project/${projId}/forms/${id}` });
+      //"GET /lumin/form/ID/data"
+      /*
+      * [{ data: "JSON" }]
+      * {"input-name":"123"}
+      * */
+
+      //"GET /lumin/form/ID/fields"
+      /*
+      [{"type":"text","name":"input-name"},{"type":"button","name":"input-name","text":"Tet"}]
+      * [{ data: "JSON" }]
+      * */
     }
   },
   data() {

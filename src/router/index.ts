@@ -71,6 +71,11 @@ router.beforeEach((to, from, next) => {
       return;
     }
   }
+
+  if (window.ym) {
+    window.ym(99252824, 'hit', to.path);
+  }
+
   next();
 });
 

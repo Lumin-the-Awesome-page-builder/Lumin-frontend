@@ -24,38 +24,57 @@
 import EnvDashboardComponent from '@/components/env/EnvDashboardComponent.vue';
 import { ArrowBack } from '@vicons/ionicons5';
 import { NDataTable } from 'naive-ui'
+import { useFormDataViewStore } from '@/store/form-data-view.store.ts';
+import { useFormViewStore } from '@/store/form-view.store.ts';
 export default {
   name: "FormViewData",
   components: { 'n-data-table': NDataTable },
+  components: { EnvDashboardComponent },
+  setup() {
+    return {
+      FormViewStore: useFormViewStore(),
+      formDataStore: useFormDataViewStore()
+    }
+  },
+  async created() {
+    await this.FormViewStore.loadForms(parseInt(this.$route.params.id));
+    await this.formDataStore.loadData(this.$route.params.formId)
+    await this.formDataStore.loadFields(this.$route.params.formId)
+  },
+  methods: {
+    goToBack() {
+      const projId = this.$route.params.id;
+      this.$router.push({ path: `/project/${projId}/forms` });
+    }
+  },
   computed: {
     ArrowBack() {
       return ArrowBack;
-    }
-  },
-  props: {
-    name: '',
-  },
-  components: { EnvDashboardComponent },
-  methods: {
-    goToBack() {
-      const projId = this.$route.params.projId;
-      this.$router.push({ path: `/project/${projId}/forms` });
+    },
+    columns() {
+      return this.formDataStore.fields;
+    },
+    tableData() {
+      return this.formDataStore.items;
+    },
+    name() {
+      return this.FormViewStore.items.filter(el => el.id == this.$route.params.formId)[0].name;
     }
   },
   data() {
     return {
       startDate: null,
       endDate: null,
-      columns: [
-        { title: 'Имя', key: 'name' },
-        { title: 'Возраст', key: 'age' },
-        { title: 'Город', key: 'city' },
-      ],
-      tableData: [
-        { name: 'Иван', age: 30, city: 'Москва' },
-        { name: 'Анна', age: 25, city: 'Санкт-Петербург' },
-        { name: 'Петр', age: 35, city: 'Екатеринбург' },
-      ],
+      // columns: [
+      //   { title: 'Имя', key: 'name' },
+      //   { title: 'Возраст', key: 'age' },
+      //   { title: 'Город', key: 'city' },
+      // ],
+      // tableData: [
+      //   { name: 'Иван', age: 30, city: 'Москва' },
+      //   { name: 'Анна', age: 25, city: 'Санкт-Петербург' },
+      //   { name: 'Петр', age: 35, city: 'Екатеринбург' },
+      // ],
     };
   },
 }
