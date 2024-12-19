@@ -5,25 +5,23 @@
       transform-origin="center"
       preset="card"
       style="width: 600px"
+      @negative-click="cancel"
     >
       <n-card
         :bordered="false"
         size="medium"
         role="dialog"
         aria-modal="true"
+        @negative-click="cancel"
       >
         <div class="container">
           <div class="logo">
-            <img src="../../assets/svg/Lumin_logo.svg" class="logo_svg" />
+            <img src="../../assets/svg/Lumin_logo.svg" class="logo_svg">
           </div>
           <div class="inputs_container">
             <h2 class="container_title title">Добро пожаловать!</h2>
-            <span class="block_title title"
-            >Мы рады Вас приветствовать на нашей платформе!</span
-            >
-            <n-button color="#3535FFA6" class="btn" @click="cancel"
-            >Продолжить</n-button
-            >
+            <span class="block_title title">Мы рады Вас приветствовать на нашей платформе!</span>
+            <n-button color="#3535FFA6" class="btn" @click="cancel">Продолжить</n-button>
           </div>
         </div>
       </n-card>
@@ -32,31 +30,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
-import useHelloFormStore from '@/store/modals/hello-form-component.store.ts';
-
+import { defineComponent } from 'vue';
+import  useHelloFormStore  from '@/store/modals/hello-form-component.store.ts';
 export default defineComponent({
-  name: 'HelloFormComponent',
+  name: "HelloFormComponent",
   setup() {
-    const helloFormStore = useHelloFormStore();
-    helloFormStore.openModal();
-
-    const visible = computed({
-      get: () => helloFormStore.showModal,
-      set: (value) => {
-        if (!value) helloFormStore.closeModal();
-      },
-    });
-
-    return { visible, helloFormStore };
+    const helloFormStore = useHelloFormStore()
+    helloFormStore.openModal()
+    return {
+      helloFormStore
+    }
+  },
+  data: () => ({
+    visible: false
+  }),
+  mounted() {
+    this.visible = this.helloFormStore.showModal
   },
   methods: {
     cancel() {
-      console.log('Кнопка нажата!');
-      this.helloFormStore.closeModal();
-    },
-  },
-});
+      this.helloFormStore.closeModal()
+    }
+  }
+})
 </script>
 
 <style scoped>
