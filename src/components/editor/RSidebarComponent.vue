@@ -20,6 +20,16 @@
         </div>
         <n-divider />
         <div class="heading-row">
+          <h3 class="options-heading">Управление Формами</h3>
+          <p class="options-details">
+            Перейти в раздел управления формами.
+          </p>
+          <div class="btn-row">
+            <n-button color="#7b7bfe" @click="redirectToForm"> Перейти </n-button>
+          </div>
+        </div>
+        <n-divider />
+        <div class="heading-row">
           <h3 class="options-heading">Публикация</h3>
           <p class="options-details">
             Сайт опубликован на хостинге с адресом example.com. Хотите разместить в нашей системе?
@@ -219,6 +229,10 @@ export default <any> {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+    },
+    redirectToForm(){
+      const id = this.$route.params.id;
+      this.$router.push({ path: `/project/${id}/forms` })
     },
     editData() {
       this.changeProjectDataStore.openModal({

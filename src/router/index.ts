@@ -38,6 +38,16 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/CreateEnvView.vue'),
   },
   {
+    path: '/project/:id/forms',
+    name: 'ProjectForms',
+    component: () => import('@/views/FormView.vue'),
+  },
+  {
+    path: '/project/:id/forms/:formId',
+    name: 'ProjectFormsData',
+    component: () => import('@/views/FormViewData.vue'),
+  },
+  {
     path: '/envs/:envId/container/:containerId',
     name: 'ContainerView',
     component: () => import('@/views/ContainerView.vue'),
