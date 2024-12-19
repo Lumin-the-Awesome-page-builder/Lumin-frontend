@@ -94,9 +94,9 @@ export class ProjectModel extends ApiModelUtil {
   public async setDomain(projectId: number, domainName: string) {
     return await this.authorizedRequest<any>(
       new ApiRequestDto(`/lumin/nginx/${projectId}`, 'POST', {
-        name: domainName
+        name: domainName,
       }),
-    )
+    );
   }
 }
 

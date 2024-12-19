@@ -1,13 +1,13 @@
-import Component from "../core/component/Component";
-import ComponentNameProp from "../properties/ComponentNameProp";
-import InputNameProp from "../properties/InputNameProp";
-import InputTypeProp from "../properties/InputTypeProp";
-import FontProp from "../properties/text/FontProp";
-import InlineTextProp from "../properties/text/InlineTextProp";
-import LeadParagraphProp from "../properties/text/LeadParagraphProp";
-import MonoSpaceProp from "../properties/text/MonoSpaceProp";
-import TextAlignProp from "../properties/text/TextAlignProp";
-import TextTransformProp from "../properties/text/TextTransformProp";
+import Component from '../core/component/Component';
+import ComponentNameProp from '../properties/ComponentNameProp';
+import InputNameProp from '../properties/InputNameProp';
+import InputTypeProp from '../properties/InputTypeProp';
+import FontProp from '../properties/text/FontProp';
+import InlineTextProp from '../properties/text/InlineTextProp';
+import LeadParagraphProp from '../properties/text/LeadParagraphProp';
+import MonoSpaceProp from '../properties/text/MonoSpaceProp';
+import TextAlignProp from '../properties/text/TextAlignProp';
+import TextTransformProp from '../properties/text/TextTransformProp';
 
 export default class Input extends Component {
   constructor(_: string = '') {

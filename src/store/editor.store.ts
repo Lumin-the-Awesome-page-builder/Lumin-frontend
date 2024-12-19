@@ -80,28 +80,32 @@ const useEditorStore = defineStore({
       return await this.ws.save();
     },
     async saveForms() {
-      const forms = []
-      this.app.scanForForms(this.app.root, forms)
+      const forms = [];
+      this.app.scanForForms(this.app.root, forms);
       const formsModel = new FormsModel();
-      await Promise.all(forms.map(async (el) => {
-        if (el.id) {
-          const res = (el.save_url) ?
-            await formsModel.updateForm(this.selected.id, el)
-          :
-            await formsModel.updateFormServiceBased(this.selected.id, el);
+      await Promise.all(
+        forms.map(async (el) => {
+          if (el.id) {
+            const res = el.save_url
+              ? await formsModel.updateForm(this.selected.id, el)
+              : await formsModel.updateFormServiceBased(this.selected.id, el);
 
-          el.component.specific.id = res.getData().id;
-        } else {
-          const res = (el.save_url) ? await formsModel.saveForm(this.selected.id, el)
-          : await formsModel.saveFormServiceBased(this.selected.id, el);
-          el.component.specific.id = res.getData().id;
-        }
-        const saveUrl = (el.save_url) ? el.save_url : `${appConf.proto}://${appConf.endpoint}/lumin/form/${el.id}/data`
-        el.component.attributes.add(new Attribute(`data-form`, el.id))
-        el.component.htmlElement.setAttribute(`data-form`, el.id)
-        el.component.attributes.add(new Attribute(`data-form-url`, saveUrl))
-        el.component.htmlElement.setAttribute(`data-form-url`, saveUrl)
-      }))
+            el.component.specific.id = res.getData().id;
+          } else {
+            const res = el.save_url
+              ? await formsModel.saveForm(this.selected.id, el)
+              : await formsModel.saveFormServiceBased(this.selected.id, el);
+            el.component.specific.id = res.getData().id;
+          }
+          const saveUrl = el.save_url
+            ? el.save_url
+            : `${appConf.proto}://${appConf.endpoint}/lumin/form/${el.id}/data`;
+          el.component.attributes.add(new Attribute(`data-form`, el.id));
+          el.component.htmlElement.setAttribute(`data-form`, el.id);
+          el.component.attributes.add(new Attribute(`data-form-url`, saveUrl));
+          el.component.htmlElement.setAttribute(`data-form-url`, saveUrl);
+        }),
+      );
       return forms;
     },
     async updatePreview() {
