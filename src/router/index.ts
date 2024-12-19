@@ -41,7 +41,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/envs/:envId/container/:containerId',
     name: 'ContainerView',
     component: () => import('@/views/ContainerView.vue'),
-  }
+  },
 ];
 
 const router = createRouter({

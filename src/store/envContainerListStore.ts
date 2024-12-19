@@ -20,7 +20,7 @@ export const useEnvContainerListStore = defineStore('envContainerListStore', {
       if (response.getData()[0]) {
         this.containers = response.getData();
       } else {
-        this.containers = [response.getData()]
+        this.containers = [response.getData()];
       }
     },
     async startContainer(
@@ -29,15 +29,15 @@ export const useEnvContainerListStore = defineStore('envContainerListStore', {
     ): Promise<ApiResponseDto<CommandResultDto>> {
       const dockerModel = new DockerModel();
       const res = await dockerModel.startContainer(envId, containerId);
-      this.containers = this.containers.map(el => {
+      this.containers = this.containers.map((el) => {
         if (el.id == containerId) {
           return {
-            ...(res.getData())
-          }
+            ...res.getData(),
+          };
         } else {
-          return el
+          return el;
         }
-      })
+      });
       return res;
     },
 
@@ -47,16 +47,16 @@ export const useEnvContainerListStore = defineStore('envContainerListStore', {
     ): Promise<ApiResponseDto<CommandResultDto>> {
       const dockerModel = new DockerModel();
       const res = await dockerModel.stopContainer(envId, containerId);
-      this.containers = this.containers.map(el => {
+      this.containers = this.containers.map((el) => {
         if (el.id == containerId) {
           return {
-            ...(res.getData())
-          }
+            ...res.getData(),
+          };
         } else {
-          return el
+          return el;
         }
-      })
-      return res
+      });
+      return res;
     },
   },
   getters: {

@@ -12,11 +12,11 @@
         <p class="head-block-container-text">Статус</p>
         <p class="head-block-container-text">Операции</p>
       </div>
-      <EnvContainerListItemComponent v-for="container in containers" 
+      <EnvContainerListItemComponent v-for="container in containers"
         :key="`${container.id}${container.status}`"
-        @click="goToContainer(container.id)" 
+        @click="goToContainer(container.id, container)"
         :id="container.id"
-        :name="container.name" 
+        :name="container.name"
         :status="container.status" />
     </template>
   </EnvDashboardComponent>
@@ -27,6 +27,7 @@ import EnvDashboardComponent from '@/components/env/EnvDashboardComponent.vue';
 import { ArrowBack } from '@vicons/ionicons5';
 import EnvContainerListItemComponent from '@/components/env/EnvContainerListItemComponent.vue';
 import { useEnvContainerListStore } from '@/store/envContainerListStore.ts';
+import { useSelectedContainerStore } from '@/store/selected-container.store.ts';
 
 export default {
   name: 'EnvView',
@@ -42,6 +43,7 @@ export default {
   data() {
     return {
       envContainerListStore: useEnvContainerListStore(),
+      selectedContainerStore: useSelectedContainerStore()
     };
   },
   async mounted() {
@@ -51,8 +53,10 @@ export default {
     goToEnvList() {
       this.$router.push({path: "/envs"});
     },
-    goToContainer(containerId) {
+    goToContainer(containerId, container) {
+      console.log(container, '567')
       const envId = this.$route.params.envId;
+      this.selectedContainerStore.setContainerData(container)
       this.$router.push({path: `/envs/${envId}/container/${containerId}`});
     }
   }

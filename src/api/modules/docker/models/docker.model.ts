@@ -95,16 +95,16 @@ export default class DockerModel extends ApiModelUtil {
 
   public async getConfigurations() {
     return await this.authorizedRequest<ApiResponseDto<ConfigurationDto>>(
-        new ApiRequestDto(`/lumin/docker/configurations`, 'GET')
-    )
+      new ApiRequestDto(`/lumin/docker/configurations`, 'GET'),
+    );
   }
 
   public async createFromConfiguration(createDto: CreateFromConfigurationDto) {
     return await this.authorizedRequest<ApiResponseDto<EnvironmentDto>>(
-        new ApiRequestDto(`/lumin/docker/configuration`, "POST", {
-            ...createDto
-        })
-    )
+      new ApiRequestDto(`/lumin/docker/configuration`, 'POST', {
+        ...createDto,
+      }),
+    );
   }
 
   public async createEnvironment(
