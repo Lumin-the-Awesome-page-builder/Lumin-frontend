@@ -1,5 +1,6 @@
 <template>
   <n-notification-provider>
+    <div id="warningWindow">Сейчас этот элемент редактирует другой пользователь</div>
     <div class="editor-wrapper">
       <ContextMenuComponent />
       <div class="editor-section">
@@ -161,11 +162,13 @@ export default defineComponent<any>({
       console.log("block")
       const key = data.data;
       this.app.state[key].locked = true;
+      this.app.state[key].setBlockingParameters();
     })
     ws.register("release", (data) => {
       console.log("release")
       const key = data.data;
       this.app.state[key].locked = false;
+      this.app.state[key].removeBlockingParameters();
     })
     // ws.register("patch-prop-add", (data) => {
     //   console.log("new patch prop add event", data)
@@ -328,5 +331,15 @@ export default defineComponent<any>({
 .editor-section {
   width: 100%;
   max-width: 80vw;
+}
+#warningWindow {
+  background-color: rgba(255, 0, 0, 0.2);
+  color: rgba(255, 0, 0, 1);
+  padding: 10px;
+  border-radius: 5px;
+  margin: 20px;
+  font-weight: bold;
+  visibility: hidden;
+  position: absolute;
 }
 </style>

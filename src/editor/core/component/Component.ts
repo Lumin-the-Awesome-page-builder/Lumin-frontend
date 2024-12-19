@@ -43,6 +43,23 @@ export default abstract class Component {
   public selected: boolean = false;
   public availableForPasting = '*';
 
+  public mouseEnterHandler = () => {
+    const rect = this.htmlElement.getBoundingClientRect();
+    const warningWindow = document.getElementById('warningWindow');
+    warningWindow.style.left = `${rect.right + 10}px`; // Позиция справа от элемента
+    warningWindow.style.top = `${rect.top}px`; // Выравнивание по вертикали
+    warningWindow.style.visibility = 'visible'; // Делаем элемент видимым
+
+    this.htmlElement.classList.add('blocked');
+  };
+
+  public mouseLeaveHandler = () => {
+    const warningWindow = document.getElementById('warningWindow');
+    warningWindow.style.visibility = 'hidden';
+
+    this.htmlElement.classList.remove('blocked');
+  };
+
   public handler = (ev, handler) => {
     console.log(ev, handler);
   };
@@ -75,6 +92,16 @@ export default abstract class Component {
       ev.preventDefault();
       if (!this.locked) this.handler(eventName, this.findTop(true), ev);
     });
+  }
+
+  setBlockingParameters() {
+    this.htmlElement.addEventListener('mouseenter', this.mouseEnterHandler);
+    this.htmlElement.addEventListener('mouseleave', this.mouseLeaveHandler);
+  }
+
+  removeBlockingParameters() {
+    this.htmlElement.removeEventListener('mouseenter', this.mouseEnterHandler);
+    this.htmlElement.removeEventListener('mouseleave', this.mouseLeaveHandler);
   }
 
   setAttrs(attrs: AttributeObject[]) {
