@@ -7,6 +7,12 @@
     transition: all .2s;
 }
 
+.blocked {
+    background-color: rgba(255, 0, 0, 0.2);
+    max-width: 100%;
+    max-height: 100%;
+}
+
 .editor-container-item:has(.editor-container-item) {
     padding: .5rem;
 }
