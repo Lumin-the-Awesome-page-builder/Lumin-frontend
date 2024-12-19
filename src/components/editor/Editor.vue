@@ -37,6 +37,9 @@ import ContentProp from '@/editor/properties/ContentProp';
 import ComponentNameProp from '@/editor/properties/ComponentNameProp';
 import useCursorStore from '@/store/cursor.store.ts';
 import CursorComponent from "@/components/editor/CursorComponent.vue";
+import Input from '@/editor/components/Input';
+import Form from '@/editor/components/Form';
+import { useChooseDomainStore } from '@/store/modals/choose-domen-component.store';
 
 export default defineComponent<any>({
   components: {
@@ -45,7 +48,9 @@ export default defineComponent<any>({
   },
   name: "Editor",
   setup() {
+    const chooseDomainStore = useChooseDomainStore()
     return {
+      chooseDomainStore,
       notificationStore: useNotification(),
       editorStore: useEditorStore(),
       componentSetupStore: useComponentSetupStore(),
@@ -129,6 +134,9 @@ export default defineComponent<any>({
     }
 
     const project = initRes.getData().project;
+    
+    if (project.domain_name)
+      this.chooseDomainStore.setDomain(project.domain_name);
 
     this.changeProjectSharingSettingStore.loadData({
       id: project.id,
@@ -236,12 +244,20 @@ export default defineComponent<any>({
     });
     
     document.getElementById(app.mountPoint).addEventListener('click', () => {
-      this.placeBlock(this.editorStore.blockOnCreate, null)
+      if (this.editorStore.blockOnCreate.component != Input._name)
+        this.placeBlock(this.editorStore.blockOnCreate, null)
     })
     
     app.subscribe('click', async (topPath: Component[], ev: { clientX: any; clientY: any; }) => {
       if (this.editorStore.anyBlockPicked) {
+        
         const pickedBlockClosure = ((picked: { component: string, icon: HTMLElement }) => async (selected: Component) => {
+          if (this.editorStore.blockOnCreate.component == Input._name) {
+            if (selected.name != Form._name) return;
+          }
+          if (selected.name == Form._name) {
+            if (this.editorStore.blockOnCreate.component != Input._name) return;
+          }
           await this.placeBlock(picked, selected.key)
         })(this.editorStore.blockOnCreate)
         

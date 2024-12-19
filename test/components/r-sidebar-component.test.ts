@@ -57,8 +57,10 @@ describe('RSidebarComponent test', () => {
       };
     });
     const wrapper = mount(RSidebarComponent);
+    const saveForms = vi.fn(() => []);
     wrapper.vm.editorStore = {
       save: vi.fn(() => ({ toastIfError: toastIfErrorMock })),
+      saveForms,
     };
 
     const result = await wrapper.vm.save();
@@ -66,6 +68,7 @@ describe('RSidebarComponent test', () => {
     expect(blockComponent).toBeCalledWith(container);
     expect(result).toEqual({ toastIfError: toastIfErrorMock });
     expect(wrapper.vm.editorStore.save).toBeCalled();
+    expect(saveForms).toBeCalled();
   });
 
   it('Test exit method', async () => {
@@ -93,6 +96,7 @@ describe('RSidebarComponent test', () => {
       });
       editorStore.blockOnCreate = { icon: null, component: null };
       editorStore.updatePreview = updatePreviewMock;
+
       dashboardStore.loadProjects = loadProjectsMock;
       editorStore.ws = {
         closeEditing: closeEditingMock,

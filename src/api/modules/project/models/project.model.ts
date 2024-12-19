@@ -44,6 +44,18 @@ export class ProjectModel extends ApiModelUtil {
     );
   }
 
+  public async getData(id: number): Promise<ApiResponseDto<ProjectDto>> {
+    return await this.authorizedRequest(
+      new ApiRequestDto(`/lumin/form/${id}/data`, 'GET'),
+    );
+  }
+
+  public async getFields(id: number): Promise<ApiResponseDto<ProjectDto>> {
+    return await this.authorizedRequest(
+      new ApiRequestDto(`/lumin/form/${id}/fields`, 'GET'),
+    );
+  }
+
   public async startEditing(
     idOrAccess: any,
   ): Promise<ApiResponseDto<StartEditDto>> {
@@ -88,6 +100,14 @@ export class ProjectModel extends ApiModelUtil {
   public async getCollaborationToken(id: number) {
     return await this.authorizedRequest<CollaborationTokenDto>(
       new ApiRequestDto(`/lumin/project/${id}/collaboration`, 'GET'),
+    );
+  }
+
+  public async setDomain(projectId: number, domainName: string) {
+    return await this.authorizedRequest<any>(
+      new ApiRequestDto(`/lumin/nginx/${projectId}`, 'POST', {
+        name: domainName,
+      }),
     );
   }
 }

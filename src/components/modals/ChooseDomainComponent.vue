@@ -45,6 +45,7 @@ export default defineComponent({
   methods:{
     save(){
       this.chooseDomainStore.setDomain(this.domain)
+      this.chooseDomainStore.save(parseInt(this.$route.params.id));
       this.chooseDomainStore.closeModal()
     }
   },
