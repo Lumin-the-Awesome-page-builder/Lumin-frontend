@@ -44,6 +44,18 @@ export class ProjectModel extends ApiModelUtil {
     );
   }
 
+  public async getData(id: number): Promise<ApiResponseDto<ProjectDto>> {
+    return await this.authorizedRequest(
+      new ApiRequestDto(`/lumin/form/${id}/data`, 'GET'),
+    );
+  }
+
+  public async getFields(id: number): Promise<ApiResponseDto<ProjectDto>> {
+    return await this.authorizedRequest(
+      new ApiRequestDto(`/lumin/form/${id}/fields`, 'GET'),
+    );
+  }
+
   public async startEditing(
     idOrAccess: any,
   ): Promise<ApiResponseDto<StartEditDto>> {
