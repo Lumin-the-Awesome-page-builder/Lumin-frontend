@@ -15,9 +15,9 @@ export const useFormViewStore = defineStore('formView', {
   }),
   actions: {
     async loadForms(projectId: number) {
-      const ProjectModel = (await import(
-        '@/api/modules/project/models/project.model.ts'
-        )).default;
+      const ProjectModel = (
+        await import('@/api/modules/project/models/project.model.ts')
+      ).default;
       const project = await ProjectModel.getOne(projectId);
       //@ts-ignore
       this.items = project.getData().forms;

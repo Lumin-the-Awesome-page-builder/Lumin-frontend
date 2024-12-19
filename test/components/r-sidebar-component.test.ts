@@ -57,10 +57,10 @@ describe('RSidebarComponent test', () => {
       };
     });
     const wrapper = mount(RSidebarComponent);
-    const saveForms = vi.fn(() => [])
+    const saveForms = vi.fn(() => []);
     wrapper.vm.editorStore = {
       save: vi.fn(() => ({ toastIfError: toastIfErrorMock })),
-      saveForms
+      saveForms,
     };
 
     const result = await wrapper.vm.save();
@@ -95,7 +95,7 @@ describe('RSidebarComponent test', () => {
       });
       editorStore.blockOnCreate = { icon: null, component: null };
       editorStore.updatePreview = updatePreviewMock;
-      
+
       dashboardStore.loadProjects = loadProjectsMock;
       editorStore.ws = {
         closeEditing: closeEditingMock,
