@@ -22,6 +22,36 @@ const routes: Array<RouteRecordRaw> = [
     name: 'editor',
     component: () => import('@/views/EditorView.vue'),
   },
+  {
+    path: '/envs',
+    name: 'EnvList',
+    component: () => import('@/views/EnvListView.vue'),
+  },
+  {
+    path: '/envs/:envId',
+    name: 'Env',
+    component: () => import('@/views/EnvView.vue'),
+  },
+  {
+    path: '/envs/create',
+    name: 'CreateEnv',
+    component: () => import('@/views/CreateEnvView.vue'),
+  },
+  {
+    path: '/project/:id/forms',
+    name: 'ProjectForms',
+    component: () => import('@/views/FormView.vue'),
+  },
+  {
+    path: '/project/:id/forms/:formId',
+    name: 'ProjectFormsData',
+    component: () => import('@/views/FormViewData.vue'),
+  },
+  {
+    path: '/envs/:envId/container/:containerId',
+    name: 'ContainerView',
+    component: () => import('@/views/ContainerView.vue'),
+  },
 ];
 
 const router = createRouter({

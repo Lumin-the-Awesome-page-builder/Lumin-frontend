@@ -30,12 +30,20 @@ import BorderRadiusProp from '@/editor/properties/BorderRadiusProp.ts';
 import ContentProp from '@/editor/properties/ContentProp.ts';
 import { PureContentProp } from '@/editor/properties/PureContentProp.ts';
 import ComponentNameProp from '@/editor/properties/ComponentNameProp.ts';
+import FormManagementTypeProp from './properties/FormManagementTypeProp';
+import InputTypeProp from './properties/InputTypeProp';
+import Form from './components/Form';
+import Input from './components/Input';
+import InputNameProp from './properties/InputNameProp';
+import FormNameProp from './properties/FormNameProp';
 
 export function getEditorInstance() {
   const editor = new App();
 
   // Components registration
   editor.use('container', Container);
+  editor.use('form', Form);
+  editor.use('input', Input);
   editor.use('pure', Pure);
   editor.use('text', Text);
   editor.use('header', Header);
@@ -80,6 +88,12 @@ export function getEditorInstance() {
   editor.useProp(PureContentProp);
 
   editor.useProp(ComponentNameProp);
+
+  //Forms
+  editor.useProp(FormManagementTypeProp);
+  editor.useProp(FormNameProp);
+  editor.useProp(InputTypeProp);
+  editor.useProp(InputNameProp);
 
   return editor;
 }
