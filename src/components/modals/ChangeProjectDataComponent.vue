@@ -17,7 +17,7 @@
           <div class="inputs_container">
             <h2 class="container_title title">Изменение данных</h2>
             <span class="user_title title">В данном разделе возможна смена параметров проекта</span>
-            <span class="user_title title">Если поле не запролнить, но значение останется прежним</span>
+            <span class="user_title title">Если поле не заполнить, то значение останется прежним</span>
             <div class="inputBlock">
               <h3 class="title inputBlockText">Название</h3>
               <n-input placeholder="Проект 1" v-model:value="projectName" type="text" class="input"></n-input>
