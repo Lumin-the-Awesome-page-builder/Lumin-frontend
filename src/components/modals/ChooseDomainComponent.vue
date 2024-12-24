@@ -34,6 +34,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useChooseDomainStore } from '@/store/modals/choose-domen-component.store.ts';
+import ApiResponseDto from "@/api/dto/api-response.dto.ts";
+import Packager from "@/editor/core/Packager.ts";
+import {getEditorInstance} from "@/editor/plugin.ts";
+import useEditorStore from "@/store/editor.store.ts";
 
 export default defineComponent({
   name: "ChooseDomainComponent",
@@ -43,17 +47,68 @@ export default defineComponent({
     }
   },
   methods:{
-    save(){
+    async save(){
       this.chooseDomainStore.setDomain(this.domain)
-      this.chooseDomainStore.save(parseInt(this.$route.params.id));
-      this.chooseDomainStore.closeModal()
+      let result: ApiResponseDto<String> = await this.chooseDomainStore.save(parseInt(this.$route.params.id));
+      console.log('result1', result)
+      if (result.success) {
+        const forms = await this.editorStore.saveForms();
+        await Promise.all(forms.map(async el => {
+          await this.componentSetupStore.patchTree(el.component);
+        }));
+        const packager = new Packager(this.editorStore.app)
+        const app = getEditorInstance()
+        app.initState = JSON.parse(packager.json())
+        packager.app = app
+
+        const blob = packager.blob()
+
+        console.log('blob', blob)
+
+        const file = new File([blob], "index.html", {
+          type: blob.type,
+          lastModified: Date.now()
+        });
+
+        const convertToBase64 = (file: File): Promise<string> => {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+          });
+        };
+
+        convertToBase64(file).then(async (base64) => {
+          result = await this.chooseDomainStore.saveIndex(parseInt(this.$route.params.id),
+              base64.split('base64,')[1]);
+        });
+
+        console.log('result2', result)
+
+        if (result.success) {
+          result = await this.chooseDomainStore.reloadNginx(parseInt(this.$route.params.id))
+          console.log('result3', result)
+        } else {
+          console.log('!!! Cant save index.html !!!')
+        }
+
+        if (result.success) {
+          this.chooseDomainStore.closeModal()
+        } else {
+          console.log('!!! Cant reload nginx !!!')
+        }
+      } else {
+        console.log('!!! This domain already exists !!!')
+      }
     }
   },
   setup() {
     const chooseDomainStore = useChooseDomainStore()
 
     return {
-      chooseDomainStore
+      chooseDomainStore,
+      editorStore: useEditorStore()
     }
   },
   computed: {
