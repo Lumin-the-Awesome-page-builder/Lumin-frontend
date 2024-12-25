@@ -5,18 +5,27 @@ export default class ApiErrorDto {
     public data: string | null,
   ) {}
 
-  public showServerErrorToast(notificationStore) {
+  public showServerErrorToast(notificationStore, message: string | null) {
     if (
       notificationStore &&
       notificationStore.error &&
       typeof notificationStore.error === 'function'
     ) {
-      notificationStore.error({
-        content: 'Что-то пошло не так.',
-        meta: 'Ошибка сервера. Попробуйте ещё раз.',
-        duration: 2500,
-        keepAliveOnHover: true,
-      });
+      if (message) {
+        notificationStore.error({
+          content: message,
+          meta: 'Ошибка сервера. Попробуйте ещё раз.',
+          duration: 2500,
+          keepAliveOnHover: true,
+        });
+      } else {
+        notificationStore.error({
+          content: 'Что-то пошло не так.',
+          meta: 'Ошибка сервера. Попробуйте ещё раз.',
+          duration: 2500,
+          keepAliveOnHover: true,
+        });
+      }
     }
   }
 }

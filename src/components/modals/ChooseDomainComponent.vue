@@ -38,6 +38,7 @@ import ApiResponseDto from "@/api/dto/api-response.dto.ts";
 import Packager from "@/editor/core/Packager.ts";
 import {getEditorInstance} from "@/editor/plugin.ts";
 import useEditorStore from "@/store/editor.store.ts";
+import {useNotification} from "naive-ui";
 
 export default defineComponent({
   name: "ChooseDomainComponent",
@@ -50,7 +51,6 @@ export default defineComponent({
     async save(){
       this.chooseDomainStore.setDomain(this.domain)
       let result: ApiResponseDto<String> = await this.chooseDomainStore.save(parseInt(this.$route.params.id));
-      console.log('result1', result)
       if (result.success) {
         const forms = await this.editorStore.saveForms();
         await Promise.all(forms.map(async el => {
@@ -62,8 +62,6 @@ export default defineComponent({
         packager.app = app
 
         const blob = packager.blob()
-
-        console.log('blob', blob)
 
         const file = new File([blob], "index.html", {
           type: blob.type,
@@ -84,22 +82,19 @@ export default defineComponent({
               base64.split('base64,')[1]);
         });
 
-        console.log('result2', result)
-
         if (result.success) {
           result = await this.chooseDomainStore.reloadNginx(parseInt(this.$route.params.id))
-          console.log('result3', result)
         } else {
-          console.log('!!! Cant save index.html !!!')
+          result.toastIfError(this.notificationStore, 'Возникла ошибка при попытке загрузить index.html');
         }
 
         if (result.success) {
           this.chooseDomainStore.closeModal()
         } else {
-          console.log('!!! Cant reload nginx !!!')
+          result.toastIfError(this.notificationStore, 'Возникла ошибка при перезапуске nginx');
         }
       } else {
-        console.log('!!! This domain already exists !!!')
+        result.toastIfError(this.notificationStore, 'Этот домен уже занят');
       }
     }
   },
@@ -108,7 +103,8 @@ export default defineComponent({
 
     return {
       chooseDomainStore,
-      editorStore: useEditorStore()
+      editorStore: useEditorStore(),
+      notificationStore: useNotification(),
     }
   },
   computed: {
