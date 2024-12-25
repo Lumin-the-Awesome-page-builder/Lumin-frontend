@@ -176,4 +176,52 @@ describe('ProjectModel class tests', () => {
     expect(result).toEqual(null);
     expect(projectModel.authorizedRequest).toBeCalledTimes(0);
   });
+
+  it('Test setDomain', async () => {
+    const id = 1;
+    const domainName = 'name';
+
+    const result = await projectModel.setDomain(id, domainName);
+
+    expect(result).toEqual({
+      ...apiResponseDto,
+    });
+    expect(projectModel.authorizedRequest).toBeCalledWith({
+      url: `/lumin/nginx/${id}`,
+      method: 'POST',
+      data: { name: domainName },
+    });
+  });
+
+  it('Test setIndexHtml', async () => {
+    const id = 1;
+    const base64 = 'base64';
+
+    const result = await projectModel.setIndexHtml(id, base64);
+
+    expect(result).toEqual({
+      ...apiResponseDto,
+    });
+    expect(projectModel.authorizedRequest).toBeCalledWith({
+      url: `/lumin/nginx/index/${id}`,
+      method: 'POST',
+      data: { data: base64 },
+    });
+  });
+
+  it('Test reloadNginx', async () => {
+    const id = 1;
+    const domainName = 'name';
+
+    const result = await projectModel.reloadNginx(id, domainName);
+
+    expect(result).toEqual({
+      ...apiResponseDto,
+    });
+    expect(projectModel.authorizedRequest).toBeCalledWith({
+      url: `/lumin/nginx/reload/${id}`,
+      method: 'GET',
+      data: { data: domainName },
+    });
+  });
 });

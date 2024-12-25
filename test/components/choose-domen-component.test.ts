@@ -11,6 +11,12 @@ vi.mock('@/store/choose-domen-component.store.ts', () => ({
   }),
 }));
 
+vi.mock('naive-ui', () => {
+  return {
+    useNotification: vi.fn(() => 'notificationStore'),
+  };
+});
+
 describe('ChooseDomenComponent tests', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
