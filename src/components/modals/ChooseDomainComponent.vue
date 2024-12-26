@@ -82,10 +82,11 @@ export default defineComponent({
               base64.split('base64,')[1]);
         });
 
-        if (result.success) {
+               if (result.success) {
           result = await this.chooseDomainStore.reloadNginx(parseInt(this.$route.params.id))
         } else {
           result.toastIfError(this.notificationStore, 'Возникла ошибка при попытке загрузить index.html');
+          return;
         }
 
         if (result.success) {
