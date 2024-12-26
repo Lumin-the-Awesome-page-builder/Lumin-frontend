@@ -22,16 +22,6 @@ vi.mock('@/store/create-env.store', () => {
   };
 });
 
-global.FileReader = vi.fn(() => ({
-  readAsDataURL: vi.fn(function (file: File) {
-    this.onload({
-      target: { result: 'data:image/png;base64,examplebase64data' },
-    });
-  }),
-  onload: vi.fn(),
-  onerror: vi.fn(),
-}));
-
 describe('EnvConfigurationSetup.vue', () => {
   let wrapper;
 

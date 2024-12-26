@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { shallowMount, mount } from '@vue/test-utils';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { shallowMount } from '@vue/test-utils';
 import EnvDashboardComponent from '@/components/env/EnvDashboardComponent.vue';
 
 describe('EnvDashboardComponent.vue', () => {

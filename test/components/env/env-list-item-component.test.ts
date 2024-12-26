@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { shallowMount } from '@vue/test-utils';
-import EnvListItemComponent from '@/components/env/EnvListItemComponent.vue'; // Путь к компоненту
+import EnvListItemComponent from '@/components/env/EnvListItemComponent.vue';
 
 describe('EnvListItemComponent.vue', () => {
   let wrapper;
