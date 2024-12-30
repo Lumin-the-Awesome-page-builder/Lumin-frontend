@@ -34,6 +34,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useChooseDomainStore } from '@/store/modals/choose-domen-component.store.ts';
+import ApiResponseDto from "@/api/dto/api-response.dto.ts";
+import Packager from "@/editor/core/Packager.ts";
+import {getEditorInstance} from "@/editor/plugin.ts";
+import useEditorStore from "@/store/editor.store.ts";
+import {useNotification} from "naive-ui";
 
 export default defineComponent({
   name: "ChooseDomainComponent",
@@ -43,17 +48,64 @@ export default defineComponent({
     }
   },
   methods:{
-    save(){
+    async save(){
       this.chooseDomainStore.setDomain(this.domain)
-      this.chooseDomainStore.save(parseInt(this.$route.params.id));
-      this.chooseDomainStore.closeModal()
+      let result: ApiResponseDto<String> = await this.chooseDomainStore.save(parseInt(this.$route.params.id));
+      if (result.success) {
+        const forms = await this.editorStore.saveForms();
+        await Promise.all(forms.map(async el => {
+          await this.componentSetupStore.patchTree(el.component);
+        }));
+        const packager = new Packager(this.editorStore.app)
+        const app = getEditorInstance()
+        app.initState = JSON.parse(packager.json())
+        packager.app = app
+
+        const blob = packager.blob()
+
+        const file = new File([blob], "index.html", {
+          type: blob.type,
+          lastModified: Date.now()
+        });
+
+        const convertToBase64 = (file: File): Promise<string> => {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+          });
+        };
+
+        convertToBase64(file).then(async (base64) => {
+          result = await this.chooseDomainStore.saveIndex(parseInt(this.$route.params.id),
+              base64.split('base64,')[1]);
+        });
+
+               if (result.success) {
+          result = await this.chooseDomainStore.reloadNginx(parseInt(this.$route.params.id))
+        } else {
+          result.toastIfError(this.notificationStore, 'Возникла ошибка при попытке загрузить index.html');
+          return;
+        }
+
+        if (result.success) {
+          this.chooseDomainStore.closeModal()
+        } else {
+          result.toastIfError(this.notificationStore, 'Возникла ошибка при перезапуске nginx');
+        }
+      } else {
+        result.toastIfError(this.notificationStore, 'Этот домен уже занят');
+      }
     }
   },
   setup() {
     const chooseDomainStore = useChooseDomainStore()
 
     return {
-      chooseDomainStore
+      chooseDomainStore,
+      editorStore: useEditorStore(),
+      notificationStore: useNotification(),
     }
   },
   computed: {

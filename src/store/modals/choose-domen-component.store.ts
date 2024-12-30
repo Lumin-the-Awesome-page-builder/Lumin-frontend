@@ -20,7 +20,21 @@ export const useChooseDomainStore = defineStore('chooseDomainComponent', {
         await import('@/api/modules/project/models/project.model.ts')
       ).default;
 
-      await ProjectModel.setDomain(projectId, this.domain);
+      return await ProjectModel.setDomain(projectId, this.domain);
+    },
+    async saveIndex(projectId: number, base64: string) {
+      const ProjectModel = (
+        await import('@/api/modules/project/models/project.model.ts')
+      ).default;
+
+      return await ProjectModel.setIndexHtml(projectId, base64);
+    },
+    async reloadNginx(projectId: number) {
+      const ProjectModel = (
+        await import('@/api/modules/project/models/project.model.ts')
+      ).default;
+
+      return await ProjectModel.reloadNginx(projectId, this.domain);
     },
   },
 });

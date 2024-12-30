@@ -195,18 +195,22 @@ describe('Base apiResponseDto class tests', () => {
     it('Success api response', () => {
       apiResponseDtoSuccess.getError = getErrorMock;
 
-      apiResponseDtoSuccess.toastIfError(notificationStore);
+      apiResponseDtoSuccess.toastIfError(notificationStore, null);
 
       expect(apiResponseDtoSuccess.getError).toBeCalledTimes(0);
     });
     it('Failure api response', () => {
+      const message = 'message';
       apiResponseDtoFailure.getError = getErrorMock;
 
-      apiResponseDtoFailure.toastIfError(notificationStore);
+      apiResponseDtoFailure.toastIfError(notificationStore, message);
 
       expect(apiResponseDtoFailure.getError).toBeCalledTimes(1);
       expect(showServerErrorToastMock).toBeCalledTimes(1);
-      expect(showServerErrorToastMock).toBeCalledWith(notificationStore);
+      expect(showServerErrorToastMock).toBeCalledWith(
+        notificationStore,
+        message,
+      );
     });
   });
 });
