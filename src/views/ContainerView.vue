@@ -51,14 +51,15 @@
 </template>
 
 <script lang="ts">
-  import Codemirror from "codemirror-editor-vue3";
-  import "codemirror/addon/display/placeholder";
+import Codemirror from "codemirror-editor-vue3";
+import "codemirror/addon/display/placeholder";
 
+import { shallowRef } from "vue";
 import CreateEnvFromConfiguration from '@/components/env/CreateEnvFromConfiguration.vue';
 import CreatePureEnv from '@/components/env/CreatePureEnv.vue';
 import EnvDashboardComponent from '@/components/env/EnvDashboardComponent.vue';
 import { ArrowBack, Play, Stop } from '@vicons/ionicons5';
-  import { useSelectedContainerStore } from '@/store/selected-container.store.ts';
+import { useSelectedContainerStore } from '@/store/selected-container.store.ts';
 
 export default {
     name: "CreateEnvView",
