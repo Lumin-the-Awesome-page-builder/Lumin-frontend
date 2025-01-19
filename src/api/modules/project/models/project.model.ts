@@ -105,7 +105,7 @@ export class ProjectModel extends ApiModelUtil {
 
   public async setDomain(projectId: number, domainName: string) {
     return await this.authorizedRequest<any>(
-      new ApiRequestDto(`/lumin/nginx/${projectId}`, 'POST', {
+      new ApiRequestDto(`/lumin/nginx/deploy/${projectId}`, 'POST', {
         name: domainName,
       }),
     );
@@ -113,16 +113,8 @@ export class ProjectModel extends ApiModelUtil {
 
   public async setIndexHtml(projectId: number, base64: string) {
     return await this.authorizedRequest<any>(
-      new ApiRequestDto(`/lumin/nginx/index/${projectId}`, 'POST', {
+      new ApiRequestDto(`/lumin/nginx/upload/${projectId}`, 'POST', {
         data: base64,
-      }),
-    );
-  }
-
-  public async reloadNginx(projectId: number, domainName: string) {
-    return await this.authorizedRequest<CollaborationTokenDto>(
-      new ApiRequestDto(`/lumin/nginx/reload/${projectId}`, 'GET', {
-        data: domainName,
       }),
     );
   }

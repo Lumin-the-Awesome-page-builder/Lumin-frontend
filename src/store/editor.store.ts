@@ -99,7 +99,7 @@ const useEditorStore = defineStore({
           }
           const saveUrl = el.save_url
             ? el.save_url
-            : `${appConf.proto}://${appConf.endpoint}/form-handler/${el.id}/data`;
+            : `${appConf.proto}://${appConf.endpoint}/lumin/form/form-handler/${el.id}/data`;
           el.component.attributes.add(new Attribute(`data-form`, el.id));
           el.component.htmlElement.setAttribute(`data-form`, el.id);
           el.component.attributes.add(new Attribute(`data-form-url`, saveUrl));
@@ -107,6 +107,11 @@ const useEditorStore = defineStore({
         }),
       );
       return forms;
+    },
+    async updateDeployment() {
+      if (this.selected.domain_name) {
+
+      }
     },
     async updatePreview() {
       this.app.rootHTML.innerHTML = '';
