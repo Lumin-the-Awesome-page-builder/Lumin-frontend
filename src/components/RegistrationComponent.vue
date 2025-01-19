@@ -7,20 +7,36 @@
       <h2 class="container_title title">Регистрация</h2>
       <div class="block">
         <n-p class="block_title title">Адрес эл. почты</n-p>
-        <n-input v-model:value="emailData" placeholder="mail@example.ru" type="email" class="input">
+        <n-input
+            v-model:value="emailData"
+            placeholder="mail@example.ru"
+            type="text"
+            class="input"
+            @blur="validateEmail"
+        >
           <template #prefix>
             <img src="@/assets/svg/email.svg" class="imgLogin"/>
           </template>
         </n-input>
       </div>
+      <p v-if="emailError" class="error-message">{{ emailError }}</p>
+
       <div class="block">
         <n-p class="block_title title">Пароль</n-p>
-        <n-input v-model:value="passwordData" placeholder="password" :type="typeInput" class="input" >
+        <n-input
+            v-model:value="passwordData"
+            placeholder="password"
+            :type="typeInput"
+            class="input"
+            @blur="validatePassword"
+        >
           <template #prefix>
             <n-icon :component="icon" color="#000000FF" @click="showPassword" class="passInp"/>
           </template>
         </n-input>
       </div>
+      <p v-if="passwordError" class="error-message">{{ passwordError }}</p>
+
       <n-button @click="register" color="#3535FFA6" class="btn">Зарегистрироваться</n-button>
     </div>
   <div class="line"></div>
@@ -57,24 +73,40 @@ export default defineComponent({
       passwordData: "",
       showPass: false,
       typeInput: "password",
-      icon: EyeSharp
+      icon: EyeSharp,
+      emailError: "",
+      passwordError: ""
     }
   },
   methods: {
-    showPassword(){
-      if(this.showPass){
-        this.typeInput = "password"
-        this.icon = EyeSharp
-        this.showPass = false
+    showPassword() {
+      this.showPass = !this.showPass;
+      this.typeInput = this.showPass ? "text" : "password";
+      this.icon = this.showPass ? EyeOff : EyeSharp;
+    },
+    validateEmail() {
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      this.emailError = emailPattern.test(this.emailData) ? "" : "Введите корректный адрес электронной почты.";
+    },
+    validatePassword() {
+      const minLengthPattern = /^.{8,}$/; // Проверка на длину содержать 8 или более символов
+      const digitPattern = /(?=.*\d)/; // Проверка на наличие хотя бы одной цифры
+      const englishLettersPattern = /^[a-zA-Z0-9]+$/; // Проверка на наличие только английских букв и цифр
+
+      if (!englishLettersPattern.test(this.passwordData)) {
+        this.passwordError = "Пароль должен содержать только английские буквы.";
+      } else if (!minLengthPattern.test(this.passwordData)) {
+        this.passwordError = "Пароль должен содержать 8 или более символов.";
+      } else if (!digitPattern.test(this.passwordData)) {
+        this.passwordError = "Пароль должен содержать хотя бы одну цифру.";
       } else {
-        this.typeInput = "text"
-        this.icon = EyeOff
-        this.showPass = true
+        this.passwordError = "";
       }
     },
     async register() {
-      const authStore = useAuthStore()
-      
+      if (this.emailError || this.passwordError) return; // Не продолжать регистрацию при наличии ошибок
+
+      const authStore = useAuthStore();
       const registration = await authStore.register(new RegistrationInputDto(this.emailData, this.passwordData));
 
       registration.toastIfError(this.notification)
@@ -171,5 +203,10 @@ export default defineComponent({
 .block_title {
   margin-top: 1rem;
   cursor: default;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
 }
 </style>
