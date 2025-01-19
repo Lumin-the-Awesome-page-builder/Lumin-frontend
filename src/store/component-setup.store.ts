@@ -40,12 +40,20 @@ const useComponentSetupStore = defineStore({
       if (this.component) {
         this.component.removeSelected();
         this.ws.releaseComponent(this.component);
+        if (this.component.key !== component.key) {
+          this.component = component;
+          this.ws.blockComponent(component);
+          console.log(this.component);
+          this.component.setSelected();
+        } else {
+          this.component = null;
+        }
+      } else {
+        this.component = component;
+        this.ws.blockComponent(component);
+        console.log(this.component);
+        this.component.setSelected();
       }
-      this.component = component;
-      this.ws.blockComponent(component);
-      console.log(this.component);
-      this.component.setSelected();
-      return null;
     },
     async saveWidget(component: Component | null = null) {
       const componentName = component
