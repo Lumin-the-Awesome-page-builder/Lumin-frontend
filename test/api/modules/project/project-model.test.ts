@@ -5,6 +5,7 @@ import ApiResponseDto from '@/api/dto/api-response.dto.ts';
 import UpdateProjectDto from '@/api/modules/project/dto/update-project.dto.ts';
 import ProjectDto from '@/api/modules/project/dto/project.dto.ts';
 import PatchProjectTreeDto from '@/api/modules/project/dto/patch-project-tree.dto.ts';
+import ApiRequestDto from '@/api/dto/api-request.dto';
 
 vi.mock('codemirror-editor-vue3', async () => {
   return {
@@ -187,7 +188,7 @@ describe('ProjectModel class tests', () => {
       ...apiResponseDto,
     });
     expect(projectModel.authorizedRequest).toBeCalledWith({
-      url: `/lumin/nginx/${id}`,
+      url: `/lumin/nginx/deploy/${id}`,
       method: 'POST',
       data: { name: domainName },
     });
@@ -202,26 +203,8 @@ describe('ProjectModel class tests', () => {
     expect(result).toEqual({
       ...apiResponseDto,
     });
-    expect(projectModel.authorizedRequest).toBeCalledWith({
-      url: `/lumin/nginx/index/${id}`,
-      method: 'POST',
-      data: { data: base64 },
-    });
-  });
-
-  it('Test reloadNginx', async () => {
-    const id = 1;
-    const domainName = 'name';
-
-    const result = await projectModel.reloadNginx(id, domainName);
-
-    expect(result).toEqual({
-      ...apiResponseDto,
-    });
-    expect(projectModel.authorizedRequest).toBeCalledWith({
-      url: `/lumin/nginx/reload/${id}`,
-      method: 'GET',
-      data: { data: domainName },
-    });
+    expect(projectModel.authorizedRequest).toBeCalledWith(
+      new ApiRequestDto(`/lumin/nginx/upload/${id}`, 'POST', { data: base64 }),
+    );
   });
 });

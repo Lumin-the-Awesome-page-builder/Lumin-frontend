@@ -36,6 +36,7 @@ import Form from './components/Form';
 import Input from './components/Input';
 import InputNameProp from './properties/InputNameProp';
 import FormNameProp from './properties/FormNameProp';
+import ImageSrcProp from './properties/ImageSrcProp';
 
 export function getEditorInstance() {
   const editor = new App();
@@ -82,6 +83,7 @@ export function getEditorInstance() {
 
   // Image
   editor.useProp(ImgFluidProp);
+  editor.useProp(ImageSrcProp);
 
   // Content
   editor.useProp(ContentProp);

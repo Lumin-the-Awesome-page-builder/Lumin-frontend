@@ -29,12 +29,5 @@ export const useChooseDomainStore = defineStore('chooseDomainComponent', {
 
       return await ProjectModel.setIndexHtml(projectId, base64);
     },
-    async reloadNginx(projectId: number) {
-      const ProjectModel = (
-        await import('@/api/modules/project/models/project.model.ts')
-      ).default;
-
-      return await ProjectModel.reloadNginx(projectId, this.domain);
-    },
   },
 });

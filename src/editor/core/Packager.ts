@@ -16,10 +16,13 @@ export default class Packager {
     });
 
     const head = document.createElement('head');
+    const meta = document.createElement('meta');
+    meta.setAttribute('charset', 'UTF-8');
     const stylesLink = document.createElement('link');
     stylesLink.rel = 'stylesheet';
     stylesLink.href =
       'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css';
+    head.appendChild(meta);
     head.appendChild(stylesLink);
 
     stylesOnMount.forEach((el) => (head.innerHTML += el.outerHTML));
@@ -89,7 +92,28 @@ export default class Packager {
     );
   }
 
+  public async base64(state: Record<string, ComponentObject> | null = null) {
+    const blob = this.blob(state);
+
+    const file = new File([blob], 'index.html', {
+      type: blob.type,
+      lastModified: Date.now(),
+    });
+
+    const convertToBase64 = (file: File): Promise<string> => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = (error) => reject(error);
+        reader.readAsDataURL(file);
+      });
+    };
+
+    return await convertToBase64(file);
+  }
+
   public json() {
+    if (!this.app) return;
     const tree = Object.keys(this.app.root).map((el) => ({
       [el]: this.app.root[el].toJson(),
     }));

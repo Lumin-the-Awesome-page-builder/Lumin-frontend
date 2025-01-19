@@ -77,16 +77,4 @@ describe('useChooseDomenStore', () => {
     expect(setIndexHtmlMock).toBeCalledWith(id, base64);
     expect(result).equal(response);
   });
-
-  it('Test reloadNginx', async () => {
-    const id = 1;
-    const domain = 'domain';
-    chooseDomenStore.setDomain(domain);
-
-    const result = await chooseDomenStore.reloadNginx(id);
-
-    expect(reloadNginxMock).toBeCalledTimes(1);
-    expect(reloadNginxMock).toBeCalledWith(id, domain);
-    expect(result).equal(response);
-  });
 });

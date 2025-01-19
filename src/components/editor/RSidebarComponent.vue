@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar-wrapper">
-    <ChooseDomainComponent />
+    <ChooseDomainComponent v-if="chooseDomain" />
     <ChangeDataComponent />
     <ChangeProjectSharingSettings />
     <n-collapse :default-expanded-names="['1']">
@@ -32,9 +32,15 @@
         <div class="heading-row">
           <h3 class="options-heading">Публикация</h3>
           <p class="options-details">
-            Сайт опубликован на хостинге с адресом example.com. Хотите разместить в нашей системе?
+            <template v-if="domainName">
+              Сайт опубликован по адресу <a :href='`https://${domainName}.lumin-deploy.dudosyka.ru`'>{{ domainName }}.lumin-deploy.dudosyka.ru</a>
+            </template>
+            <template v-else>
+              Хотите разместить сайт в нашей системе?
+            </template>
           </p>
-          <n-button color="#7b7bfe" @click="publish">Опубликовать</n-button>
+          <n-button v-if="domainName" color="#7b7bfe" @click="publish">Изменить адрес</n-button>
+          <n-button v-else color="#7b7bfe" @click="publish">Опубликовать</n-button>
         </div>
         <n-divider />
         <div class="heading-row">
@@ -137,6 +143,12 @@ export default <any> {
     project() {
       return this.editorStore.getProject;
     },
+    domainName() {
+      if (this.project) 
+        return this.project.domain_name
+      else
+        return ""
+    },
     projectName() {
       if (this.project)
         return this.project.name
@@ -169,7 +181,8 @@ export default <any> {
     }
   },
   data: () => ({
-    test: 123
+    test: 123,
+    chooseDomain: false
   }),
   mounted() {
     this.componentSetupStore.$onAction(({name, after}) => {
@@ -190,6 +203,16 @@ export default <any> {
         await this.componentSetupStore.patchTree(el.component);
       }));
       const result = await this.editorStore.save()
+      
+      const packager = new Packager(this.editorStore.app)
+      const app = getEditorInstance()
+      app.initState = JSON.parse(packager.json())
+      packager.app = app
+
+      await packager.base64().then(async (base64) => {
+        await this.chooseDomainStore.saveIndex(parseInt(this.$route.params.id),
+            base64.split('base64,')[1]);
+      });
       result.toastIfError(this.notificationStore)
       return result;
     },
@@ -209,6 +232,7 @@ export default <any> {
       }
     },
     publish() {
+      this.chooseDomain = true
       this.chooseDomainStore.openModal()
     },
     async download() {

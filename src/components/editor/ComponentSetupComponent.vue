@@ -7,6 +7,7 @@
       <n-divider />
     </template>
     
+    <ImageSrc @changed='propUpdated("image-src")' v-if="imageSrcComponentAvailable" :prop="component.props.get('image-src')" />
     <InputName @changed='propUpdated("input-name")' v-if="inputNameComponentAvailable" :prop="component.props.get('input-name')" />
     <FormName @changed='propUpdated("form-name")' v-if="formNameComponentAvailable" :prop="component.props.get('form-name')" />
     <InputType @changed='propUpdated("input-type")' v-if="inputTypeComponentAvailable" :prop="component.props.get('input-type')" />
@@ -107,11 +108,14 @@ import FormManagementTypeProp from '@/editor/properties/FormManagementTypeProp';
 import InputTypeProp from '@/editor/properties/InputTypeProp';
 import FormNameProp from '@/editor/properties/FormNameProp';
 import InputNameProp from '@/editor/properties/InputNameProp';
+import ImageSrc from './UI/ImageSrcComponent.vue';
+import ImageSrcProp from '@/editor/properties/ImageSrcProp';
 
 
 export default <any> {
   name: 'ComponentSetupComponent',
   components: {
+    ImageSrc,
     InputName,
     FormName,
     InputType,
@@ -171,6 +175,9 @@ export default <any> {
     componentSelected() {
       console.log(this.component)
       return this.component != null;
+    },
+    imageSrcComponentAvailable() {
+      return this.isAvailable(ImageSrcProp.name)
     },
     inputNameComponentAvailable() {
       return this.isAvailable(InputNameProp.name)

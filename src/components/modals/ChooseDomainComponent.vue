@@ -17,8 +17,7 @@
             <img src="../../assets/svg/Lumin_logo.svg" class="logo_svg">
           </div>
           <div class="inputs_container">
-            <h2 class="container_title title">Добро пожаловать</h2>
-            <span class="block_title title">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce placerat, magna vel gravida pulvinar, purus nisl tempus mi, sed scelerisque lorem urna et lectus. Donec ac hendrerit odio, sed ullamcorper dui. In eget risus ligula. Morbi nec lacus varius, cursus ipsum ac, vestibulum nunc. Nulla bibendum semper diam, vel fringilla risus faucibus a. Vestibulum rhoncus nisl ac consequat bibendum. Suspendisse et convallis tellus. Etiam sit amet dictum neque.</span>
+            <h2 class="container_title title">Настройки публикации</h2>
             <div class="partInput">
               <n-input  v-model:value="domain" placeholder="subdomain" type="text" class="input"></n-input>
               <n-p class="postfixText">.dudosyka.ru</n-p>
@@ -47,6 +46,21 @@ export default defineComponent({
       domain: "",
     }
   },
+  setup() {
+    const chooseDomainStore = useChooseDomainStore()
+
+    return {
+      chooseDomainStore,
+      editorStore: useEditorStore(),
+      notificationStore: useNotification(),
+    }
+  },
+  created() {
+    if (!this.editorStore.getProject) return
+    if (this.editorStore.getProject.domain_name) {
+      this.domain = this.editorStore.getProject.domain_name
+    }
+  },
   methods:{
     async save(){
       this.chooseDomainStore.setDomain(this.domain)
@@ -61,35 +75,13 @@ export default defineComponent({
         app.initState = JSON.parse(packager.json())
         packager.app = app
 
-        const blob = packager.blob()
-
-        const file = new File([blob], "index.html", {
-          type: blob.type,
-          lastModified: Date.now()
-        });
-
-        const convertToBase64 = (file: File): Promise<string> => {
-          return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result as string);
-            reader.onerror = error => reject(error);
-            reader.readAsDataURL(file);
-          });
-        };
-
-        convertToBase64(file).then(async (base64) => {
+        await packager.base64().then(async (base64) => {
           result = await this.chooseDomainStore.saveIndex(parseInt(this.$route.params.id),
               base64.split('base64,')[1]);
         });
 
-               if (result.success) {
-          result = await this.chooseDomainStore.reloadNginx(parseInt(this.$route.params.id))
-        } else {
-          result.toastIfError(this.notificationStore, 'Возникла ошибка при попытке загрузить index.html');
-          return;
-        }
-
         if (result.success) {
+          this.editorStore.selected = {...this.editorStore.selected, domain_name: this.domain}
           this.chooseDomainStore.closeModal()
         } else {
           result.toastIfError(this.notificationStore, 'Возникла ошибка при перезапуске nginx');
@@ -97,15 +89,6 @@ export default defineComponent({
       } else {
         result.toastIfError(this.notificationStore, 'Этот домен уже занят');
       }
-    }
-  },
-  setup() {
-    const chooseDomainStore = useChooseDomainStore()
-
-    return {
-      chooseDomainStore,
-      editorStore: useEditorStore(),
-      notificationStore: useNotification(),
     }
   },
   computed: {
