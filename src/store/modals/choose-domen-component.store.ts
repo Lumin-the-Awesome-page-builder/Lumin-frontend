@@ -28,6 +28,6 @@ export const useChooseDomainStore = defineStore('chooseDomainComponent', {
       ).default;
 
       return await ProjectModel.setIndexHtml(projectId, base64);
-    }
+    },
   },
 });

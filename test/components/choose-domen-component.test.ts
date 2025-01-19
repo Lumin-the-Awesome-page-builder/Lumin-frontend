@@ -24,9 +24,6 @@ describe('ChooseDomenComponent tests', () => {
 
   it('renders correctly', () => {
     const wrapper = mount(ChooseDomenComponent);
-    expect(wrapper.text()).toContain('Добро пожаловать');
-    expect(wrapper.text()).toContain(
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    );
+    expect(wrapper.text()).toContain('Настройки публикации');
   });
 });

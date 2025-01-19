@@ -7,7 +7,6 @@ import useComponentSetupStore from '@/store/component-setup.store.ts';
 import useEditorStore from '@/store/editor.store.ts';
 import useProjectPreviewModalStore from '@/store/project-preview-modal.store.ts';
 import useChangeDataStore from '@/store/modals/change-data-project-component.store.ts';
-import { useChooseDomainStore } from '@/store/modals/choose-domen-component.store.ts';
 import useDashboardStore from '@/store/dashboard.store.ts';
 
 vi.mock('naive-ui', async (importOriginal) => {
@@ -24,6 +23,20 @@ vi.mock('codemirror-editor-vue3', async () => {
   };
 });
 
+vi.mock('@/editor/core/Packager.ts', () => ({
+  default: function () {
+    this.json = vi.fn(() => JSON.stringify({}));
+    this.base64 = vi.fn(() => ({
+      then: function (a) {
+        console.log(a);
+      },
+    }));
+    this.constructor = function () {
+      return this;
+    };
+  },
+}));
+
 describe('RSidebarComponent test', () => {
   let toastIfErrorMock;
   beforeEach(() => {
@@ -35,6 +48,7 @@ describe('RSidebarComponent test', () => {
     const container = new Container('div');
     container.availableProps = [];
     const blockComponent = vi.fn();
+    const saveIndex = vi.fn();
     RSidebarComponent.setup = vi.fn(() => {
       const componentStore = useComponentSetupStore();
       componentStore.ws = { blockComponent };
@@ -49,14 +63,24 @@ describe('RSidebarComponent test', () => {
         return '#123';
       });
       return {
-        chooseDomainStore: useChooseDomainStore(),
+        chooseDomainStore: {
+          saveIndex,
+        },
         changeProjectDataStore: useChangeDataStore(),
         editorStore: useEditorStore(),
         projectPreviewModalStore: useProjectPreviewModalStore(),
         componentSetupStore: componentStore,
       };
     });
-    const wrapper = mount(RSidebarComponent);
+    const wrapper = mount(RSidebarComponent, {
+      global: {
+        mocks: {
+          $route: {
+            id: 1,
+          },
+        },
+      },
+    });
     const saveForms = vi.fn(() => []);
     wrapper.vm.editorStore = {
       save: vi.fn(() => ({ toastIfError: toastIfErrorMock })),

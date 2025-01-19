@@ -110,7 +110,6 @@ const useEditorStore = defineStore({
     },
     async updateDeployment() {
       if (this.selected.domain_name) {
-
       }
     },
     async updatePreview() {

@@ -13,11 +13,11 @@ export default class Image extends Component {
   static title: string = 'Картинка';
 
   availableProps: string[] = [
-    ComponentNameProp.name, 
+    ComponentNameProp.name,
     ImageSrcProp.name,
-    BorderRadiusProp.name
+    BorderRadiusProp.name,
   ];
-  
+
   getTitle() {
     return Image.title;
   }

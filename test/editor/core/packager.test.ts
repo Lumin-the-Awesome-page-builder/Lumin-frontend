@@ -115,7 +115,7 @@ describe('Package class tests', () => {
     it('Test blob pack', () => {
       packager.blob();
 
-      expect(createElementMock).toBeCalledTimes(12);
+      expect(createElementMock).toBeCalledTimes(13);
       expect(createElementMock).toBeCalledWith('html');
       expect(createElementMock).toBeCalledWith('head');
       expect(createElementMock).toBeCalledWith('link');
