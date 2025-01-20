@@ -21,6 +21,7 @@
 
 <script lang="ts">
 import { Play, Stop } from '@vicons/ionicons5';
+import { shallowRef } from 'vue'
 import { useEnvContainerListStore } from '@/store/envContainerListStore.ts';
 
 export default {
