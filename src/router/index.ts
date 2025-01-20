@@ -56,7 +56,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/worker',
     name: 'WorkerView',
     component: () => import('@/views/WorkerView.vue'),
-  }
+  },
 ];
 
 const router = createRouter({
