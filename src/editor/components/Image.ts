@@ -23,10 +23,10 @@ export default class Image extends Component {
   }
 
   override render(pure: boolean) {
-    const renderRes = super.render(pure)
-    
-    this.htmlElement.classList.add("w-100")
-    
-    return renderRes
+    const renderRes = super.render(pure);
+
+    this.htmlElement.classList.add('w-100');
+
+    return renderRes;
   }
 }
