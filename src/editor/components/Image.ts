@@ -21,4 +21,12 @@ export default class Image extends Component {
   getTitle() {
     return Image.title;
   }
+
+  override render(pure: boolean) {
+    const renderRes = super.render(pure)
+    
+    this.htmlElement.classList.add("w-100")
+    
+    return renderRes
+  }
 }
