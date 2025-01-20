@@ -52,6 +52,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'ContainerView',
     component: () => import('@/views/ContainerView.vue'),
   },
+  {
+    path: '/worker',
+    name: 'WorkerView',
+    component: () => import('@/views/WorkerView.vue'),
+  }
 ];
 
 const router = createRouter({
