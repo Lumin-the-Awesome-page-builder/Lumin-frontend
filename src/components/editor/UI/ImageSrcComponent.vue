@@ -87,6 +87,11 @@ export default {
       ev.target.value = null
     },
     async changeByName(imgName: string) {
+      console.log('!!!! before !!!!')
+      console.log('value: ', this.value, 'img.name: ', imgName)
+      this.value = imgName;
+      console.log('!!!! after !!!!')
+      console.log('value: ', this.value, 'img.name: ', imgName)
       const base64 = await this.getBase64(imgName)
       console.log("change to", base64)
       this.change(base64)
@@ -189,13 +194,14 @@ export default {
 }
 
 .image-item img {
-  max-width:100%;
-  max-height:150px;
+  max-width: 100%;
+  max-height: 150px;
   object-fit: cover;
-  transition: border 0.3s ease;
+  transition: border 0.3s ease, box-shadow 0.3s ease; /* Плавный переход для границы и тени */
 }
 
 .selected {
-  border: 100px solid blue;
+  border: 3px solid #5a5adf; /* Тонкая синяя граница */
+  box-shadow: 0 0 10px #7b7bfe; /* Синяя тень вокруг изображения */
 }
 </style>
