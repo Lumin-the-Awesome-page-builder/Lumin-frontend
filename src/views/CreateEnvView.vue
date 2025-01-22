@@ -53,6 +53,7 @@ import CreatePureEnv from '@/components/env/CreatePureEnv.vue';
 import EnvDashboardComponent from '@/components/env/EnvDashboardComponent.vue';
 import useCreateEnvStore from '@/store/create-env.store';
 import { Pencil, ArrowBack } from '@vicons/ionicons5';
+import { shallowRef } from "vue";
 
 export default {
     name: "CreateEnvView",
