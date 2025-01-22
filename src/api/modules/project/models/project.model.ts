@@ -10,7 +10,6 @@ import CollaborationTokenDto from '@/api/modules/project/dto/collaboration-token
 import StartEditDto from '../dto/start-edit.dto';
 import LoggerUtil from '@/utils/logger/logger.util';
 import axios from 'axios';
-import { TokenUtil } from '@/utils/token.util';
 
 export class ProjectModel extends ApiModelUtil {
   constructor() {
