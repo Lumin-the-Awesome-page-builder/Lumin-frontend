@@ -54,13 +54,13 @@ const useCreateEnvStore = defineStore({
         this.selectedConf,
         createConfigDto,
       );
-      
+
       const created = await dockerModel.upload(
         response.getData().id,
         this.selectedConf,
         this.uploaded,
       );
-  
+
       return [response, created];
     },
 

@@ -47,19 +47,23 @@ export class ProjectModel extends ApiModelUtil {
   }
 
   public async getCustomData(url: string) {
-    return (await axios({
-      url,
-      method: 'GET',
-      headers: {
-        "Content-Type": "application/json"
-      },
-    })).data
+    return (
+      await axios({
+        url,
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    ).data;
   }
 
   public async getData(id: number) {
-    return (await this.authorizedRequest(
-      new ApiRequestDto(`/lumin/form/${id}/data`, 'GET'),
-    )).getData()
+    return (
+      await this.authorizedRequest(
+        new ApiRequestDto(`/lumin/form/${id}/data`, 'GET'),
+      )
+    ).getData();
   }
 
   public async getFields(id: number): Promise<ApiResponseDto<ProjectDto>> {
