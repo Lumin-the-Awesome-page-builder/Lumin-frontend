@@ -9,6 +9,7 @@ import PatchProjectShareSettingsDto from '@/api/modules/project/dto/patch-projec
 import CollaborationTokenDto from '@/api/modules/project/dto/collaboration-token.dto.ts';
 import StartEditDto from '../dto/start-edit.dto';
 import LoggerUtil from '@/utils/logger/logger.util';
+import axios from 'axios';
 
 export class ProjectModel extends ApiModelUtil {
   constructor() {
@@ -44,10 +45,24 @@ export class ProjectModel extends ApiModelUtil {
     );
   }
 
-  public async getData(id: number): Promise<ApiResponseDto<ProjectDto>> {
-    return await this.authorizedRequest(
-      new ApiRequestDto(`/lumin/form/${id}/data`, 'GET'),
-    );
+  public async getCustomData(url: string) {
+    return (
+      await axios({
+        url,
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    ).data;
+  }
+
+  public async getData(id: number) {
+    return (
+      await this.authorizedRequest(
+        new ApiRequestDto(`/lumin/form/${id}/data`, 'GET'),
+      )
+    ).getData();
   }
 
   public async getFields(id: number): Promise<ApiResponseDto<ProjectDto>> {

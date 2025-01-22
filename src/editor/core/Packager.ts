@@ -51,14 +51,15 @@ export default class Packager {
                                 listeners[formId].fieldsList.forEach(field => {
                                     data[field.name] = field.html.value;
                                 })
+                                const body = (sendUrl.includes("lumin-api")) ? JSON.stringify(data) : JSON.stringify({
+                                        data: JSON.stringify(data)
+                                    })
                                 fetch(sendUrl, {
                                     method: 'POST', 
                                     headers: {
                                         'Content-Type': 'application/json'
                                     },
-                                    body: JSON.stringify({
-                                        data: JSON.stringify(data)
-                                    })
+                                    body
                                 })
                             })
                         } else {

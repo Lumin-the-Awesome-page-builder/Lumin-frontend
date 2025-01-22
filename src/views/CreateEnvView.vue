@@ -85,6 +85,7 @@ export default {
       },
       async saveEnv() {
         const created = await this.createEnvStore.createConfiguration();
+        console.log(created)
         if (created[1].success) {
           this.$router.push({ path: `/envs` });
         }

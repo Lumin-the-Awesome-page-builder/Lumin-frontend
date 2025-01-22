@@ -80,15 +80,18 @@ export default {
         handleSelect(key) {
             this.valueLabel = this.optionsKeyToLabel[key];
             this.value = key
-            this.prop.setValue([this.value])
+            this.prop.setValue(this.value, 0)
             this.$emit('changed')
         },
         changeGetUrl() {
-            this.prop.setValue([this.value, this.valueSave])
+            this.prop.setValue(this.value, 0)
+            this.prop.setValue(this.valueSave, 1)
             this.$emit('changed')
         },
         changeSaveUrl() {
-            this.prop.setValue([this.value, this.valueSave, this.valueGet])
+            this.prop.setValue(this.value, 0)
+            this.prop.setValue(this.valueSave, 1)
+            this.prop.setValue(this.valueGet, 2)
             this.$emit('changed')
         }
     },

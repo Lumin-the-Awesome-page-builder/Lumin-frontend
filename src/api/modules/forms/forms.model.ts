@@ -7,6 +7,11 @@ export default class FormsModel extends ApiModelUtil {
   }
 
   public async saveForm(projectId: number, formData: any) {
+    if (typeof formData.name != 'string') {
+      formData.name = formData.name[0];
+    }
+    if (formData.save_url == 'https://example.com/save')
+      return this.saveFormServiceBased(projectId, formData);
     return await this.authorizedRequest<any>(
       new ApiRequestDto(`/lumin/form/${projectId}`, 'POST', {
         name: formData.name,
@@ -18,6 +23,9 @@ export default class FormsModel extends ApiModelUtil {
   }
 
   public async saveFormServiceBased(projectId: number, formData: any) {
+    if (typeof formData.name != 'string') {
+      formData.name = formData.name[0];
+    }
     return await this.authorizedRequest<any>(
       new ApiRequestDto(`/lumin/form/${projectId}`, 'POST', {
         name: formData.name,
@@ -27,6 +35,11 @@ export default class FormsModel extends ApiModelUtil {
   }
 
   public async updateForm(projectId: number, formData: any) {
+    if (typeof formData.name != 'string') {
+      formData.name = formData.name[0];
+    }
+    if (formData.save_url == 'https://example.com/save')
+      return this.updateFormServiceBased(projectId, formData);
     return await this.authorizedRequest<any>(
       new ApiRequestDto(
         `/lumin/form/${projectId}/update/${formData.id}`,
@@ -42,6 +55,9 @@ export default class FormsModel extends ApiModelUtil {
   }
 
   public async updateFormServiceBased(projectId: number, formData: any) {
+    if (typeof formData.name != 'string') {
+      formData.name = formData.name[0];
+    }
     return await this.authorizedRequest<any>(
       new ApiRequestDto(
         `/lumin/form/${projectId}/update/${formData.id}`,

@@ -38,7 +38,12 @@ export default {
   },
   async created() {
     await this.FormViewStore.loadForms(parseInt(this.$route.params.id));
-    await this.formDataStore.loadData(this.$route.params.formId)
+    console.log(this.FormViewStore.items, this.$route.params.formId)
+    const form = this.FormViewStore.items.filter(el => el.id == this.$route.params.formId)[0]
+    if (form.url_get && form.url_get.includes("lumin-api"))
+      await this.formDataStore.loadData(form.url_get, null)
+    else
+      await this.formDataStore.loadData(null, form.id)
     await this.formDataStore.loadFields(this.$route.params.formId)
   },
   methods: {

@@ -132,4 +132,28 @@ export default class DockerModel extends ApiModelUtil {
       }),
     );
   }
+
+  public async upload(
+    environmentId: number,
+    configurationId: number,
+    files: Record<string, File>,
+  ) {
+    const fd = new FormData();
+
+    Object.keys(files).forEach((el) => {
+      fd.append(el, files[el]);
+    });
+
+    const res = await this.plainAuthorizedRequest(
+      new ApiRequestDto(
+        `/lumin/docker/${environmentId}/${configurationId}/upload`,
+        'POST',
+        fd,
+      ),
+      { 'Content-Type': 'application/multipart-form-data' },
+    );
+
+    if (res.status == 200) return new ApiResponseDto(true, {}, null);
+    else return new ApiResponseDto(false, null, null);
+  }
 }

@@ -1,7 +1,6 @@
 import DockerModel from '@/api/modules/docker/models/docker.model';
 import { defineStore } from 'pinia';
 import CreateConfigurationDto from '@/api/modules/docker/dto/create-configuration.dto.ts';
-import UploadConfigurationsFilesDto from '@/api/modules/docker/dto/upload-configurations-files.dto.ts';
 import CreateFromConfigurationDto from '@/api/modules/docker/dto/create-from-configuration.dto';
 
 const useCreateEnvStore = defineStore({
@@ -53,16 +52,11 @@ const useCreateEnvStore = defineStore({
         this.selectedConf,
         createConfigDto,
       );
-      const created = await dockerModel.uploadFiles(
+
+      const created = await dockerModel.upload(
         response.getData().id,
-        new UploadConfigurationsFilesDto(
-          this.selectedConf,
-          Object.keys(this.uploaded).map((el) => ({
-            name: el,
-            ...this.uploaded[el],
-            file: this.uploaded[el].base64,
-          })),
-        ),
+        this.selectedConf,
+        this.uploaded,
       );
 
       return [response, created];
