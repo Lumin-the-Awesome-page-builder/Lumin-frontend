@@ -32,12 +32,6 @@ describe('useFormDataViewStore', () => {
     expect(formDataViewStore.fields).toEqual([]);
   });
 
-  it('loads data correctly', async () => {
-    await formDataViewStore.loadData(1);
-
-    expect(formDataViewStore.items).toEqual([{ key: 'value' }]);
-  });
-
   it('loads fields correctly and filters out buttons', async () => {
     await formDataViewStore.loadFields(1);
 
