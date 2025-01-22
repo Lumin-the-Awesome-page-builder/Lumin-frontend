@@ -38,6 +38,11 @@ jobs:
       - name: Run unit tests
         run: npm run test
 
+      - name: Run end-to-end tests
+        run: |
+          npm run dev --if-present &
+          sleep 3
+          npm run e2e-test
 
       - name: Run Coverage
         run: |
