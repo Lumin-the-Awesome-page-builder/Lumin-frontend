@@ -464,7 +464,7 @@ export class App {
   public getFormFields(form: Component) {
     const formObject: any = { ...form.specific, component: form };
     console.log('Found form', form);
-    if (formObject.handler[0] == 'service') {
+    if (formObject.handler == 'service') {
       formObject.get_url = null;
       formObject.save_url = null;
     }

@@ -11,14 +11,15 @@ export const useFormDataViewStore = defineStore('formDataView', {
     fields: [],
   }),
   actions: {
-    async loadData(projectId: number) {
+    async loadData(formUrl: string, formId: number) {
       const ProjectModel = (
         await import('@/api/modules/project/models/project.model.ts')
       ).default;
-      const project = await ProjectModel.getData(projectId);
-      console.log('PROJECT', project.getData());
+
+      const project = (formUrl != null) ? await ProjectModel.getCustomData(formUrl) : await ProjectModel.getData(formId);
+      console.log('PROJECT', project);
       //@ts-ignore
-      this.items = project.getData().map((el) => JSON.parse(el.data));
+      this.items = project
     },
     async loadFields(projectId: number) {
       const ProjectModel = (

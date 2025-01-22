@@ -21,6 +21,7 @@ export const useFormViewStore = defineStore('formView', {
       const project = await ProjectModel.getOne(projectId);
       //@ts-ignore
       this.items = project.getData().forms;
+      return this.items
     },
     setItems(newItems: Item[]) {
       this.items = newItems;

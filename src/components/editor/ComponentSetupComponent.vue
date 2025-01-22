@@ -162,6 +162,7 @@ export default <any> {
     },
     propUpdated(prop_name) {
       const value = this.component.props.get(prop_name).value;
+      console.log(prop_name, value)
       this.componentSetupStore.patchProp(prop_name, value, this.component)
     },
     isAvailable(name) {

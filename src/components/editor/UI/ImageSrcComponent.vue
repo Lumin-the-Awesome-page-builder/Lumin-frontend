@@ -70,12 +70,12 @@ export default {
       const base64: string = await (new Promise(resolve => {
         reader.onload = function() {
           console.log(reader.result)
-          const base64String = reader.result.split(',')[1]
+          const base64String = reader.result
           resolve(base64String)
         };
       }))
       console.log(base64)
-      await MediaModel.uploadMedia(ev.target.value.split("\\")[ev.target.value.split("\\").length - 1], base64)
+      await MediaModel.uploadMedia(ev.target.value.split("\\")[ev.target.value.split("\\").length - 1], base64.split(',')[1])
       await this.load()
       this.change(base64)
       ev.target.value = null

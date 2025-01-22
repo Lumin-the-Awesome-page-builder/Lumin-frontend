@@ -50,12 +50,7 @@ export default {
         onFileChange(event: Event, fileName: string) {
             const target = event.target as HTMLInputElement;
             if (target.files && target.files.length > 0) {
-                const file = target.files[0];
-                const extension = file.name.split('.').pop() || '';
-
-                convertToBase64(file).then(base64 => {
-                    this.createEnvStore.uploaded[fileName] = { extension, base64: base64.split('base64,')[1] };
-                });
+                this.createEnvStore.uploaded[fileName] = target.files[0];
             }
         }
     }
