@@ -40,7 +40,7 @@ describe('ChangeDataComponent', () => {
   });
 
   it('Должно позволять выбирать категорию из выпадающего меню', () => {
-    const categoryName = 'category 1';
+    const categoryName = 'category';
 
     cy.intercept('GET', '/api/library/categories', {
       success: true,
@@ -67,7 +67,7 @@ describe('ChangeDataComponent', () => {
   it('Должно сохранять данные при нажатии на кнопку "Сохранить"', () => {
     const projectName = 'Новый проект';
     const tags = '#Тег1 #Тег2';
-    const categoryName = 'category 1';
+    const categoryName = 'category';
 
     cy.intercept('GET', '/api/library/categories', {
       success: true,

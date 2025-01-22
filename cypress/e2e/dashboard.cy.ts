@@ -35,7 +35,7 @@ describe('Тестирование DashboardComponent', () => {
   });
 
   it('Должен обновлять результаты поиска при вводе в поле поиска и сверять с названием на карточке', () => {
-    const searchTerm = 'able-kite';
+    const searchTerm = 'spoiled-car';
 
     cy.get('.search-input', { timeout: 100000 }).type(searchTerm);
 
