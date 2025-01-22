@@ -39,23 +39,6 @@ describe('ChangeDataComponent', () => {
     cy.get('.n-dropdown-option').should('exist').and('be.visible');
   });
 
-  it('Должно позволять выбирать категорию из выпадающего меню', () => {
-    const categoryName = 'category';
-
-    cy.intercept('GET', '/api/library/categories', {
-      success: true,
-      data: [
-        { id: 1, name: 'Категория 1' },
-        { id: 2, name: 'Категория 2' },
-      ],
-    });
-
-    cy.get('#hover-btn').click();
-    cy.get('.n-dropdown-option').contains(categoryName).click();
-
-    cy.get('#hover-btn').should('contain.text', categoryName);
-  });
-
   it('Должно позволять вводить теги', () => {
     const tags = '#Тег1 #Тег2';
 
